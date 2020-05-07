@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "438759403240",
+    "firebase_url": "https://goceries.firebaseio.com",
+    "project_id": "goceries",
+    "storage_bucket": "goceries.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438759403240:android:ca64e6ad0b4e471344a35d",
+        "android_client_info": {
+          "package_name": "com.ezpz.goceries"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438759403240-6d1p3e3v9ci1eg2puc3ne7pbn0et4lgn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD26ONKSmRdR7z-olGEP2K03ZYNhO9LUhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438759403240-6d1p3e3v9ci1eg2puc3ne7pbn0et4lgn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
