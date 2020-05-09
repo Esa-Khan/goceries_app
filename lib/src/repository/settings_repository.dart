@@ -30,7 +30,6 @@ Future<Setting> initSettings() async {
     }
   }
   print("initSettings");
-  _setting.appName = "Goceries";
   return setting.value;
 }
 

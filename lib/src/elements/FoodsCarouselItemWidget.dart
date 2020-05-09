@@ -71,12 +71,6 @@ class FoodsCarouselItemWidget extends StatelessWidget {
                     softWrap: false,
                     style: Theme.of(context).textTheme.body1,
                   ),
-                  Text(
-                    food.restaurant.name,
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
-                    style: Theme.of(context).textTheme.caption,
-                  ),
                 ],
               )),
         ],

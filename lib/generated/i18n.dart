@@ -49,14 +49,14 @@ class S implements WidgetsLocalizations {
   String get discover__explorer => "Discover & Explorer";
   String get dont_have_any_item_in_the_notification_list => "D'ont have any item in the notification list";
   String get dont_have_any_item_in_your_cart => "D'ont have any item in your cart";
-  String get double_click_on_the_food_to_add_it_to_the => "Add ingredients for popular recipes";
+  String get add_ingredients_for_popular_recipes => "Add ingredients for popular recipes";
   String get edit => "Edit";
   String get email => "Email";
   String get email_address => "Email Address";
   String get email_to_reset_password => "Email to reset password";
   String get english => "English";
   String get error_verify_email_settings => "Error! Verify email settings";
-  String get extras => "Extras";
+  String get not_what_youre_looking_for => "Not what you're looking for?";
   String get faq => "Faq";
   String get favorite_foods => "Favorited Items";
   String get favorite_recipes => "Favorited Recipes";
@@ -138,7 +138,7 @@ class S implements WidgetsLocalizations {
   String get save => "Save";
   String get search => "Search";
   String get search_for_restaurants_or_foods => "Search for store or groceries";
-  String get select_extras_to_add_them_on_the_food => "Select extras to add them on the food";
+  String get similar_items => "Similar items";
   String get select_your_preferred_languages => "Select your preferred languages";
   String get select_your_preferred_payment_mode => "Select your preferred payment mode";
   String get send_password_reset_link => "Send link";
@@ -162,7 +162,7 @@ class S implements WidgetsLocalizations {
   String get total => "Total";
   String get tracking_order => "Tracking Order";
   String get tracking_refreshed_successfuly => "Tracking refreshed successfully";
-  String get trending_this_week => "Trending Recipes";
+  String get trending_recipes => "Trending Recipes";
   String get unknown => "Unknown";
   String get verify => "Verify";
   String get verify_your_internet_connection => "Verify your internet connection";
@@ -217,7 +217,7 @@ class $ar extends S {
   @override
   String get password => "كلمه المرور";
   @override
-  String get select_extras_to_add_them_on_the_food => "اختر الاضافات";
+  String get similar_items => "اختر الاضافات";
   @override
   String get faq => "الاسئلة الشائعة";
   @override
@@ -301,7 +301,7 @@ class $ar extends S {
   @override
   String get save => "حفظ";
   @override
-  String get extras => "إضافات";
+  String get not_what_youre_looking_for => "إضافات";
   @override
   String get skip => "تخطى";
   @override
@@ -351,7 +351,7 @@ class $ar extends S {
   @override
   String get addresses_refreshed_successfuly => "تم تحديث العناوين بنجاح";
   @override
-  String get trending_this_week => "الاعلى هذا الأسبوع";
+  String get trending_recipes => "الاعلى هذا الأسبوع";
   @override
   String get email_address => "البريد الإلكتروني";
   @override
@@ -375,7 +375,7 @@ class $ar extends S {
   @override
   String get dont_have_any_item_in_your_cart => "سلة التسوق فارغة";
   @override
-  String get double_click_on_the_food_to_add_it_to_the => "انقر مرتين على المنتج لإضافته إلى سلة التسوق";
+  String get add_ingredients_for_popular_recipes => "انقر مرتين على المنتج لإضافته إلى سلة التسوق";
   @override
   String get new_address_added_successfully => "تمت اضافة العنوان الجديد بنجاح";
   @override
@@ -541,7 +541,7 @@ class $ko extends S {
   @override
   String get password => "비밀번호";
   @override
-  String get select_extras_to_add_them_on_the_food => "추가할 메뉴";
+  String get similar_items => "추가할 메뉴";
   @override
   String get faq => "자주묻는질문";
   @override
@@ -625,7 +625,7 @@ class $ko extends S {
   @override
   String get save => "저장";
   @override
-  String get extras => "추가 메뉴";
+  String get not_what_youre_looking_for => "추가 메뉴";
   @override
   String get skip => "스킵";
   @override
@@ -675,7 +675,7 @@ class $ko extends S {
   @override
   String get addresses_refreshed_successfuly => "Addresses refreshed successfuly";
   @override
-  String get trending_this_week => "이번주 트렌드";
+  String get trending_recipes => "이번주 트렌드";
   @override
   String get email_address => "이메일 주소";
   @override
@@ -699,7 +699,7 @@ class $ko extends S {
   @override
   String get dont_have_any_item_in_your_cart => "장바구니에 주문이 없습니다";
   @override
-  String get double_click_on_the_food_to_add_it_to_the => "두번 클릭하면 장바구니에 저장됩니다";
+  String get add_ingredients_for_popular_recipes => "두번 클릭하면 장바구니에 저장됩니다";
   @override
   String get new_address_added_successfully => "New Address added successfully";
   @override
@@ -865,7 +865,7 @@ class $pt extends S {
   @override
   String get password => "Senha";
   @override
-  String get select_extras_to_add_them_on_the_food => "Selecione extras para adicioná-los à comida";
+  String get similar_items => "Selecione extras para adicioná-los à comida";
   @override
   String get faq => "Perguntas frequentes";
   @override
@@ -949,7 +949,7 @@ class $pt extends S {
   @override
   String get save => "Salve ";
   @override
-  String get extras => "Extras";
+  String get not_what_youre_looking_for => "Extras";
   @override
   String get skip => "Pular";
   @override
@@ -999,7 +999,7 @@ class $pt extends S {
   @override
   String get addresses_refreshed_successfuly => "Addresses refreshed successfuly";
   @override
-  String get trending_this_week => "Tendências desta semana";
+  String get trending_recipes => "Tendências desta semana";
   @override
   String get email_address => "Endereço de e-mail";
   @override
@@ -1023,7 +1023,7 @@ class $pt extends S {
   @override
   String get dont_have_any_item_in_your_cart => "Não tem nenhum item no seu carrinho";
   @override
-  String get double_click_on_the_food_to_add_it_to_the => "Clique duas vezes na comida para adicioná-la ao carrinho";
+  String get add_ingredients_for_popular_recipes => "Clique duas vezes na comida para adicioná-la ao carrinho";
   @override
   String get new_address_added_successfully => "New Address added successfully";
   @override
@@ -1190,7 +1190,7 @@ class $in extends S {
   @override
   String get password => "Password";
   @override
-  String get select_extras_to_add_them_on_the_food => "Select extras to add them on the food";
+  String get similar_items => "Select extras to add them on the food";
   @override
   String get faq => "Faq";
   @override
@@ -1274,7 +1274,7 @@ class $in extends S {
   @override
   String get save => "Save";
   @override
-  String get extras => "Extras";
+  String get not_what_youre_looking_for => "Extras";
   @override
   String get skip => "Skip";
   @override
@@ -1324,7 +1324,7 @@ class $in extends S {
   @override
   String get addresses_refreshed_successfuly => "Addresses refreshed successfuly";
   @override
-  String get trending_this_week => "Trending This Week";
+  String get trending_recipes => "Trending This Week";
   @override
   String get email_address => "Email Address";
   @override
@@ -1348,7 +1348,7 @@ class $in extends S {
   @override
   String get dont_have_any_item_in_your_cart => "D'ont have any item in your cart";
   @override
-  String get double_click_on_the_food_to_add_it_to_the => "Double click on the food to add it to the cart";
+  String get add_ingredients_for_popular_recipes => "Double click on the food to add it to the cart";
   @override
   String get new_address_added_successfully => "New Address added successfully";
   @override
@@ -1519,7 +1519,7 @@ class $fr extends S {
   @override
   String get password => "Mot de passe";
   @override
-  String get select_extras_to_add_them_on_the_food => "Sélectionnez des extras pour les ajouter à la nourriture";
+  String get similar_items => "Sélectionnez des extras pour les ajouter à la nourriture";
   @override
   String get faq => "FAQ";
   @override
@@ -1603,7 +1603,7 @@ class $fr extends S {
   @override
   String get save => "sauver";
   @override
-  String get extras => "Extras";
+  String get not_what_youre_looking_for => "Extras";
   @override
   String get skip => "Sauter";
   @override
@@ -1653,7 +1653,7 @@ class $fr extends S {
   @override
   String get addresses_refreshed_successfuly => "Addresses refreshed successfuly";
   @override
-  String get trending_this_week => "Tendances cette semaine";
+  String get trending_recipes => "Tendances cette semaine";
   @override
   String get email_address => "Adresse e-mail";
   @override
@@ -1677,7 +1677,7 @@ class $fr extends S {
   @override
   String get dont_have_any_item_in_your_cart => "N'a aucun article dans votre panier";
   @override
-  String get double_click_on_the_food_to_add_it_to_the => "Double-cliquez sur la nourriture pour l'ajouter au panier.";
+  String get add_ingredients_for_popular_recipes => "Double-cliquez sur la nourriture pour l'ajouter au panier.";
   @override
   String get new_address_added_successfully => "New Address added successfully";
   @override
@@ -1844,7 +1844,7 @@ class $es extends S {
   @override
   String get password => "Contraseña";
   @override
-  String get select_extras_to_add_them_on_the_food => "Seleccione extras para agregarlos a la comida";
+  String get similar_items => "Seleccione extras para agregarlos a la comida";
   @override
   String get faq => "Preguntas más frecuentes";
   @override
@@ -1928,7 +1928,7 @@ class $es extends S {
   @override
   String get save => "Salvar";
   @override
-  String get extras => "Extras";
+  String get not_what_youre_looking_for => "Extras";
   @override
   String get skip => "Omitir";
   @override
@@ -1978,7 +1978,7 @@ class $es extends S {
   @override
   String get addresses_refreshed_successfuly => "Addresses refreshed successfuly";
   @override
-  String get trending_this_week => "Tendencias esta semana";
+  String get trending_recipes => "Tendencias esta semana";
   @override
   String get email_address => "Dirección de correo electrónico";
   @override
@@ -2002,7 +2002,7 @@ class $es extends S {
   @override
   String get dont_have_any_item_in_your_cart => "No tengas ningún artículo en tu carrito";
   @override
-  String get double_click_on_the_food_to_add_it_to_the => "Haga doble clic en la comida para agregarla al carrito.";
+  String get add_ingredients_for_popular_recipes => "Haga doble clic en la comida para agregarla al carrito.";
   @override
   String get new_address_added_successfully => "New Address added successfully";
   @override

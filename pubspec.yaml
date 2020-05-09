@@ -36,13 +36,15 @@ dependencies:
   html: ^0.14.0+2
   shared_preferences: ^0.5.7
   flutter_html: ^0.10.4
-  flutter_svg: ^0.14.2
+#  flutter_svg: ^0.14.2
+  flutter_svg: ^0.17.3+1
   location: ^2.3.5
   dynamic_theme: ^1.0.0
   flutter_inappbrowser: ^2.0.2
   url_launcher: ^5.4.1
   firebase_messaging: ^6.0.13
-  cached_network_image: 2.0.0-rc
+#  cached_network_image: 2.0.0-rc
+  cached_network_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:

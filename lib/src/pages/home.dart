@@ -113,11 +113,11 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                   color: Theme.of(context).hintColor,
                 ),
                 title: Text(
-                  S.of(context).trending_this_week,
+                  S.of(context).trending_recipes,
                   style: Theme.of(context).textTheme.display1,
                 ),
                 subtitle: Text(
-                  S.of(context).double_click_on_the_food_to_add_it_to_the,
+                  S.of(context).add_ingredients_for_popular_recipes,
                   style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
                 ),
               ),

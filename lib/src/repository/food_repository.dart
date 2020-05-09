@@ -135,9 +135,7 @@ Future<Stream<Food>> getTrendingFoodsOfRestaurant(String restaurantId) async {
 
 Future<Stream<Food>> getFeaturedFoodsOfRestaurant(String restaurantId) async {
   // TODO Featured foods only
-//  final String url = '${GlobalConfiguration().getString('api_base_url')}foods?with=restaurant&search=restaurant_id:$restaurantId&searchFields=restaurant_id:=';
-  String storeName = 'testStore';
-  final String url = '${GlobalConfiguration().getString('api_base_url')}store_$storeName?with=restaurant&search=item_id:$restaurantId&searchFields=item_id:=';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}foods?with=restaurant&search=restaurant_id:$restaurantId&searchFields=restaurant_id:=';
 
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
