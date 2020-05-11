@@ -47,7 +47,7 @@ class S implements WidgetsLocalizations {
   String get delivery_fee => "Delivery Fee";
   String get description => "Description";
   String get discover__explorer => "Discover & Explorer";
-  String get dont_have_any_item_in_the_notification_list => "D'ont have any item in the notification list";
+  String get dont_have_any_item_in_the_shopping_list => "Don't have any items in your shopping list";
   String get dont_have_any_item_in_your_cart => "D'ont have any item in your cart";
   String get add_ingredients_for_popular_recipes => "Add ingredients for popular recipes";
   String get edit => "Edit";
@@ -75,7 +75,7 @@ class S implements WidgetsLocalizations {
   String get how_would_you_rate_this_restaurant_ => "How would you rate this restaurant ?";
   String get i_dont_have_an_account => "I don't have an account?";
   String get i_forgot_password => "I forgot password ?";
-  String get i_have_account_back_to_login => "I have account? Back to login";
+  String get have_an_account_back_to_login => "I have account? Back to login";
   String get i_remember_my_password_return_to_login => "I remember my password return to login";
   String get information => "Information";
   String get ingredients => "Ingredients";
@@ -92,7 +92,7 @@ class S implements WidgetsLocalizations {
   String get maps_explorer => "Maps Explorer";
   String get aisles => "Aisles";
   String get most_popular => "Most Popular";
-  String get multirestaurants => "Multi-Restaurants";
+  String get ordered_alphabetically => "Ordered Alphabetically";
   String get my_orders => "Orders";
   String get new_address_added_successfully => "New Address added successfully";
   String get new_order_from_client => "New order from client";
@@ -127,7 +127,7 @@ class S implements WidgetsLocalizations {
   String get quantity => "Quantity";
   String get recent_orders => "Recent Orders";
   String get recent_reviews => "Recent Reviews";
-  String get recents_search => "Recents Search";
+  String get stores => "Stores";
   String get register => "Register";
   String get reset => "Reset";
   String get reset_cart => "Reset Cart?";
@@ -137,7 +137,7 @@ class S implements WidgetsLocalizations {
   String get reviews_refreshed_successfully => "Reviews refreshed successfully!";
   String get save => "Save";
   String get search => "Search";
-  String get search_for_restaurants_or_foods => "Search for store or groceries";
+  String get search_for_stores_or_groceries => "Search for stores or groceries";
   String get similar_items => "Similar items";
   String get select_your_preferred_languages => "Select your preferred languages";
   String get select_your_preferred_payment_mode => "Select your preferred payment mode";
@@ -213,7 +213,7 @@ class $ar extends S {
   @override
   String get delivery_fee => "Delivery Fee";
   @override
-  String get search_for_restaurants_or_foods => "البحث في المطابخ والمنتجات";
+  String get search_for_stores_or_groceries => "البحث في المطابخ والمنتجات";
   @override
   String get password => "كلمه المرور";
   @override
@@ -289,7 +289,7 @@ class $ar extends S {
   @override
   String get shopping_list => "تنويهات";
   @override
-  String get i_have_account_back_to_login => "لدي حساب، العودة لتسجيل الدخول";
+  String get have_an_account_back_to_login => "لدي حساب، العودة لتسجيل الدخول";
   @override
   String get order_refreshed_successfuly => "تم تحديث الطلب بنجاح";
   @override
@@ -441,7 +441,7 @@ class $ar extends S {
   @override
   String get your_order_has_been_successfully_submitted => "تم تقديم طلبك بنجاح!";
   @override
-  String get recents_search => "عمليات البحث الأخيرة";
+  String get stores => "عمليات البحث الأخيرة";
   @override
   String get i_remember_my_password_return_to_login => "تذكرت كلمة المرور، ارجع لشاشة الدخول";
   @override
@@ -471,7 +471,7 @@ class $ar extends S {
   @override
   String get quantity => "الكمية";
   @override
-  String get multirestaurants => "عدة مطابخ";
+  String get ordered_alphabetically => "عدة مطابخ";
   @override
   String get error_verify_email_settings => "البريد الالكتروني غير مسجل لدينا";
   @override
@@ -481,7 +481,7 @@ class $ar extends S {
   @override
   String get tracking_order => "تتبع الطلب";
   @override
-  String get dont_have_any_item_in_the_notification_list => "قائمة الاشعارات فارغة";
+  String get dont_have_any_item_in_the_shopping_list => "قائمة الاشعارات فارغة";
   @override
   String get confirm_payment => "تأكيد الدفع";
   @override
@@ -537,7 +537,7 @@ class $ko extends S {
   @override
   String get delivery_fee => "Delivery Fee";
   @override
-  String get search_for_restaurants_or_foods => "검색";
+  String get search_for_stores_or_groceries => "검색";
   @override
   String get password => "비밀번호";
   @override
@@ -613,7 +613,7 @@ class $ko extends S {
   @override
   String get shopping_list => "알림";
   @override
-  String get i_have_account_back_to_login => "계정이 있으신가요? 로그인";
+  String get have_an_account_back_to_login => "계정이 있으신가요? 로그인";
   @override
   String get order_refreshed_successfuly => "주문이 갱신되었습니다";
   @override
@@ -765,7 +765,7 @@ class $ko extends S {
   @override
   String get your_order_has_been_successfully_submitted => "성공적으로 주문되었습니다!";
   @override
-  String get recents_search => "최근 검색";
+  String get stores => "최근 검색";
   @override
   String get i_remember_my_password_return_to_login => "I remember my password return to login";
   @override
@@ -795,7 +795,7 @@ class $ko extends S {
   @override
   String get quantity => "수량";
   @override
-  String get multirestaurants => "K-배달";
+  String get ordered_alphabetically => "K-배달";
   @override
   String get error_verify_email_settings => "Error! Verify email settings";
   @override
@@ -805,7 +805,7 @@ class $ko extends S {
   @override
   String get tracking_order => "추적 순서";
   @override
-  String get dont_have_any_item_in_the_notification_list => "알림 리스트가 없습니다";
+  String get dont_have_any_item_in_the_shopping_list => "알림 리스트가 없습니다";
   @override
   String get confirm_payment => "결제 확인";
   @override
@@ -861,7 +861,7 @@ class $pt extends S {
   @override
   String get delivery_fee => "Delivery Fee";
   @override
-  String get search_for_restaurants_or_foods => "Pesquise restaurantes ou alimentos";
+  String get search_for_stores_or_groceries => "Pesquise restaurantes ou alimentos";
   @override
   String get password => "Senha";
   @override
@@ -937,7 +937,7 @@ class $pt extends S {
   @override
   String get shopping_list => "Notificações";
   @override
-  String get i_have_account_back_to_login => "Eu tenho conta Volte ao login";
+  String get have_an_account_back_to_login => "Eu tenho conta Volte ao login";
   @override
   String get order_refreshed_successfuly => "Pedido atualizado com sucesso";
   @override
@@ -1090,7 +1090,7 @@ class $pt extends S {
   @override
   String get your_order_has_been_successfully_submitted => "Seu pedido foi enviado com sucesso!";
   @override
-  String get recents_search => "Pesquisa Recentes";
+  String get stores => "Pesquisa Recentes";
   @override
   String get i_remember_my_password_return_to_login => "I remember my password return to login";
   @override
@@ -1120,7 +1120,7 @@ class $pt extends S {
   @override
   String get quantity => "Quantidade";
   @override
-  String get multirestaurants => "Multi-Restaurantes";
+  String get ordered_alphabetically => "Multi-Restaurantes";
   @override
   String get error_verify_email_settings => "Error! Verify email settings";
   @override
@@ -1130,7 +1130,7 @@ class $pt extends S {
   @override
   String get tracking_order => "Ordem de rastreamento";
   @override
-  String get dont_have_any_item_in_the_notification_list => "Não tem nenhum item na lista de notificações";
+  String get dont_have_any_item_in_the_shopping_list => "Não tem nenhum item na lista de notificações";
   @override
   String get confirm_payment => "Confirme o pagamento";
   @override
@@ -1186,7 +1186,7 @@ class $in extends S {
   @override
   String get delivery_fee => "Delivery Fee";
   @override
-  String get search_for_restaurants_or_foods => "Search for restaurants or foods";
+  String get search_for_stores_or_groceries => "Search for restaurants or foods";
   @override
   String get password => "Password";
   @override
@@ -1262,7 +1262,7 @@ class $in extends S {
   @override
   String get shopping_list => "Shopping List";
   @override
-  String get i_have_account_back_to_login => "I have account? Back to login";
+  String get have_an_account_back_to_login => "I have account? Back to login";
   @override
   String get order_refreshed_successfuly => "Order refreshed successfuly";
   @override
@@ -1415,7 +1415,7 @@ class $in extends S {
   @override
   String get your_order_has_been_successfully_submitted => "Your order has been successfully submitted!";
   @override
-  String get recents_search => "Recents Search";
+  String get stores => "Recents Search";
   @override
   String get i_remember_my_password_return_to_login => "I remember my password return to login";
   @override
@@ -1445,7 +1445,7 @@ class $in extends S {
   @override
   String get quantity => "Quantity";
   @override
-  String get multirestaurants => "Multi-Restaurants";
+  String get ordered_alphabetically => "Multi-Restaurants";
   @override
   String get error_verify_email_settings => "Error! Verify email settings";
   @override
@@ -1455,7 +1455,7 @@ class $in extends S {
   @override
   String get tracking_order => "Tracking Order";
   @override
-  String get dont_have_any_item_in_the_notification_list => "Don't have any items in your shopping list";
+  String get dont_have_any_item_in_the_shopping_list => "Don't have any items in your shopping list";
   @override
   String get confirm_payment => "Confirm Payment";
   @override
@@ -1515,7 +1515,7 @@ class $fr extends S {
   @override
   String get delivery_fee => "Delivery Fee";
   @override
-  String get search_for_restaurants_or_foods => "Rechercher des restaurants ou des aliments";
+  String get search_for_stores_or_groceries => "Rechercher des restaurants ou des aliments";
   @override
   String get password => "Mot de passe";
   @override
@@ -1591,7 +1591,7 @@ class $fr extends S {
   @override
   String get shopping_list => "Les notifications";
   @override
-  String get i_have_account_back_to_login => "J'ai un compte? Retour connexion";
+  String get have_an_account_back_to_login => "J'ai un compte? Retour connexion";
   @override
   String get order_refreshed_successfuly => "Commande rafraîchie avec succès";
   @override
@@ -1744,7 +1744,7 @@ class $fr extends S {
   @override
   String get your_order_has_been_successfully_submitted => "Votre commande a été soumise avec succès!";
   @override
-  String get recents_search => "Recherche récente";
+  String get stores => "Recherche récente";
   @override
   String get i_remember_my_password_return_to_login => "I remember my password return to login";
   @override
@@ -1774,7 +1774,7 @@ class $fr extends S {
   @override
   String get quantity => "Quantité";
   @override
-  String get multirestaurants => "Multi-Restaurants";
+  String get ordered_alphabetically => "Multi-Restaurants";
   @override
   String get error_verify_email_settings => "Error! Verify email settings";
   @override
@@ -1784,7 +1784,7 @@ class $fr extends S {
   @override
   String get tracking_order => "Suivi de commande";
   @override
-  String get dont_have_any_item_in_the_notification_list => "N'a aucun article dans la liste de notification";
+  String get dont_have_any_item_in_the_shopping_list => "N'a aucun article dans la liste de notification";
   @override
   String get confirm_payment => "Confirmer le paiement";
   @override
@@ -1840,7 +1840,7 @@ class $es extends S {
   @override
   String get delivery_fee => "Delivery Fee";
   @override
-  String get search_for_restaurants_or_foods => "Busca restaurantes o comidas";
+  String get search_for_stores_or_groceries => "Busca restaurantes o comidas";
   @override
   String get password => "Contraseña";
   @override
@@ -1916,7 +1916,7 @@ class $es extends S {
   @override
   String get shopping_list => "Notificaciones";
   @override
-  String get i_have_account_back_to_login => "Tengo cuenta? Atrás para iniciar sesión";
+  String get have_an_account_back_to_login => "Tengo cuenta? Atrás para iniciar sesión";
   @override
   String get order_refreshed_successfuly => "Pedido actualizado correctamente";
   @override
@@ -2069,7 +2069,7 @@ class $es extends S {
   @override
   String get your_order_has_been_successfully_submitted => "Su pedido ha sido enviado con éxito!";
   @override
-  String get recents_search => "Búsqueda reciente";
+  String get stores => "Búsqueda reciente";
   @override
   String get i_remember_my_password_return_to_login => "I remember my password return to login";
   @override
@@ -2099,7 +2099,7 @@ class $es extends S {
   @override
   String get quantity => "Cantidad";
   @override
-  String get multirestaurants => "Multi-restaurantes";
+  String get ordered_alphabetically => "Multi-restaurantes";
   @override
   String get error_verify_email_settings => "Error! Verify email settings";
   @override
@@ -2109,7 +2109,7 @@ class $es extends S {
   @override
   String get tracking_order => "Orden de seguimiento";
   @override
-  String get dont_have_any_item_in_the_notification_list => "No tenga ningún elemento en la lista de notificaciones";
+  String get dont_have_any_item_in_the_shopping_list => "No tenga ningún elemento en la lista de notificaciones";
   @override
   String get confirm_payment => "Confirmar pago";
   @override

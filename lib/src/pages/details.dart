@@ -208,7 +208,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                             ],
                           ),
                         ),
-                        _con.featuredFoods.isEmpty
+                        _con.storeItems.isEmpty
                             ? SizedBox(height: 0)
                             : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -223,23 +223,27 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                               S.of(context).store,
                               style: Theme.of(context).textTheme.display1,
                             ),
+                            subtitle: Text(
+                              S.of(context).ordered_alphabetically,
+                              style: Theme.of(context).textTheme.caption,
+                            ),
                           ),
                         ),
-                        _con.featuredFoods.isEmpty
+                        _con.storeItems.isEmpty
                             ? SizedBox(height: 0)
                             : ListView.separated(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           primary: false,
-                          itemCount: _con.featuredFoods.length,
+                          itemCount: _con.storeItems.length,
                           separatorBuilder: (context, index) {
                             return SizedBox(height: 10);
                           },
                           itemBuilder: (context, index) {
                             return FoodItemWidget(
                               heroTag: 'details_featured_food',
-                              food: _con.featuredFoods.elementAt(index),
+                              food: _con.storeItems.elementAt(index),
                             );
                           },
                         ),

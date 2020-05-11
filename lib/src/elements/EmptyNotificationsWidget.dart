@@ -96,7 +96,7 @@ class _EmptyNotificationsWidgetState extends State<EmptyNotificationsWidget> {
               Opacity(
                 opacity: 0.4,
                 child: Text(
-                  S.of(context).dont_have_any_item_in_the_notification_list,
+                  S.of(context).dont_have_any_item_in_the_shopping_list,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.display2.merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),

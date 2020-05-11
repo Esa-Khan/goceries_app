@@ -29,7 +29,7 @@ class SearchBarWidget extends StatelessWidget {
               child: Icon(Icons.search, color: Theme.of(context).accentColor),
             ),
             Text(
-              S.of(context).search_for_restaurants_or_foods,
+              S.of(context).search_for_stores_or_groceries,
               style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
             )
           ],

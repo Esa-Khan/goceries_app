@@ -4,7 +4,7 @@ import '../elements/SearchResultsWidget.dart';
 
 class SearchModal extends ModalRoute<void> {
   @override
-  Duration get transitionDuration => Duration(milliseconds: 400);
+  Duration get transitionDuration => Duration(milliseconds: 200);
 
   @override
   bool get opaque => false;
