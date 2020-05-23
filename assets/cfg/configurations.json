@@ -1,4 +1,4 @@
 {
-  "base_url": "https://goceries.org/public",
-  "api_base_url": "https://goceries.org/public/api/"
+  "base_url": "https://goceries.org/",
+  "api_base_url": "https://goceries.org/api/"
 }

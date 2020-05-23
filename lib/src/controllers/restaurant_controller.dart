@@ -15,7 +15,7 @@ class RestaurantController extends ControllerMVC {
   List<Gallery> galleries = <Gallery>[];
   List<Food> foods = <Food>[];
   List<Food> trendingFoods = <Food>[];
-  List<Food> featuredFoods = <Food>[];
+  List<Food> storeItems = <Food>[];
   List<Review> reviews = <Review>[];
   GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -76,18 +76,37 @@ class RestaurantController extends ControllerMVC {
   void listenForFeaturedFoods(String idRestaurant) async {
     final Stream<Food> stream = await getFeaturedFoodsOfRestaurant(idRestaurant);
     stream.listen((Food _food) {
-      setState(() => featuredFoods.add(_food));
+      if (storeItems.length == 0) {
+        setState(() => storeItems.add(_food));
+      } else {
+        // Alphabetically arrange items
+        String currFood = _food.name.toLowerCase();
+        for (int i = 0; i < storeItems.length; i++) {
+          String temp = storeItems.elementAt(i).name.toLowerCase();
+          if (!temp.compareTo(currFood).isNegative) {
+            setState(() => storeItems.insert(i, _food));
+            break;
+          } else if(i == storeItems.length - 1){
+            setState(() => storeItems.add(_food));
+            break;
+          }
+        }
+
+      }
+
+
     }, onError: (a) {
       print(a);
     }, onDone: () {});
   }
+
 
   Future<void> refreshRestaurant() async {
     var _id = restaurant.id;
     restaurant = new Restaurant();
     galleries.clear();
     reviews.clear();
-    featuredFoods.clear();
+    storeItems.clear();
     listenForRestaurant(id: _id, message: S.current.restaurant_refreshed_successfuly);
     listenForRestaurantReviews(id: _id);
     listenForGalleries(_id);

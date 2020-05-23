@@ -21,7 +21,7 @@ class FavoritesWidget extends StatefulWidget {
 }
 
 class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
-  String layout = 'grid';
+  String layout = 'list';
 
   FavoriteController _con;
 
@@ -43,7 +43,7 @@ class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S.of(context).favorites,
+          S.of(context).shopping_list,
           style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
@@ -62,11 +62,6 @@ class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SearchBarWidget(),
-                    ),
-                    SizedBox(height: 10),
-                    Padding(
                       padding: const EdgeInsets.only(left: 20, right: 10),
                       child: ListTile(
                         contentPadding: EdgeInsets.symmetric(vertical: 0),
@@ -75,7 +70,7 @@ class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
                           color: Theme.of(context).hintColor,
                         ),
                         title: Text(
-                          S.of(context).favorite_foods,
+                          S.of(context).list,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.display1,
@@ -162,7 +157,7 @@ class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
                           color: Theme.of(context).hintColor,
                         ),
                         title: Text(
-                          S.of(context).favorite_recipes,
+                          S.of(context).favorited_stores,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.display1,

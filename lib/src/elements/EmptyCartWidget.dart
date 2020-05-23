@@ -96,7 +96,7 @@ class _EmptyCartWidgetState extends State<EmptyCartWidget> {
               Opacity(
                 opacity: 0.4,
                 child: Text(
-                  S.of(context).dont_have_any_item_in_your_cart,
+                  S.of(context).dont_have_any_items_in_your_cart,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.display2.merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),

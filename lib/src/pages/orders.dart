@@ -40,7 +40,7 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S.of(context).my_orders,
+          S.of(context).orders,
           style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
@@ -58,11 +58,6 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SearchBarWidget(),
-                    ),
-                    SizedBox(height: 10),
                     _con.orders.isEmpty
                         ? CircularLoadingWidget(height: 500)
                         : ListView.builder(

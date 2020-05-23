@@ -66,7 +66,7 @@ class CartController extends ControllerMVC {
     });
     removeCart(_cart).then((value) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.the_food_was_removed_from_your_cart(_cart.food.name)),
+        content: Text(S.current.food_was_removed_from_your_cart(_cart.food.name)),
       ));
     });
   }

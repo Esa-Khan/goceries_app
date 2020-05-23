@@ -38,7 +38,7 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S.of(context).shopping_list,
+          S.of(context).notifications,
           style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
@@ -67,7 +67,7 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
                                 color: Theme.of(context).hintColor,
                               ),
                               title: Text(
-                                S.of(context).shopping_list,
+                                S.of(context).notifications,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context).textTheme.display1,

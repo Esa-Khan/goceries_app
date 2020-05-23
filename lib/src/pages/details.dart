@@ -67,32 +67,11 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                 primary: true,
                 shrinkWrap: false,
                 slivers: <Widget>[
-                  SliverAppBar(
-                    backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
-                    expandedHeight: 300,
-                    elevation: 0,
-                    iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-                    flexibleSpace: FlexibleSpaceBar(
-                      collapseMode: CollapseMode.parallax,
-                      background: Hero(
-                        tag: widget.routeArgument.heroTag + _con.restaurant.id,
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          imageUrl: _con.restaurant.image.url,
-                          placeholder: (context, url) => Image.asset(
-                            'assets/img/loading.gif',
-                            fit: BoxFit.cover,
-                          ),
-                          errorWidget: (context, url, error) => Icon(Icons.error),
-                        ),
-                      ),
-                    ),
-                  ),
                   SliverToBoxAdapter(
                     child: Wrap(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 25),
+                          padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 50),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -102,55 +81,55 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   overflow: TextOverflow.fade,
                                   softWrap: false,
                                   maxLines: 2,
-                                  style: Theme.of(context).textTheme.display2,
+                                  style: Theme.of(context).textTheme.headline2,
                                 ),
                               ),
-                              SizedBox(
-                                height: 32,
-                                child: Chip(
-                                  padding: EdgeInsets.all(0),
-                                  label: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(_con.restaurant.rate,
-                                          style: Theme.of(context).textTheme.body2.merge(TextStyle(color: Theme.of(context).primaryColor))),
-                                      Icon(
-                                        Icons.star_border,
-                                        color: Theme.of(context).primaryColor,
-                                        size: 16,
-                                      ),
-                                    ],
-                                  ),
-                                  backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
-                                  shape: StadiumBorder(),
-                                ),
-                              ),
+//                              SizedBox(
+//                                height: 32,
+//                                child: Chip(
+//                                  padding: EdgeInsets.all(0),
+//                                  label: Row(
+//                                    mainAxisAlignment: MainAxisAlignment.center,
+//                                    children: <Widget>[
+//                                      Text(_con.restaurant.rate,
+//                                          style: Theme.of(context).textTheme.body2.merge(TextStyle(color: Theme.of(context).primaryColor))),
+//                                      Icon(
+//                                        Icons.star_border,
+//                                        color: Theme.of(context).primaryColor,
+//                                        size: 16,
+//                                      ),
+//                                    ],
+//                                  ),
+//                                  backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
+//                                  shape: StadiumBorder(),
+//                                ),
+//                              ),
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                          child: Html(
-                            data: _con.restaurant.description,
-                            defaultTextStyle: Theme.of(context).textTheme.body1.merge(TextStyle(fontSize: 14)),
-                          ),
-                        ),
-                        ImageThumbCarouselWidget(galleriesList: _con.galleries),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: ListTile(
-                            dense: true,
-                            contentPadding: EdgeInsets.symmetric(vertical: 0),
-                            leading: Icon(
-                              Icons.stars,
-                              color: Theme.of(context).hintColor,
-                            ),
-                            title: Text(
-                              S.of(context).information,
-                              style: Theme.of(context).textTheme.display1,
-                            ),
-                          ),
-                        ),
+//                        Padding(
+//                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+//                          child: Html(
+//                            data: _con.restaurant.description,
+//                            defaultTextStyle: Theme.of(context).textTheme.body1.merge(TextStyle(fontSize: 14)),
+//                          ),
+//                        ),
+//                        ImageThumbCarouselWidget(galleriesList: _con.galleries),
+//                        Padding(
+//                          padding: const EdgeInsets.symmetric(horizontal: 20),
+//                          child: ListTile(
+//                            dense: true,
+//                            contentPadding: EdgeInsets.symmetric(vertical: 0),
+//                            leading: Icon(
+//                              Icons.stars,
+//                              color: Theme.of(context).hintColor,
+//                            ),
+//                            title: Text(
+//                              S.of(context).information,
+//                              style: Theme.of(context).textTheme.display1,
+//                            ),
+//                          ),
+//                        ),
                         Container(
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
@@ -229,7 +208,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                             ],
                           ),
                         ),
-                        _con.featuredFoods.isEmpty
+                        _con.storeItems.isEmpty
                             ? SizedBox(height: 0)
                             : Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -244,23 +223,27 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                               S.of(context).store,
                               style: Theme.of(context).textTheme.display1,
                             ),
+                            subtitle: Text(
+                              S.of(context).ordered_alphabetically,
+                              style: Theme.of(context).textTheme.caption,
+                            ),
                           ),
                         ),
-                        _con.featuredFoods.isEmpty
+                        _con.storeItems.isEmpty
                             ? SizedBox(height: 0)
                             : ListView.separated(
                           padding: EdgeInsets.symmetric(vertical: 10),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           primary: false,
-                          itemCount: _con.featuredFoods.length,
+                          itemCount: _con.storeItems.length,
                           separatorBuilder: (context, index) {
                             return SizedBox(height: 10);
                           },
                           itemBuilder: (context, index) {
                             return FoodItemWidget(
                               heroTag: 'details_featured_food',
-                              food: _con.featuredFoods.elementAt(index),
+                              food: _con.storeItems.elementAt(index),
                             );
                           },
                         ),

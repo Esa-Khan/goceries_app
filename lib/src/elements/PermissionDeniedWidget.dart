@@ -101,7 +101,7 @@ class _PermissionDeniedWidgetState extends State<PermissionDeniedWidget> {
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 25),
             shape: StadiumBorder(),
             child: Text(
-              S.of(context).i_dont_have_an_account,
+              S.of(context).dont_have_an_account,
               style: TextStyle(color: Theme.of(context).focusColor),
             ),
           ),

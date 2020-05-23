@@ -33,7 +33,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       child: Scaffold(
         key: _con.scaffoldKey,
         appBar: AppBar(
@@ -97,7 +97,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                               ),
                             ),
                             ListView.separated(
-                              padding: EdgeInsets.symmetric(vertical: 15),
+                              padding: EdgeInsets.symmetric(vertical: 4),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               primary: false,

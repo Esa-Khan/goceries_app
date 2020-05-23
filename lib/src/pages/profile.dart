@@ -65,13 +65,13 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
                       style: Theme.of(context).textTheme.display1,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      currentUser.value?.bio ?? "",
-                      style: Theme.of(context).textTheme.body1,
-                    ),
-                  ),
+//                  Padding(
+//                    padding: const EdgeInsets.symmetric(horizontal: 20),
+//                    child: Text(
+//                      currentUser.value?.bio ?? "",
+//                      style: Theme.of(context).textTheme.body1,
+//                    ),
+//                  ),
                   ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     leading: Icon(

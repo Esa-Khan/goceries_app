@@ -200,7 +200,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                 color: Theme.of(context).accentColor,
                                 shape: StadiumBorder(),
                                 child: Text(
-                                  S.of(context).my_orders,
+                                  S.of(context).orders,
                                   textAlign: TextAlign.start,
                                   style: TextStyle(color: Theme.of(context).primaryColor),
                                 ),

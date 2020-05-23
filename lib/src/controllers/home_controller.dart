@@ -19,7 +19,7 @@ class HomeController extends ControllerMVC {
   HomeController() {
     listenForCategories();
     listenForClosestStores();
-    listenForRecentReviews();
+//    listenForRecentReviews();
     listenForTrendingFoods();
   }
 
@@ -62,7 +62,7 @@ class HomeController extends ControllerMVC {
     trendingFoods = <Food>[];
     listenForCategories();
     listenForClosestStores();
-    listenForRecentReviews();
+//    listenForRecentReviews();
     listenForTrendingFoods();
   }
 }

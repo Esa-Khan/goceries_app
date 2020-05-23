@@ -60,7 +60,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                       shrinkWrap: false,
                       slivers: <Widget>[
                         SliverAppBar(
-                          backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
+                          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
                           expandedHeight: 300,
                           elevation: 0,
                           iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
@@ -68,7 +68,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                             collapseMode: CollapseMode.parallax,
                             background: Hero(
                               tag: widget.routeArgument.heroTag ?? '' + _con.food.id,
-                              child: CachedNetworkImage(
+                              child:
+                              CachedNetworkImage(
                                 fit: BoxFit.cover,
                                 imageUrl: _con.food.image.url,
                                 placeholder: (context, url) => Image.asset(
@@ -139,11 +140,11 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                     color: Theme.of(context).hintColor,
                                   ),
                                   title: Text(
-                                    S.of(context).extras,
+                                    S.of(context).not_what_youre_looking_for,
                                     style: Theme.of(context).textTheme.subhead,
                                   ),
                                   subtitle: Text(
-                                    S.of(context).select_extras_to_add_them_on_the_food,
+                                    S.of(context).similar_items,
                                     style: Theme.of(context).textTheme.caption,
                                   ),
                                 ),
@@ -162,19 +163,19 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   primary: false,
                                   shrinkWrap: true,
                                 ),
-                                ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                  leading: Icon(
-                                    Icons.donut_small,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                  title: Text(
-                                    S.of(context).ingredients,
-                                    style: Theme.of(context).textTheme.subhead,
-                                  ),
-                                ),
-                                Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
+//                                ListTile(
+//                                  dense: true,
+//                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
+//                                  leading: Icon(
+//                                    Icons.donut_small,
+//                                    color: Theme.of(context).hintColor,
+//                                  ),
+//                                  title: Text(
+//                                    S.of(context).ingredients,
+//                                    style: Theme.of(context).textTheme.subhead,
+//                                  ),
+//                                ),
+//                                Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
                                 ListTile(
                                   dense: true,
                                   contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -209,21 +210,21 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                     );
                                   }),
                                 ),
-                                ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                  leading: Icon(
-                                    Icons.recent_actors,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                  title: Text(
-                                    S.of(context).reviews,
-                                    style: Theme.of(context).textTheme.subhead,
-                                  ),
-                                ),
-                                ReviewsListWidget(
-                                  reviewsList: _con.food.foodReviews,
-                                ),
+//                                ListTile(
+//                                  dense: true,
+//                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
+//                                  leading: Icon(
+//                                    Icons.recent_actors,
+//                                    color: Theme.of(context).hintColor,
+//                                  ),
+//                                  title: Text(
+//                                    S.of(context).reviews,
+//                                    style: Theme.of(context).textTheme.subhead,
+//                                  ),
+//                                ),
+//                                ReviewsListWidget(
+//                                  reviewsList: _con.food.foodReviews,
+//                                ),
                               ],
                             ),
                           ),

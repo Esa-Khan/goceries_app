@@ -89,7 +89,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              S.of(context).shopping_list,
+              S.of(context).notifications,
               style: Theme.of(context).textTheme.subhead,
             ),
           ),
@@ -102,7 +102,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              S.of(context).my_orders,
+              S.of(context).orders,
               style: Theme.of(context).textTheme.subhead,
             ),
           ),
@@ -115,7 +115,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              S.of(context).favorite_foods,
+              S.of(context).list,
               style: Theme.of(context).textTheme.subhead,
             ),
           ),
