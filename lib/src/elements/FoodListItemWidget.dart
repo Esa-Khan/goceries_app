@@ -55,7 +55,7 @@ class FoodListItemWidget extends StatelessWidget {
                           food.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.subhead,
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
                           food.restaurant.name,
@@ -67,7 +67,7 @@ class FoodListItemWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 8),
-                  Helper.getPrice(food.price, context, style: Theme.of(context).textTheme.display1),
+                  Helper.getPrice(food.price, context, style: Theme.of(context).textTheme.headline4),
                 ],
               ),
             )

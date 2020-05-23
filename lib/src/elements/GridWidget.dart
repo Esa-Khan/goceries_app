@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import '../elements/GridItemWidget.dart';
 import '../models/restaurant.dart';
 
 class GridWidget extends StatelessWidget {
-  List<Restaurant> restaurantsList;
-  String heroTag;
+  final List<Restaurant> restaurantsList;
+  final String heroTag;
   GridWidget({Key key, this.restaurantsList, this.heroTag});
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
+    return new StaggeredGridView.countBuilder(
       primary: false,
-      padding: EdgeInsets.symmetric(vertical: 10),
-      crossAxisCount: MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-      children: List.generate(restaurantsList.length, (index) {
+      shrinkWrap: true,
+      crossAxisCount: 4,
+      itemCount: restaurantsList.length,
+      itemBuilder: (BuildContext context, int index) {
         return GridItemWidget(restaurant: restaurantsList.elementAt(index), heroTag: heroTag);
-      }),
+      },
+//                  staggeredTileBuilder: (int index) => new StaggeredTile.fit(index % 2 == 0 ? 1 : 2),
+      staggeredTileBuilder: (int index) => new StaggeredTile.fit(MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4),
+      mainAxisSpacing: 15.0,
+      crossAxisSpacing: 15.0,
     );
   }
 }

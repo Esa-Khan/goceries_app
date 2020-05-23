@@ -5,7 +5,7 @@ import '../helpers/helper.dart';
 import '../models/notification.dart' as model;
 
 class NotificationItemWidget extends StatelessWidget {
-  model.Notification notification;
+  final model.Notification notification;
 
   NotificationItemWidget({Key key, this.notification}) : super(key: key);
 
@@ -64,10 +64,10 @@ class NotificationItemWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               Text(
-                Helper.trans(notification.type),
+                Helper.of(context).trans(notification.type),
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
               Text(
                 DateFormat('yyyy-MM-dd - HH:mm').format(notification.createdAt),

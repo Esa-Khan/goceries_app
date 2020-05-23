@@ -37,15 +37,6 @@ class App {
 }
 
 class Colors {
-//  Color _mainColor = Color(0xFFFF4E6A);
-//  Color _mainDarkColor = Color(0xFFea5c44);
-//  Color _secondColor = Color(0xFF344968);
-//  Color _secondDarkColor = Color(0xFFccccdd);
-//  Color _accentColor = Color(0xFF8C98A8);
-//  Color _accentDarkColor = Color(0xFF9999aa);
-//  Color _scaffoldDarkColor = Color(0xFF2C2C2C);
-//  Color _scaffoldColor = Color(0xFFFAFAFA);
-
   Color mainColor(double opacity) {
     try {
       return Color(int.parse(settingRepo.setting.value.mainColor.replaceAll("#", "0xFF"))).withOpacity(opacity);

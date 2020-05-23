@@ -1,4 +1,4 @@
-import 'media.dart';
+import '../models/media.dart';
 
 class User {
   String id;
@@ -20,29 +20,31 @@ class User {
   User();
 
   User.fromJSON(Map<String, dynamic> jsonMap) {
-    id = jsonMap['id'].toString();
-    name = jsonMap['name'];
-    email = jsonMap['email'];
-    apiToken = jsonMap['api_token'];
-    deviceToken = jsonMap['device_token'];
     try {
-      phone = jsonMap['custom_fields']['phone']['view'];
+      id = jsonMap['id'].toString();
+      name = jsonMap['name'] != null ? jsonMap['name'] : '';
+      email = jsonMap['email'] != null ? jsonMap['email'] : '';
+      apiToken = jsonMap['api_token'];
+      deviceToken = jsonMap['device_token'];
+      try {
+        phone = jsonMap['custom_fields']['phone']['view'];
+      } catch (e) {
+        phone = "";
+      }
+      try {
+        address = jsonMap['custom_fields']['address']['view'];
+      } catch (e) {
+        address = "";
+      }
+      try {
+        bio = jsonMap['custom_fields']['bio']['view'];
+      } catch (e) {
+        bio = "";
+      }
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
     } catch (e) {
-      phone = "";
+      print(e);
     }
-    try {
-      address = jsonMap['custom_fields']['address']['view'];
-    } catch (e) {
-      address = "";
-    }
-    try {
-      bio = jsonMap['custom_fields']['bio']['view'];
-    } catch (e) {
-      bio = "";
-    }
-    image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0
-        ? Media.fromJSON(jsonMap['media'][0])
-        : new Media();
   }
 
   Map toMap() {

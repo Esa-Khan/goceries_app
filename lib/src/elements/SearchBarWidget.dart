@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 
+import '../../generated/l10n.dart';
 import '../elements/SearchWidget.dart';
 
 class SearchBarWidget extends StatelessWidget {
-  const SearchBarWidget({
-    Key key,
-  }) : super(key: key);
+  final ValueChanged onClickFilter;
+
+  const SearchBarWidget({Key key, this.onClickFilter}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +28,22 @@ class SearchBarWidget extends StatelessWidget {
               padding: const EdgeInsets.only(right: 12, left: 0),
               child: Icon(Icons.search, color: Theme.of(context).accentColor),
             ),
-            Text(
-              S.of(context).search_for_stores,
-              style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
-            )
+            Expanded(
+              child: Text(
+                S.of(context).search_for_restaurants_or_foods,
+                maxLines: 1,
+                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                onClickFilter('e');
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 5, left: 5, top: 3, bottom: 3),
+                child: Icon(Icons.filter_list, color: Theme.of(context).accentColor),
+              ),
+            ),
           ],
         ),
       ),

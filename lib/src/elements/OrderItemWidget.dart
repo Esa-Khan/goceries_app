@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart' show DateFormat;
 
 import '../helpers/helper.dart';
 import '../models/food_order.dart';
@@ -56,7 +55,7 @@ class OrderItemWidget extends StatelessWidget {
             SizedBox(width: 15),
             Flexible(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Expanded(
                     child: Column(
@@ -66,7 +65,15 @@ class OrderItemWidget extends StatelessWidget {
                           foodOrder.food.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.subhead,
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                        Wrap(
+                          children: List.generate(foodOrder.extras.length, (index) {
+                            return Text(
+                              foodOrder.extras.elementAt(index).name + ', ',
+                              style: Theme.of(context).textTheme.caption,
+                            );
+                          }),
                         ),
                         Text(
                           foodOrder.food.restaurant.name,
@@ -79,16 +86,12 @@ class OrderItemWidget extends StatelessWidget {
                   ),
                   SizedBox(width: 8),
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Helper.getPrice(Helper.getTotalOrderPrice(foodOrder, order.tax, order.deliveryFee), context, style: Theme.of(context).textTheme.display1),
+                      Helper.getPrice(Helper.getOrderPrice(foodOrder), context, style: Theme.of(context).textTheme.subtitle1),
                       Text(
-                        DateFormat('yyyy-MM-dd').format(foodOrder.dateTime),
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                      Text(
-                        DateFormat('HH:mm').format(foodOrder.dateTime),
+                        " x " + foodOrder.quantity.toString(),
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ],

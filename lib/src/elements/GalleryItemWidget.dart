@@ -5,7 +5,7 @@ import '../elements/CircularLoadingWidget.dart';
 import '../models/gallery.dart';
 
 class GalleryItemWidget extends StatelessWidget {
-  Gallery gallery;
+  final Gallery gallery;
 
   GalleryItemWidget({Key key, this.gallery}) : super(key: key);
 
@@ -25,7 +25,7 @@ class GalleryItemWidget extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(5)),
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
-                imageUrl: gallery.image,
+                imageUrl: gallery.image.url,
                 placeholder: (context, url) => Image.asset(
                   'assets/img/loading.gif',
                   fit: BoxFit.cover,

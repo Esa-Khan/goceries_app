@@ -8,17 +8,19 @@ class Notification {
   Notification();
 
   Notification.fromJSON(Map<String, dynamic> jsonMap) {
-    id = jsonMap['id'].toString();
-    type = jsonMap['type'] != null ? jsonMap['type'].toString() : '';
-    data = jsonMap['data'] != null ? {} : {};
-    read = jsonMap['read_at'] != null ? true : false;
-    createdAt = DateTime.parse(jsonMap['created_at']);
-  }
-
-  Map markReadMap() {
-    var map = new Map<String, dynamic>();
-    map["id"] = id;
-    map["read_at"] = !read;
-    return map;
+    try {
+      id = jsonMap['id'].toString();
+      type = jsonMap['type'] != null ? jsonMap['type'].toString() : '';
+      data = jsonMap['data'] != null ? {} : {};
+      read = jsonMap['read_at'] != null ? true : false;
+      createdAt = DateTime.parse(jsonMap['created_at']);
+    } catch (e) {
+      id = '';
+      type = '';
+      data = {};
+      read = false;
+      createdAt = new DateTime(0);
+      print(e);
+    }
   }
 }

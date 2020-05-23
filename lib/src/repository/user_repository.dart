@@ -13,7 +13,6 @@ import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
 ValueNotifier<User> currentUser = new ValueNotifier(User());
-Address deliveryAddress = new Address();
 
 Future<User> login(User user) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}login';
@@ -26,6 +25,8 @@ Future<User> login(User user) async {
   if (response.statusCode == 200) {
     setCurrentUser(response.body);
     currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+  } else {
+    throw new Exception(response.body);
   }
   return currentUser.value;
 }
@@ -41,6 +42,8 @@ Future<User> register(User user) async {
   if (response.statusCode == 200) {
     setCurrentUser(response.body);
     currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+  } else {
+    throw new Exception(response.body);
   }
   return currentUser.value;
 }
@@ -54,10 +57,9 @@ Future<bool> resetPassword(User user) async {
     body: json.encode(user.toMap()),
   );
   if (response.statusCode == 200) {
-    print(json.decode(response.body)['data']);
     return true;
   } else {
-    return false;
+    throw new Exception(response.body);
   }
 }
 
@@ -83,13 +85,14 @@ Future<void> setCreditCard(CreditCard creditCard) async {
 
 Future<User> getCurrentUser() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
-//  prefs.clear();
+  //prefs.clear();
   if (currentUser.value.auth == null && prefs.containsKey('current_user')) {
     currentUser.value = User.fromJSON(json.decode(await prefs.get('current_user')));
     currentUser.value.auth = true;
   } else {
     currentUser.value.auth = false;
   }
+  // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
   currentUser.notifyListeners();
   return currentUser.value;
 }
@@ -121,7 +124,7 @@ Future<Stream<Address>> getAddresses() async {
   User _user = currentUser.value;
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
-      '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?$_apiToken&search=user_id:${_user.id}&searchFields=user_id:=&orderBy=is_default&sortedBy=desc';
+      '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?$_apiToken&search=user_id:${_user.id}&searchFields=user_id:=&orderBy=updated_at&sortedBy=desc';
   print(url);
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));

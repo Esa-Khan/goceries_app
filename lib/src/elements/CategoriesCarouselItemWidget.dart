@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -25,15 +26,28 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
             tag: category.id,
             child: Container(
               margin: EdgeInsetsDirectional.only(start: this.marginLeft, end: 20),
-              width: 100,
-              height: 100,
-              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: Theme.of(context).accentColor),
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.2), offset: Offset(0, 2), blurRadius: 7.0)]),
               child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: SvgPicture.network(
-                  category.image,
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                ),
+                padding: const EdgeInsets.all(15),
+                child: category.image.url.toLowerCase().endsWith('.svg')
+                    ? SvgPicture.network(
+                        category.image.url,
+                        color: Theme.of(context).accentColor,
+                      )
+                    : CachedNetworkImage(
+                        fit: BoxFit.cover,
+                        imageUrl: category.image.icon,
+                        placeholder: (context, url) => Image.asset(
+                          'assets/img/loading.gif',
+                          fit: BoxFit.cover,
+                        ),
+                        errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
               ),
             ),
           ),
@@ -43,7 +57,7 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
             child: Text(
               category.name,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
         ],

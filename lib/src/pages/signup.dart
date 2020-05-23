@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
@@ -42,7 +42,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                 height: config.App(context).appHeight(29.5),
                 child: Text(
                   S.of(context).lets_start_with_register,
-                  style: Theme.of(context).textTheme.display3.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                  style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: Theme.of(context).primaryColor)),
                 ),
               ),
             ),
@@ -165,7 +165,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                   Navigator.of(context).pushNamed('/Login');
                 },
                 textColor: Theme.of(context).hintColor,
-                child: Text(S.of(context).have_an_account_back_to_login),
+                child: Text(S.of(context).i_have_account_back_to_login),
               ),
             )
           ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/i18n.dart';
+import '../../generated/l10n.dart';
 import '../models/food.dart';
 import '../models/gallery.dart';
 import '../models/restaurant.dart';
@@ -9,13 +9,14 @@ import '../models/review.dart';
 import '../repository/food_repository.dart';
 import '../repository/gallery_repository.dart';
 import '../repository/restaurant_repository.dart';
+import '../repository/settings_repository.dart';
 
 class RestaurantController extends ControllerMVC {
   Restaurant restaurant;
   List<Gallery> galleries = <Gallery>[];
   List<Food> foods = <Food>[];
   List<Food> trendingFoods = <Food>[];
-  List<Food> storeItems = <Food>[];
+  List<Food> featuredFoods = <Food>[];
   List<Review> reviews = <Review>[];
   GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -24,13 +25,13 @@ class RestaurantController extends ControllerMVC {
   }
 
   void listenForRestaurant({String id, String message}) async {
-    final Stream<Restaurant> stream = await getRestaurant(id);
+    final Stream<Restaurant> stream = await getRestaurant(id, deliveryAddress.value);
     stream.listen((Restaurant _restaurant) {
       setState(() => restaurant = _restaurant);
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -76,38 +77,19 @@ class RestaurantController extends ControllerMVC {
   void listenForFeaturedFoods(String idRestaurant) async {
     final Stream<Food> stream = await getFeaturedFoodsOfRestaurant(idRestaurant);
     stream.listen((Food _food) {
-      if (storeItems.length == 0) {
-        setState(() => storeItems.add(_food));
-      } else {
-        // Alphabetically arrange items
-        String currFood = _food.name.toLowerCase();
-        for (int i = 0; i < storeItems.length; i++) {
-          String temp = storeItems.elementAt(i).name.toLowerCase();
-          if (!temp.compareTo(currFood).isNegative) {
-            setState(() => storeItems.insert(i, _food));
-            break;
-          } else if(i == storeItems.length - 1){
-            setState(() => storeItems.add(_food));
-            break;
-          }
-        }
-
-      }
-
-
+      setState(() => featuredFoods.add(_food));
     }, onError: (a) {
       print(a);
     }, onDone: () {});
   }
-
 
   Future<void> refreshRestaurant() async {
     var _id = restaurant.id;
     restaurant = new Restaurant();
     galleries.clear();
     reviews.clear();
-    storeItems.clear();
-    listenForRestaurant(id: _id, message: S.current.restaurant_refreshed_successfuly);
+    featuredFoods.clear();
+    listenForRestaurant(id: _id, message: S.of(context).restaurant_refreshed_successfuly);
     listenForRestaurantReviews(id: _id);
     listenForGalleries(_id);
     listenForFeaturedFoods(_id);

@@ -55,7 +55,7 @@ class FavoriteListItemWidget extends StatelessWidget {
                           favorite.food.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.subhead,
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
                           favorite.food.restaurant.name,
@@ -67,7 +67,7 @@ class FavoriteListItemWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 8),
-                  Helper.getPrice(favorite.food.price, context, style: Theme.of(context).textTheme.display1),
+                  Helper.getPrice(favorite.food.price, context, style: Theme.of(context).textTheme.headline4),
                 ],
               ),
             )

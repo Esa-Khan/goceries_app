@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../controllers/profile_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
+import '../elements/DrawerWidget.dart';
 import '../elements/OrderItemWidget.dart';
 import '../elements/PermissionDeniedWidget.dart';
 import '../elements/ProfileAvatarWidget.dart';
@@ -29,10 +30,12 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
     return Scaffold(
+      key: _con.scaffoldKey,
+      drawer: DrawerWidget(),
       appBar: AppBar(
         leading: new IconButton(
           icon: new Icon(Icons.sort, color: Theme.of(context).primaryColor),
-          onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
+          onPressed: () => _con.scaffoldKey.currentState.openDrawer(),
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).accentColor,
@@ -40,13 +43,12 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
         centerTitle: true,
         title: Text(
           S.of(context).profile,
-          style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3, color: Theme.of(context).primaryColor)),
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3, color: Theme.of(context).primaryColor)),
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(iconColor: Theme.of(context).primaryColor, labelColor: Theme.of(context).hintColor),
         ],
       ),
-      key: _con.scaffoldKey,
       body: currentUser.value.apiToken == null
           ? PermissionDeniedWidget()
           : SingleChildScrollView(
@@ -62,16 +64,16 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
                     ),
                     title: Text(
                       S.of(context).about,
-                      style: Theme.of(context).textTheme.display1,
+                      style: Theme.of(context).textTheme.headline4,
                     ),
                   ),
-//                  Padding(
-//                    padding: const EdgeInsets.symmetric(horizontal: 20),
-//                    child: Text(
-//                      currentUser.value?.bio ?? "",
-//                      style: Theme.of(context).textTheme.body1,
-//                    ),
-//                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      currentUser.value?.bio ?? "",
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                  ),
                   ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     leading: Icon(
@@ -80,7 +82,7 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
                     ),
                     title: Text(
                       S.of(context).recent_orders,
-                      style: Theme.of(context).textTheme.display1,
+                      style: Theme.of(context).textTheme.headline4,
                     ),
                   ),
                   _con.recentOrders.isEmpty

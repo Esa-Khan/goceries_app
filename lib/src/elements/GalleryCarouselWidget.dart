@@ -4,7 +4,7 @@ import '../elements/GalleryItemWidget.dart';
 import '../models/gallery.dart';
 
 class ImageThumbCarouselWidget extends StatefulWidget {
-  List<Gallery> galleriesList;
+  final List<Gallery> galleriesList;
 
   ImageThumbCarouselWidget({Key key, this.galleriesList}) : super(key: key);
 
@@ -23,8 +23,6 @@ class _ImageThumbCarouselWidgetState extends State<ImageThumbCarouselWidget> {
               scrollDirection: Axis.horizontal,
               itemCount: widget.galleriesList.length,
               itemBuilder: (context, index) {
-                double _marginLeft = 0;
-                (index == 0) ? _marginLeft = 20 : _marginLeft = 0;
                 return InkWell(
                   splashColor: Theme.of(context).accentColor.withOpacity(0.8),
                   highlightColor: Colors.transparent,

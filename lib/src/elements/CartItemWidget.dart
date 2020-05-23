@@ -5,6 +5,7 @@ import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../models/route_argument.dart';
 
+// ignore: must_be_immutable
 class CartItemWidget extends StatefulWidget {
   String heroTag;
   Cart cart;
@@ -36,7 +37,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
           Navigator.of(context).pushNamed('/Food', arguments: RouteArgument(id: widget.cart.food.id, heroTag: widget.heroTag));
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 1),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.9),
             boxShadow: [
@@ -75,7 +76,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                             widget.cart.food.name,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
-                            style: Theme.of(context).textTheme.subhead,
+                            style: Theme.of(context).textTheme.subtitle1,
                           ),
                           Wrap(
                             children: List.generate(widget.cart.extras.length, (index) {
@@ -85,7 +86,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                               );
                             }),
                           ),
-                          Helper.getPrice(widget.cart.food.price, context, style: Theme.of(context).textTheme.display1)
+                          Helper.getPrice(widget.cart.food.price, context, style: Theme.of(context).textTheme.headline4)
                         ],
                       ),
                     ),
@@ -104,7 +105,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                           icon: Icon(Icons.add_circle_outline),
                           color: Theme.of(context).hintColor,
                         ),
-                        Text(widget.cart.quantity.toString(), style: Theme.of(context).textTheme.subhead),
+                        Text(widget.cart.quantity.toString(), style: Theme.of(context).textTheme.subtitle1),
                         IconButton(
                           onPressed: () {
                             setState(() {

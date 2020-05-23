@@ -20,7 +20,7 @@ Future<Stream<Cart>> getCart() async {
 
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
-
+  print(url);
   return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
     return Cart.fromJSON(data);
   });
@@ -61,7 +61,7 @@ Future<Cart> addCart(Cart cart, bool reset) async {
   try {
     decodedJSON = json.decode(response.body)['data'] as Map<String, dynamic>;
   } on FormatException catch (e) {
-    print("The provided string is not valid JSON addCart");
+    print(e);
   }
   return Cart.fromJSON(decodedJSON);
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/i18n.dart';
+import '../../generated/l10n.dart';
 import '../models/cart.dart';
 import '../models/extra.dart';
 import '../models/favorite.dart';
@@ -13,7 +13,7 @@ class FoodController extends ControllerMVC {
   Food food;
   double quantity = 1;
   double total = 0;
-  Cart cart;
+  List<Cart> carts = [];
   Favorite favorite;
   bool loadCart = false;
   GlobalKey<ScaffoldState> scaffoldKey;
@@ -29,7 +29,7 @@ class FoodController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState?.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       calculateTotal();
@@ -53,13 +53,13 @@ class FoodController extends ControllerMVC {
   void listenForCart() async {
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
-      cart = _cart;
+      carts.add(_cart);
     });
   }
 
   bool isSameRestaurants(Food food) {
-    if (cart != null) {
-      return cart.food?.restaurant?.id == food.restaurant.id;
+    if (carts.isNotEmpty) {
+      return carts[0].food?.restaurant?.id == food.restaurant?.id;
     }
     return true;
   }
@@ -68,18 +68,39 @@ class FoodController extends ControllerMVC {
     setState(() {
       this.loadCart = true;
     });
-    var _cart = new Cart();
-    _cart.food = food;
-    _cart.extras = food.extras.where((element) => element.checked).toList();
-    _cart.quantity = this.quantity;
-    addCart(_cart, reset).then((value) {
-      setState(() {
-        this.loadCart = false;
+    var _newCart = new Cart();
+    _newCart.food = food;
+    _newCart.extras = food.extras.where((element) => element.checked).toList();
+    _newCart.quantity = this.quantity;
+    // if food exist in the cart then increment quantity
+    var _oldCart = isExistInCart(_newCart);
+    if (_oldCart != null) {
+      _oldCart.quantity += this.quantity;
+      updateCart(_oldCart).then((value) {
+        setState(() {
+          this.loadCart = false;
+        });
+      }).whenComplete(() {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).this_food_was_added_to_cart),
+        ));
       });
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('This food was added to cart'),
-      ));
-    });
+    } else {
+      // the food doesnt exist in the cart add new one
+      addCart(_newCart, reset).then((value) {
+        setState(() {
+          this.loadCart = false;
+        });
+      }).whenComplete(() {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).this_food_was_added_to_cart),
+        ));
+      });
+    }
+  }
+
+  Cart isExistInCart(Cart _cart) {
+    return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart), orElse: () => null);
   }
 
   void addToFavorite(Food food) async {
@@ -118,7 +139,7 @@ class FoodController extends ControllerMVC {
 
   void calculateTotal() {
     total = food?.price ?? 0;
-    food.extras.forEach((extra) {
+    food?.extras?.forEach((extra) {
       total += extra.checked ? extra.price : 0;
     });
     total *= quantity;

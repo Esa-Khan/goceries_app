@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../controllers/restaurant_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/DrawerWidget.dart';
@@ -14,7 +14,7 @@ import '../models/route_argument.dart';
 class MenuWidget extends StatefulWidget {
   @override
   _MenuWidgetState createState() => _MenuWidgetState();
-  RouteArgument routeArgument;
+  final RouteArgument routeArgument;
 
   MenuWidget({Key key, this.routeArgument}) : super(key: key);
 }
@@ -46,7 +46,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
           _con.foods.isNotEmpty ? _con.foods[0].restaurant.name : '',
           overflow: TextOverflow.fade,
           softWrap: false,
-          style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 0)),
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 0)),
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
@@ -72,11 +72,11 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                 color: Theme.of(context).hintColor,
               ),
               title: Text(
-                S.of(context).trending_recipes,
-                style: Theme.of(context).textTheme.display1,
+                S.of(context).trending_this_week,
+                style: Theme.of(context).textTheme.headline4,
               ),
               subtitle: Text(
-                S.of(context).add_ingredients_for_popular_recipes,
+                S.of(context).double_click_on_the_food_to_add_it_to_the,
                 style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
               ),
             ),
@@ -90,7 +90,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
               ),
               title: Text(
                 S.of(context).all_menu,
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.headline4,
               ),
               subtitle: Text(
                 S.of(context).longpress_on_the_food_to_add_suplements,

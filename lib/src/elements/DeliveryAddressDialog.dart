@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 
+import '../../generated/l10n.dart';
 import '../helpers/checkbox_form_field.dart';
 import '../models/address.dart';
 
@@ -27,7 +27,7 @@ class DeliveryAddressDialog {
                 SizedBox(width: 10),
                 Text(
                   S.of(context).add_delivery_address,
-                  style: Theme.of(context).textTheme.body2,
+                  style: Theme.of(context).textTheme.bodyText1,
                 )
               ],
             ),
@@ -101,13 +101,13 @@ class DeliveryAddressDialog {
     return new InputDecoration(
       hintText: hintText,
       labelText: labelText,
-      hintStyle: Theme.of(context).textTheme.body1.merge(
+      hintStyle: Theme.of(context).textTheme.bodyText2.merge(
             TextStyle(color: Theme.of(context).focusColor),
           ),
       enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor.withOpacity(0.2))),
       focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor)),
-      hasFloatingPlaceholder: true,
-      labelStyle: Theme.of(context).textTheme.body1.merge(
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
+      labelStyle: Theme.of(context).textTheme.bodyText2.merge(
             TextStyle(color: Theme.of(context).hintColor),
           ),
     );

@@ -10,9 +10,16 @@ class Favorite {
   Favorite();
 
   Favorite.fromJSON(Map<String, dynamic> jsonMap) {
-    id = jsonMap['id'] != null ? jsonMap['id'].toString() : null;
-    food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : null;
-    extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : null;
+    try {
+      id = jsonMap['id'] != null ? jsonMap['id'].toString() : null;
+      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : new Food();
+      extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : null;
+    } catch (e) {
+      id = '';
+      food = new Food();
+      extras = [];
+      print(e);
+    }
   }
 
   Map toMap() {

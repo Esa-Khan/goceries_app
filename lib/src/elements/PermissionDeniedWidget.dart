@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 
+import '../../generated/l10n.dart';
 import '../helpers/app_config.dart' as config;
 
 class PermissionDeniedWidget extends StatefulWidget {
@@ -77,7 +77,7 @@ class _PermissionDeniedWidgetState extends State<PermissionDeniedWidget> {
             child: Text(
               S.of(context).you_must_signin_to_access_to_this_section,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.display2.merge(TextStyle(fontWeight: FontWeight.w300)),
+              style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w300)),
             ),
           ),
           SizedBox(height: 50),
@@ -90,7 +90,7 @@ class _PermissionDeniedWidgetState extends State<PermissionDeniedWidget> {
             shape: StadiumBorder(),
             child: Text(
               S.of(context).login,
-              style: Theme.of(context).textTheme.title.merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
+              style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
             ),
           ),
           SizedBox(height: 20),
@@ -101,7 +101,7 @@ class _PermissionDeniedWidgetState extends State<PermissionDeniedWidget> {
             padding: EdgeInsets.symmetric(vertical: 12, horizontal: 25),
             shape: StadiumBorder(),
             child: Text(
-              S.of(context).dont_have_an_account,
+              S.of(context).i_dont_have_an_account,
               style: TextStyle(color: Theme.of(context).focusColor),
             ),
           ),

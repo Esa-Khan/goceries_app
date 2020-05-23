@@ -4,6 +4,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../models/address.dart';
+import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 
 class PayPalController extends ControllerMVC {
@@ -20,7 +21,7 @@ class PayPalController extends ControllerMVC {
   void initState() {
     final String _apiToken = 'api_token=${userRepo.currentUser.value.apiToken}';
     final String _userId = 'user_id=${userRepo.currentUser.value.id}';
-    final String _deliveryAddress = 'delivery_address_id=${userRepo.deliveryAddress?.id}';
+    final String _deliveryAddress = 'delivery_address_id=${settingRepo.deliveryAddress.value?.id}';
     url =
         '${GlobalConfiguration().getString('base_url')}payments/paypal/express-checkout?$_apiToken&$_userId&$_deliveryAddress';
     setState(() {});
