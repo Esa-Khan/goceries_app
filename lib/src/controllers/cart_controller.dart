@@ -4,6 +4,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import '../models/cart.dart';
 import '../repository/cart_repository.dart';
+import '../repository/user_repository.dart';
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
@@ -96,6 +97,29 @@ class CartController extends ControllerMVC {
       --cart.quantity;
       updateCart(cart);
       calculateSubtotal();
+    }
+  }
+
+  void goCheckout(BuildContext context) {
+    if (!currentUser.value.profileCompleted()) {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Complete your profile details to continue'),
+        action: SnackBarAction(
+          label: S.of(context).settings,
+          textColor: Theme.of(context).accentColor,
+          onPressed: () {
+            Navigator.of(context).pushNamed('/Settings');
+          },
+        ),
+      ));
+    } else {
+      if (carts[0].food.restaurant.closed) {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).this_restaurant_is_closed_),
+        ));
+      } else {
+        Navigator.of(context).pushNamed('/DeliveryPickup');
+      }
     }
   }
 }

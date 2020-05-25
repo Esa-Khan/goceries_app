@@ -21,7 +21,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
   PaymentMethodList list;
 
   @override
-  void initState() {
+  Widget build(BuildContext context) {
     list = new PaymentMethodList(context);
     if (!setting.value.payPalEnabled)
       list.paymentsList.removeWhere((element) {
@@ -31,11 +31,6 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
       list.paymentsList.removeWhere((element) {
         return element.id == "visacard" || element.id == "mastercard";
       });
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,

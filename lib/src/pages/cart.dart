@@ -181,15 +181,9 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   SizedBox(
                                     width: MediaQuery.of(context).size.width - 40,
                                     child: FlatButton(
-                                      onPressed: !_con.carts[0].food.restaurant.closed
-                                          ? () {
-                                              Navigator.of(context).pushNamed('/DeliveryPickup');
-                                            }
-                                          : () {
-                                              _con.scaffoldKey?.currentState?.showSnackBar(SnackBar(
-                                                content: Text(S.of(context).this_restaurant_is_closed_),
-                                              ));
-                                            },
+                                      onPressed: () {
+                                        _con.goCheckout(context);
+                                      },
                                       disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                                       padding: EdgeInsets.symmetric(vertical: 14),
                                       color:

@@ -53,7 +53,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                 fit: StackFit.expand,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(bottom: 120),
+                    margin: EdgeInsets.only(bottom: 125),
                     padding: EdgeInsets.only(bottom: 15),
                     child: CustomScrollView(
                       primary: true,
@@ -312,7 +312,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                   Positioned(
                     bottom: 0,
                     child: Container(
-                      height: 140,
+                      height: 150,
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,

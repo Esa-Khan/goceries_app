@@ -32,13 +32,8 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
   }
 
   @override
-  void initState() {
-    list = new PaymentMethodList(context);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    list = new PaymentMethodList(context);
     return Scaffold(
       key: _con.scaffoldKey,
       appBar: AppBar(

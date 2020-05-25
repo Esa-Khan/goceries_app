@@ -219,7 +219,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   children: <Widget>[
                                     Expanded(
                                       child: Text(
-                                        _con.restaurant.address,
+                                        _con.restaurant.address ?? '',
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                         style: Theme.of(context).textTheme.bodyText1,

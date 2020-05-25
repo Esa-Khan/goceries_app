@@ -57,7 +57,7 @@ class CategoryController extends ControllerMVC {
     });
   }
 
-  void listenForCart() async {
+  Future<void> listenForCart() async {
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
       carts.add(_cart);
@@ -70,24 +70,6 @@ class CategoryController extends ControllerMVC {
     }
     return true;
   }
-
-  /*void addToCart(Food food, {bool reset = false}) async {
-    setState(() {
-      this.loadCart = true;
-    });
-    var _cart = new Cart();
-    _cart.food = food;
-    _cart.extras = [];
-    _cart.quantity = 1;
-    addCart(_cart, reset).then((value) {
-      setState(() {
-        this.loadCart = false;
-      });
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('This food was added to cart'),
-      ));
-    });
-  }*/
 
   void addToCart(Food food, {bool reset = false}) async {
     setState(() {
@@ -117,6 +99,8 @@ class CategoryController extends ControllerMVC {
           this.loadCart = false;
         });
       }).whenComplete(() {
+        if (reset) carts.clear();
+        carts.add(_newCart);
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).this_food_was_added_to_cart),
         ));

@@ -50,6 +50,11 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
         Navigator.of(context).pushReplacementNamed('/Category', arguments: RouteArgument(id: widget.routeArgument.id));
       }),
       appBar: AppBar(
+        leading: new IconButton(
+          icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
+          onPressed: () => _con.scaffoldKey.currentState.openDrawer(),
+        ),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,

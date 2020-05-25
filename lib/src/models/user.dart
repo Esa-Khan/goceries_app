@@ -70,4 +70,8 @@ class User {
     map["auth"] = this.auth;
     return map.toString();
   }
+
+  bool profileCompleted() {
+    return address != null && address != '' && phone != null && phone != '';
+  }
 }

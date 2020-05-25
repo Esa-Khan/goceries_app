@@ -48,7 +48,6 @@ Future<Stream<Food>> getTrendingFoods(Address address) async {
 Future<Stream<Food>> getFood(String foodId) async {
   Uri uri = Helper.getUri('api/foods/$foodId');
   uri = uri.replace(queryParameters: {'with': 'nutrition;restaurant;category;extras;extraGroups;foodReviews;foodReviews.user'});
-  print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
@@ -98,7 +97,6 @@ Future<Stream<Food>> getFoodsByCategory(categoryId) async {
 
   _queryParams = filter.toQuery(oldQuery: _queryParams);
   uri = uri.replace(queryParameters: _queryParams);
-  print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
