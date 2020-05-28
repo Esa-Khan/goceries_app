@@ -1,3 +1,5 @@
+import '../helpers/custom_trace.dart';
+
 class ExtraGroup {
   String id;
   String name;
@@ -11,7 +13,7 @@ class ExtraGroup {
     } catch (e) {
       id = '';
       name = '';
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

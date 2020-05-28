@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/extra.dart';
 import '../models/food.dart';
 
@@ -25,7 +26,7 @@ class FoodOrder {
       food = new Food();
       dateTime = DateTime(0);
       extras = [];
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

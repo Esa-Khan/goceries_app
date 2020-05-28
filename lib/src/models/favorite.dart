@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/extra.dart';
 import '../models/food.dart';
 
@@ -18,7 +19,7 @@ class Favorite {
       id = '';
       food = new Food();
       extras = [];
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

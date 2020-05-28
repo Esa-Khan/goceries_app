@@ -1,3 +1,5 @@
+import '../helpers/custom_trace.dart';
+
 class Faq {
   String id;
   String question;
@@ -14,7 +16,7 @@ class Faq {
       id = '';
       question = '';
       answer = '';
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 }

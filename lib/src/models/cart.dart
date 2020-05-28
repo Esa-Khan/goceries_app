@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/extra.dart';
 import '../models/food.dart';
 
@@ -22,7 +23,7 @@ class Cart {
       quantity = 0.0;
       food = new Food();
       extras = [];
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

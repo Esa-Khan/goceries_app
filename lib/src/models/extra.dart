@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/media.dart';
 
 class Extra {
@@ -28,7 +29,7 @@ class Extra {
       description = '';
       checked = false;
       image = new Media();
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

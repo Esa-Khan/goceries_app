@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/media.dart';
 
 class Cuisine {
@@ -22,7 +23,7 @@ class Cuisine {
       description = '';
       image = new Media();
       selected = false;
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

@@ -73,6 +73,6 @@ class CustomTrace {
 
   @override
   String toString() {
-    return "Error in ($functionName) | [$message] ";
+    return "Log [$message] | ($functionName)";
   }
 }

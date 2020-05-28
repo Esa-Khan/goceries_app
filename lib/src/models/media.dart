@@ -1,5 +1,7 @@
 import 'package:global_configuration/global_configuration.dart';
 
+import '../helpers/custom_trace.dart';
+
 class Media {
   String id;
   String name;
@@ -26,7 +28,7 @@ class Media {
       url = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
       thumb = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
       icon = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

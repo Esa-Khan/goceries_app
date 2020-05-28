@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/food.dart';
 import '../models/restaurant.dart';
 import '../models/user.dart';
@@ -22,7 +23,7 @@ class Review {
       review = '';
       rate = '0';
       user = new User();
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

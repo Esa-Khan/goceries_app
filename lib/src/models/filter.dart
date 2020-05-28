@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/cuisine.dart';
 
 class Filter {
@@ -15,7 +16,7 @@ class Filter {
           ? List.from(jsonMap['cuisines']).map((element) => Cuisine.fromJSON(element)).toList()
           : [];
     } catch (e) {
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

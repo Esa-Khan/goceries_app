@@ -36,10 +36,10 @@ class S {
     );
   }
 
-  String get closestStores {
+  String get top_restaurants {
     return Intl.message(
-      'Closest Stores',
-      name: 'closestStores',
+      'Top Restaurants',
+      name: 'top_restaurants',
       desc: '',
       args: [],
     );

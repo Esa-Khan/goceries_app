@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
+import '../helpers/custom_trace.dart';
 import '../helpers/helper.dart';
 import '../models/notification.dart';
 import '../models/user.dart';
@@ -18,10 +19,14 @@ Future<Stream<Notification>> getNotifications() async {
       '${GlobalConfiguration().getString('api_base_url')}notifications?${_apiToken}search=notifiable_id:${_user.id}&searchFields=notifiable_id:=&orderBy=created_at&sortedBy=desc&limit=10';
 
   final client = new http.Client();
-  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
+  try {
+    final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 
-  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-    print(data);
-    return Notification.fromJSON(data);
-  });
+    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+      return Notification.fromJSON(data);
+    });
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+    return new Stream.value(new Notification.fromJSON({}));
+  }
 }

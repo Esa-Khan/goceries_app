@@ -1,3 +1,5 @@
+import '../helpers/custom_trace.dart';
+
 class Notification {
   String id;
   String type;
@@ -20,7 +22,7 @@ class Notification {
       data = {};
       read = false;
       createdAt = new DateTime(0);
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 }

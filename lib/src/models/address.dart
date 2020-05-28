@@ -1,5 +1,7 @@
 import 'package:location/location.dart';
 
+import '../helpers/custom_trace.dart';
+
 class Address {
   String id;
   String description;
@@ -16,11 +18,11 @@ class Address {
       id = jsonMap['id'].toString();
       description = jsonMap['description'] != null ? jsonMap['description'].toString() : null;
       address = jsonMap['address'] != null ? jsonMap['address'] : null;
-      latitude = jsonMap['latitude'] != null ? jsonMap['latitude'] : null;
-      longitude = jsonMap['longitude'] != null ? jsonMap['longitude'] : null;
+      latitude = jsonMap['latitude'] != null ? jsonMap['latitude'].toDouble() : null;
+      longitude = jsonMap['longitude'] != null ? jsonMap['longitude'].toDouble() : null;
       isDefault = jsonMap['is_default'] ?? false;
     } catch (e) {
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

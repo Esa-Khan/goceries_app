@@ -54,18 +54,19 @@ class SplashScreenController extends ControllerMVC {
         onResume: notificationOnResume,
       );
     } catch (e) {
-      print(CustomTrace(StackTrace.current, message: 'Error Config firebase').toString());
+      print(CustomTrace(StackTrace.current, message: e));
+      print(CustomTrace(StackTrace.current, message: 'Error Config Firebase'));
     }
   }
 
   Future notificationOnResume(Map<String, dynamic> message) async {
-    print(message['data']['id']);
+    print(CustomTrace(StackTrace.current, message: message['data']['id']));
     try {
       if (message['data']['id'] == "orders") {
         settingRepo.navigatorKey.currentState.pushReplacementNamed('/Pages', arguments: 3);
       }
     } catch (e) {
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 
@@ -78,7 +79,9 @@ class SplashScreenController extends ControllerMVC {
           settingRepo.navigatorKey.currentState.pushReplacementNamed('/Pages', arguments: 3);
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      print(CustomTrace(StackTrace.current, message: e));
+    }
   }
 
   Future notificationOnMessage(Map<String, dynamic> message) async {

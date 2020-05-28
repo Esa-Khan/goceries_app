@@ -19,6 +19,7 @@ import '../models/food_order.dart';
 import '../models/order.dart';
 import '../models/restaurant.dart';
 import '../repository/settings_repository.dart';
+import 'custom_trace.dart';
 
 class Helper {
   BuildContext context;
@@ -26,6 +27,7 @@ class Helper {
   Helper.of(BuildContext _context) {
     this.context = _context;
   }
+
   // for mapping data retrieved form json array
   static getData(Map<String, dynamic> data) {
     return data['data'] ?? [];
@@ -61,9 +63,9 @@ class Helper {
         anchor: Offset(0.5, 0.5),
         infoWindow: InfoWindow(
             title: res['name'],
-            snippet: res['distance'].toStringAsFixed(2) + ' mi',
+            snippet: getDistance(res['distance'].toDouble(), setting.value.distanceUnit),
             onTap: () {
-              print('infowi tap');
+              print(CustomTrace(StackTrace.current, message: 'Info Window'));
             }),
         position: LatLng(double.parse(res['latitude']), double.parse(res['longitude'])));
 
@@ -197,7 +199,6 @@ class Helper {
       _can &= _cart.food.deliverable;
     });
     _can &= _restaurant.availableForDelivery && (_restaurant.distance <= _restaurant.deliveryRange) && !deliveryAddress.value.isUnknown();
-    _can = false;
     return _can;
   }
 

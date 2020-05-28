@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
+import '../helpers/custom_trace.dart';
 import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../models/user.dart';
@@ -61,7 +62,7 @@ Future<Cart> addCart(Cart cart, bool reset) async {
   try {
     decodedJSON = json.decode(response.body)['data'] as Map<String, dynamic>;
   } on FormatException catch (e) {
-    print(e);
+    print(CustomTrace(StackTrace.current, message: e.toString()));
   }
   return Cart.fromJSON(decodedJSON);
 }

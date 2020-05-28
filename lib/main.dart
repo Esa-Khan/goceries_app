@@ -5,6 +5,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'generated/l10n.dart';
 import 'route_generator.dart';
 import 'src/helpers/app_config.dart' as config;
+import 'src/helpers/custom_trace.dart';
 import 'src/models/setting.dart';
 import 'src/repository/settings_repository.dart' as settingRepo;
 import 'src/repository/user_repository.dart' as userRepo;
@@ -12,6 +13,8 @@ import 'src/repository/user_repository.dart' as userRepo;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("configurations");
+  print(CustomTrace(StackTrace.current, message: "base_url: ${GlobalConfiguration().getString('base_url')}"));
+  print(CustomTrace(StackTrace.current, message: "api_base_url: ${GlobalConfiguration().getString('api_base_url')}"));
   runApp(MyApp());
 }
 
@@ -34,7 +37,7 @@ class _MyAppState extends State<MyApp> {
     return ValueListenableBuilder(
         valueListenable: settingRepo.setting,
         builder: (context, Setting _setting, _) {
-          print(_setting.toMap());
+          print(CustomTrace(StackTrace.current, message: _setting.toMap().toString()));
           return MaterialApp(
               navigatorKey: settingRepo.navigatorKey,
               title: _setting.appName,

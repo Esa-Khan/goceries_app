@@ -66,7 +66,7 @@ class UserController extends ControllerMVC {
           ));
         }
       }).catchError((e) {
-        loader.remove();
+        loader?.remove();
         scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(S.of(context).this_email_account_exists),
         ));

@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/media.dart';
 
 class Restaurant {
@@ -61,7 +62,7 @@ class Restaurant {
       closed = false;
       availableForDelivery = false;
       distance = 0.0;
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

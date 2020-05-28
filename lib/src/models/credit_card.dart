@@ -1,3 +1,5 @@
+import '../helpers/custom_trace.dart';
+
 class CreditCard {
   String id;
   String number = '';
@@ -20,7 +22,7 @@ class CreditCard {
       expMonth = '';
       expYear = '';
       cvc = '';
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/address.dart';
 import '../models/food_order.dart';
 import '../models/order_status.dart';
@@ -39,7 +40,7 @@ class Order {
       user = new User();
       deliveryAddress = new Address();
       foodOrders = [];
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

@@ -1,4 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
+import '../helpers/custom_trace.dart';
 
 class Setting {
   String appName = '';
@@ -47,7 +49,7 @@ class Setting {
       payPalEnabled = jsonMap['enable_paypal'] == null || jsonMap['enable_paypal'] == '0' ? false : true;
       stripeEnabled = jsonMap['enable_stripe'] == null || jsonMap['enable_stripe'] == '0' ? false : true;
     } catch (e) {
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

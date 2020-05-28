@@ -1,3 +1,5 @@
+import '../helpers/custom_trace.dart';
+
 class Payment {
   String id;
   String status;
@@ -16,7 +18,7 @@ class Payment {
       id = '';
       status = '';
       method = '';
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

@@ -5,6 +5,7 @@ import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
+import '../helpers/custom_trace.dart';
 import '../models/Step.dart';
 import '../repository/settings_repository.dart';
 
@@ -32,6 +33,7 @@ class MapsUtil {
       try {
         steps = parseSteps(_decoder.convert(res)["routes"][0]["legs"][0]["steps"]);
       } catch (e) {
+        print(CustomTrace(StackTrace.current, message: e));
         // throw new Exception(e);
       }
 
@@ -55,7 +57,7 @@ class MapsUtil {
 
       return response['results'][0]['formatted_address'];
     } catch (e) {
-      print(e);
+      print(CustomTrace(StackTrace.current, message: e));
       return null;
     }
   }

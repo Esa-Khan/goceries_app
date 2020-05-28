@@ -6,6 +6,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../helpers/custom_trace.dart';
 import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../models/credit_card.dart';
@@ -26,6 +27,7 @@ Future<User> login(User user) async {
     setCurrentUser(response.body);
     currentUser.value = User.fromJSON(json.decode(response.body)['data']);
   } else {
+    print(CustomTrace(StackTrace.current, message: response.body).toString());
     throw new Exception(response.body);
   }
   return currentUser.value;
@@ -43,6 +45,7 @@ Future<User> register(User user) async {
     setCurrentUser(response.body);
     currentUser.value = User.fromJSON(json.decode(response.body)['data']);
   } else {
+    print(CustomTrace(StackTrace.current, message: response.body).toString());
     throw new Exception(response.body);
   }
   return currentUser.value;
@@ -59,6 +62,7 @@ Future<bool> resetPassword(User user) async {
   if (response.statusCode == 200) {
     return true;
   } else {
+    print(CustomTrace(StackTrace.current, message: response.body).toString());
     throw new Exception(response.body);
   }
 }
@@ -125,13 +129,17 @@ Future<Stream<Address>> getAddresses() async {
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
       '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?$_apiToken&search=user_id:${_user.id}&searchFields=user_id:=&orderBy=updated_at&sortedBy=desc';
-  print(url);
-  final client = new http.Client();
-  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
+  try {
+    final client = new http.Client();
+    final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 
-  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-    return Address.fromJSON(data);
-  });
+    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+      return Address.fromJSON(data);
+    });
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+    return new Stream.value(new Address.fromJSON({}));
+  }
 }
 
 Future<Address> addAddress(Address address) async {
@@ -140,12 +148,17 @@ Future<Address> addAddress(Address address) async {
   address.userId = _user.id;
   final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses?$_apiToken';
   final client = new http.Client();
-  final response = await client.post(
-    url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode(address.toMap()),
-  );
-  return Address.fromJSON(json.decode(response.body)['data']);
+  try {
+    final response = await client.post(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: json.encode(address.toMap()),
+    );
+    return Address.fromJSON(json.decode(response.body)['data']);
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+    return new Address.fromJSON({});
+  }
 }
 
 Future<Address> updateAddress(Address address) async {
@@ -154,12 +167,17 @@ Future<Address> updateAddress(Address address) async {
   address.userId = _user.id;
   final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}?$_apiToken';
   final client = new http.Client();
-  final response = await client.put(
-    url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    body: json.encode(address.toMap()),
-  );
-  return Address.fromJSON(json.decode(response.body)['data']);
+  try {
+    final response = await client.put(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: json.encode(address.toMap()),
+    );
+    return Address.fromJSON(json.decode(response.body)['data']);
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+    return new Address.fromJSON({});
+  }
 }
 
 Future<Address> removeDeliveryAddress(Address address) async {
@@ -167,9 +185,14 @@ Future<Address> removeDeliveryAddress(Address address) async {
   final String _apiToken = 'api_token=${_user.apiToken}';
   final String url = '${GlobalConfiguration().getString('api_base_url')}delivery_addresses/${address.id}?$_apiToken';
   final client = new http.Client();
-  final response = await client.delete(
-    url,
-    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-  );
-  return Address.fromJSON(json.decode(response.body)['data']);
+  try {
+    final response = await client.delete(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    return Address.fromJSON(json.decode(response.body)['data']);
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+    return new Address.fromJSON({});
+  }
 }

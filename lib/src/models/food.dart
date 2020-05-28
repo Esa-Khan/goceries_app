@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/category.dart';
 import '../models/extra.dart';
 import '../models/extra_group.dart';
@@ -77,7 +78,7 @@ class Food {
       extraGroups = [];
       foodReviews = [];
       nutritions = [];
-      print(jsonMap);
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 
