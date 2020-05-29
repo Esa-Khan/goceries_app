@@ -27,10 +27,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  String get search_for_restaurants_or_foods {
+  String get search_for_stores {
     return Intl.message(
-      'Search for restaurants or foods',
-      name: 'search_for_restaurants_or_foods',
+      'Search for nearby stores',
+      name: 'search_for_stores',
       desc: '',
       args: [],
     );
@@ -378,19 +378,19 @@ class S {
     );
   }
 
-  String get i_forgot_password {
+  String get forgot_password {
     return Intl.message(
-      'I forgot password ?',
-      name: 'i_forgot_password',
+      'Forgot password ?',
+      name: 'forgot_password',
       desc: '',
       args: [],
     );
   }
 
-  String get i_dont_have_an_account {
+  String get dont_have_an_account {
     return Intl.message(
-      'I don\'t have an account?',
-      name: 'i_dont_have_an_account',
+      'Don\'t have an account ?',
+      name: 'dont_have_an_account',
       desc: '',
       args: [],
     );
@@ -902,7 +902,7 @@ class S {
 
   String get dont_have_any_item_in_your_cart {
     return Intl.message(
-      'D\'ont have any item in your cart',
+      'Don\'t have any items in your cart',
       name: 'dont_have_any_item_in_your_cart',
       desc: '',
       args: [],
@@ -918,10 +918,10 @@ class S {
     );
   }
 
-  String get dont_have_any_item_in_the_notification_list {
+  String get dont_have_any_notifications {
     return Intl.message(
-      'D\'ont have any item in the notification list',
-      name: 'dont_have_any_item_in_the_notification_list',
+      'Don\'t have any notifications',
+      name: 'dont_have_any_notifications',
       desc: '',
       args: [],
     );

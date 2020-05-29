@@ -30,7 +30,7 @@ class SearchBarWidget extends StatelessWidget {
             ),
             Expanded(
               child: Text(
-                S.of(context).search_for_restaurants_or_foods,
+                S.of(context).search_for_stores,
                 maxLines: 1,
                 style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
               ),
