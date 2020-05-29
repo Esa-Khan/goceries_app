@@ -40,7 +40,8 @@ class Restaurant {
       information = jsonMap['information'];
       latitude = jsonMap['latitude'];
       longitude = jsonMap['longitude'];
-      closed = jsonMap['closed'] ?? false;
+//      closed = jsonMap['closed'] ?? false;
+      closed = isClosed(description);
       availableForDelivery = jsonMap['available_for_delivery'] ?? false;
       distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0.0;
     } catch (e) {
@@ -76,4 +77,16 @@ class Restaurant {
       'distance': distance,
     };
   }
+
+  bool isClosed(String desc){
+    bool closed = true;
+    var now = new DateTime.now().hour;
+    var arr = desc.split('-');
+    if (now > int.parse(arr[0]) && now < int.parse(arr[1])){
+      closed = false;
+    }
+
+    return closed;
+  }
+
 }

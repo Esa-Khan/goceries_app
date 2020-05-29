@@ -75,7 +75,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "guest" : MessageLookupByLibrary.simpleMessage("زائر"),
     "help__support" : MessageLookupByLibrary.simpleMessage("المساعدة"),
     "help_support" : MessageLookupByLibrary.simpleMessage("المساعدة"),
-    "help_supports" : MessageLookupByLibrary.simpleMessage("المساعدة"),
     "hint_full_address" : MessageLookupByLibrary.simpleMessage("المدينة المنورة ، حي الازهري ، الشارع العام ، خلف مكتبة الحرمين"),
     "home" : MessageLookupByLibrary.simpleMessage("الرئيسية"),
     "home_address" : MessageLookupByLibrary.simpleMessage("المنزل"),

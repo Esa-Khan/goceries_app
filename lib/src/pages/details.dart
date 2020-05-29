@@ -121,7 +121,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                     decoration:
-                                        BoxDecoration(color: _con.restaurant.closed ? Colors.grey : Colors.green, borderRadius: BorderRadius.circular(24)),
+                                        BoxDecoration(color: _con.restaurant.closed ? Colors.black : Colors.green, borderRadius: BorderRadius.circular(24)),
                                     child: _con.restaurant.closed
                                         ? Text(
                                             S.of(context).closed,
@@ -133,21 +133,21 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                           ),
                                   ),
                                   SizedBox(width: 10),
-                                  Container(
-                                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                    decoration: BoxDecoration(
-                                        color: Helper.canDelivery(_con.restaurant) ? Colors.green : Colors.orange, borderRadius: BorderRadius.circular(24)),
-                                    child: Helper.canDelivery(_con.restaurant)
-                                        ? Text(
-                                            S.of(context).delivery,
-                                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                          )
-                                        : Text(
-                                            S.of(context).pickup,
-                                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                          ),
-                                  ),
-                                  Expanded(child: SizedBox(height: 0)),
+//                                  Container(
+//                                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+//                                    decoration: BoxDecoration(
+//                                        color: Helper.canDelivery(_con.restaurant) ? Colors.green : Colors.orange, borderRadius: BorderRadius.circular(24)),
+//                                    child: Helper.canDelivery(_con.restaurant)
+//                                        ? Text(
+//                                            S.of(context).delivery,
+//                                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+//                                          )
+//                                        : Text(
+//                                            S.of(context).pickup,
+//                                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+//                                          ),
+//                                  ),
+//                                  Expanded(child: SizedBox(height: 0)),
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                     decoration: BoxDecoration(

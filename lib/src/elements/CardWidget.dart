@@ -59,7 +59,7 @@ class CardWidget extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                    decoration: BoxDecoration(color: restaurant.closed ? Colors.grey : Colors.green, borderRadius: BorderRadius.circular(24)),
+                    decoration: BoxDecoration(color: restaurant.closed ? Colors.black : Colors.green, borderRadius: BorderRadius.circular(24)),
                     child: restaurant.closed
                         ? Text(
                             S.of(context).closed,
@@ -70,20 +70,21 @@ class CardWidget extends StatelessWidget {
                             style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
                           ),
                   ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                    decoration: BoxDecoration(color: Helper.canDelivery(restaurant) ? Colors.green : Colors.orange, borderRadius: BorderRadius.circular(24)),
-                    child: Helper.canDelivery(restaurant)
-                        ? Text(
-                            S.of(context).delivery,
-                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                          )
-                        : Text(
-                            S.of(context).pickup,
-                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                          ),
-                  ),
+//                  Container(
+//                    margin: EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+//                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+//                    decoration: BoxDecoration(color: Helper.canDelivery(
+//                        restaurant) ? Colors.green : Colors.orange, borderRadius: BorderRadius.circular(24)),
+//                    child: Helper.canDelivery(restaurant)
+//                        ? Text(
+//                            S.of(context).delivery,
+//                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+//                          )
+//                        : Text(
+//                            S.of(context).pickup,
+//                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+//                          ),
+//                  ),
                 ],
               ),
             ],

@@ -344,17 +344,8 @@ class S {
 
   String get faq {
     return Intl.message(
-      'Faq',
+      'FAQ',
       name: 'faq',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get help_supports {
-    return Intl.message(
-      'Help & Supports',
-      name: 'help_supports',
       desc: '',
       args: [],
     );
