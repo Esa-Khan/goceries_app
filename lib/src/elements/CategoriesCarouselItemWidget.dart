@@ -29,7 +29,7 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
               width: 80,
               height: 80,
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).accentColor,
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                   boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.2), offset: Offset(0, 2), blurRadius: 7.0)]),
               child: Padding(
@@ -37,7 +37,7 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
                 child: category.image.url.toLowerCase().endsWith('.svg')
                     ? SvgPicture.network(
                         category.image.url,
-                        color: Theme.of(context).accentColor,
+                        color: Theme.of(context).primaryColor,
                       )
                     : CachedNetworkImage(
                         fit: BoxFit.cover,

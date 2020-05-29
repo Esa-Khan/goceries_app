@@ -36,10 +36,10 @@ class S {
     );
   }
 
-  String get top_restaurants {
+  String get closest_stores {
     return Intl.message(
-      'Top Restaurants',
-      name: 'top_restaurants',
+      'Closest Stores',
+      name: 'closest_stores',
       desc: '',
       args: [],
     );
@@ -72,10 +72,10 @@ class S {
     );
   }
 
-  String get food_categories {
+  String get aisles {
     return Intl.message(
-      'Food Categories',
-      name: 'food_categories',
+      'Aisles',
+      name: 'aisles',
       desc: '',
       args: [],
     );

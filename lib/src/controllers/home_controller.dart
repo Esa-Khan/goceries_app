@@ -13,7 +13,7 @@ import '../repository/settings_repository.dart';
 
 class HomeController extends ControllerMVC {
   List<Category> categories = <Category>[];
-  List<Restaurant> topRestaurants = <Restaurant>[];
+  List<Restaurant> closestStores = <Restaurant>[];
   List<Restaurant> popularRestaurants = <Restaurant>[];
   List<Review> recentReviews = <Review>[];
   List<Food> trendingFoods = <Food>[];
@@ -38,7 +38,7 @@ class HomeController extends ControllerMVC {
   Future<void> listenForTopRestaurants() async {
     final Stream<Restaurant> stream = await getNearRestaurants(deliveryAddress.value, deliveryAddress.value);
     stream.listen((Restaurant _restaurant) {
-      setState(() => topRestaurants.add(_restaurant));
+      setState(() => closestStores.add(_restaurant));
     }, onError: (a) {}, onDone: () {});
   }
 
@@ -80,7 +80,7 @@ class HomeController extends ControllerMVC {
   Future<void> refreshHome() async {
     setState(() {
       categories = <Category>[];
-      topRestaurants = <Restaurant>[];
+      closestStores = <Restaurant>[];
       popularRestaurants = <Restaurant>[];
       recentReviews = <Review>[];
       trendingFoods = <Food>[];

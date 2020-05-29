@@ -14,7 +14,7 @@ import '../repository/settings_repository.dart' as sett;
 
 class MapController extends ControllerMVC {
   Restaurant currentRestaurant;
-  List<Restaurant> topRestaurants = <Restaurant>[];
+  List<Restaurant> closestStores = <Restaurant>[];
   List<Marker> allMarkers = <Marker>[];
   Address currentAddress;
   Set<Polyline> polylines = new Set();
@@ -26,7 +26,7 @@ class MapController extends ControllerMVC {
     final Stream<Restaurant> stream = await getNearRestaurants(myLocation, areaLocation);
     stream.listen((Restaurant _restaurant) {
       setState(() {
-        topRestaurants.add(_restaurant);
+        closestStores.add(_restaurant);
       });
       Helper.getMarker(_restaurant.toMap()).then((marker) {
         setState(() {
@@ -104,7 +104,7 @@ class MapController extends ControllerMVC {
 
   void getRestaurantsOfArea() async {
     setState(() {
-      topRestaurants = <Restaurant>[];
+      closestStores = <Restaurant>[];
       Address areaAddress = Address.fromJSON({"latitude": cameraPosition.target.latitude, "longitude": cameraPosition.target.longitude});
       if (cameraPosition != null) {
         listenForNearRestaurants(currentAddress, areaAddress);
@@ -140,7 +140,7 @@ class MapController extends ControllerMVC {
 
   Future refreshMap() async {
     setState(() {
-      topRestaurants = <Restaurant>[];
+      closestStores = <Restaurant>[];
     });
     listenForNearRestaurants(currentAddress, currentAddress);
   }

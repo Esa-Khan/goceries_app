@@ -1,10 +1,10 @@
 {
   "search_for_restaurants_or_foods": "검색",
-  "top_restaurants": "Top 배달업소",
+  "closest_stores": "Top 배달업소",
   "ordered_by_nearby_first": "내주변 주문",
   "trending_this_week": "이번주 트렌드",
   "double_click_on_the_food_to_add_it_to_the": "두번 클릭하면 장바구니에 저장됩니다",
-  "food_categories": "음식 카테고리",
+  "aisles": "음식 카테고리",
   "most_popular": "가장 인기있는 메뉴",
   "recent_reviews": "최근 리뷰",
   "login": "로그인",
