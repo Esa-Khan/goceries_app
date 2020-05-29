@@ -68,7 +68,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
               autofocus: true,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.all(12),
-                hintText: S.of(context).search_for_stores,
+                hintText: S.of(context).search_for_stores_or_items,
                 hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
                 prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
                 border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.1))),

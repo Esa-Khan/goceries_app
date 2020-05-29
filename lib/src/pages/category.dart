@@ -25,7 +25,7 @@ class CategoryWidget extends StatefulWidget {
 
 class _CategoryWidgetState extends StateMVC<CategoryWidget> {
   // TODO add layout in configuration file
-  String layout = 'grid';
+  String layout = 'list';
 
   CategoryController _con;
 

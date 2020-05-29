@@ -58,7 +58,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
             color: Theme.of(context).primaryColor,
           ),
           label: Text(
-            S.of(context).menu,
+            S.of(context).aisles,
             style: TextStyle(color: Theme.of(context).primaryColor),
           ),
         ),
@@ -74,36 +74,15 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                       primary: true,
                       shrinkWrap: false,
                       slivers: <Widget>[
-                        SliverAppBar(
-                          backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
-                          expandedHeight: 300,
-                          elevation: 0,
-                          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-                          flexibleSpace: FlexibleSpaceBar(
-                            collapseMode: CollapseMode.parallax,
-                            background: Hero(
-                              tag: widget.routeArgument.heroTag + _con.restaurant.id,
-                              child: CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                imageUrl: _con.restaurant.image.url,
-                                placeholder: (context, url) => Image.asset(
-                                  'assets/img/loading.gif',
-                                  fit: BoxFit.cover,
-                                ),
-                                errorWidget: (context, url, error) => Icon(Icons.error),
-                              ),
-                            ),
-                          ),
-                        ),
                         SliverToBoxAdapter(
                           child: Wrap(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 25),
+                                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 60),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Expanded(
+                                    Container(
                                       child: Text(
                                         _con.restaurant?.name ?? '',
                                         overflow: TextOverflow.fade,
@@ -112,6 +91,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                         style: Theme.of(context).textTheme.headline3,
                                       ),
                                     ),
+                                    SizedBox(width: 10),
                                     SizedBox(
                                       height: 32,
                                       child: Chip(
@@ -180,36 +160,36 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   SizedBox(width: 20),
                                 ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                child: Html(
-                                  data: _con.restaurant.description,
-                                  defaultTextStyle: Theme.of(context).textTheme.bodyText2.merge(TextStyle(fontSize: 14)),
-                                ),
-                              ),
+//                              Padding(
+//                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//                                child: Html(
+//                                  data: _con.restaurant.description,
+//                                  defaultTextStyle: Theme.of(context).textTheme.bodyText2.merge(TextStyle(fontSize: 14)),
+//                                ),
+//                              ),
                               ImageThumbCarouselWidget(galleriesList: _con.galleries),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 20),
-                                child: ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                  leading: Icon(
-                                    Icons.stars,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                  title: Text(
-                                    S.of(context).information,
-                                    style: Theme.of(context).textTheme.headline4,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width,
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                                margin: const EdgeInsets.symmetric(vertical: 5),
-                                color: Theme.of(context).primaryColor,
-                                child: Helper.applyHtml(context, _con.restaurant.information),
-                              ),
+//                              Padding(
+//                                padding: const EdgeInsets.symmetric(horizontal: 20),
+//                                child: ListTile(
+//                                  dense: true,
+//                                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+//                                  leading: Icon(
+//                                    Icons.stars,
+//                                    color: Theme.of(context).hintColor,
+//                                  ),
+//                                  title: Text(
+//                                    S.of(context).information,
+//                                    style: Theme.of(context).textTheme.headline4,
+//                                  ),
+//                                ),
+//                              ),
+//                              Container(
+//                                width: MediaQuery.of(context).size.width,
+//                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+//                                margin: const EdgeInsets.symmetric(vertical: 5),
+//                                color: Theme.of(context).primaryColor,
+//                                child: Helper.applyHtml(context, _con.restaurant.information),
+//                              ),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                 margin: const EdgeInsets.symmetric(vertical: 5),
@@ -248,14 +228,14 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                               ),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                                margin: const EdgeInsets.symmetric(vertical: 5),
+                                margin: const EdgeInsets.symmetric(vertical: 1),
                                 color: Theme.of(context).primaryColor,
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Expanded(
                                       child: Text(
-                                        '${_con.restaurant.phone} \n${_con.restaurant.mobile}',
+                                        '${_con.restaurant.phone}',
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context).textTheme.bodyText1,
                                       ),
@@ -267,7 +247,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                       child: FlatButton(
                                         padding: EdgeInsets.all(0),
                                         onPressed: () {
-                                          launch("tel:${_con.restaurant.mobile}");
+                                          launch("tel:${_con.restaurant.phone}");
                                         },
                                         child: Icon(
                                           Icons.call,

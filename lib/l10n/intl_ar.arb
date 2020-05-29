@@ -1,5 +1,5 @@
 {
-  "search_for_stores": "البحث في المطابخ والمنتجات",
+  "search_for_stores_or_items": "البحث في المطابخ والمنتجات",
   "closest_stores": "أفضل المطابخ",
   "ordered_by_nearby_first": "مرتبة حسب الاقرب",
   "trending_this_week": "الاعلى هذا الأسبوع",
@@ -22,7 +22,7 @@
   "subtotal": "مجموع الطلب",
   "total": "المجموع",
   "confirm_payment": "تأكيد الدفع",
-  "menu": "المينيو",
+  "aisles": "المينيو",
   "information": "معلومات",
   "featured_foods": "المنتجات المميزة",
   "what_they_say": "ماذا يقول عملائنا ؟",

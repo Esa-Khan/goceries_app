@@ -27,10 +27,10 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  String get search_for_stores {
+  String get search_for_stores_or_items {
     return Intl.message(
       'Search for nearby stores',
-      name: 'search_for_stores',
+      name: 'search_for_stores_or_items',
       desc: '',
       args: [],
     );
@@ -229,15 +229,6 @@ class S {
     return Intl.message(
       'Confirm Payment',
       name: 'confirm_payment',
-      desc: '',
-      args: [],
-    );
-  }
-
-  String get menu {
-    return Intl.message(
-      'Menu',
-      name: 'menu',
       desc: '',
       args: [],
     );

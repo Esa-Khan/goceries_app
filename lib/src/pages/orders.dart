@@ -78,7 +78,8 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
                               return Theme(
                                 data: theme,
                                 child: ExpansionTile(
-                                  initiallyExpanded: index == 0 ? true : false,
+//                                  initiallyExpanded: index == 0 ? true : false,
+                                  initiallyExpanded: false,
                                   title: Column(
                                     children: <Widget>[
                                       Text('${S.of(context).order_id}: #${_con.orders.elementAt(index).id}'),

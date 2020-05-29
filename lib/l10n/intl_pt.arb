@@ -1,5 +1,5 @@
 {
-  "search_for_stores": "Pesquise restaurantes ou alimentos",
+  "search_for_stores_or_items": "Pesquise restaurantes ou alimentos",
   "closest_stores": "Melhores Restaurantes",
   "ordered_by_nearby_first": "Ordenado por Perto primeiro",
   "trending_this_week": "Tendências desta semana",
@@ -22,7 +22,7 @@
   "subtotal": "Subtotal",
   "total": "Total",
   "confirm_payment": "Confirme o pagamento",
-  "menu": "Cardápio",
+  "aisles": "Cardápio",
   "information": "Em formação",
   "featured_foods": "Alimentos em destaque",
   "what_they_say": "O que eles disseram ?",
