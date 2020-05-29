@@ -243,10 +243,10 @@ class S {
     );
   }
 
-  String get featured_foods {
+  String get store {
     return Intl.message(
-      'Featured Foods',
-      name: 'featured_foods',
+      'Store',
+      name: 'store',
       desc: '',
       args: [],
     );

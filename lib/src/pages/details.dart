@@ -38,7 +38,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   void initState() {
     _con.listenForRestaurant(id: widget.routeArgument.id);
     _con.listenForGalleries(widget.routeArgument.id);
-    _con.listenForFeaturedFoods(widget.routeArgument.id);
+    _con.listenForFoods(widget.routeArgument.id);
     _con.listenForRestaurantReviews(id: widget.routeArgument.id);
     super.initState();
   }
@@ -226,6 +226,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   ],
                                 ),
                               ),
+
+
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                 margin: const EdgeInsets.symmetric(vertical: 1),
@@ -261,65 +263,87 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   ],
                                 ),
                               ),
-                              _con.featuredFoods.isEmpty
-                                  ? SizedBox(height: 0)
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                                      child: ListTile(
-                                        dense: true,
-                                        contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                        leading: Icon(
-                                          Icons.restaurant,
-                                          color: Theme.of(context).hintColor,
-                                        ),
-                                        title: Text(
-                                          S.of(context).featured_foods,
-                                          style: Theme.of(context).textTheme.headline4,
-                                        ),
-                                      ),
-                                    ),
-                              _con.featuredFoods.isEmpty
-                                  ? SizedBox(height: 0)
+
+
+//                              _con.foods.isEmpty
+//                                  ? SizedBox(height: 0)
+//                                  : Padding(
+//                                      padding: const EdgeInsets.symmetric(horizontal: 20),
+//                                      child: ListTile(
+//                                        dense: true,
+//                                        contentPadding: EdgeInsets.symmetric(vertical: 0),
+//                                        leading: Icon(
+//                                          Icons.restaurant,
+//                                          color: Theme.of(context).hintColor,
+//                                        ),
+//                                        title: Text(
+//                                          S.of(context).store,
+//                                          style: Theme.of(context).textTheme.headline4,
+//                                        ),
+//                                      ),
+//                                    ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: ListTile(
+                                  dense: true,
+                                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                  leading: Icon(
+                                    Icons.restaurant,
+                                    color: Theme.of(context).hintColor,
+                                  ),
+                                  title: Text(
+                                    S.of(context).store,
+                                    style: Theme.of(context).textTheme.headline4,
+                                  ),
+                                ),
+                              ),
+
+
+                              _con.foods.isEmpty
+                                  ? CircularLoadingWidget(height: 500)
                                   : ListView.separated(
-                                      padding: EdgeInsets.symmetric(vertical: 10),
+//                                      padding: EdgeInsets.symmetric(vertical: 10),
+                                      padding:
+                                          EdgeInsets.only(top: 10, bottom: 90),
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
                                       primary: false,
-                                      itemCount: _con.featuredFoods.length,
+                                      itemCount: _con.foods.length,
                                       separatorBuilder: (context, index) {
                                         return SizedBox(height: 10);
                                       },
                                       itemBuilder: (context, index) {
                                         return FoodItemWidget(
                                           heroTag: 'details_featured_food',
-                                          food: _con.featuredFoods.elementAt(index),
+                                          food: _con.foods.elementAt(index),
                                         );
                                       },
                                     ),
-                              SizedBox(height: 100),
-                              _con.reviews.isEmpty
-                                  ? SizedBox(height: 5)
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                      child: ListTile(
-                                        dense: true,
-                                        contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                        leading: Icon(
-                                          Icons.recent_actors,
-                                          color: Theme.of(context).hintColor,
-                                        ),
-                                        title: Text(
-                                          S.of(context).what_they_say,
-                                          style: Theme.of(context).textTheme.headline4,
-                                        ),
-                                      ),
-                                    ),
-                              _con.reviews.isEmpty
-                                  ? SizedBox(height: 5)
-                                  : Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                      child: ReviewsListWidget(reviewsList: _con.reviews),
-                                    ),
+
+//                              SizedBox(height: 100),
+//                              _con.reviews.isEmpty
+//                                  ? SizedBox(height: 5)
+//                                  : Padding(
+//                                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+//                                      child: ListTile(
+//                                        dense: true,
+//                                        contentPadding: EdgeInsets.symmetric(vertical: 0),
+//                                        leading: Icon(
+//                                          Icons.recent_actors,
+//                                          color: Theme.of(context).hintColor,
+//                                        ),
+//                                        title: Text(
+//                                          S.of(context).what_they_say,
+//                                          style: Theme.of(context).textTheme.headline4,
+//                                        ),
+//                                      ),
+//                                    ),
+//                              _con.reviews.isEmpty
+//                                  ? SizedBox(height: 5)
+//                                  : Padding(
+//                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//                                      child: ReviewsListWidget(reviewsList: _con.reviews),
+//                                    ),
                             ],
                           ),
                         ),
