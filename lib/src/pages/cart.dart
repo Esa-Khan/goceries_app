@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
 import '../elements/CartItemWidget.dart';
 import '../elements/EmptyCartWidget.dart';
 import '../helpers/helper.dart';
 import '../models/route_argument.dart';
-import '../repository/settings_repository.dart';
 
 class CartWidget extends StatefulWidget {
-  RouteArgument routeArgument;
+  final RouteArgument routeArgument;
   CartWidget({Key key, this.routeArgument}) : super(key: key);
 
   @override
@@ -54,7 +53,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
           centerTitle: true,
           title: Text(
             S.of(context).cart,
-            style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+            style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
         ),
         body: RefreshIndicator(
@@ -65,7 +64,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                   fit: StackFit.expand,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(bottom: 150),
+                      margin: EdgeInsets.only(bottom: 165),
                       padding: EdgeInsets.only(bottom: 15),
                       child: SingleChildScrollView(
                         padding: EdgeInsets.symmetric(vertical: 10),
@@ -86,7 +85,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   S.of(context).shopping_cart,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: Theme.of(context).textTheme.display1,
+                                  style: Theme.of(context).textTheme.headline4,
                                 ),
                                 subtitle: Text(
                                   S.of(context).verify_your_quantity_and_click_checkout,
@@ -128,7 +127,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                     Positioned(
                       bottom: 0,
                       child: Container(
-                        height: 185,
+                        height: 195,
                         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                         decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
@@ -145,10 +144,10 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   Expanded(
                                     child: Text(
                                       S.of(context).subtotal,
-                                      style: Theme.of(context).textTheme.body2,
+                                      style: Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
-                                  Helper.getPrice(_con.subTotal, context, style: Theme.of(context).textTheme.subhead)
+                                  Helper.getPrice(_con.subTotal, context, style: Theme.of(context).textTheme.subtitle1)
                                 ],
                               ),
                               SizedBox(height: 5),
@@ -157,21 +156,21 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   Expanded(
                                     child: Text(
                                       S.of(context).delivery_fee,
-                                      style: Theme.of(context).textTheme.body2,
+                                      style: Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
-                                  Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subhead)
+                                  Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
                                 ],
                               ),
                               Row(
                                 children: <Widget>[
                                   Expanded(
                                     child: Text(
-                                      '${S.of(context).tax} (${setting.value.defaultTax}%)',
-                                      style: Theme.of(context).textTheme.body2,
+                                      '${S.of(context).tax} (${_con.carts[0].food.restaurant.defaultTax}%)',
+                                      style: Theme.of(context).textTheme.bodyText1,
                                     ),
                                   ),
-                                  Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subhead)
+                                  Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
                                 ],
                               ),
                               SizedBox(height: 10),
@@ -183,14 +182,12 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                     width: MediaQuery.of(context).size.width - 40,
                                     child: FlatButton(
                                       onPressed: () {
-//                                        Navigator.of(context).pushNamed('/PaymentMethod',
-//                                            arguments:
-//                                                new RouteArgument(param: [_con.carts, _con.total, setting.defaultTax]));
-                                        Navigator.of(context).pushNamed('/DeliveryAddresses',
-                                            arguments: new RouteArgument(param: [_con.carts, _con.total, setting.value.defaultTax]));
+                                        _con.goCheckout(context);
                                       },
+                                      disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                                       padding: EdgeInsets.symmetric(vertical: 14),
-                                      color: Theme.of(context).accentColor,
+                                      color:
+                                          !_con.carts[0].food.restaurant.closed ? Theme.of(context).accentColor : Theme.of(context).focusColor.withOpacity(0.5),
                                       shape: StadiumBorder(),
                                       child: Text(
                                         S.of(context).checkout,
@@ -204,7 +201,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                     child: Helper.getPrice(
                                       _con.total,
                                       context,
-                                      style: Theme.of(context).textTheme.display1.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                      style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor)),
                                     ),
                                   )
                                 ],

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 
+import '../../generated/l10n.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
 
@@ -22,13 +22,13 @@ class MobileVerification extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Verify Phone ',
-                    style: Theme.of(context).textTheme.headline,
+                    style: Theme.of(context).textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),
                   Text(
                     'Your phone and address book are used to connect. Call you to verify your phone Number',
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText2,
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -86,7 +86,8 @@ class MobileVerification extends StatelessWidget {
                 Navigator.of(context).pushNamed('/MobileVerification2');
               },
               color: Theme.of(context).accentColor,
-              text: Text(S.of(context).submit.toUpperCase(), style: Theme.of(context).textTheme.title.merge(TextStyle(color: Theme.of(context).primaryColor))),
+              text: Text(S.of(context).submit.toUpperCase(),
+                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).primaryColor))),
             ),
           ],
         ),

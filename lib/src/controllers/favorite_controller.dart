@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/i18n.dart';
+import '../../generated/l10n.dart';
 import '../models/favorite.dart';
 import '../repository/food_repository.dart';
 
@@ -22,7 +22,7 @@ class FavoriteController extends ControllerMVC {
       });
     }, onError: (a) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -35,6 +35,6 @@ class FavoriteController extends ControllerMVC {
 
   Future<void> refreshFavorites() async {
     favorites.clear();
-    listenForFavorites(message: 'Favorites refreshed successfuly');
+    listenForFavorites(message: S.of(context).favorites_refreshed_successfuly);
   }
 }

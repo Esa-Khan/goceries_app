@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+
+import '../helpers/custom_trace.dart';
 import '../models/media.dart';
 
 class Restaurant {
@@ -12,27 +15,58 @@ class Restaurant {
   String information;
   double deliveryFee;
   double adminCommission;
+  double defaultTax;
   String latitude;
   String longitude;
+  bool closed;
+  bool availableForDelivery;
+  double deliveryRange;
   double distance;
 
   Restaurant();
 
   Restaurant.fromJSON(Map<String, dynamic> jsonMap) {
-    id = jsonMap['id'].toString();
-    name = jsonMap['name'];
-    image = jsonMap['media'] != null ? Media.fromJSON(jsonMap['media'][0]) : null;
-    rate = jsonMap['rate'] ?? '0';
-    deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
-    adminCommission = jsonMap['admin_commission'] != null ? jsonMap['admin_commission'].toDouble() : 0.0;
-    address = jsonMap['address'];
-    description = jsonMap['description'];
-    phone = jsonMap['phone'];
-    mobile = jsonMap['mobile'];
-    information = jsonMap['information'];
-    latitude = jsonMap['latitude'];
-    longitude = jsonMap['longitude'];
-    distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0.0;
+    try {
+      id = jsonMap['id'].toString();
+      name = jsonMap['name'];
+      image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
+      rate = jsonMap['rate'] ?? '0';
+      deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
+      adminCommission = jsonMap['admin_commission'] != null ? jsonMap['admin_commission'].toDouble() : 0.0;
+      deliveryRange = jsonMap['delivery_range'] != null ? jsonMap['delivery_range'].toDouble() : 0.0;
+      address = jsonMap['address'];
+      description = jsonMap['description'];
+      phone = jsonMap['phone'];
+      mobile = jsonMap['mobile'];
+      defaultTax = jsonMap['default_tax'] != null ? jsonMap['default_tax'].toDouble() : 0.0;
+      information = jsonMap['information'];
+      latitude = jsonMap['latitude'];
+      longitude = jsonMap['longitude'];
+//      closed = jsonMap['closed'] ?? false;
+      closed = isClosed(description);
+      availableForDelivery = jsonMap['available_for_delivery'] ?? false;
+      distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0.0;
+    } catch (e) {
+      id = '';
+      name = '';
+      image = new Media();
+      rate = '0';
+      deliveryFee = 0.0;
+      adminCommission = 0.0;
+      deliveryRange = 0.0;
+      address = '';
+      description = '';
+      phone = '';
+      mobile = '';
+      defaultTax = 0.0;
+      information = '';
+      latitude = '0';
+      longitude = '0';
+      closed = false;
+      availableForDelivery = false;
+      distance = 0.0;
+      print(CustomTrace(StackTrace.current, message: e));
+    }
   }
 
   Map<String, dynamic> toMap() {
@@ -45,4 +79,31 @@ class Restaurant {
       'distance': distance,
     };
   }
+
+  bool isClosed(String desc){
+    bool closed = true;
+    var now = new DateTime.now().hour;
+    var times = desc.toString().replaceAll(" ", "").replaceAll("m", "").split('-');
+    var openTime = -1, closeTime = -1;
+
+    if (times[0].endsWith('a') || (times[1].contains("12") && times[1].endsWith("p"))){
+      openTime = int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
+    } else if (times[0].endsWith('p') || (times[1].contains("12") && times[1].endsWith("a"))) {
+      openTime = 12 + int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
+    }
+
+    if (times[1].endsWith('p') || (times[1].contains("12") && times[1].endsWith("a"))){
+      closeTime = 12 + int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
+    } else if (times[0].endsWith('a') || (times[1].contains("12") && times[1].endsWith("p"))) {
+      closeTime = int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
+    }
+
+
+    if (now > openTime && now < closeTime){
+      closed = false;
+    }
+
+    return closed;
+  }
+
 }

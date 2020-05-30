@@ -75,12 +75,5 @@ class _ShoppingCartFloatButtonWidgetState extends StateMVC<ShoppingCartFloatButt
         ),
       ),
     );
-//    return FlatButton(
-//      onPressed: () {
-//        print('to shopping cart');
-//      },
-//      child:
-//      color: Colors.transparent,
-//    );
   }
 }

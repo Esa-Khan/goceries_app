@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -6,15 +7,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 
+import '../../generated/l10n.dart';
+import '../elements/CircularLoadingWidget.dart';
+import '../models/cart.dart';
 import '../models/food_order.dart';
+import '../models/order.dart';
+import '../models/restaurant.dart';
 import '../repository/settings_repository.dart';
+import 'custom_trace.dart';
 
 class Helper {
+  BuildContext context;
+
+  Helper.of(BuildContext _context) {
+    this.context = _context;
+  }
+
   // for mapping data retrieved form json array
   static getData(Map<String, dynamic> data) {
     return data['data'] ?? [];
@@ -50,9 +63,9 @@ class Helper {
         anchor: Offset(0.5, 0.5),
         infoWindow: InfoWindow(
             title: res['name'],
-            snippet: res['distance'].toStringAsFixed(2) + ' mi',
+            snippet: getDistance(res['distance'].toDouble(), setting.value.distanceUnit),
             onTap: () {
-              print('infowi tap');
+              print(CustomTrace(StackTrace.current, message: 'Info Window'));
             }),
         position: LatLng(double.parse(res['latitude']), double.parse(res['longitude'])));
 
@@ -107,6 +120,9 @@ class Helper {
       style = style.merge(TextStyle(fontSize: style.fontSize + 2));
     }
     try {
+      if (myPrice == 0) {
+        return Text('-', style: style ?? Theme.of(context).textTheme.subtitle1);
+      }
       return RichText(
         softWrap: false,
         overflow: TextOverflow.fade,
@@ -114,19 +130,19 @@ class Helper {
         text: setting.value?.currencyRight != null && setting.value?.currencyRight == false
             ? TextSpan(
                 text: setting.value?.defaultCurrency,
-                style: style ?? Theme.of(context).textTheme.subhead,
+                style: style ?? Theme.of(context).textTheme.subtitle1,
                 children: <TextSpan>[
-                  TextSpan(text: myPrice.toStringAsFixed(2) ?? '', style: style ?? Theme.of(context).textTheme.subhead),
+                  TextSpan(text: myPrice.toStringAsFixed(2) ?? '', style: style ?? Theme.of(context).textTheme.subtitle1),
                 ],
               )
             : TextSpan(
                 text: myPrice.toStringAsFixed(2) ?? '',
-                style: style ?? Theme.of(context).textTheme.subhead,
+                style: style ?? Theme.of(context).textTheme.subtitle1,
                 children: <TextSpan>[
                   TextSpan(
                       text: setting.value?.defaultCurrency,
                       style: TextStyle(
-                          fontWeight: FontWeight.w400, fontSize: style != null ? style.fontSize - 4 : Theme.of(context).textTheme.subhead.fontSize - 4)),
+                          fontWeight: FontWeight.w400, fontSize: style != null ? style.fontSize - 4 : Theme.of(context).textTheme.subtitle1.fontSize - 4)),
                 ],
               ),
       );
@@ -135,32 +151,72 @@ class Helper {
     }
   }
 
-  static double getTotalOrderPrice(FoodOrder foodOrder, double tax, double deliveryFee) {
+  static double getTotalOrderPrice(FoodOrder foodOrder) {
     double total = foodOrder.price * foodOrder.quantity;
     foodOrder.extras.forEach((extra) {
       total += extra.price != null ? extra.price : 0;
     });
-    total += deliveryFee;
-    total += tax * total / 100;
     return total;
   }
 
-  static String getDistance(double distance) {
-    // TODO get unit from settings
-    return distance != null ? distance.toStringAsFixed(2) + " mi" : "";
+  static double getOrderPrice(FoodOrder foodOrder) {
+    double total = foodOrder.price;
+    foodOrder.extras.forEach((extra) {
+      total += extra.price != null ? extra.price : 0;
+    });
+    return total;
+  }
+
+  static double getTaxOrder(Order order) {
+    double total = 0;
+    order.foodOrders.forEach((foodOrder) {
+      total += getTotalOrderPrice(foodOrder);
+    });
+    return order.tax * total / 100;
+  }
+
+  static double getTotalOrdersPrice(Order order) {
+    double total = 0;
+    order.foodOrders.forEach((foodOrder) {
+      total += getTotalOrderPrice(foodOrder);
+    });
+    total += order.deliveryFee;
+    total += order.tax * total / 100;
+    return total;
+  }
+
+  static String getDistance(double distance, String unit) {
+    String _unit = setting.value.distanceUnit;
+    if (_unit == 'km') {
+      distance *= 1.60934;
+    }
+    return distance != null ? distance.toStringAsFixed(2) + " " + unit : "";
+  }
+
+  static bool canDelivery(Restaurant _restaurant, {List<Cart> carts}) {
+    bool _can = true;
+    carts?.forEach((Cart _cart) {
+      _can &= _cart.food.deliverable;
+    });
+    _can &= _restaurant.availableForDelivery && (_restaurant.distance <= _restaurant.deliveryRange) && !deliveryAddress.value.isUnknown();
+    return _can;
   }
 
   static String skipHtml(String htmlString) {
-    var document = parse(htmlString);
-    String parsedString = parse(document.body.text).documentElement.text;
-    return parsedString;
+    try {
+      var document = parse(htmlString);
+      String parsedString = parse(document.body.text).documentElement.text;
+      return parsedString;
+    } catch (e) {
+      return '';
+    }
   }
 
   static Html applyHtml(context, String html, {TextStyle style}) {
     return Html(
       blockSpacing: 0,
-      data: html,
-      defaultTextStyle: style ?? Theme.of(context).textTheme.body2.merge(TextStyle(fontSize: 14)),
+      data: html ?? '',
+      defaultTextStyle: style ?? Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 14)),
       useRichText: false,
       customRender: (node, children) {
         if (node is dom.Element) {
@@ -188,6 +244,31 @@ class Helper {
     );
   }
 
+  static OverlayEntry overlayLoader(context) {
+    OverlayEntry loader = OverlayEntry(builder: (context) {
+      final size = MediaQuery.of(context).size;
+      return Positioned(
+        height: size.height,
+        width: size.width,
+        top: 0,
+        left: 0,
+        child: Material(
+          color: Theme.of(context).primaryColor.withOpacity(0.85),
+          child: CircularLoadingWidget(height: 200),
+        ),
+      );
+    });
+    return loader;
+  }
+
+  static hideLoader(OverlayEntry loader) {
+    Timer(Duration(milliseconds: 500), () {
+      try {
+        loader?.remove();
+      } catch (e) {}
+    });
+  }
+
   static String limitString(String text, {int limit = 24, String hiddenText = "..."}) {
     return text.substring(0, min<int>(limit, text.length)) + (text.length > limit ? hiddenText : '');
   }
@@ -203,12 +284,29 @@ class Helper {
     return result;
   }
 
-  static String trans(String text) {
+  static Uri getUri(String path) {
+    String _path = Uri.parse(GlobalConfiguration().getString('base_url')).path;
+    if (!_path.endsWith('/')) {
+      _path += '/';
+    }
+    Uri uri = Uri(
+        scheme: Uri.parse(GlobalConfiguration().getString('base_url')).scheme,
+        host: Uri.parse(GlobalConfiguration().getString('base_url')).host,
+        port: Uri.parse(GlobalConfiguration().getString('base_url')).port,
+        path: _path + path);
+    return uri;
+  }
+
+  String trans(String text) {
     switch (text) {
       case "App\\Notifications\\StatusChangedOrder":
-        return S.current.order_status_changed;
+        return S.of(context).order_status_changed;
       case "App\\Notifications\\NewOrder":
-        return S.current.new_order_from_client;
+        return S.of(context).new_order_from_client;
+      case "km":
+        return S.of(context).km;
+      case "mi":
+        return S.of(context).mi;
       default:
         return "";
     }

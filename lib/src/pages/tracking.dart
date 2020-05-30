@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/i18n.dart';
+import '../../generated/l10n.dart';
 import '../controllers/tracking_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/OrderItemWidget.dart';
@@ -10,7 +11,7 @@ import '../helpers/helper.dart';
 import '../models/route_argument.dart';
 
 class TrackingWidget extends StatefulWidget {
-  RouteArgument routeArgument;
+  final RouteArgument routeArgument;
 
   TrackingWidget({Key key, this.routeArgument}) : super(key: key);
 
@@ -42,7 +43,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
           centerTitle: true,
           title: Text(
             S.of(context).tracking_order,
-            style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+            style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
           actions: <Widget>[
             new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
@@ -62,18 +63,66 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                             data: theme,
                             child: ExpansionTile(
                               initiallyExpanded: true,
-                              title: Row(
+                              title: Column(
                                 children: <Widget>[
-                                  Expanded(child: Text('${S.of(context).order_id}: #${_con.order.id}')),
+                                  Text('${S.of(context).order_id}: #${_con.order.id}'),
                                   Text(
                                     '${_con.order.orderStatus.status}',
                                     style: Theme.of(context).textTheme.caption,
                                   ),
                                 ],
+                                crossAxisAlignment: CrossAxisAlignment.start,
                               ),
-                              children: List.generate(_con.order.foodOrders.length, (indexFood) {
-                                return OrderItemWidget(heroTag: 'tracking_orders', order: _con.order, foodOrder: _con.order.foodOrders.elementAt(indexFood));
-                              }),
+                              trailing: Helper.getPrice(Helper.getTotalOrdersPrice(_con.order), context, style: Theme.of(context).textTheme.headline4),
+                              children: <Widget>[
+                                Column(
+                                    children: List.generate(
+                                  _con.order.foodOrders.length,
+                                  (indexFood) {
+                                    return OrderItemWidget(heroTag: 'my_orders', order: _con.order, foodOrder: _con.order.foodOrders.elementAt(indexFood));
+                                  },
+                                )),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                  child: Column(
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Text(
+                                              S.of(context).delivery_fee,
+                                              style: Theme.of(context).textTheme.bodyText1,
+                                            ),
+                                          ),
+                                          Helper.getPrice(_con.order.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Text(
+                                              '${S.of(context).tax} (${_con.order.tax}%)',
+                                              style: Theme.of(context).textTheme.bodyText1,
+                                            ),
+                                          ),
+                                          Helper.getPrice(Helper.getTaxOrder(_con.order), context, style: Theme.of(context).textTheme.subtitle1)
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Text(
+                                              S.of(context).total,
+                                              style: Theme.of(context).textTheme.bodyText1,
+                                            ),
+                                          ),
+                                          Helper.getPrice(Helper.getTotalOrdersPrice(_con.order), context, style: Theme.of(context).textTheme.headline4)
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                           Padding(
@@ -92,54 +141,51 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                               ),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  height: 55,
-                                  width: 55,
+                          _con.order.deliveryAddress?.address != null
+                              ? Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                                   decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                                      color: Theme.of(context).brightness == Brightness.light ? Colors.black38 : Theme.of(context).backgroundColor),
-                                  child: Icon(
-                                    Icons.place,
                                     color: Theme.of(context).primaryColor,
-                                    size: 38,
                                   ),
-                                ),
-                                SizedBox(width: 15),
-                                Flexible(
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            _con.order.deliveryAddress?.description ?? "",
-                                            overflow: TextOverflow.fade,
-                                            softWrap: false,
-                                            style: Theme.of(context).textTheme.subhead,
-                                          ),
-                                          Text(
-                                            _con.order.deliveryAddress?.address ?? "",
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2,
-                                            style: Theme.of(context).textTheme.caption,
-                                          ),
-                                        ],
+                                      Container(
+                                        height: 55,
+                                        width: 55,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(Radius.circular(5)),
+                                            color: Theme.of(context).brightness == Brightness.light ? Colors.black38 : Theme.of(context).backgroundColor),
+                                        child: Icon(
+                                          Icons.place,
+                                          color: Theme.of(context).primaryColor,
+                                          size: 38,
+                                        ),
                                       ),
+                                      SizedBox(width: 15),
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              _con.order.deliveryAddress?.description ?? "",
+                                              overflow: TextOverflow.fade,
+                                              softWrap: false,
+                                              style: Theme.of(context).textTheme.subtitle1,
+                                            ),
+                                            Text(
+                                              _con.order.deliveryAddress?.address ?? S.of(context).unknown,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                              style: Theme.of(context).textTheme.caption,
+                                            ),
+                                          ],
+                                        ),
+                                      )
                                     ],
                                   ),
                                 )
-                              ],
-                            ),
-                          ),
+                              : SizedBox(height: 0),
                           SizedBox(height: 30)
                         ],
                       ),
@@ -160,7 +206,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          Text(S.of(context).how_would_you_rate_this_restaurant_, style: Theme.of(context).textTheme.subhead),
+                          Text(S.of(context).how_would_you_rate_this_restaurant, style: Theme.of(context).textTheme.subtitle1),
                           Text(S.of(context).click_on_the_stars_below_to_leave_comments, style: Theme.of(context).textTheme.caption),
                           SizedBox(height: 5),
                           FlatButton(

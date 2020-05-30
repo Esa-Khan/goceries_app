@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
@@ -47,7 +47,7 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
                 height: config.App(context).appHeight(37),
                 child: Text(
                   S.of(context).email_to_reset_password,
-                  style: Theme.of(context).textTheme.display3.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                  style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: Theme.of(context).primaryColor)),
                 ),
               ),
             ),
@@ -120,7 +120,7 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
                       Navigator.of(context).pushReplacementNamed('/SignUp');
                     },
                     textColor: Theme.of(context).hintColor,
-                    child: Text(S.of(context).i_dont_have_an_account),
+                    child: Text(S.of(context).dont_have_an_account),
                   ),
                 ],
               ),

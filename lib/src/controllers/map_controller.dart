@@ -1,37 +1,32 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../helpers/app_config.dart' as config;
 import '../helpers/helper.dart';
 import '../helpers/maps_util.dart';
+import '../models/address.dart';
 import '../models/restaurant.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/settings_repository.dart' as sett;
 
 class MapController extends ControllerMVC {
   Restaurant currentRestaurant;
-  List<Restaurant> topRestaurants = <Restaurant>[];
+  List<Restaurant> closestStores = <Restaurant>[];
   List<Marker> allMarkers = <Marker>[];
-  LocationData currentLocation;
+  Address currentAddress;
   Set<Polyline> polylines = new Set();
   CameraPosition cameraPosition;
   MapsUtil mapsUtil = new MapsUtil();
   Completer<GoogleMapController> mapController = Completer();
 
-  MapController() {
-    getCurrentLocation();
-    getDirectionSteps();
-  }
-
-  void listenForNearRestaurants(LocationData myLocation, LocationData areaLocation) async {
+  void listenForNearRestaurants(Address myLocation, Address areaLocation) async {
     final Stream<Restaurant> stream = await getNearRestaurants(myLocation, areaLocation);
     stream.listen((Restaurant _restaurant) {
       setState(() {
-        topRestaurants.add(_restaurant);
+        closestStores.add(_restaurant);
       });
       Helper.getMarker(_restaurant.toMap()).then((marker) {
         setState(() {
@@ -43,14 +38,44 @@ class MapController extends ControllerMVC {
 
   void getCurrentLocation() async {
     try {
-      currentLocation = await sett.getCurrentLocation();
+      currentAddress = sett.deliveryAddress.value;
+      setState(() {
+        if (currentAddress.isUnknown()) {
+          cameraPosition = CameraPosition(
+            target: LatLng(40, 3),
+            zoom: 4,
+          );
+        } else {
+          cameraPosition = CameraPosition(
+            target: LatLng(currentAddress.latitude, currentAddress.longitude),
+            zoom: 14.4746,
+          );
+        }
+      });
+      if (!currentAddress.isUnknown()) {
+        Helper.getMyPositionMarker(currentAddress.latitude, currentAddress.longitude).then((marker) {
+          setState(() {
+            allMarkers.add(marker);
+          });
+        });
+      }
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        print('Permission denied');
+      }
+    }
+  }
+
+  void getRestaurantLocation() async {
+    try {
+      currentAddress = await sett.getCurrentLocation();
       setState(() {
         cameraPosition = CameraPosition(
           target: LatLng(double.parse(currentRestaurant.latitude), double.parse(currentRestaurant.longitude)),
           zoom: 14.4746,
         );
       });
-      Helper.getMyPositionMarker(currentLocation.latitude, currentLocation.longitude).then((marker) {
+      Helper.getMyPositionMarker(currentAddress.latitude, currentAddress.longitude).then((marker) {
         setState(() {
           allMarkers.add(marker);
         });
@@ -64,55 +89,59 @@ class MapController extends ControllerMVC {
 
   Future<void> goCurrentLocation() async {
     final GoogleMapController controller = await mapController.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-      target: LatLng(currentLocation.latitude, currentLocation.longitude),
-      zoom: 14.4746,
-    )));
+
+    sett.setCurrentLocation().then((_currentAddress) {
+      setState(() {
+        sett.deliveryAddress.value = _currentAddress;
+        currentAddress = _currentAddress;
+      });
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: LatLng(_currentAddress.latitude, _currentAddress.longitude),
+        zoom: 14.4746,
+      )));
+    });
   }
 
   void getRestaurantsOfArea() async {
     setState(() {
-      topRestaurants = <Restaurant>[];
-      LocationData areaLocation = LocationData.fromMap(
-          {"latitude": cameraPosition.target.latitude, "longitude": cameraPosition.target.longitude});
+      closestStores = <Restaurant>[];
+      Address areaAddress = Address.fromJSON({"latitude": cameraPosition.target.latitude, "longitude": cameraPosition.target.longitude});
       if (cameraPosition != null) {
-        listenForNearRestaurants(currentLocation, areaLocation);
+        listenForNearRestaurants(currentAddress, areaAddress);
       } else {
-        listenForNearRestaurants(currentLocation, currentLocation);
+        listenForNearRestaurants(currentAddress, currentAddress);
       }
     });
   }
 
   void getDirectionSteps() async {
-    currentLocation = await sett.getCurrentLocation();
+    currentAddress = await sett.getCurrentLocation();
     mapsUtil
         .get("origin=" +
-            currentLocation.latitude.toString() +
+            currentAddress.latitude.toString() +
             "," +
-            currentLocation.longitude.toString() +
+            currentAddress.longitude.toString() +
             "&destination=" +
             currentRestaurant.latitude +
             "," +
             currentRestaurant.longitude +
             "&key=${sett.setting.value?.googleMapsKey}")
         .then((dynamic res) {
-      List<LatLng> _latLng = res as List<LatLng>;
-      _latLng.insert(0, new LatLng(currentLocation.latitude, currentLocation.longitude));
-      setState(() {
-        polylines.add(new Polyline(
-            visible: true,
-            polylineId: new PolylineId(currentLocation.hashCode.toString()),
-            points: _latLng,
-            color: Color(0xFFea5c44),
-            width: 6));
-      });
+      if (res != null) {
+        List<LatLng> _latLng = res as List<LatLng>;
+        _latLng?.insert(0, new LatLng(currentAddress.latitude, currentAddress.longitude));
+        setState(() {
+          polylines.add(new Polyline(
+              visible: true, polylineId: new PolylineId(currentAddress.hashCode.toString()), points: _latLng, color: config.Colors().mainColor(0.8), width: 6));
+        });
+      }
     });
   }
 
   Future refreshMap() async {
     setState(() {
-      topRestaurants = <Restaurant>[];
+      closestStores = <Restaurant>[];
     });
-    listenForNearRestaurants(currentLocation, currentLocation);
+    listenForNearRestaurants(currentAddress, currentAddress);
   }
 }

@@ -4,8 +4,8 @@ import '../models/favorite.dart';
 import '../models/route_argument.dart';
 
 class FavoriteGridItemWidget extends StatelessWidget {
-  String heroTag;
-  Favorite favorite;
+  final String heroTag;
+  final Favorite favorite;
 
   FavoriteGridItemWidget({Key key, this.heroTag, this.favorite}) : super(key: key);
   @override
@@ -36,7 +36,7 @@ class FavoriteGridItemWidget extends StatelessWidget {
               SizedBox(height: 5),
               Text(
                 favorite.food.name,
-                style: Theme.of(context).textTheme.body2,
+                style: Theme.of(context).textTheme.bodyText1,
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 2),

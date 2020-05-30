@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../elements/CircularLoadingWidget.dart';
+import '../elements/CardsCarouselLoaderWidget.dart';
 import '../models/restaurant.dart';
 import '../models/route_argument.dart';
 import 'CardWidget.dart';
 
+// ignore: must_be_immutable
 class CardsCarouselWidget extends StatefulWidget {
   List<Restaurant> restaurantsList;
   String heroTag;
@@ -24,7 +25,7 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
   @override
   Widget build(BuildContext context) {
     return widget.restaurantsList.isEmpty
-        ? CircularLoadingWidget(height: 288)
+        ? CardsCarouselLoaderWidget()
         : Container(
             height: 288,
             child: ListView.builder(

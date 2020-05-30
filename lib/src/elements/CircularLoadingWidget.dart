@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 class CircularLoadingWidget extends StatefulWidget {
-  double height;
+  final double height;
 
   CircularLoadingWidget({Key key, this.height}) : super(key: key);
 

@@ -1,39 +1,49 @@
 import 'package:flutter/material.dart';
 
 import '../elements/DrawerWidget.dart';
+import '../elements/FilterWidget.dart';
+import '../models/route_argument.dart';
 import '../pages/favorites.dart';
 import '../pages/home.dart';
+import '../pages/map.dart';
 import '../pages/notifications.dart';
 import '../pages/orders.dart';
-import '../pages/profile.dart';
 
 // ignore: must_be_immutable
-class PagesTestWidget extends StatefulWidget {
-  int currentTab;
+class PagesWidget extends StatefulWidget {
+  dynamic currentTab;
+  RouteArgument routeArgument;
   Widget currentPage = HomeWidget();
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  PagesTestWidget({
+  PagesWidget({
     Key key,
     this.currentTab,
   }) {
-    currentTab = currentTab != null ? currentTab : 2;
+    if (currentTab != null) {
+      if (currentTab is RouteArgument) {
+        routeArgument = currentTab;
+        currentTab = int.parse(currentTab.id);
+      }
+    } else {
+      currentTab = 2;
+    }
   }
 
   @override
-  _PagesTestWidgetState createState() {
-    return _PagesTestWidgetState();
+  _PagesWidgetState createState() {
+    return _PagesWidgetState();
   }
 }
 
-class _PagesTestWidgetState extends State<PagesTestWidget> {
+class _PagesWidgetState extends State<PagesWidget> {
   initState() {
     super.initState();
     _selectTab(widget.currentTab);
   }
 
   @override
-  void didUpdateWidget(PagesTestWidget oldWidget) {
+  void didUpdateWidget(PagesWidget oldWidget) {
     _selectTab(oldWidget.currentTab);
     super.didUpdateWidget(oldWidget);
   }
@@ -46,7 +56,7 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
           widget.currentPage = NotificationsWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
         case 1:
-          widget.currentPage = ProfileWidget(parentScaffoldKey: widget.scaffoldKey);
+          widget.currentPage = MapWidget(parentScaffoldKey: widget.scaffoldKey, routeArgument: widget.routeArgument);
           break;
         case 2:
           widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey);
@@ -68,6 +78,9 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
       child: Scaffold(
         key: widget.scaffoldKey,
         drawer: DrawerWidget(),
+        endDrawer: FilterWidget(onFilter: (filter) {
+          Navigator.of(context).pushReplacementNamed('/Pages', arguments: widget.currentTab);
+        }),
         body: widget.currentPage,
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -90,7 +103,7 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
               title: new Container(height: 0.0),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: Icon(Icons.location_on),
               title: new Container(height: 0.0),
             ),
             BottomNavigationBarItem(

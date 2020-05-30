@@ -1,3 +1,7 @@
+import 'package:global_configuration/global_configuration.dart';
+
+import '../helpers/custom_trace.dart';
+
 class Media {
   String id;
   String name;
@@ -7,18 +11,26 @@ class Media {
   String size;
 
   Media() {
-    url = "";
-    thumb = "";
-    icon = "";
+    url = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+    thumb = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+    icon = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
   }
 
-  Media.fromJSON(Map<String, dynamic> jsonMap)
-      : id = jsonMap['id'].toString(),
-        name = jsonMap['name'],
-        url = jsonMap['url'],
-        thumb = jsonMap['thumb'],
-        icon = jsonMap['icon'],
-        size = jsonMap['formated_size'];
+  Media.fromJSON(Map<String, dynamic> jsonMap) {
+    try {
+      id = jsonMap['id'].toString();
+      name = jsonMap['name'];
+      url = jsonMap['url'];
+      thumb = jsonMap['thumb'];
+      icon = jsonMap['icon'];
+      size = jsonMap['formated_size'];
+    } catch (e) {
+      url = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+      thumb = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+      icon = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+      print(CustomTrace(StackTrace.current, message: e));
+    }
+  }
 
   Map toMap() {
     var map = new Map<String, dynamic>();

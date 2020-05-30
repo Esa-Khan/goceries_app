@@ -96,6 +96,5 @@ Future<Order> addOrder(Order order, Payment payment) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(params),
   );
-  print(response.body);
   return Order.fromJSON(json.decode(response.body)['data']);
 }

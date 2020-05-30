@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
@@ -49,7 +49,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
               height: config.App(context).appHeight(37),
               child: Text(
                 S.of(context).lets_start_with_login,
-                style: Theme.of(context).textTheme.display3.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                style: Theme.of(context).textTheme.headline2.merge(TextStyle(color: Theme.of(context).primaryColor)),
               ),
             ),
           ),
@@ -153,14 +153,14 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                     Navigator.of(context).pushReplacementNamed('/ForgetPassword');
                   },
                   textColor: Theme.of(context).hintColor,
-                  child: Text(S.of(context).i_forgot_password),
+                  child: Text(S.of(context).forgot_password),
                 ),
                 FlatButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed('/SignUp');
                   },
                   textColor: Theme.of(context).hintColor,
-                  child: Text(S.of(context).i_dont_have_an_account),
+                  child: Text(S.of(context).dont_have_an_account),
                 ),
               ],
             ),

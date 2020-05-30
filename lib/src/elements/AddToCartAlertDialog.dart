@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 
+import '../../generated/l10n.dart';
 import '../models/food.dart';
 
 typedef FoodBoolFunc = void Function(Food food, {bool reset});
@@ -75,7 +75,7 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                                 this.newFood.restaurant.name,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
-                                style: Theme.of(context).textTheme.subhead,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                               SizedBox(height: 8),
                               Text(
@@ -135,7 +135,7 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                                 this.oldFood.restaurant.name,
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
-                                style: Theme.of(context).textTheme.subhead,
+                                style: Theme.of(context).textTheme.subtitle1,
                               ),
                               SizedBox(height: 8),
                               Text(

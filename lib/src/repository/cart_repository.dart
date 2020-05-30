@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
+import '../helpers/custom_trace.dart';
 import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../models/user.dart';
@@ -20,7 +21,7 @@ Future<Stream<Cart>> getCart() async {
 
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
-
+  print(url);
   return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
     return Cart.fromJSON(data);
   });
@@ -61,7 +62,7 @@ Future<Cart> addCart(Cart cart, bool reset) async {
   try {
     decodedJSON = json.decode(response.body)['data'] as Map<String, dynamic>;
   } on FormatException catch (e) {
-    print("The provided string is not valid JSON addCart");
+    print(CustomTrace(StackTrace.current, message: e.toString()));
   }
   return Cart.fromJSON(decodedJSON);
 }

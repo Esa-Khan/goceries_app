@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../helpers/custom_trace.dart';
 import '../models/payment_method.dart';
 
 // ignore: must_be_immutable
@@ -17,7 +18,7 @@ class PaymentMethodListItemWidget extends StatelessWidget {
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
         Navigator.of(context).pushNamed(this.paymentMethod.route);
-        print(this.paymentMethod.name);
+        print(CustomTrace(StackTrace.current, message: this.paymentMethod.name));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -51,7 +52,7 @@ class PaymentMethodListItemWidget extends StatelessWidget {
                           paymentMethod.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.subhead,
+                          style: Theme.of(context).textTheme.subtitle1,
                         ),
                         Text(
                           paymentMethod.description,

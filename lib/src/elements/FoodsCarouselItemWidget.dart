@@ -6,9 +6,9 @@ import '../models/food.dart';
 import '../models/route_argument.dart';
 
 class FoodsCarouselItemWidget extends StatelessWidget {
-  double marginLeft;
-  Food food;
-  String heroTag;
+  final double marginLeft;
+  final Food food;
+  final String heroTag;
 
   FoodsCarouselItemWidget({Key key, this.heroTag, this.marginLeft, this.food}) : super(key: key);
 
@@ -54,7 +54,7 @@ class FoodsCarouselItemWidget extends StatelessWidget {
                 child: Helper.getPrice(
                   food.price,
                   context,
-                  style: Theme.of(context).textTheme.body2.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                  style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor)),
                 ),
               ),
             ],
@@ -69,7 +69,7 @@ class FoodsCarouselItemWidget extends StatelessWidget {
                     this.food.name,
                     overflow: TextOverflow.fade,
                     softWrap: false,
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                 ],
               )),

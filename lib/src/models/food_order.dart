@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/extra.dart';
 import '../models/food.dart';
 
@@ -8,7 +9,6 @@ class FoodOrder {
   List<Extra> extras;
   Food food;
   DateTime dateTime;
-
   FoodOrder();
 
   FoodOrder.fromJSON(Map<String, dynamic> jsonMap) {
@@ -16,11 +16,17 @@ class FoodOrder {
       id = jsonMap['id'].toString();
       price = jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0.0;
       quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
-      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : null;
+      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : [];
       dateTime = DateTime.parse(jsonMap['updated_at']);
-      extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : [];
+      extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : null;
     } catch (e) {
-      print(e);
+      id = '';
+      price = 0.0;
+      quantity = 0.0;
+      food = new Food();
+      dateTime = DateTime(0);
+      extras = [];
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../elements/CircularLoadingWidget.dart';
 import '../elements/FoodsCarouselItemWidget.dart';
+import '../elements/FoodsCarouselLoaderWidget.dart';
 import '../models/food.dart';
 
 class FoodsCarouselWidget extends StatelessWidget {
-  List<Food> foodsList;
-  String heroTag;
+  final List<Food> foodsList;
+  final String heroTag;
 
   FoodsCarouselWidget({Key key, this.foodsList, this.heroTag}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return foodsList.isEmpty
-        ? CircularLoadingWidget(height: 210)
+        ? FoodsCarouselLoaderWidget()
         : Container(
             height: 210,
             color: Theme.of(context).primaryColor,

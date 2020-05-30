@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../controllers/category_controller.dart';
 import '../elements/AddToCartAlertDialog.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/DrawerWidget.dart';
+import '../elements/FilterWidget.dart';
 import '../elements/FoodGridItemWidget.dart';
 import '../elements/FoodListItemWidget.dart';
 import '../elements/SearchBarWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../models/route_argument.dart';
+import '../repository/user_repository.dart';
 
 class CategoryWidget extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -23,7 +25,7 @@ class CategoryWidget extends StatefulWidget {
 
 class _CategoryWidgetState extends StateMVC<CategoryWidget> {
   // TODO add layout in configuration file
-  String layout = 'grid';
+  String layout = 'list';
 
   CategoryController _con;
 
@@ -44,13 +46,21 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
     return Scaffold(
       key: _con.scaffoldKey,
       drawer: DrawerWidget(),
+      endDrawer: FilterWidget(onFilter: (filter) {
+        Navigator.of(context).pushReplacementNamed('/Category', arguments: RouteArgument(id: widget.routeArgument.id));
+      }),
       appBar: AppBar(
+        leading: new IconButton(
+          icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
+          onPressed: () => _con.scaffoldKey.currentState.openDrawer(),
+        ),
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         title: Text(
           S.of(context).category,
-          style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 0)),
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 0)),
         ),
         actions: <Widget>[
           _con.loadCart
@@ -77,7 +87,9 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SearchBarWidget(),
+                child: SearchBarWidget(onClickFilter: (filter) {
+                  _con.scaffoldKey.currentState.openEndDrawer();
+                }),
               ),
               SizedBox(height: 10),
               Padding(
@@ -92,7 +104,7 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
                     _con.category?.name ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.display1,
+                    style: Theme.of(context).textTheme.headline4,
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -160,24 +172,28 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
                         // Generate 100 widgets that display their index in the List.
                         children: List.generate(_con.foods.length, (index) {
                           return FoodGridItemWidget(
-                              heroTag: 'favorites_grid',
+                              heroTag: 'category_grid',
                               food: _con.foods.elementAt(index),
                               onPressed: () {
-                                if (_con.isSameRestaurants(_con.foods.elementAt(index))) {
-                                  _con.addToCart(_con.foods.elementAt(index));
+                                if (currentUser.value.apiToken == null) {
+                                  Navigator.of(context).pushNamed('/Login');
                                 } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      // return object of type Dialog
-                                      return AddToCartAlertDialogWidget(
-                                          oldFood: _con.cart?.food,
-                                          newFood: _con.foods.elementAt(index),
-                                          onPressed: (food, {reset: true}) {
-                                            return _con.addToCart(_con.foods.elementAt(index), reset: true);
-                                          });
-                                    },
-                                  );
+                                  if (_con.isSameRestaurants(_con.foods.elementAt(index))) {
+                                    _con.addToCart(_con.foods.elementAt(index));
+                                  } else {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        // return object of type Dialog
+                                        return AddToCartAlertDialogWidget(
+                                            oldFood: _con.carts.elementAt(0)?.food,
+                                            newFood: _con.foods.elementAt(index),
+                                            onPressed: (food, {reset: true}) {
+                                              return _con.addToCart(_con.foods.elementAt(index), reset: true);
+                                            });
+                                      },
+                                    );
+                                  }
                                 }
                               });
                         }),

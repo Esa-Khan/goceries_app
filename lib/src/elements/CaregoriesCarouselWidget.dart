@@ -4,6 +4,7 @@ import '../elements/CategoriesCarouselItemWidget.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../models/category.dart';
 
+// ignore: must_be_immutable
 class CategoriesCarouselWidget extends StatelessWidget {
   List<Category> categories;
 

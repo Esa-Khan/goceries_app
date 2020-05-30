@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/i18n.dart';
+import '../../generated/l10n.dart';
 import '../models/order.dart';
 import '../repository/order_repository.dart';
 
@@ -23,7 +23,7 @@ class ProfileController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -36,6 +36,6 @@ class ProfileController extends ControllerMVC {
 
   Future<void> refreshProfile() async {
     recentOrders.clear();
-    listenForRecentOrders(message: S.current.orders_refreshed_successfuly);
+    listenForRecentOrders(message: S.of(context).orders_refreshed_successfuly);
   }
 }

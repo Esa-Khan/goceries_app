@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/i18n.dart';
+import '../../generated/l10n.dart';
 import '../models/cart.dart';
 import '../models/credit_card.dart';
 import '../models/food_order.dart';
@@ -12,7 +12,6 @@ import '../models/order_status.dart';
 import '../models/payment.dart';
 import '../repository/cart_repository.dart';
 import '../repository/order_repository.dart' as orderRepo;
-import '../repository/settings_repository.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 
@@ -48,7 +47,7 @@ class CheckoutController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       calculateSubtotal();
@@ -66,11 +65,12 @@ class CheckoutController extends ControllerMVC {
   void addOrder(List<Cart> carts) async {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
-    _order.tax = setting.value.defaultTax;
+    _order.tax = carts[0].food.restaurant.defaultTax;
+    _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].food.restaurant.deliveryFee;
     OrderStatus _orderStatus = new OrderStatus();
     _orderStatus.id = '1'; // TODO default order status Id
     _order.orderStatus = _orderStatus;
-    _order.deliveryAddress = userRepo.deliveryAddress;
+    _order.deliveryAddress = settingRepo.deliveryAddress.value;
     carts.forEach((_cart) {
       FoodOrder _foodOrder = new FoodOrder();
       _foodOrder.quantity = _cart.quantity;
@@ -90,11 +90,14 @@ class CheckoutController extends ControllerMVC {
 
   void calculateSubtotal() async {
     subTotal = 0;
+    deliveryFee = 0;
     carts.forEach((cart) {
       subTotal += cart.quantity * cart.food.price;
     });
-    deliveryFee = carts[0].food.restaurant.deliveryFee;
-    taxAmount = (subTotal + deliveryFee) * settingRepo.setting.value.defaultTax / 100;
+    if (payment?.method != 'Pay on Pickup') {
+      deliveryFee = carts[0].food.restaurant.deliveryFee;
+    }
+    taxAmount = (subTotal + deliveryFee) * carts[0].food.restaurant.defaultTax / 100;
     total = subTotal + taxAmount + deliveryFee;
     setState(() {});
   }
@@ -103,7 +106,7 @@ class CheckoutController extends ControllerMVC {
     userRepo.setCreditCard(creditCard).then((value) {
       setState(() {});
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('Payment card updated successfully'),
+        content: Text(S.of(context).payment_card_updated_successfully),
       ));
     });
   }

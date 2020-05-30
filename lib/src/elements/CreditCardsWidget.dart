@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../generated/l10n.dart';
 import '../elements/PaymentSettingsDialog.dart';
 import '../helpers/helper.dart';
 import '../models/credit_card.dart';
 
+// ignore: must_be_immutable
 class CreditCardsWidget extends StatelessWidget {
   CreditCard creditCard;
   ValueChanged<CreditCard> onChanged;
@@ -81,23 +83,23 @@ class CreditCardsWidget extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  'CARD NUMBER',
+                  S.of(context).card_number,
                   style: Theme.of(context).textTheme.caption,
                 ),
                 Text(
                   Helper.getCreditCardNumber(creditCard.number),
-                  style: Theme.of(context).textTheme.body2.merge(TextStyle(letterSpacing: 1.4)),
+                  style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                 ),
                 SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'EXPIRY DATE',
+                      S.of(context).expiry_date,
                       style: Theme.of(context).textTheme.caption,
                     ),
                     Text(
-                      'CVV',
+                      S.of(context).cvv,
                       style: Theme.of(context).textTheme.caption,
                     ),
                   ],
@@ -107,11 +109,11 @@ class CreditCardsWidget extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       '${creditCard.expMonth}/${creditCard.expYear}',
-                      style: Theme.of(context).textTheme.body2.merge(TextStyle(letterSpacing: 1.4)),
+                      style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                     ),
                     Text(
                       creditCard.cvc,
-                      style: Theme.of(context).textTheme.body2.merge(TextStyle(letterSpacing: 1.4)),
+                      style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                     ),
                   ],
                 )

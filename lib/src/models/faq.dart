@@ -1,3 +1,5 @@
+import '../helpers/custom_trace.dart';
+
 class Faq {
   String id;
   String question;
@@ -6,8 +8,15 @@ class Faq {
   Faq();
 
   Faq.fromJSON(Map<String, dynamic> jsonMap) {
-    id = jsonMap['id'].toString();
-    question = jsonMap['question'] != null ? jsonMap['question'] : '';
-    answer = jsonMap['answer'] != null ? jsonMap['answer'] : '';
+    try {
+      id = jsonMap['id'].toString();
+      question = jsonMap['question'] != null ? jsonMap['question'] : '';
+      answer = jsonMap['answer'] != null ? jsonMap['answer'] : '';
+    } catch (e) {
+      id = '';
+      question = '';
+      answer = '';
+      print(CustomTrace(StackTrace.current, message: e));
+    }
   }
 }

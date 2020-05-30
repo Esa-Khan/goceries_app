@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/i18n.dart';
+import '../../generated/l10n.dart';
 import '../models/food.dart';
 import '../models/order.dart';
 import '../models/order_status.dart';
@@ -33,7 +33,7 @@ class ReviewsController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       getFoodsOfOrder();
@@ -48,7 +48,7 @@ class ReviewsController extends ControllerMVC {
   void addFoodReview(Review _review, Food _food) async {
     foodRepo.addFoodReview(_review, _food).then((value) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.the_food_has_been_rated_successfully),
+        content: Text(S.of(context).the_food_has_been_rated_successfully),
       ));
     });
   }
@@ -57,13 +57,13 @@ class ReviewsController extends ControllerMVC {
     restaurantRepo.addRestaurantReview(_review, this.order.foodOrders[0].food.restaurant).then((value) {
       refreshOrder();
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.the_restaurant_has_been_rated_successfully),
+        content: Text(S.of(context).the_restaurant_has_been_rated_successfully),
       ));
     });
   }
 
   Future<void> refreshOrder() async {
-    listenForOrder(orderId: order.id, message: S.current.reviews_refreshed_successfully);
+    listenForOrder(orderId: order.id, message: S.of(context).reviews_refreshed_successfully);
   }
 
   void getFoodsOfOrder() {

@@ -73,7 +73,7 @@ class _LanguageItemWidgetState extends State<LanguageItemWidget> with SingleTick
           animationController.forward();
         }
         settingRepo.setting.value.mobileLanguage.value = new Locale(widget.language.code, '');
-        settingRepo.setting.notifyListeners();
+        // settingRepo.setting.notifyListeners();
         //settingRepo.locale.notifyListeners();
         //widget.language.selected = !widget.language.selected;
       },
@@ -126,7 +126,7 @@ class _LanguageItemWidgetState extends State<LanguageItemWidget> with SingleTick
                     widget.language.englishName,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
-                    style: Theme.of(context).textTheme.subhead,
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                   Text(
                     widget.language.localName,

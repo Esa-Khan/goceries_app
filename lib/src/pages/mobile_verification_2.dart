@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 
+import '../../generated/l10n.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
 
@@ -21,13 +21,13 @@ class MobileVerification2 extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Verify Your Account',
-                    style: Theme.of(context).textTheme.headline,
+                    style: Theme.of(context).textTheme.headline5,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),
                   Text(
                     'We are sending OTP to validate your mobile number. Hang on!',
-                    style: Theme.of(context).textTheme.body1,
+                    style: Theme.of(context).textTheme.bodyText2,
                     textAlign: TextAlign.center,
                   ),
                 ],
@@ -35,7 +35,7 @@ class MobileVerification2 extends StatelessWidget {
             ),
             SizedBox(height: 50),
             TextField(
-              style: Theme.of(context).textTheme.headline,
+              style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.center,
               decoration: new InputDecoration(
                 enabledBorder: UnderlineInputBorder(
@@ -61,7 +61,8 @@ class MobileVerification2 extends StatelessWidget {
                 Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
               },
               color: Theme.of(context).accentColor,
-              text: Text(S.of(context).verify.toUpperCase(), style: Theme.of(context).textTheme.title.merge(TextStyle(color: Theme.of(context).primaryColor))),
+              text: Text(S.of(context).verify.toUpperCase(),
+                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).primaryColor))),
             ),
           ],
         ),

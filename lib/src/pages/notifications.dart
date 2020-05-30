@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/i18n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
+import '../../generated/l10n.dart';
 import '../controllers/notification_controller.dart';
 import '../elements/EmptyNotificationsWidget.dart';
 import '../elements/NotificationItemWidget.dart';
@@ -38,8 +38,8 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S.of(context).shopping_list,
-          style: Theme.of(context).textTheme.title.merge(TextStyle(letterSpacing: 1.3)),
+          S.of(context).notifications,
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
@@ -67,10 +67,10 @@ class _NotificationsWidgetState extends StateMVC<NotificationsWidget> {
                                 color: Theme.of(context).hintColor,
                               ),
                               title: Text(
-                                S.of(context).shopping_list,
+                                S.of(context).notifications,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: Theme.of(context).textTheme.display1,
+                                style: Theme.of(context).textTheme.headline4,
                               ),
                             ),
                           ),

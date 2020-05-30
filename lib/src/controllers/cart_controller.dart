@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/i18n.dart';
+import '../../generated/l10n.dart';
 import '../models/cart.dart';
 import '../repository/cart_repository.dart';
-import '../repository/settings_repository.dart' as settingRepo;
+import '../repository/user_repository.dart';
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
@@ -30,10 +30,12 @@ class CartController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
-      calculateSubtotal();
+      if (carts.isNotEmpty) {
+        calculateSubtotal();
+      }
       if (message != null) {
         scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(message),
@@ -51,13 +53,13 @@ class CartController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     });
   }
 
   Future<void> refreshCarts() async {
-    listenForCarts(message: S.current.carts_refreshed_successfuly);
+    listenForCarts(message: S.of(context).carts_refreshed_successfuly);
   }
 
   void removeFromCart(Cart _cart) async {
@@ -66,7 +68,7 @@ class CartController extends ControllerMVC {
     });
     removeCart(_cart).then((value) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.the_food_was_removed_from_your_cart(_cart.food.name)),
+        content: Text(S.of(context).the_food_was_removed_from_your_cart(_cart.food.name)),
       ));
     });
   }
@@ -77,7 +79,7 @@ class CartController extends ControllerMVC {
       subTotal += cart.quantity * cart.food.price;
     });
     deliveryFee = carts[0].food.restaurant.deliveryFee;
-    taxAmount = (subTotal + deliveryFee) * settingRepo.setting.value.defaultTax / 100;
+    taxAmount = (subTotal + deliveryFee) * carts[0].food.restaurant.defaultTax / 100;
     total = subTotal + taxAmount + deliveryFee;
     setState(() {});
   }
@@ -95,6 +97,29 @@ class CartController extends ControllerMVC {
       --cart.quantity;
       updateCart(cart);
       calculateSubtotal();
+    }
+  }
+
+  void goCheckout(BuildContext context) {
+    if (!currentUser.value.profileCompleted()) {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Complete your profile details to continue'),
+        action: SnackBarAction(
+          label: S.of(context).settings,
+          textColor: Theme.of(context).accentColor,
+          onPressed: () {
+            Navigator.of(context).pushNamed('/Settings');
+          },
+        ),
+      ));
+    } else {
+      if (carts[0].food.restaurant.closed) {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).this_restaurant_is_closed_),
+        ));
+      } else {
+        Navigator.of(context).pushNamed('/DeliveryPickup');
+      }
     }
   }
 }

@@ -1,3 +1,4 @@
+import '../helpers/custom_trace.dart';
 import '../models/address.dart';
 import '../models/food_order.dart';
 import '../models/order_status.dart';
@@ -30,7 +31,16 @@ class Order {
       deliveryAddress = jsonMap['delivery_address'] != null ? Address.fromJSON(jsonMap['delivery_address']) : new Address();
       foodOrders = jsonMap['food_orders'] != null ? List.from(jsonMap['food_orders']).map((element) => FoodOrder.fromJSON(element)).toList() : [];
     } catch (e) {
-      print(e);
+      id = '';
+      tax = 0.0;
+      deliveryFee = 0.0;
+      hint = '';
+      orderStatus = new OrderStatus();
+      dateTime = DateTime(0);
+      user = new User();
+      deliveryAddress = new Address();
+      foodOrders = [];
+      print(CustomTrace(StackTrace.current, message: e));
     }
   }
 
@@ -40,17 +50,10 @@ class Order {
     map["user_id"] = user?.id;
     map["order_status_id"] = orderStatus?.id;
     map["tax"] = tax;
-    map["delivery_fee"] = foodOrders[0].food.restaurant.deliveryFee;
+    map["delivery_fee"] = deliveryFee;
     map["foods"] = foodOrders.map((element) => element.toMap()).toList();
     map["payment"] = payment.toMap();
-    map["delivery_address_id"] = deliveryAddress?.id ?? null;
-    return map;
-  }
-
-  Map deliveredMap() {
-    var map = new Map<String, dynamic>();
-    map["id"] = id;
-    map["order_status_id"] = 5;
+    if (deliveryAddress?.id != null && deliveryAddress?.id != 'null') map["delivery_address_id"] = deliveryAddress.id;
     return map;
   }
 }

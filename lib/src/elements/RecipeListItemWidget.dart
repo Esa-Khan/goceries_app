@@ -24,7 +24,7 @@ class RecipeListItemWidget extends StatelessWidget {
                 'Gluten-free spaghetti with tomatoes',
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
-                style: Theme.of(context).textTheme.title.merge(TextStyle(color: Theme.of(context).hintColor)),
+                style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).hintColor)),
               ),
               Text(
                 '15 min video',

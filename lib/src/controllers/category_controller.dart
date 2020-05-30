@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/i18n.dart';
+import '../../generated/l10n.dart';
 import '../models/cart.dart';
 import '../models/category.dart';
 import '../models/food.dart';
@@ -14,7 +14,7 @@ class CategoryController extends ControllerMVC {
   GlobalKey<ScaffoldState> scaffoldKey;
   Category category;
   bool loadCart = false;
-  Cart cart;
+  List<Cart> carts = [];
 
   CategoryController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -28,7 +28,7 @@ class CategoryController extends ControllerMVC {
       });
     }, onError: (a) {
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -46,7 +46,7 @@ class CategoryController extends ControllerMVC {
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text(S.current.verify_your_internet_connection),
+        content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       if (message != null) {
@@ -57,16 +57,16 @@ class CategoryController extends ControllerMVC {
     });
   }
 
-  void listenForCart() async {
+  Future<void> listenForCart() async {
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
-      cart = _cart;
+      carts.add(_cart);
     });
   }
 
   bool isSameRestaurants(Food food) {
-    if (cart != null) {
-      return cart.food?.restaurant?.id == food.restaurant.id;
+    if (carts.isNotEmpty) {
+      return carts[0].food?.restaurant?.id == food.restaurant?.id;
     }
     return true;
   }
@@ -75,24 +75,47 @@ class CategoryController extends ControllerMVC {
     setState(() {
       this.loadCart = true;
     });
-    var _cart = new Cart();
-    _cart.food = food;
-    _cart.extras = [];
-    _cart.quantity = 1;
-    addCart(_cart, reset).then((value) {
-      setState(() {
-        this.loadCart = false;
+    var _newCart = new Cart();
+    _newCart.food = food;
+    _newCart.extras = [];
+    _newCart.quantity = 1;
+    // if food exist in the cart then increment quantity
+    var _oldCart = isExistInCart(_newCart);
+    if (_oldCart != null) {
+      _oldCart.quantity++;
+      updateCart(_oldCart).then((value) {
+        setState(() {
+          this.loadCart = false;
+        });
+      }).whenComplete(() {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).this_food_was_added_to_cart),
+        ));
       });
-      scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text('This food was added to cart'),
-      ));
-    });
+    } else {
+      // the food doesnt exist in the cart add new one
+      addCart(_newCart, reset).then((value) {
+        setState(() {
+          this.loadCart = false;
+        });
+      }).whenComplete(() {
+        if (reset) carts.clear();
+        carts.add(_newCart);
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).this_food_was_added_to_cart),
+        ));
+      });
+    }
+  }
+
+  Cart isExistInCart(Cart _cart) {
+    return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart), orElse: () => null);
   }
 
   Future<void> refreshCategory() async {
     foods.clear();
     category = new Category();
-    listenForFoodsByCategory(message: S.current.category_refreshed_successfuly);
-    listenForCategory(message: S.current.category_refreshed_successfuly);
+    listenForFoodsByCategory(message: S.of(context).category_refreshed_successfuly);
+    listenForCategory(message: S.of(context).category_refreshed_successfuly);
   }
 }

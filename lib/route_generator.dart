@@ -6,24 +6,24 @@ import 'src/pages/category.dart';
 import 'src/pages/checkout.dart';
 import 'src/pages/debug.dart';
 import 'src/pages/delivery_addresses.dart';
+import 'src/pages/delivery_pickup.dart';
 import 'src/pages/details.dart';
 import 'src/pages/food.dart';
 import 'src/pages/forget_password.dart';
 import 'src/pages/help.dart';
 import 'src/pages/languages.dart';
 import 'src/pages/login.dart';
-import 'src/pages/map.dart';
 import 'src/pages/menu_list.dart';
 import 'src/pages/order_success.dart';
 import 'src/pages/pages.dart';
 import 'src/pages/payment_methods.dart';
 import 'src/pages/paypal_payment.dart';
+import 'src/pages/profile.dart';
 import 'src/pages/reviews.dart';
 import 'src/pages/settings.dart';
 import 'src/pages/signup.dart';
 import 'src/pages/splash_screen.dart';
 import 'src/pages/tracking.dart';
-import 'src/pages/walkthrough.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -32,8 +32,6 @@ class RouteGenerator {
     switch (settings.name) {
       case '/Debug':
         return MaterialPageRoute(builder: (_) => DebugWidget(routeArgument: args as RouteArgument));
-      case '/Walkthrough':
-        return MaterialPageRoute(builder: (_) => Walkthrough());
       case '/Splash':
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case '/SignUp':
@@ -44,14 +42,14 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SignUpWidget());
       case '/Login':
         return MaterialPageRoute(builder: (_) => LoginWidget());
+      case '/Profile':
+        return MaterialPageRoute(builder: (_) => ProfileWidget());
       case '/ForgetPassword':
         return MaterialPageRoute(builder: (_) => ForgetPasswordWidget());
       case '/Pages':
-        return MaterialPageRoute(builder: (_) => PagesTestWidget(currentTab: args));
+        return MaterialPageRoute(builder: (_) => PagesWidget(currentTab: args));
       case '/Details':
         return MaterialPageRoute(builder: (_) => DetailsWidget(routeArgument: args as RouteArgument));
-      case '/Map':
-        return MaterialPageRoute(builder: (_) => MapWidget(routeArgument: args as RouteArgument));
       case '/Menu':
         return MaterialPageRoute(builder: (_) => MenuWidget(routeArgument: args as RouteArgument));
       case '/Food':
@@ -68,6 +66,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PaymentMethodsWidget());
       case '/DeliveryAddresses':
         return MaterialPageRoute(builder: (_) => DeliveryAddressesWidget());
+      case '/DeliveryPickup':
+        return MaterialPageRoute(builder: (_) => DeliveryPickupWidget(routeArgument: args as RouteArgument));
       case '/Checkout':
         return MaterialPageRoute(builder: (_) => CheckoutWidget());
       case '/CashOnDelivery':
@@ -86,20 +86,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SettingsWidget());
       default:
         // If there is no such named route in the switch statement, e.g. /third
-        return MaterialPageRoute(builder: (_) => PagesTestWidget(currentTab: 2));
+        return MaterialPageRoute(builder: (_) => Scaffold(body: SafeArea(child: Text('Route Error'))));
     }
-  }
-
-  static Route<dynamic> _errorRoute() {
-    return MaterialPageRoute(builder: (_) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Text('Error'),
-        ),
-        body: Center(
-          child: Text('ERROR'),
-        ),
-      );
-    });
   }
 }
