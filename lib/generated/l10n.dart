@@ -29,7 +29,7 @@ class S {
 
   String get search_for_stores_or_items {
     return Intl.message(
-      'Search for nearby stores',
+      'Search for items or nearby stores',
       name: 'search_for_stores_or_items',
       desc: '',
       args: [],

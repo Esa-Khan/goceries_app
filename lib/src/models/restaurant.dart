@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../helpers/custom_trace.dart';
 import '../models/media.dart';
 
@@ -81,8 +83,23 @@ class Restaurant {
   bool isClosed(String desc){
     bool closed = true;
     var now = new DateTime.now().hour;
-    var arr = desc.split('-');
-    if (now > int.parse(arr[0]) && now < int.parse(arr[1])){
+    var times = desc.toString().replaceAll(" ", "").replaceAll("m", "").split('-');
+    var openTime = -1, closeTime = -1;
+
+    if (times[0].endsWith('a') || (times[1].contains("12") && times[1].endsWith("p"))){
+      openTime = int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
+    } else if (times[0].endsWith('p') || (times[1].contains("12") && times[1].endsWith("a"))) {
+      openTime = 12 + int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
+    }
+
+    if (times[1].endsWith('p') || (times[1].contains("12") && times[1].endsWith("a"))){
+      closeTime = 12 + int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
+    } else if (times[0].endsWith('a') || (times[1].contains("12") && times[1].endsWith("p"))) {
+      closeTime = int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
+    }
+
+
+    if (now > openTime && now < closeTime){
       closed = false;
     }
 
