@@ -37,7 +37,8 @@ class _CartItemWidgetState extends State<CartItemWidget> {
           Navigator.of(context).pushNamed('/Food', arguments: RouteArgument(id: widget.cart.food.id, heroTag: widget.heroTag));
         },
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+//          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+          padding: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor.withOpacity(0.9),
             boxShadow: [

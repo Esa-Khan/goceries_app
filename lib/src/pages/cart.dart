@@ -67,7 +67,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                       margin: EdgeInsets.only(bottom: 165),
                       padding: EdgeInsets.only(bottom: 15),
                       child: SingleChildScrollView(
-                        padding: EdgeInsets.symmetric(vertical: 10),
+//                        padding: EdgeInsets.symmetric(vertical: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -96,7 +96,6 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                               ),
                             ),
                             ListView.separated(
-                              padding: EdgeInsets.symmetric(vertical: 15),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               primary: false,
