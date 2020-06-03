@@ -172,7 +172,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                                   Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
                                 ],
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 25),
                               Stack(
                                 fit: StackFit.loose,
                                 alignment: AlignmentDirectional.centerEnd,
