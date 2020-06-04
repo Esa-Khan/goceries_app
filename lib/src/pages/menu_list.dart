@@ -64,23 +64,23 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SearchBarWidget(),
             ),
-            ListTile(
-              dense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              leading: Icon(
-                Icons.trending_up,
-                color: Theme.of(context).hintColor,
-              ),
-              title: Text(
-                S.of(context).trending_this_week,
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              subtitle: Text(
-                S.of(context).double_click_on_the_food_to_add_it_to_the,
-                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
-              ),
-            ),
-            FoodsCarouselWidget(heroTag: 'menu_trending_food', foodsList: _con.trendingFoods),
+//            ListTile(
+//              dense: true,
+//              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//              leading: Icon(
+//                Icons.trending_up,
+//                color: Theme.of(context).hintColor,
+//              ),
+//              title: Text(
+//                S.of(context).trending_this_week,
+//                style: Theme.of(context).textTheme.headline4,
+//              ),
+//              subtitle: Text(
+//                S.of(context).double_click_on_the_food_to_add_it_to_the,
+//                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
+//              ),
+//            ),
+//            FoodsCarouselWidget(heroTag: 'menu_trending_food', foodsList: _con.trendingFoods),
             ListTile(
               dense: true,
               contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

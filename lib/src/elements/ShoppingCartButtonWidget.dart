@@ -50,18 +50,18 @@ class _ShoppingCartButtonWidgetState extends StateMVC<ShoppingCartButtonWidget> 
             color: this.widget.iconColor,
             size: 28,
           ),
-          Container(
-            child: Text(
-              _con.cartCount.toString(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.caption.merge(
-                    TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),
-                  ),
-            ),
-            padding: EdgeInsets.all(0),
-            decoration: BoxDecoration(color: this.widget.labelColor, borderRadius: BorderRadius.all(Radius.circular(10))),
-            constraints: BoxConstraints(minWidth: 15, maxWidth: 15, minHeight: 15, maxHeight: 15),
-          ),
+//          Container(
+//            child: Text(
+//              _con.cartCount.toString(),
+//              textAlign: TextAlign.center,
+//              style: Theme.of(context).textTheme.caption.merge(
+//                    TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),
+//                  ),
+//            ),
+//            padding: EdgeInsets.all(0),
+//            decoration: BoxDecoration(color: this.widget.labelColor, borderRadius: BorderRadius.all(Radius.circular(10))),
+//            constraints: BoxConstraints(minWidth: 15, maxWidth: 15, minHeight: 15, maxHeight: 15),
+//          ),
         ],
       ),
       color: Colors.transparent,

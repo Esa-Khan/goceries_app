@@ -81,6 +81,8 @@ class Restaurant {
   }
 
   bool isClosed(String desc){
+    if (desc == null) return true;
+
     bool closed = true;
     var now = new DateTime.now().hour;
     var times = desc.toString().replaceAll(" ", "").replaceAll("m", "").split('-');
