@@ -26,7 +26,8 @@ class MapController extends ControllerMVC {
     final Stream<Restaurant> stream = await getNearStores(myLocation, areaLocation);
     stream.listen((Restaurant _restaurant) {
       setState(() {
-        closestStores.add(_restaurant);
+        if (_restaurant.distance < _restaurant.deliveryRange)
+          closestStores.add(_restaurant);
       });
       Helper.getMarker(_restaurant.toMap()).then((marker) {
         setState(() {
