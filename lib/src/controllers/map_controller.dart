@@ -23,7 +23,7 @@ class MapController extends ControllerMVC {
   Completer<GoogleMapController> mapController = Completer();
 
   void listenForNearRestaurants(Address myLocation, Address areaLocation) async {
-    final Stream<Restaurant> stream = await getNearRestaurants(myLocation, areaLocation);
+    final Stream<Restaurant> stream = await getNearStores(myLocation, areaLocation);
     stream.listen((Restaurant _restaurant) {
       setState(() {
         closestStores.add(_restaurant);

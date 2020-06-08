@@ -19,7 +19,7 @@ class HomeController extends ControllerMVC {
   List<Food> trendingFoods = <Food>[];
 
   HomeController() {
-    listenForTopRestaurants();
+    listenForClosestStores();
     listenForTrendingFoods();
     listenForCategories();
     listenForPopularRestaurants();
@@ -35,8 +35,8 @@ class HomeController extends ControllerMVC {
     }, onDone: () {});
   }
 
-  Future<void> listenForTopRestaurants() async {
-    final Stream<Restaurant> stream = await getNearRestaurants(deliveryAddress.value, deliveryAddress.value);
+  Future<void> listenForClosestStores() async {
+    final Stream<Restaurant> stream = await getNearStores(deliveryAddress.value, deliveryAddress.value);
     stream.listen((Restaurant _restaurant) {
       setState(() => closestStores.add(_restaurant));
     }, onError: (a) {}, onDone: () {});
@@ -85,7 +85,7 @@ class HomeController extends ControllerMVC {
       recentReviews = <Review>[];
       trendingFoods = <Food>[];
     });
-    await listenForTopRestaurants();
+    await listenForClosestStores();
     await listenForTrendingFoods();
     await listenForCategories();
     await listenForPopularRestaurants();
