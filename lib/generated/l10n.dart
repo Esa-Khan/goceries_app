@@ -630,10 +630,10 @@ class S {
     );
   }
 
-  String get lets_start_with_register {
+  String get register_a_new_account {
     return Intl.message(
-      'Let\'s Start with register!',
-      name: 'lets_start_with_register',
+      'Register a new account!',
+      name: 'register_a_new_account',
       desc: '',
       args: [],
     );
@@ -643,6 +643,15 @@ class S {
     return Intl.message(
       'Should be more than 3 letters',
       name: 'should_be_more_than_3_letters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get passwords_dont_match {
+    return Intl.message(
+      'Passwords don\'t match',
+      name: 'passwords_dont_match',
       desc: '',
       args: [],
     );
@@ -668,7 +677,7 @@ class S {
 
   String get should_be_more_than_6_letters {
     return Intl.message(
-      'Should be more than 6 letters',
+      'Password should be more than 6 letters',
       name: 'should_be_more_than_6_letters',
       desc: '',
       args: [],
@@ -684,9 +693,18 @@ class S {
     );
   }
 
+  String get confirm_password {
+    return Intl.message(
+      'Confirm Password',
+      name: 'confirm_password',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get i_have_account_back_to_login {
     return Intl.message(
-      'I have account? Back to login',
+      'Have an account? Back to login',
       name: 'i_have_account_back_to_login',
       desc: '',
       args: [],
@@ -767,7 +785,7 @@ class S {
 
   String get lets_start_with_login {
     return Intl.message(
-      'Let\'s Start with Login!',
+      'Let\'s start by logging in!',
       name: 'lets_start_with_login',
       desc: '',
       args: [],

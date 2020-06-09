@@ -68,7 +68,7 @@
   "english": "Inglés",
   "help_support": "Servicio de asistencia",
   "register": "Registro",
-  "lets_start_with_register": "¡Comencemos con el registro!",
+  "register_a_new_account": "¡Comencemos con el registro!",
   "should_be_more_than_3_letters": "Debe tener más de 3 letras.",
   "john_doe": "John Doe",
   "should_be_a_valid_email": "Debería ser un correo electrónico válido",

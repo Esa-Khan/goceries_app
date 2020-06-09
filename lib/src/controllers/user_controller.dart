@@ -54,7 +54,7 @@ class UserController extends ControllerMVC {
 
   void register() async {
     FocusScope.of(context).unfocus();
-    if (loginFormKey.currentState.validate()) {
+    if (loginFormKey.currentState.validate() && user.password == user.confirm_password) {
       loginFormKey.currentState.save();
       Overlay.of(context).insert(loader);
       repository.register(user).then((value) {
