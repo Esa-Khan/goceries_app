@@ -117,23 +117,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                 ),
               ),
               CardsCarouselWidget(restaurantsList: _con.closestStores, heroTag: 'home_top_restaurants'),
-              ListTile(
-                dense: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                leading: Icon(
-                  Icons.trending_up,
-                  color: Theme.of(context).hintColor,
-                ),
-                title: Text(
-                  S.of(context).trending_this_week,
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                subtitle: Text(
-                  S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
-                  style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
-                ),
-              ),
-              FoodsCarouselWidget(foodsList: _con.trendingFoods, heroTag: 'home_food_carousel'),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListTile(
@@ -151,47 +134,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               ),
               CategoriesCarouselWidget(
                 categories: _con.categories,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                child: ListTile(
-                  dense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 0),
-                  leading: Icon(
-                    Icons.trending_up,
-                    color: Theme.of(context).hintColor,
-                  ),
-                  title: Text(
-                    S.of(context).most_popular,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: GridWidget(
-                  restaurantsList: _con.popularRestaurants,
-                  heroTag: 'home_restaurants',
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ListTile(
-                  dense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 20),
-                  leading: Icon(
-                    Icons.recent_actors,
-                    color: Theme.of(context).hintColor,
-                  ),
-                  title: Text(
-                    S.of(context).recent_reviews,
-                    style: Theme.of(context).textTheme.headline4,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: ReviewsListWidget(reviewsList: _con.recentReviews),
               ),
             ],
           ),
