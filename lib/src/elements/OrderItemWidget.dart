@@ -192,7 +192,8 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
           margin: EdgeInsetsDirectional.only(start: 20),
           padding: EdgeInsets.symmetric(horizontal: 10),
           height: 28,
-          width: 140,
+//          width: 140,
+          width: 190,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.active ? Theme.of(context).accentColor : Colors.redAccent),
           alignment: AlignmentDirectional.center,
