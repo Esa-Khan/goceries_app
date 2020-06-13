@@ -39,7 +39,6 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
               top: 0,
               child: Container(
                 width: config.App(context).appWidth(100),
-//                height: config.App(context).appHeight(29.5),
                 height: config.App(context).appHeight(29.5),
                 decoration: BoxDecoration(color: Theme.of(context).accentColor),
               ),

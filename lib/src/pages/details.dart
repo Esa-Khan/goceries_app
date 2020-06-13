@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -38,7 +37,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   void initState() {
     _con.listenForRestaurant(id: widget.routeArgument.id);
     _con.listenForGalleries(widget.routeArgument.id);
-    _con.listenForFoods(widget.routeArgument.id);
+    _con.listenForFeaturedFoods(widget.routeArgument.id);
     _con.listenForRestaurantReviews(id: widget.routeArgument.id);
     super.initState();
   }
@@ -58,7 +57,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
             color: Theme.of(context).primaryColor,
           ),
           label: Text(
-            S.of(context).aisles,
+            S.of(context).menu,
             style: TextStyle(color: Theme.of(context).primaryColor),
           ),
         ),
@@ -74,15 +73,36 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                       primary: true,
                       shrinkWrap: false,
                       slivers: <Widget>[
+                        SliverAppBar(
+                          backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
+                          expandedHeight: 300,
+                          elevation: 0,
+                          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+                          flexibleSpace: FlexibleSpaceBar(
+                            collapseMode: CollapseMode.parallax,
+                            background: Hero(
+                              tag: widget.routeArgument.heroTag + _con.restaurant.id,
+                              child: CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: _con.restaurant.image.url,
+                                placeholder: (context, url) => Image.asset(
+                                  'assets/img/loading.gif',
+                                  fit: BoxFit.cover,
+                                ),
+                                errorWidget: (context, url, error) => Icon(Icons.error),
+                              ),
+                            ),
+                          ),
+                        ),
                         SliverToBoxAdapter(
                           child: Wrap(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 60),
+                                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 25),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Container(
+                                    Expanded(
                                       child: Text(
                                         _con.restaurant?.name ?? '',
                                         overflow: TextOverflow.fade,
@@ -225,8 +245,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   ],
                                 ),
                               ),
-
-
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                 margin: const EdgeInsets.symmetric(vertical: 1),

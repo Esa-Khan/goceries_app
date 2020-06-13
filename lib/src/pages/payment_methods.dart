@@ -27,6 +27,10 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
       list.paymentsList.removeWhere((element) {
         return element.id == "paypal";
       });
+    if (!setting.value.razorPayEnabled)
+      list.paymentsList.removeWhere((element) {
+        return element.id == "razorpay";
+      });
     if (!setting.value.stripeEnabled)
       list.paymentsList.removeWhere((element) {
         return element.id == "visacard" || element.id == "mastercard";

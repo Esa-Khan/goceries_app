@@ -7,9 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_html/style.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart';
 
 import '../../generated/l10n.dart';
@@ -19,6 +19,7 @@ import '../models/food_order.dart';
 import '../models/order.dart';
 import '../models/restaurant.dart';
 import '../repository/settings_repository.dart';
+import 'app_config.dart' as config;
 import 'custom_trace.dart';
 
 class Helper {
@@ -97,24 +98,6 @@ class Helper {
     return list;
   }
 
-//  static Future<List> getPriceWithCurrency(double myPrice) async {
-//    final Setting _settings = await getCurrentSettings();
-//    List result = [];
-//    if (myPrice != null) {
-//      result.add('${myPrice.toStringAsFixed(2)}');
-//      if (_settings.currencyRight) {
-//        return '${myPrice.toStringAsFixed(2)} ' + _settings.defaultCurrency;
-//      } else {
-//        return _settings.defaultCurrency + ' ${myPrice.toStringAsFixed(2)}';
-//      }
-//    }
-//    if (_settings.currencyRight) {
-//      return '0.00 ' + _settings.defaultCurrency;
-//    } else {
-//      return _settings.defaultCurrency + ' 0.00';
-//    }
-//  }
-
   static Widget getPrice(double myPrice, BuildContext context, {TextStyle style}) {
     if (style != null) {
       style = style.merge(TextStyle(fontSize: style.fontSize + 2));
@@ -132,11 +115,11 @@ class Helper {
                 text: setting.value?.defaultCurrency,
                 style: style ?? Theme.of(context).textTheme.subtitle1,
                 children: <TextSpan>[
-                  TextSpan(text: myPrice.toStringAsFixed(2) ?? '', style: style ?? Theme.of(context).textTheme.subtitle1),
+                  TextSpan(text: myPrice.toStringAsFixed(setting.value?.currencyDecimalDigits) ?? '', style: style ?? Theme.of(context).textTheme.subtitle1),
                 ],
               )
             : TextSpan(
-                text: myPrice.toStringAsFixed(2) ?? '',
+                text: myPrice.toStringAsFixed(setting.value?.currencyDecimalDigits) ?? '',
                 style: style ?? Theme.of(context).textTheme.subtitle1,
                 children: <TextSpan>[
                   TextSpan(
@@ -152,10 +135,11 @@ class Helper {
   }
 
   static double getTotalOrderPrice(FoodOrder foodOrder) {
-    double total = foodOrder.price * foodOrder.quantity;
+    double total = foodOrder.price;
     foodOrder.extras.forEach((extra) {
       total += extra.price != null ? extra.price : 0;
     });
+    total *= foodOrder.quantity;
     return total;
   }
 
@@ -195,10 +179,16 @@ class Helper {
 
   static bool canDelivery(Restaurant _restaurant, {List<Cart> carts}) {
     bool _can = true;
+    String _unit = setting.value.distanceUnit;
+    double _deliveryRange = _restaurant.deliveryRange;
     carts?.forEach((Cart _cart) {
       _can &= _cart.food.deliverable;
     });
-    _can &= _restaurant.availableForDelivery && (_restaurant.distance <= _restaurant.deliveryRange) && !deliveryAddress.value.isUnknown();
+
+    if (_unit == 'km') {
+      _deliveryRange /= 1.60934;
+    }
+    _can &= _restaurant.availableForDelivery && (_restaurant.distance <= _deliveryRange) && !deliveryAddress.value.isUnknown();
     return _can;
   }
 
@@ -214,32 +204,28 @@ class Helper {
 
   static Html applyHtml(context, String html, {TextStyle style}) {
     return Html(
-      blockSpacing: 0,
       data: html ?? '',
-      defaultTextStyle: style ?? Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 14)),
-      useRichText: false,
-      customRender: (node, children) {
-        if (node is dom.Element) {
-          switch (node.localName) {
-            case "br":
-              return SizedBox(
-                height: 0,
-              );
-            case "p":
-              return Padding(
-                padding: EdgeInsets.only(top: 0, bottom: 0),
-                child: Container(
-                  width: double.infinity,
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.center,
-                    alignment: WrapAlignment.start,
-                    children: children,
-                  ),
-                ),
-              );
-          }
-        }
-        return null;
+      style: {
+        "*": Style(
+          padding: EdgeInsets.all(0),
+          margin: EdgeInsets.all(0),
+          color: Theme.of(context).hintColor,
+          fontSize: FontSize(16.0),
+          display: Display.INLINE_BLOCK,
+          width: config.App(context).appWidth(100),
+        ),
+        "h4,h5,h6": Style(
+          fontSize: FontSize(18.0),
+        ),
+        "h1,h2,h3": Style(
+          fontSize: FontSize.xLarge,
+        ),
+        "br": Style(
+          height: 0,
+        ),
+        "p": Style(
+          fontSize: FontSize(16.0),
+        )
       },
     );
   }

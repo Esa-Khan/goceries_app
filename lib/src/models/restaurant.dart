@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import '../helpers/custom_trace.dart';
 import '../models/media.dart';
 
