@@ -120,7 +120,7 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
                       Navigator.of(context).pushReplacementNamed('/SignUp');
                     },
                     textColor: Theme.of(context).hintColor,
-                    child: Text(S.of(context).dont_have_an_account),
+                    child: Text(S.of(context).i_dont_have_an_account),
                   ),
                 ],
               ),

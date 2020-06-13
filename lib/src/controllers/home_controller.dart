@@ -86,7 +86,7 @@ class HomeController extends ControllerMVC {
       recentReviews = <Review>[];
       trendingFoods = <Food>[];
     });
-    await listenForClosestStores();
+    await listenForTopRestaurants();
     await listenForTrendingFoods();
     await listenForCategories();
     await listenForPopularRestaurants();

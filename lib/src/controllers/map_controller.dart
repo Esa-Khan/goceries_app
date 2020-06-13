@@ -105,7 +105,7 @@ class MapController extends ControllerMVC {
 
   void getRestaurantsOfArea() async {
     setState(() {
-      closestStores = <Restaurant>[];
+      topRestaurants = <Restaurant>[];
       Address areaAddress = Address.fromJSON({"latitude": cameraPosition.target.latitude, "longitude": cameraPosition.target.longitude});
       if (cameraPosition != null) {
         listenForNearRestaurants(currentAddress, areaAddress);
@@ -141,7 +141,7 @@ class MapController extends ControllerMVC {
 
   Future refreshMap() async {
     setState(() {
-      closestStores = <Restaurant>[];
+      topRestaurants = <Restaurant>[];
     });
     listenForNearRestaurants(currentAddress, currentAddress);
   }

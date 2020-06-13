@@ -103,7 +103,7 @@ class _MapWidgetState extends StateMVC<MapWidget> {
                   polylines: _con.polylines,
                 ),
           CardsCarouselWidget(
-            restaurantsList: _con.closestStores,
+            restaurantsList: _con.topRestaurants,
             heroTag: 'map_restaurants',
           ),
         ],

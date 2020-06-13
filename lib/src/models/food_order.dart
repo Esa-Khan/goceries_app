@@ -16,14 +16,14 @@ class FoodOrder {
       id = jsonMap['id'].toString();
       price = jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0.0;
       quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
-      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : [];
+      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : Food.fromJSON({});
       dateTime = DateTime.parse(jsonMap['updated_at']);
-      extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : null;
+      extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : [];
     } catch (e) {
       id = '';
       price = 0.0;
       quantity = 0.0;
-      food = new Food();
+      food = Food.fromJSON({});
       dateTime = DateTime(0);
       extras = [];
       print(CustomTrace(StackTrace.current, message: e));
