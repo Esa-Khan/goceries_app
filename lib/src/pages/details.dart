@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -159,13 +158,10 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   ),
                                 ],
                               ),
-//                              Padding(
-//                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-//                                child: Html(
-//                                  data: _con.restaurant.description,
-//                                  defaultTextStyle: Theme.of(context).textTheme.bodyText2.merge(TextStyle(fontSize: 14)),
-//                                ),
-//                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                child: Helper.applyHtml(context, _con.restaurant.description),
+                              ),
                               ImageThumbCarouselWidget(galleriesList: _con.galleries),
 //                              Padding(
 //                                padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -182,11 +178,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 //                                  ),
 //                                ),
 //                              ),
-//                              Container(
-//                                width: MediaQuery.of(context).size.width,
-//                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-//                                margin: const EdgeInsets.symmetric(vertical: 5),
-//                                color: Theme.of(context).primaryColor,
+//                              Padding(
+//                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
 //                                child: Helper.applyHtml(context, _con.restaurant.information),
 //                              ),
                               Container(
@@ -194,12 +187,13 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 margin: const EdgeInsets.symmetric(vertical: 5),
                                 color: Theme.of(context).primaryColor,
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+//                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Expanded(
                                       child: Text(
                                         _con.restaurant.address ?? '',
-                                        overflow: TextOverflow.ellipsis,
+                                          overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                         style: Theme.of(context).textTheme.bodyText1,
                                       ),
@@ -225,10 +219,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   ],
                                 ),
                               ),
-
-
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 margin: const EdgeInsets.symmetric(vertical: 1),
                                 color: Theme.of(context).primaryColor,
                                 child: Row(

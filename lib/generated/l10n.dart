@@ -684,10 +684,10 @@ class S {
   }
 
   /// `Help & Support`
-  String get help_support {
+  String get help_supports {
     return Intl.message(
       'Help & Support',
-      name: 'help_support',
+      name: 'help_supports',
       desc: '',
       args: [],
     );
@@ -2148,6 +2148,226 @@ class S {
     return Intl.message(
       'CVC',
       name: 'cvc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete your profile details to continue`
+  String get completeYourProfileDetailsToContinue {
+    return Intl.message(
+      'Complete your profile details to continue',
+      name: 'completeYourProfileDetailsToContinue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RazorPay`
+  String get razorpay {
+    return Intl.message(
+      'RazorPay',
+      name: 'razorpay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click to pay with RazorPay`
+  String get clickToPayWithRazorpayMethod {
+    return Intl.message(
+      'Click to pay with RazorPay',
+      name: 'clickToPayWithRazorpayMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This store does not deliver`
+  String get thisRestaurantNotSupportDeliveryMethod {
+    return Intl.message(
+      'This store does not deliver',
+      name: 'thisRestaurantNotSupportDeliveryMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One or more items in your cart are not deliverable`
+  String get oneOrMoreFoodsInYourCartNotDeliverable {
+    return Intl.message(
+      'One or more items in your cart are not deliverable',
+      name: 'oneOrMoreFoodsInYourCartNotDeliverable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item removed from favourites`
+  String get thisFoodWasRemovedFromFavorites {
+    return Intl.message(
+      'Item removed from favourites',
+      name: 'thisFoodWasRemovedFromFavorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item added to favourites`
+  String get thisFoodWasAddedToFavorite {
+    return Intl.message(
+      'Item added to favourites',
+      name: 'thisFoodWasAddedToFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Items refreshed`
+  String get foodRefreshedSuccessfuly {
+    return Intl.message(
+      'Items refreshed',
+      name: 'foodRefreshedSuccessfuly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `FAQs refreshed`
+  String get faqsRefreshedSuccessfuly {
+    return Intl.message(
+      'FAQs refreshed',
+      name: 'faqsRefreshedSuccessfuly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click on an item to get more details`
+  String get clickOnTheFoodToGetMoreDetailsAboutIt {
+    return Intl.message(
+      'Click on an item to get more details',
+      name: 'clickOnTheFoodToGetMoreDetailsAboutIt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't have any orders`
+  String get youDontHaveAnyOrder {
+    return Intl.message(
+      'Don\'t have any orders',
+      name: 'youDontHaveAnyOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Want to cancel order?`
+  String get areYouSureYouWantToCancelThisOrder {
+    return Intl.message(
+      'Want to cancel order?',
+      name: 'areYouSureYouWantToCancelThisOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery method not allowed`
+  String get deliveryMethodNotAllowed {
+    return Intl.message(
+      'Delivery method not allowed',
+      name: 'deliveryMethodNotAllowed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RazorPay Payment`
+  String get razorpayPayment {
+    return Intl.message(
+      'RazorPay Payment',
+      name: 'razorpayPayment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Details`
+  String get orderDetails {
+    return Intl.message(
+      'Order Details',
+      name: 'orderDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Details`
+  String get details {
+    return Intl.message(
+      'Details',
+      name: 'details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel Order`
+  String get cancelOrder {
+    return Intl.message(
+      'Cancel Order',
+      name: 'cancelOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store too far from delivery address`
+  String get deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants {
+    return Intl.message(
+      'Store too far from delivery address',
+      name: 'deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancelled`
+  String get canceled {
+    return Intl.message(
+      'Cancelled',
+      name: 'canceled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order #{id} has been cancelled`
+  String orderThisorderidHasBeenCanceled(Object id) {
+    return Intl.message(
+      'Order #$id has been cancelled',
+      name: 'orderThisorderidHasBeenCanceled',
+      desc: '',
+      args: [id],
+    );
+  }
+
+  /// `View`
+  String get view {
+    return Intl.message(
+      'View',
+      name: 'view',
       desc: '',
       args: [],
     );

@@ -24,7 +24,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
   }
   @override
   void initState() {
-    _con.listenForCarts(withAddOrder: false);
+    _con.listenForCarts();
     super.initState();
   }
 
@@ -185,7 +185,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                 if (_con.creditCard.validated()) {
                                   Navigator.of(context).pushNamed('/OrderSuccess', arguments: new RouteArgument(param: 'Credit Card (Stripe Gateway)'));
                                 } else {
-                                  _con.scaffoldKey.currentState.showSnackBar(SnackBar(
+                                  _con.scaffoldKey?.currentState?.showSnackBar(SnackBar(
                                     content: Text(S.of(context).your_credit_card_not_valid),
                                   ));
                                 }

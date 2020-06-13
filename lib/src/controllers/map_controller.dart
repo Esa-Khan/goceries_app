@@ -119,14 +119,14 @@ class MapController extends ControllerMVC {
     currentAddress = await sett.getCurrentLocation();
     mapsUtil
         .get("origin=" +
-            currentAddress.latitude.toString() +
-            "," +
-            currentAddress.longitude.toString() +
-            "&destination=" +
-            currentRestaurant.latitude +
-            "," +
-            currentRestaurant.longitude +
-            "&key=${sett.setting.value?.googleMapsKey}")
+        currentAddress.latitude.toString() +
+        "," +
+        currentAddress.longitude.toString() +
+        "&destination=" +
+        currentRestaurant.latitude +
+        "," +
+        currentRestaurant.longitude +
+        "&key=${sett.setting.value?.googleMapsKey}")
         .then((dynamic res) {
       if (res != null) {
         List<LatLng> _latLng = res as List<LatLng>;
