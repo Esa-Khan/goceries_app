@@ -37,7 +37,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   void initState() {
     _con.listenForRestaurant(id: widget.routeArgument.id);
     _con.listenForGalleries(widget.routeArgument.id);
-    _con.listenForFeaturedFoods(widget.routeArgument.id);
+    _con.listenForFoods(widget.routeArgument.id);
     _con.listenForRestaurantReviews(id: widget.routeArgument.id);
     super.initState();
   }
@@ -99,7 +99,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                     decoration:
-                                        BoxDecoration(color: _con.restaurant.closed ? Colors.grey : Colors.green, borderRadius: BorderRadius.circular(24)),
+                                        BoxDecoration(color: _con.restaurant.closed ? Colors.black : Colors.green, borderRadius: BorderRadius.circular(24)),
                                     child: _con.restaurant.closed
                                         ? Text(
                                             S.of(context).closed,
@@ -187,7 +187,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 margin: const EdgeInsets.symmetric(vertical: 5),
                                 color: Theme.of(context).primaryColor,
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+//                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   children: <Widget>[
                                     Expanded(
                                       child: Text(
@@ -219,7 +220,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 ),
                               ),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                 margin: const EdgeInsets.symmetric(vertical: 1),
                                 color: Theme.of(context).primaryColor,
                                 child: Row(
