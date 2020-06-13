@@ -8,8 +8,12 @@ import 'intl/messages_all.dart';
 // Made by Localizely
 // **************************************************************************
 
+// ignore_for_file: non_constant_identifier_names, lines_longer_than_80_chars
+
 class S {
   S();
+  
+  static S current;
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -19,7 +23,9 @@ class S {
     final localeName = Intl.canonicalizedLocale(name); 
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return S();
+      S.current = S();
+      
+      return S.current;
     });
   } 
 
@@ -27,6 +33,7 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
+  /// `Search for items or nearby stores`
   String get search_for_stores_or_items {
     return Intl.message(
       'Search for items or nearby stores',
@@ -36,6 +43,7 @@ class S {
     );
   }
 
+  /// `Closest Stores`
   String get closest_stores {
     return Intl.message(
       'Closest Stores',
@@ -45,6 +53,7 @@ class S {
     );
   }
 
+  /// `Ordered by Nearby first`
   String get ordered_by_nearby_first {
     return Intl.message(
       'Ordered by Nearby first',
@@ -54,6 +63,7 @@ class S {
     );
   }
 
+  /// `Trending This Week`
   String get trending_this_week {
     return Intl.message(
       'Trending This Week',
@@ -63,6 +73,7 @@ class S {
     );
   }
 
+  /// `Double click on the food to add it to the cart`
   String get double_click_on_the_food_to_add_it_to_the {
     return Intl.message(
       'Double click on the food to add it to the cart',
@@ -72,6 +83,7 @@ class S {
     );
   }
 
+  /// `Aisles`
   String get aisles {
     return Intl.message(
       'Aisles',
@@ -81,6 +93,7 @@ class S {
     );
   }
 
+  /// `Most Popular`
   String get most_popular {
     return Intl.message(
       'Most Popular',
@@ -90,6 +103,7 @@ class S {
     );
   }
 
+  /// `Recent Reviews`
   String get recent_reviews {
     return Intl.message(
       'Recent Reviews',
@@ -99,6 +113,7 @@ class S {
     );
   }
 
+  /// `Login`
   String get login {
     return Intl.message(
       'Login',
@@ -108,6 +123,7 @@ class S {
     );
   }
 
+  /// `Skip`
   String get skip {
     return Intl.message(
       'Skip',
@@ -117,6 +133,7 @@ class S {
     );
   }
 
+  /// `About`
   String get about {
     return Intl.message(
       'About',
@@ -126,6 +143,7 @@ class S {
     );
   }
 
+  /// `Submit`
   String get submit {
     return Intl.message(
       'Submit',
@@ -135,6 +153,7 @@ class S {
     );
   }
 
+  /// `Verify`
   String get verify {
     return Intl.message(
       'Verify',
@@ -144,6 +163,7 @@ class S {
     );
   }
 
+  /// `Select your preferred languages`
   String get select_your_preferred_languages {
     return Intl.message(
       'Select your preferred languages',
@@ -153,6 +173,7 @@ class S {
     );
   }
 
+  /// `Order Id`
   String get order_id {
     return Intl.message(
       'Order Id',
@@ -162,6 +183,7 @@ class S {
     );
   }
 
+  /// `Category`
   String get category {
     return Intl.message(
       'Category',
@@ -171,6 +193,7 @@ class S {
     );
   }
 
+  /// `Checkout`
   String get checkout {
     return Intl.message(
       'Checkout',
@@ -180,6 +203,7 @@ class S {
     );
   }
 
+  /// `Payment Mode`
   String get payment_mode {
     return Intl.message(
       'Payment Mode',
@@ -189,6 +213,7 @@ class S {
     );
   }
 
+  /// `Select your preferred payment mode`
   String get select_your_preferred_payment_mode {
     return Intl.message(
       'Select your preferred payment mode',
@@ -198,6 +223,7 @@ class S {
     );
   }
 
+  /// `Or Checkout With`
   String get or_checkout_with {
     return Intl.message(
       'Or Checkout With',
@@ -207,6 +233,7 @@ class S {
     );
   }
 
+  /// `Subtotal`
   String get subtotal {
     return Intl.message(
       'Subtotal',
@@ -216,6 +243,7 @@ class S {
     );
   }
 
+  /// `Total`
   String get total {
     return Intl.message(
       'Total',
@@ -225,6 +253,7 @@ class S {
     );
   }
 
+  /// `Confirm Payment`
   String get confirm_payment {
     return Intl.message(
       'Confirm Payment',
@@ -234,6 +263,7 @@ class S {
     );
   }
 
+  /// `Information`
   String get information {
     return Intl.message(
       'Information',
@@ -243,6 +273,7 @@ class S {
     );
   }
 
+  /// `Store`
   String get store {
     return Intl.message(
       'Store',
@@ -252,6 +283,7 @@ class S {
     );
   }
 
+  /// `What They Say ?`
   String get what_they_say {
     return Intl.message(
       'What They Say ?',
@@ -261,6 +293,7 @@ class S {
     );
   }
 
+  /// `Favorite Foods`
   String get favorite_foods {
     return Intl.message(
       'Favorite Foods',
@@ -270,6 +303,7 @@ class S {
     );
   }
 
+  /// `g`
   String get g {
     return Intl.message(
       'g',
@@ -279,6 +313,7 @@ class S {
     );
   }
 
+  /// `Extras`
   String get extras {
     return Intl.message(
       'Extras',
@@ -288,6 +323,7 @@ class S {
     );
   }
 
+  /// `Select extras to add them on the food`
   String get select_extras_to_add_them_on_the_food {
     return Intl.message(
       'Select extras to add them on the food',
@@ -297,6 +333,7 @@ class S {
     );
   }
 
+  /// `Ingredients`
   String get ingredients {
     return Intl.message(
       'Ingredients',
@@ -306,6 +343,7 @@ class S {
     );
   }
 
+  /// `Nutrition`
   String get nutrition {
     return Intl.message(
       'Nutrition',
@@ -315,6 +353,7 @@ class S {
     );
   }
 
+  /// `Reviews`
   String get reviews {
     return Intl.message(
       'Reviews',
@@ -324,6 +363,7 @@ class S {
     );
   }
 
+  /// `Quantity`
   String get quantity {
     return Intl.message(
       'Quantity',
@@ -333,6 +373,7 @@ class S {
     );
   }
 
+  /// `Add to Cart`
   String get add_to_cart {
     return Intl.message(
       'Add to Cart',
@@ -342,6 +383,7 @@ class S {
     );
   }
 
+  /// `FAQ`
   String get faq {
     return Intl.message(
       'FAQ',
@@ -351,6 +393,7 @@ class S {
     );
   }
 
+  /// `App Language`
   String get app_language {
     return Intl.message(
       'App Language',
@@ -360,6 +403,7 @@ class S {
     );
   }
 
+  /// `Forgot password ?`
   String get forgot_password {
     return Intl.message(
       'Forgot password ?',
@@ -369,6 +413,7 @@ class S {
     );
   }
 
+  /// `Don't have an account ?`
   String get dont_have_an_account {
     return Intl.message(
       'Don\'t have an account ?',
@@ -378,6 +423,7 @@ class S {
     );
   }
 
+  /// `Maps Explorer`
   String get maps_explorer {
     return Intl.message(
       'Maps Explorer',
@@ -387,6 +433,7 @@ class S {
     );
   }
 
+  /// `All Menu`
   String get all_menu {
     return Intl.message(
       'All Menu',
@@ -396,6 +443,7 @@ class S {
     );
   }
 
+  /// `Longpress on the food to add suplements`
   String get longpress_on_the_food_to_add_suplements {
     return Intl.message(
       'Longpress on the food to add suplements',
@@ -405,6 +453,7 @@ class S {
     );
   }
 
+  /// `Notifications`
   String get notifications {
     return Intl.message(
       'Notifications',
@@ -414,6 +463,7 @@ class S {
     );
   }
 
+  /// `Confirmation`
   String get confirmation {
     return Intl.message(
       'Confirmation',
@@ -423,6 +473,7 @@ class S {
     );
   }
 
+  /// `Your order has been successfully submitted!`
   String get your_order_has_been_successfully_submitted {
     return Intl.message(
       'Your order has been successfully submitted!',
@@ -432,6 +483,7 @@ class S {
     );
   }
 
+  /// `TAX`
   String get tax {
     return Intl.message(
       'TAX',
@@ -441,6 +493,7 @@ class S {
     );
   }
 
+  /// `My Orders`
   String get my_orders {
     return Intl.message(
       'My Orders',
@@ -450,6 +503,7 @@ class S {
     );
   }
 
+  /// `Profile`
   String get profile {
     return Intl.message(
       'Profile',
@@ -459,6 +513,7 @@ class S {
     );
   }
 
+  /// `Favorites`
   String get favorites {
     return Intl.message(
       'Favorites',
@@ -468,6 +523,7 @@ class S {
     );
   }
 
+  /// `Home`
   String get home {
     return Intl.message(
       'Home',
@@ -477,6 +533,7 @@ class S {
     );
   }
 
+  /// `Payment Options`
   String get payment_options {
     return Intl.message(
       'Payment Options',
@@ -486,6 +543,7 @@ class S {
     );
   }
 
+  /// `Cash on delivery`
   String get cash_on_delivery {
     return Intl.message(
       'Cash on delivery',
@@ -495,6 +553,7 @@ class S {
     );
   }
 
+  /// `PayPal Payment`
   String get paypal_payment {
     return Intl.message(
       'PayPal Payment',
@@ -504,6 +563,7 @@ class S {
     );
   }
 
+  /// `Recent Orders`
   String get recent_orders {
     return Intl.message(
       'Recent Orders',
@@ -513,6 +573,7 @@ class S {
     );
   }
 
+  /// `Settings`
   String get settings {
     return Intl.message(
       'Settings',
@@ -522,6 +583,7 @@ class S {
     );
   }
 
+  /// `Profile Settings`
   String get profile_settings {
     return Intl.message(
       'Profile Settings',
@@ -531,6 +593,7 @@ class S {
     );
   }
 
+  /// `Full name`
   String get full_name {
     return Intl.message(
       'Full name',
@@ -540,6 +603,7 @@ class S {
     );
   }
 
+  /// `Email`
   String get email {
     return Intl.message(
       'Email',
@@ -549,6 +613,7 @@ class S {
     );
   }
 
+  /// `Phone`
   String get phone {
     return Intl.message(
       'Phone',
@@ -558,6 +623,7 @@ class S {
     );
   }
 
+  /// `Address`
   String get address {
     return Intl.message(
       'Address',
@@ -567,6 +633,7 @@ class S {
     );
   }
 
+  /// `Payments Settings`
   String get payments_settings {
     return Intl.message(
       'Payments Settings',
@@ -576,6 +643,7 @@ class S {
     );
   }
 
+  /// `Default Credit Card`
   String get default_credit_card {
     return Intl.message(
       'Default Credit Card',
@@ -585,6 +653,7 @@ class S {
     );
   }
 
+  /// `App Settings`
   String get app_settings {
     return Intl.message(
       'App Settings',
@@ -594,6 +663,7 @@ class S {
     );
   }
 
+  /// `Languages`
   String get languages {
     return Intl.message(
       'Languages',
@@ -603,6 +673,7 @@ class S {
     );
   }
 
+  /// `English`
   String get english {
     return Intl.message(
       'English',
@@ -612,6 +683,7 @@ class S {
     );
   }
 
+  /// `Help & Support`
   String get help_support {
     return Intl.message(
       'Help & Support',
@@ -621,6 +693,7 @@ class S {
     );
   }
 
+  /// `Register`
   String get register {
     return Intl.message(
       'Register',
@@ -630,6 +703,7 @@ class S {
     );
   }
 
+  /// `Register a new account!`
   String get register_a_new_account {
     return Intl.message(
       'Register a new account!',
@@ -639,6 +713,7 @@ class S {
     );
   }
 
+  /// `Should be more than 3 letters`
   String get should_be_more_than_3_letters {
     return Intl.message(
       'Should be more than 3 letters',
@@ -648,6 +723,7 @@ class S {
     );
   }
 
+  /// `Passwords don't match`
   String get passwords_dont_match {
     return Intl.message(
       'Passwords don\'t match',
@@ -657,6 +733,7 @@ class S {
     );
   }
 
+  /// `John Doe`
   String get john_doe {
     return Intl.message(
       'John Doe',
@@ -666,6 +743,7 @@ class S {
     );
   }
 
+  /// `Should be a valid email`
   String get should_be_a_valid_email {
     return Intl.message(
       'Should be a valid email',
@@ -675,6 +753,7 @@ class S {
     );
   }
 
+  /// `Password should be more than 6 letters`
   String get should_be_more_than_6_letters {
     return Intl.message(
       'Password should be more than 6 letters',
@@ -684,6 +763,7 @@ class S {
     );
   }
 
+  /// `Password`
   String get password {
     return Intl.message(
       'Password',
@@ -693,6 +773,7 @@ class S {
     );
   }
 
+  /// `Confirm Password`
   String get confirm_password {
     return Intl.message(
       'Confirm Password',
@@ -702,6 +783,7 @@ class S {
     );
   }
 
+  /// `Have an account? Back to login`
   String get i_have_account_back_to_login {
     return Intl.message(
       'Have an account? Back to login',
@@ -711,6 +793,7 @@ class S {
     );
   }
 
+  /// `Multi-Restaurants`
   String get multirestaurants {
     return Intl.message(
       'Multi-Restaurants',
@@ -720,6 +803,7 @@ class S {
     );
   }
 
+  /// `Tracking Order`
   String get tracking_order {
     return Intl.message(
       'Tracking Order',
@@ -729,6 +813,7 @@ class S {
     );
   }
 
+  /// `Discover & Explorer`
   String get discover__explorer {
     return Intl.message(
       'Discover & Explorer',
@@ -738,6 +823,7 @@ class S {
     );
   }
 
+  /// `You can discover restaurants & fastfood arround you and choose you best meal after few minutes we prepare and delivere it for you`
   String get you_can_discover_restaurants {
     return Intl.message(
       'You can discover restaurants & fastfood arround you and choose you best meal after few minutes we prepare and delivere it for you',
@@ -747,6 +833,7 @@ class S {
     );
   }
 
+  /// `Reset Cart?`
   String get reset_cart {
     return Intl.message(
       'Reset Cart?',
@@ -756,6 +843,7 @@ class S {
     );
   }
 
+  /// `Cart`
   String get cart {
     return Intl.message(
       'Cart',
@@ -765,6 +853,7 @@ class S {
     );
   }
 
+  /// `Shopping Cart`
   String get shopping_cart {
     return Intl.message(
       'Shopping Cart',
@@ -774,6 +863,7 @@ class S {
     );
   }
 
+  /// `Verify your quantity and click checkout`
   String get verify_your_quantity_and_click_checkout {
     return Intl.message(
       'Verify your quantity and click checkout',
@@ -783,6 +873,7 @@ class S {
     );
   }
 
+  /// `Let's start by logging in!`
   String get lets_start_with_login {
     return Intl.message(
       'Let\'s start by logging in!',
@@ -792,6 +883,7 @@ class S {
     );
   }
 
+  /// `Should be more than 3 characters`
   String get should_be_more_than_3_characters {
     return Intl.message(
       'Should be more than 3 characters',
@@ -801,6 +893,7 @@ class S {
     );
   }
 
+  /// `You must add foods of the same restaurants choose one restaurants only!`
   String get you_must_add_foods_of_the_same_restaurants_choose_one {
     return Intl.message(
       'You must add foods of the same restaurants choose one restaurants only!',
@@ -810,6 +903,7 @@ class S {
     );
   }
 
+  /// `Reset your cart and order meals form this restaurant`
   String get reset_your_cart_and_order_meals_form_this_restaurant {
     return Intl.message(
       'Reset your cart and order meals form this restaurant',
@@ -819,6 +913,7 @@ class S {
     );
   }
 
+  /// `Keep your old meals of this restaurant`
   String get keep_your_old_meals_of_this_restaurant {
     return Intl.message(
       'Keep your old meals of this restaurant',
@@ -828,6 +923,7 @@ class S {
     );
   }
 
+  /// `Reset`
   String get reset {
     return Intl.message(
       'Reset',
@@ -837,6 +933,7 @@ class S {
     );
   }
 
+  /// `Close`
   String get close {
     return Intl.message(
       'Close',
@@ -846,6 +943,7 @@ class S {
     );
   }
 
+  /// `Application Preferences`
   String get application_preferences {
     return Intl.message(
       'Application Preferences',
@@ -855,6 +953,7 @@ class S {
     );
   }
 
+  /// `Help & Support`
   String get help__support {
     return Intl.message(
       'Help & Support',
@@ -864,6 +963,7 @@ class S {
     );
   }
 
+  /// `Light Mode`
   String get light_mode {
     return Intl.message(
       'Light Mode',
@@ -873,6 +973,7 @@ class S {
     );
   }
 
+  /// `Dark Mode`
   String get dark_mode {
     return Intl.message(
       'Dark Mode',
@@ -882,6 +983,7 @@ class S {
     );
   }
 
+  /// `Log out`
   String get log_out {
     return Intl.message(
       'Log out',
@@ -891,6 +993,7 @@ class S {
     );
   }
 
+  /// `Version`
   String get version {
     return Intl.message(
       'Version',
@@ -900,6 +1003,7 @@ class S {
     );
   }
 
+  /// `Don't have any items in your cart`
   String get dont_have_any_item_in_your_cart {
     return Intl.message(
       'Don\'t have any items in your cart',
@@ -909,6 +1013,7 @@ class S {
     );
   }
 
+  /// `Start Exploring`
   String get start_exploring {
     return Intl.message(
       'Start Exploring',
@@ -918,6 +1023,7 @@ class S {
     );
   }
 
+  /// `Don't have any notifications`
   String get dont_have_any_notifications {
     return Intl.message(
       'Don\'t have any notifications',
@@ -927,6 +1033,7 @@ class S {
     );
   }
 
+  /// `Payment Settings`
   String get payment_settings {
     return Intl.message(
       'Payment Settings',
@@ -936,6 +1043,7 @@ class S {
     );
   }
 
+  /// `Not a valid number`
   String get not_a_valid_number {
     return Intl.message(
       'Not a valid number',
@@ -945,6 +1053,7 @@ class S {
     );
   }
 
+  /// `Not a valid date`
   String get not_a_valid_date {
     return Intl.message(
       'Not a valid date',
@@ -954,6 +1063,7 @@ class S {
     );
   }
 
+  /// `Not a valid CVC`
   String get not_a_valid_cvc {
     return Intl.message(
       'Not a valid CVC',
@@ -963,6 +1073,7 @@ class S {
     );
   }
 
+  /// `Cancel`
   String get cancel {
     return Intl.message(
       'Cancel',
@@ -972,6 +1083,7 @@ class S {
     );
   }
 
+  /// `Save`
   String get save {
     return Intl.message(
       'Save',
@@ -981,6 +1093,7 @@ class S {
     );
   }
 
+  /// `Edit`
   String get edit {
     return Intl.message(
       'Edit',
@@ -990,6 +1103,7 @@ class S {
     );
   }
 
+  /// `Not a valid full name`
   String get not_a_valid_full_name {
     return Intl.message(
       'Not a valid full name',
@@ -999,6 +1113,7 @@ class S {
     );
   }
 
+  /// `Email Address`
   String get email_address {
     return Intl.message(
       'Email Address',
@@ -1008,6 +1123,7 @@ class S {
     );
   }
 
+  /// `Not a valid email`
   String get not_a_valid_email {
     return Intl.message(
       'Not a valid email',
@@ -1017,6 +1133,7 @@ class S {
     );
   }
 
+  /// `Not a valid phone`
   String get not_a_valid_phone {
     return Intl.message(
       'Not a valid phone',
@@ -1026,6 +1143,7 @@ class S {
     );
   }
 
+  /// `Not a valid address`
   String get not_a_valid_address {
     return Intl.message(
       'Not a valid address',
@@ -1035,6 +1153,7 @@ class S {
     );
   }
 
+  /// `Not a valid biography`
   String get not_a_valid_biography {
     return Intl.message(
       'Not a valid biography',
@@ -1044,6 +1163,7 @@ class S {
     );
   }
 
+  /// `Your biography`
   String get your_biography {
     return Intl.message(
       'Your biography',
@@ -1053,6 +1173,7 @@ class S {
     );
   }
 
+  /// `Your Address`
   String get your_address {
     return Intl.message(
       'Your Address',
@@ -1062,6 +1183,7 @@ class S {
     );
   }
 
+  /// `Search`
   String get search {
     return Intl.message(
       'Search',
@@ -1071,6 +1193,7 @@ class S {
     );
   }
 
+  /// `Recents Search`
   String get recents_search {
     return Intl.message(
       'Recents Search',
@@ -1080,6 +1203,7 @@ class S {
     );
   }
 
+  /// `Verify your internet connection`
   String get verify_your_internet_connection {
     return Intl.message(
       'Verify your internet connection',
@@ -1089,6 +1213,7 @@ class S {
     );
   }
 
+  /// `Carts refreshed successfully`
   String get carts_refreshed_successfuly {
     return Intl.message(
       'Carts refreshed successfully',
@@ -1098,6 +1223,7 @@ class S {
     );
   }
 
+  /// `The {foodname} was removed from your cart`
   String the_food_was_removed_from_your_cart(Object foodname) {
     return Intl.message(
       'The $foodname was removed from your cart',
@@ -1107,6 +1233,7 @@ class S {
     );
   }
 
+  /// `Category refreshed successfully`
   String get category_refreshed_successfuly {
     return Intl.message(
       'Category refreshed successfully',
@@ -1116,6 +1243,7 @@ class S {
     );
   }
 
+  /// `Notifications refreshed successfully`
   String get notifications_refreshed_successfuly {
     return Intl.message(
       'Notifications refreshed successfully',
@@ -1125,6 +1253,7 @@ class S {
     );
   }
 
+  /// `Order refreshed successfully`
   String get order_refreshed_successfuly {
     return Intl.message(
       'Order refreshed successfully',
@@ -1134,6 +1263,7 @@ class S {
     );
   }
 
+  /// `Orders refreshed successfully`
   String get orders_refreshed_successfuly {
     return Intl.message(
       'Orders refreshed successfully',
@@ -1143,6 +1273,7 @@ class S {
     );
   }
 
+  /// `Restaurant refreshed successfully`
   String get restaurant_refreshed_successfuly {
     return Intl.message(
       'Restaurant refreshed successfully',
@@ -1152,6 +1283,7 @@ class S {
     );
   }
 
+  /// `Profile settings updated successfully`
   String get profile_settings_updated_successfully {
     return Intl.message(
       'Profile settings updated successfully',
@@ -1161,6 +1293,7 @@ class S {
     );
   }
 
+  /// `Payment settings updated successfully`
   String get payment_settings_updated_successfully {
     return Intl.message(
       'Payment settings updated successfully',
@@ -1170,6 +1303,7 @@ class S {
     );
   }
 
+  /// `Tracking refreshed successfully`
   String get tracking_refreshed_successfuly {
     return Intl.message(
       'Tracking refreshed successfully',
@@ -1179,6 +1313,7 @@ class S {
     );
   }
 
+  /// `Welcome`
   String get welcome {
     return Intl.message(
       'Welcome',
@@ -1188,6 +1323,7 @@ class S {
     );
   }
 
+  /// `Wrong email or password`
   String get wrong_email_or_password {
     return Intl.message(
       'Wrong email or password',
@@ -1197,6 +1333,7 @@ class S {
     );
   }
 
+  /// `Addresses refreshed successfuly`
   String get addresses_refreshed_successfuly {
     return Intl.message(
       'Addresses refreshed successfuly',
@@ -1206,6 +1343,7 @@ class S {
     );
   }
 
+  /// `Delivery Addresses`
   String get delivery_addresses {
     return Intl.message(
       'Delivery Addresses',
@@ -1215,6 +1353,7 @@ class S {
     );
   }
 
+  /// `Add`
   String get add {
     return Intl.message(
       'Add',
@@ -1224,6 +1363,7 @@ class S {
     );
   }
 
+  /// `New Address added successfully`
   String get new_address_added_successfully {
     return Intl.message(
       'New Address added successfully',
@@ -1233,6 +1373,7 @@ class S {
     );
   }
 
+  /// `The address updated successfully`
   String get the_address_updated_successfully {
     return Intl.message(
       'The address updated successfully',
@@ -1242,6 +1383,7 @@ class S {
     );
   }
 
+  /// `Long press to edit item, swipe item to delete it`
   String get long_press_to_edit_item_swipe_item_to_delete_it {
     return Intl.message(
       'Long press to edit item, swipe item to delete it',
@@ -1251,6 +1393,7 @@ class S {
     );
   }
 
+  /// `Add Delivery Address`
   String get add_delivery_address {
     return Intl.message(
       'Add Delivery Address',
@@ -1260,6 +1403,7 @@ class S {
     );
   }
 
+  /// `Home Address`
   String get home_address {
     return Intl.message(
       'Home Address',
@@ -1269,6 +1413,7 @@ class S {
     );
   }
 
+  /// `Description`
   String get description {
     return Intl.message(
       'Description',
@@ -1278,6 +1423,7 @@ class S {
     );
   }
 
+  /// `12 Street, City 21663, Country`
   String get hint_full_address {
     return Intl.message(
       '12 Street, City 21663, Country',
@@ -1287,6 +1433,7 @@ class S {
     );
   }
 
+  /// `Full Address`
   String get full_address {
     return Intl.message(
       'Full Address',
@@ -1296,6 +1443,7 @@ class S {
     );
   }
 
+  /// `Email to reset password`
   String get email_to_reset_password {
     return Intl.message(
       'Email to reset password',
@@ -1305,6 +1453,7 @@ class S {
     );
   }
 
+  /// `Send link`
   String get send_password_reset_link {
     return Intl.message(
       'Send link',
@@ -1314,6 +1463,7 @@ class S {
     );
   }
 
+  /// `I remember my password return to login`
   String get i_remember_my_password_return_to_login {
     return Intl.message(
       'I remember my password return to login',
@@ -1323,6 +1473,7 @@ class S {
     );
   }
 
+  /// `Your reset link has been sent to your email`
   String get your_reset_link_has_been_sent_to_your_email {
     return Intl.message(
       'Your reset link has been sent to your email',
@@ -1332,6 +1483,7 @@ class S {
     );
   }
 
+  /// `Error! Verify email settings`
   String get error_verify_email_settings {
     return Intl.message(
       'Error! Verify email settings',
@@ -1341,6 +1493,7 @@ class S {
     );
   }
 
+  /// `Guest`
   String get guest {
     return Intl.message(
       'Guest',
@@ -1350,6 +1503,7 @@ class S {
     );
   }
 
+  /// `You must sign-in to access to this section`
   String get you_must_signin_to_access_to_this_section {
     return Intl.message(
       'You must sign-in to access to this section',
@@ -1359,6 +1513,7 @@ class S {
     );
   }
 
+  /// `Tell us about this restaurant`
   String get tell_us_about_this_restaurant {
     return Intl.message(
       'Tell us about this restaurant',
@@ -1368,6 +1523,7 @@ class S {
     );
   }
 
+  /// `How would you rate this restaurant ?`
   String get how_would_you_rate_this_restaurant_ {
     return Intl.message(
       'How would you rate this restaurant ?',
@@ -1377,6 +1533,7 @@ class S {
     );
   }
 
+  /// `Tell us about this food`
   String get tell_us_about_this_food {
     return Intl.message(
       'Tell us about this food',
@@ -1386,6 +1543,7 @@ class S {
     );
   }
 
+  /// `The restaurant has been rated successfully`
   String get the_restaurant_has_been_rated_successfully {
     return Intl.message(
       'The restaurant has been rated successfully',
@@ -1395,6 +1553,7 @@ class S {
     );
   }
 
+  /// `The food has been rated successfully`
   String get the_food_has_been_rated_successfully {
     return Intl.message(
       'The food has been rated successfully',
@@ -1404,6 +1563,7 @@ class S {
     );
   }
 
+  /// `Reviews refreshed successfully!`
   String get reviews_refreshed_successfully {
     return Intl.message(
       'Reviews refreshed successfully!',
@@ -1413,6 +1573,7 @@ class S {
     );
   }
 
+  /// `Delivery Fee`
   String get delivery_fee {
     return Intl.message(
       'Delivery Fee',
@@ -1422,6 +1583,7 @@ class S {
     );
   }
 
+  /// `Order status changed`
   String get order_status_changed {
     return Intl.message(
       'Order status changed',
@@ -1431,6 +1593,7 @@ class S {
     );
   }
 
+  /// `New order from client`
   String get new_order_from_client {
     return Intl.message(
       'New order from client',
@@ -1440,6 +1603,7 @@ class S {
     );
   }
 
+  /// `Shopping`
   String get shopping {
     return Intl.message(
       'Shopping',
@@ -1449,6 +1613,7 @@ class S {
     );
   }
 
+  /// `Delivery or Pickup`
   String get delivery_or_pickup {
     return Intl.message(
       'Delivery or Pickup',
@@ -1458,6 +1623,7 @@ class S {
     );
   }
 
+  /// `Payment card updated successfully`
   String get payment_card_updated_successfully {
     return Intl.message(
       'Payment card updated successfully',
@@ -1467,6 +1633,7 @@ class S {
     );
   }
 
+  /// `Deliverable`
   String get deliverable {
     return Intl.message(
       'Deliverable',
@@ -1476,6 +1643,7 @@ class S {
     );
   }
 
+  /// `Not Deliverable`
   String get not_deliverable {
     return Intl.message(
       'Not Deliverable',
@@ -1485,6 +1653,7 @@ class S {
     );
   }
 
+  /// `Items`
   String get items {
     return Intl.message(
       'Items',
@@ -1494,6 +1663,7 @@ class S {
     );
   }
 
+  /// `Delivery`
   String get delivery {
     return Intl.message(
       'Delivery',
@@ -1503,6 +1673,7 @@ class S {
     );
   }
 
+  /// `Pickup`
   String get pickup {
     return Intl.message(
       'Pickup',
@@ -1512,6 +1683,7 @@ class S {
     );
   }
 
+  /// `Closed`
   String get closed {
     return Intl.message(
       'Closed',
@@ -1521,6 +1693,7 @@ class S {
     );
   }
 
+  /// `Open`
   String get open {
     return Intl.message(
       'Open',
@@ -1530,6 +1703,7 @@ class S {
     );
   }
 
+  /// `Km`
   String get km {
     return Intl.message(
       'Km',
@@ -1539,6 +1713,7 @@ class S {
     );
   }
 
+  /// `mi`
   String get mi {
     return Intl.message(
       'mi',
@@ -1548,6 +1723,7 @@ class S {
     );
   }
 
+  /// `Delivery Address`
   String get delivery_address {
     return Intl.message(
       'Delivery Address',
@@ -1557,6 +1733,7 @@ class S {
     );
   }
 
+  /// `Current location`
   String get current_location {
     return Intl.message(
       'Current location',
@@ -1566,6 +1743,7 @@ class S {
     );
   }
 
+  /// `Delivery Address removed successfully`
   String get delivery_address_removed_successfully {
     return Intl.message(
       'Delivery Address removed successfully',
@@ -1575,6 +1753,7 @@ class S {
     );
   }
 
+  /// `Add new delivery address`
   String get add_new_delivery_address {
     return Intl.message(
       'Add new delivery address',
@@ -1584,6 +1763,7 @@ class S {
     );
   }
 
+  /// `Restaurants near to your current location`
   String get restaurants_near_to_your_current_location {
     return Intl.message(
       'Restaurants near to your current location',
@@ -1593,6 +1773,7 @@ class S {
     );
   }
 
+  /// `Restaurants near to`
   String get restaurants_near_to {
     return Intl.message(
       'Restaurants near to',
@@ -1602,6 +1783,7 @@ class S {
     );
   }
 
+  /// `Near to`
   String get near_to {
     return Intl.message(
       'Near to',
@@ -1611,6 +1793,7 @@ class S {
     );
   }
 
+  /// `Near to your current location`
   String get near_to_your_current_location {
     return Intl.message(
       'Near to your current location',
@@ -1620,6 +1803,7 @@ class S {
     );
   }
 
+  /// `Pickup your food from the restaurant`
   String get pickup_your_food_from_the_restaurant {
     return Intl.message(
       'Pickup your food from the restaurant',
@@ -1629,6 +1813,7 @@ class S {
     );
   }
 
+  /// `Confirm your delivery address`
   String get confirm_your_delivery_address {
     return Intl.message(
       'Confirm your delivery address',
@@ -1638,6 +1823,7 @@ class S {
     );
   }
 
+  /// `Filter`
   String get filter {
     return Intl.message(
       'Filter',
@@ -1647,6 +1833,7 @@ class S {
     );
   }
 
+  /// `Clear`
   String get clear {
     return Intl.message(
       'Clear',
@@ -1656,6 +1843,7 @@ class S {
     );
   }
 
+  /// `Apply Filters`
   String get apply_filters {
     return Intl.message(
       'Apply Filters',
@@ -1665,6 +1853,7 @@ class S {
     );
   }
 
+  /// `Opened Restaurants`
   String get opened_restaurants {
     return Intl.message(
       'Opened Restaurants',
@@ -1674,6 +1863,7 @@ class S {
     );
   }
 
+  /// `Fields`
   String get fields {
     return Intl.message(
       'Fields',
@@ -1683,6 +1873,7 @@ class S {
     );
   }
 
+  /// `This food was added to cart`
   String get this_food_was_added_to_cart {
     return Intl.message(
       'This food was added to cart',
@@ -1692,6 +1883,7 @@ class S {
     );
   }
 
+  /// `Foods result`
   String get foods_result {
     return Intl.message(
       'Foods result',
@@ -1701,6 +1893,7 @@ class S {
     );
   }
 
+  /// `Foods Results`
   String get foods_results {
     return Intl.message(
       'Foods Results',
@@ -1710,6 +1903,7 @@ class S {
     );
   }
 
+  /// `Restaurants Results`
   String get restaurants_results {
     return Intl.message(
       'Restaurants Results',
@@ -1719,6 +1913,7 @@ class S {
     );
   }
 
+  /// `All`
   String get all {
     return Intl.message(
       'All',
@@ -1728,6 +1923,7 @@ class S {
     );
   }
 
+  /// `This restaurant is closed !`
   String get this_restaurant_is_closed_ {
     return Intl.message(
       'This restaurant is closed !',
@@ -1737,6 +1933,7 @@ class S {
     );
   }
 
+  /// `Unknown`
   String get unknown {
     return Intl.message(
       'Unknown',
@@ -1746,6 +1943,7 @@ class S {
     );
   }
 
+  /// `How would you rate this restaurant ?`
   String get how_would_you_rate_this_restaurant {
     return Intl.message(
       'How would you rate this restaurant ?',
@@ -1755,6 +1953,7 @@ class S {
     );
   }
 
+  /// `Click on the stars below to leave comments`
   String get click_on_the_stars_below_to_leave_comments {
     return Intl.message(
       'Click on the stars below to leave comments',
@@ -1764,6 +1963,7 @@ class S {
     );
   }
 
+  /// `Click to confirm your address and pay or Long press to edit your address`
   String get click_to_confirm_your_address_and_pay_or_long_press {
     return Intl.message(
       'Click to confirm your address and pay or Long press to edit your address',
@@ -1773,6 +1973,7 @@ class S {
     );
   }
 
+  /// `Visa Card`
   String get visa_card {
     return Intl.message(
       'Visa Card',
@@ -1782,6 +1983,7 @@ class S {
     );
   }
 
+  /// `MasterCard`
   String get mastercard {
     return Intl.message(
       'MasterCard',
@@ -1791,6 +1993,7 @@ class S {
     );
   }
 
+  /// `PayPal`
   String get paypal {
     return Intl.message(
       'PayPal',
@@ -1800,6 +2003,7 @@ class S {
     );
   }
 
+  /// `Pay on Pickup`
   String get pay_on_pickup {
     return Intl.message(
       'Pay on Pickup',
@@ -1809,6 +2013,7 @@ class S {
     );
   }
 
+  /// `Click to pay with your Visa Card`
   String get click_to_pay_with_your_visa_card {
     return Intl.message(
       'Click to pay with your Visa Card',
@@ -1818,6 +2023,7 @@ class S {
     );
   }
 
+  /// `Click to pay with your MasterCard`
   String get click_to_pay_with_your_mastercard {
     return Intl.message(
       'Click to pay with your MasterCard',
@@ -1827,6 +2033,7 @@ class S {
     );
   }
 
+  /// `Click to pay with your PayPal account`
   String get click_to_pay_with_your_paypal_account {
     return Intl.message(
       'Click to pay with your PayPal account',
@@ -1836,6 +2043,7 @@ class S {
     );
   }
 
+  /// `Click to pay cash on delivery`
   String get click_to_pay_cash_on_delivery {
     return Intl.message(
       'Click to pay cash on delivery',
@@ -1845,6 +2053,7 @@ class S {
     );
   }
 
+  /// `Click to pay on pickup`
   String get click_to_pay_on_pickup {
     return Intl.message(
       'Click to pay on pickup',
@@ -1854,6 +2063,7 @@ class S {
     );
   }
 
+  /// `This email account exists`
   String get this_email_account_exists {
     return Intl.message(
       'This email account exists',
@@ -1863,6 +2073,7 @@ class S {
     );
   }
 
+  /// `This account not exist`
   String get this_account_not_exist {
     return Intl.message(
       'This account not exist',
@@ -1872,6 +2083,7 @@ class S {
     );
   }
 
+  /// `CARD NUMBER`
   String get card_number {
     return Intl.message(
       'CARD NUMBER',
@@ -1881,6 +2093,7 @@ class S {
     );
   }
 
+  /// `EXPIRY DATE`
   String get expiry_date {
     return Intl.message(
       'EXPIRY DATE',
@@ -1890,6 +2103,7 @@ class S {
     );
   }
 
+  /// `CVV`
   String get cvv {
     return Intl.message(
       'CVV',
@@ -1899,6 +2113,7 @@ class S {
     );
   }
 
+  /// `Your credit card not valid`
   String get your_credit_card_not_valid {
     return Intl.message(
       'Your credit card not valid',
@@ -1908,6 +2123,7 @@ class S {
     );
   }
 
+  /// `Number`
   String get number {
     return Intl.message(
       'Number',
@@ -1917,6 +2133,7 @@ class S {
     );
   }
 
+  /// `Exp Date`
   String get exp_date {
     return Intl.message(
       'Exp Date',
@@ -1926,6 +2143,7 @@ class S {
     );
   }
 
+  /// `CVC`
   String get cvc {
     return Intl.message(
       'CVC',
@@ -1935,6 +2153,7 @@ class S {
     );
   }
 
+  /// `Cuisines`
   String get cuisines {
     return Intl.message(
       'Cuisines',
@@ -1944,10 +2163,241 @@ class S {
     );
   }
 
+  /// `Favorites refreshed successfuly`
   String get favorites_refreshed_successfuly {
     return Intl.message(
       'Favorites refreshed successfuly',
       name: 'favorites_refreshed_successfuly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order #{id} has been cancelled`
+  String orderThisorderidHasBeenCanceled(Object id) {
+    return Intl.message(
+      'Order #$id has been cancelled',
+      name: 'orderThisorderidHasBeenCanceled',
+      desc: '',
+      args: [id],
+    );
+  }
+
+  /// `Cancelled`
+  String get canceled {
+    return Intl.message(
+      'Cancelled',
+      name: 'canceled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `yes`
+  String get yes {
+    return Intl.message(
+      'yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm order cancellation?`
+  String get areYouSureYouWantToCancelThisOrder {
+    return Intl.message(
+      'Confirm order cancellation?',
+      name: 'areYouSureYouWantToCancelThisOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View`
+  String get view {
+    return Intl.message(
+      'View',
+      name: 'view',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have any orders`
+  String get youDontHaveAnyOrder {
+    return Intl.message(
+      'You don\'t have any orders',
+      name: 'youDontHaveAnyOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `FAQs refreshed succesfully`
+  String get faqsRefreshedSuccessfuly {
+    return Intl.message(
+      'FAQs refreshed succesfully',
+      name: 'faqsRefreshedSuccessfuly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Items refreshed succesfully`
+  String get foodRefreshedSuccessfuly {
+    return Intl.message(
+      'Items refreshed succesfully',
+      name: 'foodRefreshedSuccessfuly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item was removed from Favourites`
+  String get thisFoodWasRemovedFromFavorites {
+    return Intl.message(
+      'Item was removed from Favourites',
+      name: 'thisFoodWasRemovedFromFavorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item was added to Favourites`
+  String get thisFoodWasAddedToFavorite {
+    return Intl.message(
+      'Item was added to Favourites',
+      name: 'thisFoodWasAddedToFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One or more Items in your cart are not deliverable`
+  String get oneOrMoreFoodsInYourCartNotDeliverable {
+    return Intl.message(
+      'One or more Items in your cart are not deliverable',
+      name: 'oneOrMoreFoodsInYourCartNotDeliverable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This store does not deliver`
+  String get thisRestaurantNotSupportDeliveryMethod {
+    return Intl.message(
+      'This store does not deliver',
+      name: 'thisRestaurantNotSupportDeliveryMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery address is too far from store`
+  String get deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants {
+    return Intl.message(
+      'Delivery address is too far from store',
+      name: 'deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click to pay with RazorPay`
+  String get clickToPayWithRazorpayMethod {
+    return Intl.message(
+      'Click to pay with RazorPay',
+      name: 'clickToPayWithRazorpayMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Complete your profile details to continue`
+  String get completeYourProfileDetailsToContinue {
+    return Intl.message(
+      'Complete your profile details to continue',
+      name: 'completeYourProfileDetailsToContinue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel Order`
+  String get cancelOrder {
+    return Intl.message(
+      'Cancel Order',
+      name: 'cancelOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Details`
+  String get details {
+    return Intl.message(
+      'Details',
+      name: 'details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Details`
+  String get orderDetails {
+    return Intl.message(
+      'Order Details',
+      name: 'orderDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RazorPay Payments`
+  String get razorpayPayment {
+    return Intl.message(
+      'RazorPay Payments',
+      name: 'razorpayPayment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click on the food to get more details about it.`
+  String get clickOnTheFoodToGetMoreDetailsAboutIt {
+    return Intl.message(
+      'Click on the food to get more details about it.',
+      name: 'clickOnTheFoodToGetMoreDetailsAboutIt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Menu`
+  String get menu {
+    return Intl.message(
+      'Menu',
+      name: 'menu',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery method not allowed`
+  String get deliveryMethodNotAllowed {
+    return Intl.message(
+      'Delivery method not allowed',
+      name: 'deliveryMethodNotAllowed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RazorPay`
+  String get razorpay {
+    return Intl.message(
+      'RazorPay',
+      name: 'razorpay',
       desc: '',
       args: [],
     );
