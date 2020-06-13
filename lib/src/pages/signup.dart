@@ -14,12 +14,19 @@ class SignUpWidget extends StatefulWidget {
 class _SignUpWidgetState extends StateMVC<SignUpWidget> {
   UserController _con;
 
+  final textEditingContoller = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    textEditingContoller.dispose();
+    super.dispose();
+  }
+
   _SignUpWidgetState() : super(UserController()) {
     _con = controller;
   }
   @override
   Widget build(BuildContext context) {
-    String confirmed_pass;
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -108,7 +115,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                       TextFormField(
                         obscureText: _con.hidePassword,
                         onSaved: (input) => _con.user.password = input,
-                        onChanged: (input) => confirmed_pass = input,
+                        controller: textEditingContoller,
                         validator: (input) => input.length < 6 ? S.of(context).should_be_more_than_6_letters : null,
                         decoration: InputDecoration(
                           labelText: S.of(context).password,
@@ -138,7 +145,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                         validator: (input) {
                           if (input.length < 3) {
                             return S.of(context).should_be_more_than_3_letters;
-                          } else if (input != confirmed_pass) {
+                          } else if (input != textEditingContoller.text) {
                             return S.of(context).passwords_dont_match;
                           }
                           return null;

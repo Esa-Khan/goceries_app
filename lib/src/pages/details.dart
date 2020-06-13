@@ -91,27 +91,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                         style: Theme.of(context).textTheme.headline3,
                                       ),
                                     ),
-                                    SizedBox(width: 10),
-                                    SizedBox(
-                                      height: 32,
-                                      child: Chip(
-                                        padding: EdgeInsets.all(0),
-                                        label: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Text(_con.restaurant.rate,
-                                                style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor))),
-                                            Icon(
-                                              Icons.star_border,
-                                              color: Theme.of(context).primaryColor,
-                                              size: 16,
-                                            ),
-                                          ],
-                                        ),
-                                        backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
-                                        shape: StadiumBorder(),
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -157,7 +136,27 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                       style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
                                     ),
                                   ),
-                                  SizedBox(width: 20),
+                                  SizedBox(width: 10),
+                                  SizedBox(
+                                    height: 32,
+                                    child: Chip(
+                                      padding: EdgeInsets.all(0),
+                                      label: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Text(_con.restaurant.rate,
+                                              style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Theme.of(context).primaryColor))),
+                                          Icon(
+                                            Icons.star_border,
+                                            color: Theme.of(context).primaryColor,
+                                            size: 16,
+                                          ),
+                                        ],
+                                      ),
+                                      backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
+                                      shape: StadiumBorder(),
+                                    ),
+                                  ),
                                 ],
                               ),
 //                              Padding(
