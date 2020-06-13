@@ -107,7 +107,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                     ),
                   ),
                   title: Text(
-                    S.of(context).top_restaurants,
+                    S.of(context).closest_stores,
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   subtitle: Text(
@@ -116,7 +116,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                   ),
                 ),
               ),
-              CardsCarouselWidget(restaurantsList: _con.topRestaurants, heroTag: 'home_top_restaurants'),
+              CardsCarouselWidget(restaurantsList: _con.closestStores, heroTag: 'home_top_restaurants'),
               ListTile(
                 dense: true,
                 contentPadding: EdgeInsets.symmetric(horizontal: 20),
@@ -144,7 +144,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                     color: Theme.of(context).hintColor,
                   ),
                   title: Text(
-                    S.of(context).food_categories,
+                    S.of(context).aisles,
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 ),

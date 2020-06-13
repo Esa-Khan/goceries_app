@@ -47,7 +47,8 @@ class Setting {
       enableVersion = jsonMap['enable_version'] == null || jsonMap['enable_version'] == '0' ? false : true;
       defaultTax = double.tryParse(jsonMap['default_tax']) ?? 0.0; //double.parse(jsonMap['default_tax'].toString());
       defaultCurrency = jsonMap['default_currency'] ?? '';
-      currencyDecimalDigits = int.tryParse(jsonMap['default_currency_decimal_digits']) ?? 2;
+//      currencyDecimalDigits = int.tryParse(jsonMap['default_currency_decimal_digits']) ?? 2;
+      currencyDecimalDigits = 2;
       currencyRight = jsonMap['currency_right'] == null || jsonMap['currency_right'] == '0' ? false : true;
       payPalEnabled = jsonMap['enable_paypal'] == null || jsonMap['enable_paypal'] == '0' ? false : true;
       stripeEnabled = jsonMap['enable_stripe'] == null || jsonMap['enable_stripe'] == '0' ? false : true;

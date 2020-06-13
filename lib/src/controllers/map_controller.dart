@@ -105,7 +105,7 @@ class MapController extends ControllerMVC {
 
   void getRestaurantsOfArea() async {
     setState(() {
-      topRestaurants = <Restaurant>[];
+      closestStores = <Restaurant>[];
       Address areaAddress = Address.fromJSON({"latitude": cameraPosition.target.latitude, "longitude": cameraPosition.target.longitude});
       if (cameraPosition != null) {
         listenForNearRestaurants(currentAddress, areaAddress);
@@ -119,14 +119,14 @@ class MapController extends ControllerMVC {
     currentAddress = await sett.getCurrentLocation();
     mapsUtil
         .get("origin=" +
-            currentAddress.latitude.toString() +
-            "," +
-            currentAddress.longitude.toString() +
-            "&destination=" +
-            currentRestaurant.latitude +
-            "," +
-            currentRestaurant.longitude +
-            "&key=${sett.setting.value?.googleMapsKey}")
+        currentAddress.latitude.toString() +
+        "," +
+        currentAddress.longitude.toString() +
+        "&destination=" +
+        currentRestaurant.latitude +
+        "," +
+        currentRestaurant.longitude +
+        "&key=${sett.setting.value?.googleMapsKey}")
         .then((dynamic res) {
       if (res != null) {
         List<LatLng> _latLng = res as List<LatLng>;
@@ -141,7 +141,7 @@ class MapController extends ControllerMVC {
 
   Future refreshMap() async {
     setState(() {
-      topRestaurants = <Restaurant>[];
+      closestStores = <Restaurant>[];
     });
     listenForNearRestaurants(currentAddress, currentAddress);
   }

@@ -297,7 +297,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                 ),
                                 SizedBox(width: 10),
                                 Text(
-                                  S.of(context).help_support,
+                                  S.of(context).help_supports,
                                   style: Theme.of(context).textTheme.bodyText2,
                                 ),
                               ],

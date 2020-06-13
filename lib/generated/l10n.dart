@@ -33,21 +33,21 @@ class S {
     return Localizations.of<S>(context, S);
   }
 
-  /// `Search for restaurants or foods`
-  String get search_for_restaurants_or_foods {
+  /// `Search for items or nearby stores`
+  String get search_for_stores_or_items {
     return Intl.message(
-      'Search for restaurants or foods',
-      name: 'search_for_restaurants_or_foods',
+      'Search for items or nearby stores',
+      name: 'search_for_stores_or_items',
       desc: '',
       args: [],
     );
   }
 
-  /// `Top Restaurants`
-  String get top_restaurants {
+  /// `Closest Stores`
+  String get closest_stores {
     return Intl.message(
-      'Top Restaurants',
-      name: 'top_restaurants',
+      'Closest Stores',
+      name: 'closest_stores',
       desc: '',
       args: [],
     );
@@ -83,11 +83,11 @@ class S {
     );
   }
 
-  /// `Food Categories`
-  String get food_categories {
+  /// `Aisles`
+  String get aisles {
     return Intl.message(
-      'Food Categories',
-      name: 'food_categories',
+      'Aisles',
+      name: 'aisles',
       desc: '',
       args: [],
     );
@@ -263,16 +263,6 @@ class S {
     );
   }
 
-  /// `Menu`
-  String get menu {
-    return Intl.message(
-      'Menu',
-      name: 'menu',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Information`
   String get information {
     return Intl.message(
@@ -283,11 +273,11 @@ class S {
     );
   }
 
-  /// `Featured Foods`
-  String get featured_foods {
+  /// `Store`
+  String get store {
     return Intl.message(
-      'Featured Foods',
-      name: 'featured_foods',
+      'Store',
+      name: 'store',
       desc: '',
       args: [],
     );
@@ -393,21 +383,11 @@ class S {
     );
   }
 
-  /// `Faq`
+  /// `FAQ`
   String get faq {
     return Intl.message(
-      'Faq',
+      'FAQ',
       name: 'faq',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Help & Supports`
-  String get help_supports {
-    return Intl.message(
-      'Help & Supports',
-      name: 'help_supports',
       desc: '',
       args: [],
     );
@@ -423,21 +403,21 @@ class S {
     );
   }
 
-  /// `I forgot password ?`
-  String get i_forgot_password {
+  /// `Forgot password ?`
+  String get forgot_password {
     return Intl.message(
-      'I forgot password ?',
-      name: 'i_forgot_password',
+      'Forgot password ?',
+      name: 'forgot_password',
       desc: '',
       args: [],
     );
   }
 
-  /// `I don't have an account?`
-  String get i_dont_have_an_account {
+  /// `Don't have an account ?`
+  String get dont_have_an_account {
     return Intl.message(
-      'I don\'t have an account?',
-      name: 'i_dont_have_an_account',
+      'Don\'t have an account ?',
+      name: 'dont_have_an_account',
       desc: '',
       args: [],
     );
@@ -704,10 +684,10 @@ class S {
   }
 
   /// `Help & Support`
-  String get help_support {
+  String get help_supports {
     return Intl.message(
       'Help & Support',
-      name: 'help_support',
+      name: 'help_supports',
       desc: '',
       args: [],
     );
@@ -723,11 +703,11 @@ class S {
     );
   }
 
-  /// `Let's Start with register!`
-  String get lets_start_with_register {
+  /// `Register a new account!`
+  String get register_a_new_account {
     return Intl.message(
-      'Let\'s Start with register!',
-      name: 'lets_start_with_register',
+      'Register a new account!',
+      name: 'register_a_new_account',
       desc: '',
       args: [],
     );
@@ -738,6 +718,16 @@ class S {
     return Intl.message(
       'Should be more than 3 letters',
       name: 'should_be_more_than_3_letters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords don't match`
+  String get passwords_dont_match {
+    return Intl.message(
+      'Passwords don\'t match',
+      name: 'passwords_dont_match',
       desc: '',
       args: [],
     );
@@ -763,10 +753,10 @@ class S {
     );
   }
 
-  /// `Should be more than 6 letters`
+  /// `Password should be more than 6 letters`
   String get should_be_more_than_6_letters {
     return Intl.message(
-      'Should be more than 6 letters',
+      'Password should be more than 6 letters',
       name: 'should_be_more_than_6_letters',
       desc: '',
       args: [],
@@ -783,10 +773,20 @@ class S {
     );
   }
 
-  /// `I have account? Back to login`
+  /// `Confirm Password`
+  String get confirm_password {
+    return Intl.message(
+      'Confirm Password',
+      name: 'confirm_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Have an account? Back to login`
   String get i_have_account_back_to_login {
     return Intl.message(
-      'I have account? Back to login',
+      'Have an account? Back to login',
       name: 'i_have_account_back_to_login',
       desc: '',
       args: [],
@@ -873,10 +873,10 @@ class S {
     );
   }
 
-  /// `Let's Start with Login!`
+  /// `Let's start by logging in!`
   String get lets_start_with_login {
     return Intl.message(
-      'Let\'s Start with Login!',
+      'Let\'s start by logging in!',
       name: 'lets_start_with_login',
       desc: '',
       args: [],
@@ -1003,10 +1003,10 @@ class S {
     );
   }
 
-  /// `D'ont have any item in your cart`
+  /// `Don't have any items in your cart`
   String get dont_have_any_item_in_your_cart {
     return Intl.message(
-      'D\'ont have any item in your cart',
+      'Don\'t have any items in your cart',
       name: 'dont_have_any_item_in_your_cart',
       desc: '',
       args: [],
@@ -1023,11 +1023,11 @@ class S {
     );
   }
 
-  /// `D'ont have any item in the notification list`
-  String get dont_have_any_item_in_the_notification_list {
+  /// `Don't have any notifications`
+  String get dont_have_any_notifications {
     return Intl.message(
-      'D\'ont have any item in the notification list',
-      name: 'dont_have_any_item_in_the_notification_list',
+      'Don\'t have any notifications',
+      name: 'dont_have_any_notifications',
       desc: '',
       args: [],
     );
@@ -2153,241 +2153,11 @@ class S {
     );
   }
 
-  /// `Cuisines`
-  String get cuisines {
-    return Intl.message(
-      'Cuisines',
-      name: 'cuisines',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Favorites refreshed successfully`
-  String get favorites_refreshed_successfuly {
-    return Intl.message(
-      'Favorites refreshed successfully',
-      name: 'favorites_refreshed_successfuly',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Complete your profile details to continue`
   String get completeYourProfileDetailsToContinue {
     return Intl.message(
       'Complete your profile details to continue',
       name: 'completeYourProfileDetailsToContinue',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Faqs refreshed successfully`
-  String get faqsRefreshedSuccessfuly {
-    return Intl.message(
-      'Faqs refreshed successfully',
-      name: 'faqsRefreshedSuccessfuly',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This food was added to favorite`
-  String get thisFoodWasAddedToFavorite {
-    return Intl.message(
-      'This food was added to favorite',
-      name: 'thisFoodWasAddedToFavorite',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This food was removed from favorites`
-  String get thisFoodWasRemovedFromFavorites {
-    return Intl.message(
-      'This food was removed from favorites',
-      name: 'thisFoodWasRemovedFromFavorites',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Food refreshed successfully`
-  String get foodRefreshedSuccessfuly {
-    return Intl.message(
-      'Food refreshed successfully',
-      name: 'foodRefreshedSuccessfuly',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Delivery address outside the delivery range of this restaurants.`
-  String get deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants {
-    return Intl.message(
-      'Delivery address outside the delivery range of this restaurants.',
-      name: 'deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `This restaurant not support delivery method.`
-  String get thisRestaurantNotSupportDeliveryMethod {
-    return Intl.message(
-      'This restaurant not support delivery method.',
-      name: 'thisRestaurantNotSupportDeliveryMethod',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `One or more foods in your cart not deliverable.`
-  String get oneOrMoreFoodsInYourCartNotDeliverable {
-    return Intl.message(
-      'One or more foods in your cart not deliverable.',
-      name: 'oneOrMoreFoodsInYourCartNotDeliverable',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Delivery method not allowed!`
-  String get deliveryMethodNotAllowed {
-    return Intl.message(
-      'Delivery method not allowed!',
-      name: 'deliveryMethodNotAllowed',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `View Details`
-  String get viewDetails {
-    return Intl.message(
-      'View Details',
-      name: 'viewDetails',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `You don't  have any order`
-  String get youDontHaveAnyOrder {
-    return Intl.message(
-      'You don\'t  have any order',
-      name: 'youDontHaveAnyOrder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Order Details`
-  String get orderDetails {
-    return Intl.message(
-      'Order Details',
-      name: 'orderDetails',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Order`
-  String get order {
-    return Intl.message(
-      'Order',
-      name: 'order',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Details`
-  String get details {
-    return Intl.message(
-      'Details',
-      name: 'details',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Canceled`
-  String get canceled {
-    return Intl.message(
-      'Canceled',
-      name: 'canceled',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Cancel Order`
-  String get cancelOrder {
-    return Intl.message(
-      'Cancel Order',
-      name: 'cancelOrder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `View`
-  String get view {
-    return Intl.message(
-      'View',
-      name: 'view',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Yes`
-  String get yes {
-    return Intl.message(
-      'Yes',
-      name: 'yes',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Are you sure you want to cancel this order?`
-  String get areYouSureYouWantToCancelThisOrder {
-    return Intl.message(
-      'Are you sure you want to cancel this order?',
-      name: 'areYouSureYouWantToCancelThisOrder',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Order: #{id} has been canceled`
-  String orderThisorderidHasBeenCanceled(Object id) {
-    return Intl.message(
-      'Order: #$id has been canceled',
-      name: 'orderThisorderidHasBeenCanceled',
-      desc: '',
-      args: [id],
-    );
-  }
-
-  /// `Click on the food to get more details about it`
-  String get clickOnTheFoodToGetMoreDetailsAboutIt {
-    return Intl.message(
-      'Click on the food to get more details about it',
-      name: 'clickOnTheFoodToGetMoreDetailsAboutIt',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `RazorPay Payment`
-  String get razorpayPayment {
-    return Intl.message(
-      'RazorPay Payment',
-      name: 'razorpayPayment',
       desc: '',
       args: [],
     );
@@ -2403,11 +2173,221 @@ class S {
     );
   }
 
-  /// `Click to pay with RazorPay method`
+  /// `Click to pay with RazorPay`
   String get clickToPayWithRazorpayMethod {
     return Intl.message(
-      'Click to pay with RazorPay method',
+      'Click to pay with RazorPay',
       name: 'clickToPayWithRazorpayMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This store does not deliver`
+  String get thisRestaurantNotSupportDeliveryMethod {
+    return Intl.message(
+      'This store does not deliver',
+      name: 'thisRestaurantNotSupportDeliveryMethod',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One or more items in your cart are not deliverable`
+  String get oneOrMoreFoodsInYourCartNotDeliverable {
+    return Intl.message(
+      'One or more items in your cart are not deliverable',
+      name: 'oneOrMoreFoodsInYourCartNotDeliverable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item removed from favourites`
+  String get thisFoodWasRemovedFromFavorites {
+    return Intl.message(
+      'Item removed from favourites',
+      name: 'thisFoodWasRemovedFromFavorites',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Item added to favourites`
+  String get thisFoodWasAddedToFavorite {
+    return Intl.message(
+      'Item added to favourites',
+      name: 'thisFoodWasAddedToFavorite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Items refreshed`
+  String get foodRefreshedSuccessfuly {
+    return Intl.message(
+      'Items refreshed',
+      name: 'foodRefreshedSuccessfuly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `FAQs refreshed`
+  String get faqsRefreshedSuccessfuly {
+    return Intl.message(
+      'FAQs refreshed',
+      name: 'faqsRefreshedSuccessfuly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click on an item to get more details`
+  String get clickOnTheFoodToGetMoreDetailsAboutIt {
+    return Intl.message(
+      'Click on an item to get more details',
+      name: 'clickOnTheFoodToGetMoreDetailsAboutIt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Don't have any orders`
+  String get youDontHaveAnyOrder {
+    return Intl.message(
+      'Don\'t have any orders',
+      name: 'youDontHaveAnyOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Want to cancel order?`
+  String get areYouSureYouWantToCancelThisOrder {
+    return Intl.message(
+      'Want to cancel order?',
+      name: 'areYouSureYouWantToCancelThisOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message(
+      'Yes',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery method not allowed`
+  String get deliveryMethodNotAllowed {
+    return Intl.message(
+      'Delivery method not allowed',
+      name: 'deliveryMethodNotAllowed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `RazorPay Payment`
+  String get razorpayPayment {
+    return Intl.message(
+      'RazorPay Payment',
+      name: 'razorpayPayment',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Details`
+  String get orderDetails {
+    return Intl.message(
+      'Order Details',
+      name: 'orderDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Details`
+  String get details {
+    return Intl.message(
+      'Details',
+      name: 'details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancel Order`
+  String get cancelOrder {
+    return Intl.message(
+      'Cancel Order',
+      name: 'cancelOrder',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Store too far from delivery address`
+  String get deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants {
+    return Intl.message(
+      'Store too far from delivery address',
+      name: 'deliveryAddressOutsideTheDeliveryRangeOfThisRestaurants',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cancelled`
+  String get canceled {
+    return Intl.message(
+      'Cancelled',
+      name: 'canceled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order #{id} has been cancelled`
+  String orderThisorderidHasBeenCanceled(Object id) {
+    return Intl.message(
+      'Order #$id has been cancelled',
+      name: 'orderThisorderidHasBeenCanceled',
+      desc: '',
+      args: [id],
+    );
+  }
+
+  /// `View`
+  String get view {
+    return Intl.message(
+      'View',
+      name: 'view',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cuisines`
+  String get cuisines {
+    return Intl.message(
+      'Cuisines',
+      name: 'cuisines',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Favorites refreshed successfuly`
+  String get favorites_refreshed_successfuly {
+    return Intl.message(
+      'Favorites refreshed successfuly',
+      name: 'favorites_refreshed_successfuly',
       desc: '',
       args: [],
     );
