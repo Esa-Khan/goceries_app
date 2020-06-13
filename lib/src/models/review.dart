@@ -17,12 +17,12 @@ class Review {
       id = jsonMap['id'].toString();
       review = jsonMap['review'];
       rate = jsonMap['rate'].toString() ?? '0';
-      user = jsonMap['user'] != null ? User.fromJSON(jsonMap['user']) : User.fromJSON({});
+      user = jsonMap['user'] != null ? User.fromJSON(jsonMap['user']) : new User();
     } catch (e) {
       id = '';
       review = '';
       rate = '0';
-      user = User.fromJSON({});
+      user = new User();
       print(CustomTrace(StackTrace.current, message: e));
     }
   }

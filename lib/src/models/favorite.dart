@@ -13,11 +13,11 @@ class Favorite {
   Favorite.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'] != null ? jsonMap['id'].toString() : null;
-      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : Food.fromJSON({});
+      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : new Food();
       extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : null;
     } catch (e) {
       id = '';
-      food = Food.fromJSON({});
+      food = new Food();
       extras = [];
       print(CustomTrace(StackTrace.current, message: e));
     }

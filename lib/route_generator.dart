@@ -19,7 +19,6 @@ import 'src/pages/pages.dart';
 import 'src/pages/payment_methods.dart';
 import 'src/pages/paypal_payment.dart';
 import 'src/pages/profile.dart';
-import 'src/pages/razorpay_payment.dart';
 import 'src/pages/reviews.dart';
 import 'src/pages/settings.dart';
 import 'src/pages/signup.dart';
@@ -77,8 +76,6 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => OrderSuccessWidget(routeArgument: RouteArgument(param: 'Pay on Pickup')));
       case '/PayPal':
         return MaterialPageRoute(builder: (_) => PayPalPaymentWidget(routeArgument: args as RouteArgument));
-      case '/RazorPay':
-        return MaterialPageRoute(builder: (_) => RazorPayPaymentWidget(routeArgument: args as RouteArgument));
       case '/OrderSuccess':
         return MaterialPageRoute(builder: (_) => OrderSuccessWidget(routeArgument: args as RouteArgument));
       case '/Languages':

@@ -95,13 +95,13 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            _con.food?.name ?? '',
+                                            _con.food.name,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                             style: Theme.of(context).textTheme.headline3,
                                           ),
                                           Text(
-                                            _con.food?.restaurant?.name ?? '',
+                                            _con.food.restaurant.name,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                             style: Theme.of(context).textTheme.bodyText2,
@@ -110,7 +110,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 1,
+                                      flex: 2,
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: <Widget>[

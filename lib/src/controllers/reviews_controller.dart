@@ -32,13 +32,13 @@ class ReviewsController extends ControllerMVC {
       });
     }, onError: (a) {
       print(a);
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       getFoodsOfOrder();
       if (message != null) {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(message),
         ));
       }
@@ -47,7 +47,7 @@ class ReviewsController extends ControllerMVC {
 
   void addFoodReview(Review _review, Food _food) async {
     foodRepo.addFoodReview(_review, _food).then((value) {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(S.of(context).the_food_has_been_rated_successfully),
       ));
     });
@@ -56,7 +56,7 @@ class ReviewsController extends ControllerMVC {
   void addRestaurantReview(Review _review) async {
     restaurantRepo.addRestaurantReview(_review, this.order.foodOrders[0].food.restaurant).then((value) {
       refreshOrder();
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(S.of(context).the_restaurant_has_been_rated_successfully),
       ));
     });

@@ -113,8 +113,8 @@ class FoodController extends ControllerMVC {
       setState(() {
         this.favorite = value;
       });
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).thisFoodWasAddedToFavorite),
+      scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text('This food was added to favorite'),
       ));
     });
   }
@@ -124,8 +124,8 @@ class FoodController extends ControllerMVC {
       setState(() {
         this.favorite = new Favorite();
       });
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).thisFoodWasRemovedFromFavorites),
+      scaffoldKey.currentState.showSnackBar(SnackBar(
+        content: Text('This food was removed from favorites'),
       ));
     });
   }
@@ -134,7 +134,7 @@ class FoodController extends ControllerMVC {
     var _id = food.id;
     food = new Food();
     listenForFavorite(foodId: _id);
-    listenForFood(foodId: _id, message: S.of(context).foodRefreshedSuccessfuly);
+    listenForFood(foodId: _id, message: 'Food refreshed successfuly');
   }
 
   void calculateTotal() {

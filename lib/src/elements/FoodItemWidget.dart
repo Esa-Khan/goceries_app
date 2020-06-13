@@ -65,12 +65,6 @@ class FoodItemWidget extends StatelessWidget {
                           maxLines: 2,
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
-                        Text(
-                          food.restaurant.name,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: Theme.of(context).textTheme.caption,
-                        ),
                       ],
                     ),
                   ),

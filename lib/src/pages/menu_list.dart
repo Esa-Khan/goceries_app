@@ -93,7 +93,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                 style: Theme.of(context).textTheme.headline4,
               ),
               subtitle: Text(
-                S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
+                S.of(context).longpress_on_the_food_to_add_suplements,
                 style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
               ),
             ),

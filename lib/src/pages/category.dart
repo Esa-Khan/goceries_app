@@ -52,7 +52,7 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
       appBar: AppBar(
         leading: new IconButton(
           icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
-          onPressed: () => _con.scaffoldKey?.currentState?.openDrawer(),
+          onPressed: () => _con.scaffoldKey.currentState.openDrawer(),
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
@@ -88,7 +88,7 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SearchBarWidget(onClickFilter: (filter) {
-                  _con.scaffoldKey?.currentState?.openEndDrawer();
+                  _con.scaffoldKey.currentState.openEndDrawer();
                 }),
               ),
               SizedBox(height: 10),

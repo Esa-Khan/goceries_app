@@ -25,11 +25,4 @@ class Notification {
       print(CustomTrace(StackTrace.current, message: e));
     }
   }
-
-  Map markReadMap() {
-    var map = new Map<String, dynamic>();
-    map["id"] = id;
-    map["read_at"] = !read;
-    return map;
-  }
 }

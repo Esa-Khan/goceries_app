@@ -25,13 +25,13 @@ class TrackingController extends ControllerMVC {
       });
     }, onError: (a) {
       print(a);
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       listenForOrderStatus();
       if (message != null) {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(message),
         ));
       }
@@ -77,27 +77,5 @@ class TrackingController extends ControllerMVC {
   Future<void> refreshOrder() async {
     order = new Order();
     listenForOrder(message: S.of(context).tracking_refreshed_successfuly);
-  }
-
-  void doCancelOrder() {
-    cancelOrder(this.order).then((value) {
-      setState(() {
-        this.order.active = false;
-      });
-    }).catchError((e) {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(e),
-      ));
-    }).whenComplete(() {
-      orderStatus = [];
-      listenForOrderStatus();
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).orderThisorderidHasBeenCanceled(this.order.id)),
-      ));
-    });
-  }
-
-  bool canCancelOrder(Order order) {
-    return order.active == true && order.orderStatus.id == 1;
   }
 }

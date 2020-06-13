@@ -15,12 +15,13 @@ class Cart {
     try {
       id = jsonMap['id'].toString();
       quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
-      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : Food.fromJSON({});
+      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : new Food();
       extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : [];
+      food.price = getFoodPrice();
     } catch (e) {
       id = '';
       quantity = 0.0;
-      food = Food.fromJSON({});
+      food = new Food();
       extras = [];
       print(CustomTrace(StackTrace.current, message: e));
     }

@@ -74,14 +74,9 @@ Future<void> logout() async {
 }
 
 void setCurrentUser(jsonString) async {
-  try {
-    if (json.decode(jsonString)['data'] != null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('current_user', json.encode(json.decode(jsonString)['data']));
-    }
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: jsonString).toString());
-    throw new Exception(e);
+  if (json.decode(jsonString)['data'] != null) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('current_user', json.encode(json.decode(jsonString)['data']));
   }
 }
 

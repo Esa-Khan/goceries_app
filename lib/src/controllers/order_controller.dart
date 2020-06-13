@@ -22,32 +22,15 @@ class OrderController extends ControllerMVC {
       });
     }, onError: (e) {
       print(e);
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       if (message != null) {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        scaffoldKey.currentState.showSnackBar(SnackBar(
           content: Text(message),
         ));
       }
-    });
-  }
-
-  void doCancelOrder(Order order) {
-    cancelOrder(order).then((value) {
-      setState(() {
-        order.active = false;
-      });
-    }).catchError((e) {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(e),
-      ));
-    }).whenComplete(() {
-      //refreshOrders();
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).orderThisorderidHasBeenCanceled(order.id)),
-      ));
     });
   }
 
