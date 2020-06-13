@@ -74,7 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "g" : MessageLookupByLibrary.simpleMessage("g"),
     "guest" : MessageLookupByLibrary.simpleMessage("Guest"),
     "help__support" : MessageLookupByLibrary.simpleMessage("Help & Support"),
-    "help_support" : MessageLookupByLibrary.simpleMessage("Help & Support"),
+    "help_supports" : MessageLookupByLibrary.simpleMessage("Help & Supports"),
     "hint_full_address" : MessageLookupByLibrary.simpleMessage("12 Street, City 21663, Country"),
     "home" : MessageLookupByLibrary.simpleMessage("Home"),
     "home_address" : MessageLookupByLibrary.simpleMessage("Home Address"),

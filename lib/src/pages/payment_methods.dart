@@ -27,6 +27,10 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
       list.paymentsList.removeWhere((element) {
         return element.id == "paypal";
       });
+    if (!setting.value.razorPayEnabled)
+      list.paymentsList.removeWhere((element) {
+        return element.id == "razorpay";
+      });
     if (!setting.value.stripeEnabled)
       list.paymentsList.removeWhere((element) {
         return element.id == "visacard" || element.id == "mastercard";
@@ -51,11 +55,11 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-//            Padding(
-//              padding: const EdgeInsets.symmetric(horizontal: 20),
-//              child: SearchBarWidget(),
-//            ),
-//            SizedBox(height: 15),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: SearchBarWidget(),
+            ),
+            SizedBox(height: 15),
             list.paymentsList.length > 0
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -90,28 +94,27 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                 return PaymentMethodListItemWidget(paymentMethod: list.paymentsList.elementAt(index));
               },
             ),
-//            list.cashList.length > 0
-//                ? Padding(
-//                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-//                    child: ListTile(
-//                      contentPadding: EdgeInsets.symmetric(vertical: 0),
-//                      leading: Icon(
-//                        Icons.monetization_on,
-//                        color: Theme.of(context).hintColor,
-//                      ),
-//                      title: Text(
-//                        S.of(context).cash_on_delivery,
-//                        maxLines: 1,
-//                        overflow: TextOverflow.ellipsis,
-//                        style: Theme.of(context).textTheme.headline4,
-//                      ),
-//                      subtitle: Text(S.of(context).select_your_preferred_payment_mode),
-//                    ),
-//                  )
-//                : SizedBox(
-//                    height: 0,
-//                  ),
-            SizedBox(height: 10),
+            list.cashList.length > 0
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+                      leading: Icon(
+                        Icons.monetization_on,
+                        color: Theme.of(context).hintColor,
+                      ),
+                      title: Text(
+                        S.of(context).cash_on_delivery,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      subtitle: Text(S.of(context).select_your_preferred_payment_mode),
+                    ),
+                  )
+                : SizedBox(
+                    height: 0,
+                  ),
             ListView.separated(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
