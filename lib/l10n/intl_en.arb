@@ -182,7 +182,7 @@
   "filter": "Filter",
   "clear": "Clear",
   "apply_filters": "Apply Filters",
-  "opened_restaurants": "Opened Restaurants",
+  "show_only_open_stores": "Show only open Stores",
   "fields": "Fields",
   "this_food_was_added_to_cart": "This food was added to cart",
   "foods_result": "Foods result",

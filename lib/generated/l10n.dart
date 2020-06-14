@@ -1853,11 +1853,11 @@ class S {
     );
   }
 
-  /// `Opened Restaurants`
-  String get opened_restaurants {
+  /// `Show only open Stores`
+  String get show_only_open_stores {
     return Intl.message(
-      'Opened Restaurants',
-      name: 'opened_restaurants',
+      'Show only open Stores',
+      name: 'show_only_open_stores',
       desc: '',
       args: [],
     );

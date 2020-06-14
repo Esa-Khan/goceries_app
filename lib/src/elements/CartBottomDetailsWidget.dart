@@ -18,7 +18,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
     return _con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-            height: 200,
+            height: 170,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -41,7 +41,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                       Helper.getPrice(_con.subTotal, context, style: Theme.of(context).textTheme.subtitle1)
                     ],
                   ),
-                  SizedBox(height: 5),
+//                  SizedBox(height: 5),
                   Row(
                     children: <Widget>[
                       Expanded(
@@ -67,7 +67,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                       Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Stack(
                     fit: StackFit.loose,
                     alignment: AlignmentDirectional.centerEnd,
@@ -99,7 +99,7 @@ class CartBottomDetailsWidget extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(height: 10),
+//                  SizedBox(height: 10),
                 ],
               ),
             ),

@@ -83,14 +83,14 @@ class RestaurantController extends ControllerMVC {
     }, onDone: () {});
   }
 
-  void listenForTrendingFoods(String idRestaurant) async {
-    final Stream<Food> stream = await getTrendingFoodsOfRestaurant(idRestaurant);
-    stream.listen((Food _food) {
-      setState(() => trendingFoods.add(_food));
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
-  }
+//  void listenForTrendingFoods(String idRestaurant) async {
+//    final Stream<Food> stream = await getTrendingFoodsOfRestaurant(idRestaurant);
+//    stream.listen((Food _food) {
+//      setState(() => trendingFoods.add(_food));
+//    }, onError: (a) {
+//      print(a);
+//    }, onDone: () {});
+//  }
 
   void listenForFeaturedFoods(String idRestaurant) async {
     final Stream<Food> stream = await getFeaturedFoodsOfRestaurant(idRestaurant);

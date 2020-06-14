@@ -48,7 +48,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
               }
             },
             icon: Icon(Icons.arrow_back),
-            color: Theme.of(context).hintColor,
+            color: Theme.of(context).accentColor,
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,

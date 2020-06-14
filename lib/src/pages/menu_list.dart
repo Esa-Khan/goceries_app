@@ -29,7 +29,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   @override
   void initState() {
     _con.listenForFoods(widget.routeArgument.id);
-    _con.listenForTrendingFoods(widget.routeArgument.id);
+//    _con.listenForTrendingFoods(widget.routeArgument.id);
     super.initState();
   }
 

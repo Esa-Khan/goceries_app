@@ -110,7 +110,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       ),
                                     ),
                                     Expanded(
-                                      flex: 1,
+                                      flex: 2,
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: <Widget>[
@@ -128,43 +128,43 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: <Widget>[
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                      decoration: BoxDecoration(
-                                          color: Helper.canDelivery(_con.food.restaurant) && _con.food.deliverable ? Colors.green : Colors.orange,
-                                          borderRadius: BorderRadius.circular(24)),
-                                      child: Helper.canDelivery(_con.food.restaurant) && _con.food.deliverable
-                                          ? Text(
-                                              S.of(context).deliverable,
-                                              style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                            )
-                                          : Text(
-                                              S.of(context).not_deliverable,
-                                              style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                            ),
-                                    ),
-                                    Expanded(child: SizedBox(height: 0)),
-                                    Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                        decoration: BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.circular(24)),
-                                        child: Text(
-                                          _con.food.weight + " " + _con.food.unit,
-                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                        )),
-                                    SizedBox(width: 5),
-                                    Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                        decoration: BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.circular(24)),
-                                        child: Text(
-                                          _con.food.packageItemsCount + " " + S.of(context).items,
-                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                        )),
-                                  ],
-                                ),
-                                Divider(height: 20),
-                                Helper.applyHtml(context, _con.food.description, style: TextStyle(fontSize: 12)),
+//                                Row(
+//                                  children: <Widget>[
+//                                    Container(
+//                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+//                                      decoration: BoxDecoration(
+//                                          color: Helper.canDelivery(_con.food.restaurant) && _con.food.deliverable ? Colors.green : Colors.orange,
+//                                          borderRadius: BorderRadius.circular(24)),
+//                                      child: Helper.canDelivery(_con.food.restaurant) && _con.food.deliverable
+//                                          ? Text(
+//                                              S.of(context).deliverable,
+//                                              style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+//                                            )
+//                                          : Text(
+//                                              S.of(context).not_deliverable,
+//                                              style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+//                                            ),
+//                                    ),
+//                                    Expanded(child: SizedBox(height: 0)),
+//                                    Container(
+//                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+//                                        decoration: BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.circular(24)),
+//                                        child: Text(
+//                                          _con.food.weight + " " + _con.food.unit,
+//                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+//                                        )),
+//                                    SizedBox(width: 5),
+//                                    Container(
+//                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+//                                        decoration: BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.circular(24)),
+//                                        child: Text(
+//                                          _con.food.packageItemsCount + " " + S.of(context).items,
+//                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+//                                        )),
+//                                  ],
+//                                ),
+//                                Divider(height: 20),
+//                                Helper.applyHtml(context, _con.food.description, style: TextStyle(fontSize: 12)),
                                 ListTile(
                                   dense: true,
                                   contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -226,19 +226,19 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         primary: false,
                                         shrinkWrap: true,
                                       ),
-                                ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                  leading: Icon(
-                                    Icons.donut_small,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                  title: Text(
-                                    S.of(context).ingredients,
-                                    style: Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                ),
-                                Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
+//                                ListTile(
+//                                  dense: true,
+//                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
+//                                  leading: Icon(
+//                                    Icons.donut_small,
+//                                    color: Theme.of(context).hintColor,
+//                                  ),
+//                                  title: Text(
+//                                    S.of(context).ingredients,
+//                                    style: Theme.of(context).textTheme.subtitle1,
+//                                  ),
+//                                ),
+//                                Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
                                 ListTile(
                                   dense: true,
                                   contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -273,21 +273,21 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                     );
                                   }),
                                 ),
-                                ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                  leading: Icon(
-                                    Icons.recent_actors,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                  title: Text(
-                                    S.of(context).reviews,
-                                    style: Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                ),
-                                ReviewsListWidget(
-                                  reviewsList: _con.food.foodReviews,
-                                ),
+//                                ListTile(
+//                                  dense: true,
+//                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
+//                                  leading: Icon(
+//                                    Icons.recent_actors,
+//                                    color: Theme.of(context).hintColor,
+//                                  ),
+//                                  title: Text(
+//                                    S.of(context).reviews,
+//                                    style: Theme.of(context).textTheme.subtitle1,
+//                                  ),
+//                                ),
+//                                ReviewsListWidget(
+//                                  reviewsList: _con.food.foodReviews,
+//                                ),
                               ],
                             ),
                           ),
