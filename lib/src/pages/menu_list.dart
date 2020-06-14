@@ -29,7 +29,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   @override
   void initState() {
     _con.listenForFoods(widget.routeArgument.id);
-    _con.listenForTrendingFoods(widget.routeArgument.id);
+//    _con.listenForTrendingFoods(widget.routeArgument.id);
     super.initState();
   }
 
@@ -76,7 +76,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                 style: Theme.of(context).textTheme.headline4,
               ),
               subtitle: Text(
-                S.of(context).double_click_on_the_food_to_add_it_to_the,
+                S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
                 style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
               ),
             ),
@@ -93,7 +93,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                 style: Theme.of(context).textTheme.headline4,
               ),
               subtitle: Text(
-                S.of(context).longpress_on_the_food_to_add_suplements,
+                S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
                 style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
               ),
             ),

@@ -23,10 +23,11 @@ class MapController extends ControllerMVC {
   Completer<GoogleMapController> mapController = Completer();
 
   void listenForNearRestaurants(Address myLocation, Address areaLocation) async {
-    final Stream<Restaurant> stream = await getNearRestaurants(myLocation, areaLocation);
+    final Stream<Restaurant> stream = await getNearStores(myLocation, areaLocation);
     stream.listen((Restaurant _restaurant) {
       setState(() {
-        closestStores.add(_restaurant);
+        if (_restaurant.distance < _restaurant.deliveryRange)
+          closestStores.add(_restaurant);
       });
       Helper.getMarker(_restaurant.toMap()).then((marker) {
         setState(() {
@@ -118,14 +119,14 @@ class MapController extends ControllerMVC {
     currentAddress = await sett.getCurrentLocation();
     mapsUtil
         .get("origin=" +
-            currentAddress.latitude.toString() +
-            "," +
-            currentAddress.longitude.toString() +
-            "&destination=" +
-            currentRestaurant.latitude +
-            "," +
-            currentRestaurant.longitude +
-            "&key=${sett.setting.value?.googleMapsKey}")
+        currentAddress.latitude.toString() +
+        "," +
+        currentAddress.longitude.toString() +
+        "&destination=" +
+        currentRestaurant.latitude +
+        "," +
+        currentRestaurant.longitude +
+        "&key=${sett.setting.value?.googleMapsKey}")
         .then((dynamic res) {
       if (res != null) {
         List<LatLng> _latLng = res as List<LatLng>;

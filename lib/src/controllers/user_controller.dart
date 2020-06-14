@@ -37,13 +37,13 @@ class UserController extends ControllerMVC {
         if (value != null && value.apiToken != null) {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
         } else {
-          scaffoldKey.currentState.showSnackBar(SnackBar(
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).wrong_email_or_password),
           ));
         }
       }).catchError((e) {
         loader.remove();
-        scaffoldKey.currentState.showSnackBar(SnackBar(
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).this_account_not_exist),
         ));
       }).whenComplete(() {
@@ -54,20 +54,20 @@ class UserController extends ControllerMVC {
 
   void register() async {
     FocusScope.of(context).unfocus();
-    if (loginFormKey.currentState.validate()) {
+    if (loginFormKey.currentState.validate() && user.password == user.confirm_password) {
       loginFormKey.currentState.save();
       Overlay.of(context).insert(loader);
       repository.register(user).then((value) {
         if (value != null && value.apiToken != null) {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
         } else {
-          scaffoldKey.currentState.showSnackBar(SnackBar(
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).wrong_email_or_password),
           ));
         }
       }).catchError((e) {
         loader?.remove();
-        scaffoldKey.currentState.showSnackBar(SnackBar(
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).this_email_account_exists),
         ));
       }).whenComplete(() {
@@ -83,7 +83,7 @@ class UserController extends ControllerMVC {
       Overlay.of(context).insert(loader);
       repository.resetPassword(user).then((value) {
         if (value != null && value == true) {
-          scaffoldKey.currentState.showSnackBar(SnackBar(
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).your_reset_link_has_been_sent_to_your_email),
             action: SnackBarAction(
               label: S.of(context).login,
@@ -95,7 +95,7 @@ class UserController extends ControllerMVC {
           ));
         } else {
           loader.remove();
-          scaffoldKey.currentState.showSnackBar(SnackBar(
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).error_verify_email_settings),
           ));
         }

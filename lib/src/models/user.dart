@@ -6,6 +6,7 @@ class User {
   String name;
   String email;
   String password;
+  String confirm_password;
   String apiToken;
   String deviceToken;
   String phone;

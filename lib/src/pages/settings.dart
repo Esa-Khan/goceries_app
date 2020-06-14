@@ -38,15 +38,15 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
         body: currentUser.value.id == null
             ? CircularLoadingWidget(height: 500)
             : SingleChildScrollView(
-                padding: EdgeInsets.symmetric(vertical: 7),
+//                padding: EdgeInsets.symmetric(vertical: 7),
                 child: Column(
                   children: <Widget>[
+//                    Padding(
+//                      padding: const EdgeInsets.symmetric(horizontal: 20),
+//                      child: SearchBarWidget(),
+//                    ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: SearchBarWidget(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Row(
                         children: <Widget>[
                           Expanded(
@@ -297,7 +297,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                 ),
                                 SizedBox(width: 10),
                                 Text(
-                                  S.of(context).help_support,
+                                  S.of(context).help_supports,
                                   style: Theme.of(context).textTheme.bodyText2,
                                 ),
                               ],
