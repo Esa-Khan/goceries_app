@@ -54,12 +54,14 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
                 child: TabBarView(
                   children: List.generate(_con.faqs.length, (index) {
                     return SingleChildScrollView(
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
+                          SearchBarWidget(),
+                          SizedBox(height: 15),
                           ListTile(
                             contentPadding: EdgeInsets.symmetric(vertical: 0),
                             leading: Icon(
@@ -67,8 +69,7 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
                               color: Theme.of(context).hintColor,
                             ),
                             title: Text(
-//                              S.of(context).help_support,
-                              _con.faqs.elementAt(index).name,
+                              S.of(context).help_supports,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.headline4,

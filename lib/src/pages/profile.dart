@@ -3,8 +3,8 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/profile_controller.dart';
-import '../elements/CircularLoadingWidget.dart';
 import '../elements/DrawerWidget.dart';
+import '../elements/EmptyOrdersWidget.dart';
 import '../elements/OrderItemWidget.dart';
 import '../elements/PermissionDeniedWidget.dart';
 import '../elements/ProfileAvatarWidget.dart';
@@ -28,14 +28,13 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
     return Scaffold(
       key: _con.scaffoldKey,
       drawer: DrawerWidget(),
       appBar: AppBar(
         leading: new IconButton(
           icon: new Icon(Icons.sort, color: Theme.of(context).primaryColor),
-          onPressed: () => _con.scaffoldKey.currentState.openDrawer(),
+          onPressed: () => _con.scaffoldKey?.currentState?.openDrawer(),
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).accentColor,
@@ -86,34 +85,18 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
                     ),
                   ),
                   _con.recentOrders.isEmpty
-                      ? CircularLoadingWidget(height: 200)
-                      : ListView.builder(
+                      ? EmptyOrdersWidget()
+                      : ListView.separated(
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
                           primary: false,
                           itemCount: _con.recentOrders.length,
                           itemBuilder: (context, index) {
-                            return Theme(
-                              data: theme,
-                              child: ExpansionTile(
-                                initiallyExpanded: true,
-                                title: Row(
-                                  children: <Widget>[
-                                    Expanded(child: Text('${S.of(context).order_id}: #${_con.recentOrders.elementAt(index).id}')),
-                                    Text(
-                                      '${_con.recentOrders.elementAt(index).orderStatus.status}',
-                                      style: Theme.of(context).textTheme.caption,
-                                    ),
-                                  ],
-                                ),
-                                children: List.generate(_con.recentOrders.elementAt(index).foodOrders.length, (indexFood) {
-                                  return OrderItemWidget(
-                                      heroTag: 'recent_orders',
-                                      order: _con.recentOrders.elementAt(index),
-                                      foodOrder: _con.recentOrders.elementAt(index).foodOrders.elementAt(indexFood));
-                                }),
-                              ),
-                            );
+                            var _order = _con.recentOrders.elementAt(index);
+                            return OrderItemWidget(expanded: index == 0 ? true : false, order: _order);
+                          },
+                          separatorBuilder: (context, index) {
+                            return SizedBox(height: 20);
                           },
                         ),
                 ],

@@ -21,7 +21,7 @@ class FavoritesWidget extends StatefulWidget {
 }
 
 class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
-  String layout = 'list';
+  String layout = 'grid';
 
   FavoriteController _con;
 

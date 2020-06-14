@@ -30,12 +30,12 @@ class RestaurantController extends ControllerMVC {
       setState(() => restaurant = _restaurant);
     }, onError: (a) {
       print(a);
-      scaffoldKey.currentState.showSnackBar(SnackBar(
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(message),
         ));
       }
@@ -83,14 +83,14 @@ class RestaurantController extends ControllerMVC {
     }, onDone: () {});
   }
 
-  void listenForTrendingFoods(String idRestaurant) async {
-    final Stream<Food> stream = await getTrendingFoodsOfRestaurant(idRestaurant);
-    stream.listen((Food _food) {
-      setState(() => trendingFoods.add(_food));
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
-  }
+//  void listenForTrendingFoods(String idRestaurant) async {
+//    final Stream<Food> stream = await getTrendingFoodsOfRestaurant(idRestaurant);
+//    stream.listen((Food _food) {
+//      setState(() => trendingFoods.add(_food));
+//    }, onError: (a) {
+//      print(a);
+//    }, onDone: () {});
+//  }
 
   void listenForFeaturedFoods(String idRestaurant) async {
     final Stream<Food> stream = await getFeaturedFoodsOfRestaurant(idRestaurant);

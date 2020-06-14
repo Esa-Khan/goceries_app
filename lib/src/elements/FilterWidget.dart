@@ -34,14 +34,16 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text(S.of(context).filter),
+                  Text(
+                      S.of(context).filter,
+                    style: Theme.of(context).textTheme.bodyText1,),
                   MaterialButton(
                     onPressed: () {
                       _con.clearFilter();
                     },
                     child: Text(
                       S.of(context).clear,
-                      style: Theme.of(context).textTheme.bodyText1,
+                      style: Theme.of(context).textTheme.bodyText2,
                     ),
                   )
                 ],
@@ -89,7 +91,7 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                     initiallyExpanded: true,
                   ),
                   ExpansionTile(
-                    title: Text(S.of(context).opened_restaurants),
+                    title: Text(S.of(context).show_only_open_stores),
                     children: [
                       CheckboxListTile(
                         controlAffinity: ListTileControlAffinity.trailing,
@@ -109,27 +111,27 @@ class _FilterWidgetState extends StateMVC<FilterWidget> {
                     ],
                     initiallyExpanded: true,
                   ),
-                  _con.cuisines.isEmpty
-                      ? CircularLoadingWidget(height: 100)
-                      : ExpansionTile(
-                          title: Text(S.of(context).cuisines),
-                          children: List.generate(_con.cuisines.length, (index) {
-                            return CheckboxListTile(
-                              controlAffinity: ListTileControlAffinity.trailing,
-                              value: _con.cuisines.elementAt(index).selected,
-                              onChanged: (value) {
-                                _con.onChangeCuisinesFilter(index);
-                              },
-                              title: Text(
-                                _con.cuisines.elementAt(index).name,
-                                overflow: TextOverflow.fade,
-                                softWrap: false,
-                                maxLines: 1,
-                              ),
-                            );
-                          }),
-                          initiallyExpanded: true,
-                        ),
+//                  _con.cuisines.isEmpty
+//                      ? CircularLoadingWidget(height: 100)
+//                      : ExpansionTile(
+//                          title: Text(S.of(context).cuisines),
+//                          children: List.generate(_con.cuisines.length, (index) {
+//                            return CheckboxListTile(
+//                              controlAffinity: ListTileControlAffinity.trailing,
+//                              value: _con.cuisines.elementAt(index).selected,
+//                              onChanged: (value) {
+//                                _con.onChangeCuisinesFilter(index);
+//                              },
+//                              title: Text(
+//                                _con.cuisines.elementAt(index).name,
+//                                overflow: TextOverflow.fade,
+//                                softWrap: false,
+//                                maxLines: 1,
+//                              ),
+//                            );
+//                          }),
+//                          initiallyExpanded: true,
+//                        ),
                 ],
               ),
             ),

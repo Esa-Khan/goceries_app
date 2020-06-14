@@ -68,7 +68,7 @@
   "english": "English",
   "help_support": "헬프 & 지원",
   "register": "가입하기",
-  "lets_start_with_register": "가입후 시작하기!",
+  "register_a_new_account": "가입후 시작하기!",
   "should_be_more_than_3_letters": "3자 이상이어야합니다",
   "john_doe": "John Doe",
   "should_be_a_valid_email": "이메일이 유효하지 않습니다",

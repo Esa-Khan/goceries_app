@@ -13,7 +13,7 @@ import '../models/restaurant.dart';
 import '../models/review.dart';
 import '../repository/user_repository.dart';
 
-Future<Stream<Restaurant>> getNearRestaurants(Address myLocation, Address areaLocation) async {
+Future<Stream<Restaurant>> getNearStores(Address myLocation, Address areaLocation) async {
   Uri uri = Helper.getUri('api/restaurants');
   Map<String, dynamic> _queryParams = {};
   SharedPreferences prefs = await SharedPreferences.getInstance();

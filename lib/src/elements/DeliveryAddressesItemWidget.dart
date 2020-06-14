@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
 import '../models/address.dart' as model;
+import '../models/payment_method.dart';
 
 // ignore: must_be_immutable
 class DeliveryAddressesItemWidget extends StatelessWidget {
   String heroTag;
   model.Address address;
+  PaymentMethod paymentMethod;
   ValueChanged<model.Address> onPressed;
   ValueChanged<model.Address> onLongPress;
   ValueChanged<model.Address> onDismissed;
-  DeliveryAddressesItemWidget({Key key, this.address, this.onPressed, this.onLongPress, this.onDismissed}) : super(key: key);
+
+  DeliveryAddressesItemWidget({Key key, this.address, this.onPressed, this.onLongPress, this.onDismissed, this.paymentMethod}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +42,7 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
         this.onLongPress(address);
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withOpacity(0.9),
           boxShadow: [
@@ -49,17 +52,23 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Container(
-              height: 55,
-              width: 55,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: address?.isDefault ?? false ? Theme.of(context).accentColor : Theme.of(context).focusColor),
-              child: Icon(
-                Icons.place,
-                color: Theme.of(context).primaryColor,
-                size: 38,
-              ),
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: <Widget>[
+                Container(
+                  height: 60,
+                  width: 60,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      color: (address?.isDefault ?? false) || paymentMethod.selected ? Theme.of(context).accentColor : Theme.of(context).focusColor),
+                  child: Icon(
+//                    paymentMethod.selected ? Icons.check : Icons.place,
+                    paymentMethod.selected ? Icons.check : Icons.place,
+                    color: Theme.of(context).primaryColor,
+                    size: 38,
+                  ),
+                ),
+              ],
             ),
             SizedBox(width: 15),
             Flexible(
@@ -86,11 +95,6 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
                         ),
                       ],
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  Icon(
-                    Icons.keyboard_arrow_right,
-                    color: Theme.of(context).focusColor,
                   ),
                 ],
               ),

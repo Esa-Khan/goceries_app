@@ -12,7 +12,7 @@ class FaqCategory {
     try {
       id = jsonMap['id'].toString();
       name = jsonMap['faqs'] != null ? jsonMap['name'].toString() : '';
-      faqs = jsonMap['faqs'] != null ? List.from(jsonMap['faqs']).map((element) => Faq.fromJSON(element)).toList() : null;
+      faqs = jsonMap['faqs'] != null ? List.from(jsonMap['faqs']).map((element) => Faq.fromJSON(element)).toList() : [];
     } catch (e) {
       id = '';
       name = '';

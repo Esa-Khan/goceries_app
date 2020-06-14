@@ -19,11 +19,11 @@ class HomeController extends ControllerMVC {
   List<Food> trendingFoods = <Food>[];
 
   HomeController() {
-    listenForTopRestaurants();
-    listenForTrendingFoods();
+    listenForClosestStores();
+//    listenForTrendingFoods();
     listenForCategories();
-    listenForPopularRestaurants();
-    listenForRecentReviews();
+//    listenForPopularRestaurants();
+//    listenForRecentReviews();
   }
 
   Future<void> listenForCategories() async {
@@ -35,35 +35,36 @@ class HomeController extends ControllerMVC {
     }, onDone: () {});
   }
 
-  Future<void> listenForTopRestaurants() async {
-    final Stream<Restaurant> stream = await getNearRestaurants(deliveryAddress.value, deliveryAddress.value);
+  Future<void> listenForClosestStores() async {
+    final Stream<Restaurant> stream = await getNearStores(deliveryAddress.value, deliveryAddress.value);
     stream.listen((Restaurant _restaurant) {
-      setState(() => closestStores.add(_restaurant));
+      if (_restaurant.distance < _restaurant.deliveryRange)
+        setState(() => closestStores.add(_restaurant));
     }, onError: (a) {}, onDone: () {});
   }
 
-  Future<void> listenForPopularRestaurants() async {
-    final Stream<Restaurant> stream = await getPopularRestaurants(deliveryAddress.value);
-    stream.listen((Restaurant _restaurant) {
-      setState(() => popularRestaurants.add(_restaurant));
-    }, onError: (a) {}, onDone: () {});
-  }
+//  Future<void> listenForPopularRestaurants() async {
+//    final Stream<Restaurant> stream = await getPopularRestaurants(deliveryAddress.value);
+//    stream.listen((Restaurant _restaurant) {
+//      setState(() => popularRestaurants.add(_restaurant));
+//    }, onError: (a) {}, onDone: () {});
+//  }
 
-  Future<void> listenForRecentReviews() async {
-    final Stream<Review> stream = await getRecentReviews();
-    stream.listen((Review _review) {
-      setState(() => recentReviews.add(_review));
-    }, onError: (a) {}, onDone: () {});
-  }
+//  Future<void> listenForRecentReviews() async {
+//    final Stream<Review> stream = await getRecentReviews();
+//    stream.listen((Review _review) {
+//      setState(() => recentReviews.add(_review));
+//    }, onError: (a) {}, onDone: () {});
+//  }
 
-  Future<void> listenForTrendingFoods() async {
-    final Stream<Food> stream = await getTrendingFoods(deliveryAddress.value);
-    stream.listen((Food _food) {
-      setState(() => trendingFoods.add(_food));
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
-  }
+//  Future<void> listenForTrendingFoods() async {
+//    final Stream<Food> stream = await getTrendingFoods(deliveryAddress.value);
+//    stream.listen((Food _food) {
+//      setState(() => trendingFoods.add(_food));
+//    }, onError: (a) {
+//      print(a);
+//    }, onDone: () {});
+//  }
 
   void requestForCurrentLocation(BuildContext context) {
     OverlayEntry loader = Helper.overlayLoader(context);
@@ -85,10 +86,10 @@ class HomeController extends ControllerMVC {
       recentReviews = <Review>[];
       trendingFoods = <Food>[];
     });
-    await listenForTopRestaurants();
-    await listenForTrendingFoods();
+    await listenForClosestStores();
+//    await listenForTrendingFoods();
     await listenForCategories();
-    await listenForPopularRestaurants();
-    await listenForRecentReviews();
+//    await listenForPopularRestaurants();
+//    await listenForRecentReviews();
   }
 }

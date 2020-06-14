@@ -21,12 +21,12 @@ class FavoriteController extends ControllerMVC {
         favorites.add(_favorite);
       });
     }, onError: (a) {
-      scaffoldKey.currentState.showSnackBar(SnackBar(
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
       if (message != null) {
-        scaffoldKey.currentState.showSnackBar(SnackBar(
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(message),
         ));
       }
