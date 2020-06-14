@@ -14,6 +14,8 @@ import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
+import '../controllers/delivery_addresses_controller.dart';
+
 
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -26,6 +28,8 @@ class DeliveryPickupWidget extends StatefulWidget {
 
 class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   DeliveryPickupController _con;
+  DeliveryAddressesController _conDeliveryAdresses;
+
 
   _DeliveryPickupWidgetState() : super(DeliveryPickupController()) {
     _con = controller;
@@ -75,7 +79,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   style: Theme.of(context).textTheme.headline4,
                 ),
                 subtitle: Text(
-                  S.of(context).pickup_your_food_from_the_restaurant,
+                  S.of(context).select_to_pickup_your_food_from_the_store,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.caption,
@@ -119,6 +123,42 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   ),
                 ),
                 _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
+//                ? ListView.separated(
+//                    padding: EdgeInsets.symmetric(vertical: 15),
+//                    scrollDirection: Axis.vertical,
+//                    shrinkWrap: true,
+//                    primary: false,
+//                    itemCount: _conDeliveryAdresses.addresses.length,
+//                    separatorBuilder: (context, index) {
+//                      return SizedBox(height: 15);
+//                    },
+//                    itemBuilder: (context, index) {
+//                      return DeliveryAddressesItemWidget(
+//                        address: _conDeliveryAdresses.addresses.elementAt(index),
+//                        onPressed: (Address _address) {
+//                          DeliveryAddressDialog(
+//                            context: context,
+//                            address: _address,
+//                            onChanged: (Address _address) {
+//                              _con.updateAddress(_address);
+//                            },
+//                          );
+//                        },
+//                        onLongPress: (Address _address) {
+//                          DeliveryAddressDialog(
+//                            context: context,
+//                            address: _address,
+//                            onChanged: (Address _address) {
+//                              _con.updateAddress(_address);
+//                            },
+//                          );
+//                        },
+//                        onDismissed: (Address _address) {
+//                          _conDeliveryAdresses.removeDeliveryAddress(_address);
+//                        },
+//                      );
+//                    },
+//                )
                     ? DeliveryAddressesItemWidget(
                         paymentMethod: _con.getDeliveryMethod(),
                         address: _con.deliveryAddress,
@@ -145,6 +185,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                           );
                         },
                       )
+
+
 //                    : NotDeliverableAddressesItemWidget()
                     : CircularLoadingWidget(height: 150)
               ],
