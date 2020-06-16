@@ -1803,11 +1803,11 @@ class S {
     );
   }
 
-  /// `Pickup your food from the restaurant`
-  String get pickup_your_food_from_the_restaurant {
+  /// `Select to pickup your items from the store`
+  String get select_to_pickup_your_food_from_the_store {
     return Intl.message(
-      'Pickup your food from the restaurant',
-      name: 'pickup_your_food_from_the_restaurant',
+      'Select to pickup your items from the store',
+      name: 'select_to_pickup_your_food_from_the_store',
       desc: '',
       args: [],
     );
@@ -1943,10 +1943,10 @@ class S {
     );
   }
 
-  /// `How would you rate this restaurant ?`
+  /// `Leave a rating ?`
   String get how_would_you_rate_this_restaurant {
     return Intl.message(
-      'How would you rate this restaurant ?',
+      'Leave a rating ?',
       name: 'how_would_you_rate_this_restaurant',
       desc: '',
       args: [],
@@ -1963,10 +1963,10 @@ class S {
     );
   }
 
-  /// `Click to confirm your address and pay or Long press to edit your address`
+  /// `Select to confirm your address for delivery, Long press to edit your address`
   String get click_to_confirm_your_address_and_pay_or_long_press {
     return Intl.message(
-      'Click to confirm your address and pay or Long press to edit your address',
+      'Select to confirm your address for delivery, Long press to edit your address',
       name: 'click_to_confirm_your_address_and_pay_or_long_press',
       desc: '',
       args: [],
@@ -2043,21 +2043,21 @@ class S {
     );
   }
 
-  /// `Click to pay cash on delivery`
-  String get click_to_pay_cash_on_delivery {
-    return Intl.message(
-      'Click to pay cash on delivery',
-      name: 'click_to_pay_cash_on_delivery',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Click to pay on pickup`
   String get click_to_pay_on_pickup {
     return Intl.message(
       'Click to pay on pickup',
       name: 'click_to_pay_on_pickup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Click to pay cash on delivery`
+  String get click_to_pay_cash_on_delivery {
+    return Intl.message(
+      'Click to pay cash on delivery',
+      name: 'click_to_pay_cash_on_delivery',
       desc: '',
       args: [],
     );

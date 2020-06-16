@@ -23,7 +23,11 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
     final Stream<model.Address> stream = await userRepo.getAddresses();
     stream.listen((model.Address _address) {
       setState(() {
-        addresses.add(_address);
+        if (_address.isDefault){
+          addresses.insert(0, _address);
+        } else {
+          addresses.add(_address);
+        }
       });
     }, onError: (a) {
       print(a);
