@@ -9,10 +9,12 @@ import '../models/credit_card.dart';
 class CreditCardsWidget extends StatelessWidget {
   CreditCard creditCard;
   ValueChanged<CreditCard> onChanged;
+  String cardType;
 
   CreditCardsWidget({
     this.creditCard,
     this.onChanged,
+    this.cardType,
     Key key,
   }) : super(key: key);
 
@@ -63,10 +65,16 @@ class CreditCardsWidget extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Image.asset(
+                    cardType == "visacard"
+                        ? Image.asset(
                       'assets/img/visa.png',
                       height: 22,
                       width: 70,
+                    )
+                        : Image.asset(
+                      'assets/img/mastercard.png',
+                      height: 45,
+                      width: 50,
                     ),
                     ButtonTheme(
                       padding: EdgeInsets.all(0),

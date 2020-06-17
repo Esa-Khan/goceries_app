@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/payment_method.dart';
+import '../pages/checkout.dart';
 
 // ignore: must_be_immutable
 class PaymentMethodListItemWidget extends StatelessWidget {
@@ -17,7 +18,18 @@ class PaymentMethodListItemWidget extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed(this.paymentMethod.route);
+        if (this.paymentMethod.id == "mastercard" ||
+            this.paymentMethod.id == "visacard") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CheckoutWidget(
+                  cardType: this.paymentMethod.id,
+                ),
+              ));
+        } else {
+          Navigator.of(context).pushNamed(this.paymentMethod.route);
+        }
         print(CustomTrace(StackTrace.current, message: this.paymentMethod.name));
       },
       child: Container(

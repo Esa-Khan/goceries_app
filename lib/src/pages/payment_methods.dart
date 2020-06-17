@@ -94,28 +94,29 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                 return PaymentMethodListItemWidget(paymentMethod: list.paymentsList.elementAt(index));
               },
             ),
-            list.cashList.length > 0
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(vertical: 0),
-                      leading: Icon(
-                        Icons.monetization_on,
-                        color: Theme.of(context).hintColor,
-                      ),
-                      title: Text(
-                        S.of(context).cash_on_delivery,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                      subtitle: Text(S.of(context).select_your_preferred_payment_mode),
-                    ),
-                  )
-                : SizedBox(
-                    height: 0,
-                  ),
-            ListView.separated(
+//            list.cashList.length > 0
+//                ? Padding(
+//                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+//                    child: ListTile(
+//                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+//                      leading: Icon(
+//                        Icons.monetization_on,
+//                        color: Theme.of(context).hintColor,
+//                      ),
+//                      title: Text(
+//                        S.of(context).cash_on_delivery,
+//                        maxLines: 1,
+//                        overflow: TextOverflow.ellipsis,
+//                        style: Theme.of(context).textTheme.headline4,
+//                      ),
+//                      subtitle: Text(S.of(context).select_your_preferred_payment_mode),
+//                    ),
+//                  )
+//                : SizedBox(
+//                    height: 0,
+//                  ),
+          SizedBox(height: 10),
+      ListView.separated(
               scrollDirection: Axis.vertical,
               shrinkWrap: true,
               primary: false,

@@ -8,18 +8,25 @@ import '../elements/CreditCardsWidget.dart';
 import '../helpers/helper.dart';
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart';
+import '../models/payment_method.dart';
 
 class CheckoutWidget extends StatefulWidget {
+  final String cardType;
+  CheckoutWidget({Key key, @required this.cardType}) : super(key: key);
+
 //  RouteArgument routeArgument;
 //  CheckoutWidget({Key key, this.routeArgument}) : super(key: key);
   @override
-  _CheckoutWidgetState createState() => _CheckoutWidgetState();
+//  _CheckoutWidgetState createState() => _CheckoutWidgetState();
+  _CheckoutWidgetState createState() => _CheckoutWidgetState(cardType);
 }
 
 class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
   CheckoutController _con;
+  final String cardType;
 
-  _CheckoutWidgetState() : super(CheckoutController()) {
+//  _CheckoutWidgetState() : super(CheckoutController()) {
+    _CheckoutWidgetState(this.cardType) : super(CheckoutController()) {
     _con = controller;
   }
   @override
@@ -80,7 +87,8 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                             creditCard: _con.creditCard,
                             onChanged: (creditCard) {
                               _con.updateCreditCard(creditCard);
-                            }),
+                            },
+                        cardType: cardType),
                         SizedBox(height: 40),
                         setting.value.payPalEnabled
                             ? Text(

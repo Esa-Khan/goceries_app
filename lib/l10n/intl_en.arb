@@ -119,7 +119,7 @@
   "recents_search": "Recents Search",
   "verify_your_internet_connection": "Verify your internet connection",
   "carts_refreshed_successfuly": "Carts refreshed successfully",
-  "the_food_was_removed_from_your_cart": "The {foodname} was removed from your cart",
+  "the_food_was_removed_from_your_cart": "{foodname} was removed from your cart",
   "category_refreshed_successfuly": "Category refreshed successfully",
   "notifications_refreshed_successfuly": "Notifications refreshed successfully",
   "order_refreshed_successfuly": "Order refreshed successfully",

@@ -56,18 +56,18 @@ class CartBottomDetailsWidget extends StatelessWidget {
                         Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
                     ],
                   ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Text(
-                          '${S.of(context).tax} (${_con.carts[0].food.restaurant.defaultTax}%)',
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ),
-                      Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
-                    ],
-                  ),
-                  SizedBox(height: 20),
+//                  Row(
+//                    children: <Widget>[
+//                      Expanded(
+//                        child: Text(
+//                          '${S.of(context).tax} (${_con.carts[0].food.restaurant.defaultTax}%)',
+//                          style: Theme.of(context).textTheme.bodyText1,
+//                        ),
+//                      ),
+//                      Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
+//                    ],
+//                  ),
+                  SizedBox(height: 30),
                   Stack(
                     fit: StackFit.loose,
                     alignment: AlignmentDirectional.centerEnd,

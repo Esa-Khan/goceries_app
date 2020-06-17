@@ -28,7 +28,6 @@ class DeliveryPickupWidget extends StatefulWidget {
 
 class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   DeliveryPickupController _con;
-  DeliveryAddressesController _conDeliveryAdresses;
 
 
   _DeliveryPickupWidgetState() : super(DeliveryPickupController()) {
