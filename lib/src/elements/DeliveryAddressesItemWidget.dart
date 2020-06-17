@@ -63,8 +63,8 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
 //                      color: (address?.isDefault ?? false) || paymentMethod.selected ? Theme.of(context).accentColor : Theme.of(context).focusColor),
                       color: (address?.isDefault ?? false) ? Theme.of(context).focusColor : Theme.of(context).accentColor),
                   child: Icon(
+//                    paymentMethod == null || paymentMethod.selected ? Icons.check : Icons.place,
                     paymentMethod == null || paymentMethod.selected ? Icons.check : Icons.local_shipping,
-//                    Icons.place,
                     color: Theme.of(context).primaryColor,
                     size: 38,
                   ),

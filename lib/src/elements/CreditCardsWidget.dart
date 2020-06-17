@@ -10,6 +10,7 @@ class CreditCardsWidget extends StatelessWidget {
   CreditCard creditCard;
   ValueChanged<CreditCard> onChanged;
   String cardType;
+
   CreditCardsWidget({
     this.creditCard,
     this.onChanged,
@@ -65,12 +66,12 @@ class CreditCardsWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     cardType == "visacard"
-                    ? Image.asset(
+                        ? Image.asset(
                       'assets/img/visa.png',
                       height: 22,
                       width: 70,
                     )
-                    : Image.asset(
+                        : Image.asset(
                       'assets/img/mastercard.png',
                       height: 45,
                       width: 50,
