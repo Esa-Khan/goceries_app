@@ -16,7 +16,6 @@ import '../models/payment_method.dart';
 import '../models/route_argument.dart';
 import '../controllers/delivery_addresses_controller.dart';
 
-
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument routeArgument;
 
@@ -28,8 +27,6 @@ class DeliveryPickupWidget extends StatefulWidget {
 
 class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   DeliveryPickupController _con;
-  DeliveryAddressesController _conDeliveryAdresses;
-
 
   _DeliveryPickupWidgetState() : super(DeliveryPickupController()) {
     _con = controller;
@@ -51,10 +48,15 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         centerTitle: true,
         title: Text(
           S.of(context).delivery_or_pickup,
-          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
+          style: Theme.of(context)
+              .textTheme
+              .headline6
+              .merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
-          new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
+          new ShoppingCartButtonWidget(
+              iconColor: Theme.of(context).hintColor,
+              labelColor: Theme.of(context).accentColor),
         ],
       ),
       body: SingleChildScrollView(
@@ -94,7 +96,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
             Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top: 20, bottom: 10, left: 20, right: 10),
+                  padding: const EdgeInsets.only(
+                      top: 20, bottom: 10, left: 20, right: 10),
                   child: ListTile(
                     contentPadding: EdgeInsets.symmetric(vertical: 0),
                     leading: Icon(
@@ -107,9 +110,13 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.headline4,
                     ),
-                    subtitle: _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
+                    subtitle: _con.carts.isNotEmpty &&
+                            Helper.canDelivery(_con.carts[0].food.restaurant,
+                                carts: _con.carts)
                         ? Text(
-                            S.of(context).click_to_confirm_your_address_and_pay_or_long_press,
+                            S
+                                .of(context)
+                                .click_to_confirm_your_address_and_pay_or_long_press,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.caption,
@@ -122,7 +129,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                           ),
                   ),
                 ),
-                _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
+//                _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
 //                ? ListView.separated(
 //                    padding: EdgeInsets.symmetric(vertical: 15),
 //                    scrollDirection: Axis.vertical,
@@ -159,11 +166,19 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 //                      );
 //                    },
 //                )
+                _con.carts.isNotEmpty &&
+                        Helper.canDelivery(_con.carts[0].food.restaurant,
+                            carts: _con.carts)
                     ? DeliveryAddressesItemWidget(
                         paymentMethod: _con.getDeliveryMethod(),
                         address: _con.deliveryAddress,
                         onPressed: (Address _address) {
+//                          if (_con.deliveryAddress.id == null || _con.deliveryAddress.id == 'null') {
                           if (_con.deliveryAddress.id == null || _con.deliveryAddress.id == 'null') {
+                            _con.deliveryAddress.id = "Main Address";
+                          }
+                          if (_con.deliveryAddress.address == null ||
+                              _con.deliveryAddress.address == 'null') {
                             DeliveryAddressDialog(
                               context: context,
                               address: _address,
@@ -185,7 +200,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                           );
                         },
                       )
-
 
 //                    : NotDeliverableAddressesItemWidget()
                     : CircularLoadingWidget(height: 150)

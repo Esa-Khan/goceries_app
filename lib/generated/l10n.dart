@@ -1223,10 +1223,10 @@ class S {
     );
   }
 
-  /// `The {foodname} was removed from your cart`
+  /// `{foodname} was removed from your cart`
   String the_food_was_removed_from_your_cart(Object foodname) {
     return Intl.message(
-      'The $foodname was removed from your cart',
+      '$foodname was removed from your cart',
       name: 'the_food_was_removed_from_your_cart',
       desc: '',
       args: [foodname],

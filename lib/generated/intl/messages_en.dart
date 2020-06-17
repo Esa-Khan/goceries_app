@@ -21,7 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m1(id) => "Order #${id} has been cancelled";
 
-  static m0(foodname) => "The ${foodname} was removed from your cart";
+  static m0(foodname) => "${foodname} was removed from your cart";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {

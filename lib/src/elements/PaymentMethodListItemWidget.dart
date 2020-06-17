@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/payment_method.dart';
+import '../pages/checkout.dart';
 
 // ignore: must_be_immutable
 class PaymentMethodListItemWidget extends StatelessWidget {
@@ -17,15 +18,30 @@ class PaymentMethodListItemWidget extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed(this.paymentMethod.route);
-        print(CustomTrace(StackTrace.current, message: this.paymentMethod.name));
+        if (this.paymentMethod.id == "mastercard" ||
+            this.paymentMethod.id == "visacard") {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CheckoutWidget(
+                  cardType: this.paymentMethod.id,
+                ),
+              ));
+        } else {
+          Navigator.of(context).pushNamed(this.paymentMethod.route);
+        }
+        print(
+            CustomTrace(StackTrace.current, message: this.paymentMethod.name));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withOpacity(0.9),
           boxShadow: [
-            BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2)),
+            BoxShadow(
+                color: Theme.of(context).focusColor.withOpacity(0.1),
+                blurRadius: 5,
+                offset: Offset(0, 2)),
           ],
         ),
         child: Row(
@@ -36,7 +52,8 @@ class PaymentMethodListItemWidget extends StatelessWidget {
               width: 60,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                image: DecorationImage(image: AssetImage(paymentMethod.logo), fit: BoxFit.fill),
+                image: DecorationImage(
+                    image: AssetImage(paymentMethod.logo), fit: BoxFit.fill),
               ),
             ),
             SizedBox(width: 15),
