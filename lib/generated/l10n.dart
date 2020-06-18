@@ -1373,10 +1373,10 @@ class S {
     );
   }
 
-  /// `The address updated successfully`
+  /// `Address updated successfully`
   String get the_address_updated_successfully {
     return Intl.message(
-      'The address updated successfully',
+      'Address updated successfully',
       name: 'the_address_updated_successfully',
       desc: '',
       args: [],

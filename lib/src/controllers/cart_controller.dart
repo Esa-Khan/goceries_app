@@ -114,6 +114,7 @@ class CartController extends ControllerMVC {
   }
 
   void goCheckout(BuildContext context) {
+
     if (!currentUser.value.profileCompleted()) {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).completeYourProfileDetailsToContinue),

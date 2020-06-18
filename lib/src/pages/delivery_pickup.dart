@@ -45,6 +45,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       key: _con.scaffoldKey,
       bottomNavigationBar: CartBottomDetailsWidget(con: _con),
       appBar: AppBar(
+        leading: BackButton(
+            color: Theme.of(context).accentColor,
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -163,6 +166,10 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                         address: _con.deliveryAddress,
                         onPressed: (Address _address) {
                           if (_con.deliveryAddress.id == null || _con.deliveryAddress.id == 'null') {
+//                            _address.description = "Main Address";
+//                            _con.addAddress(_address);
+//                          }
+//                          _con.toggleDelivery();
                             DeliveryAddressDialog(
                               context: context,
                               address: _address,

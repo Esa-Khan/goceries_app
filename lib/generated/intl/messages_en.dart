@@ -226,7 +226,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tax" : MessageLookupByLibrary.simpleMessage("TAX"),
     "tell_us_about_this_food" : MessageLookupByLibrary.simpleMessage("Tell us about this food"),
     "tell_us_about_this_restaurant" : MessageLookupByLibrary.simpleMessage("Tell us about this restaurant"),
-    "the_address_updated_successfully" : MessageLookupByLibrary.simpleMessage("The address updated successfully"),
+    "the_address_updated_successfully" : MessageLookupByLibrary.simpleMessage("Address updated successfully"),
     "the_food_has_been_rated_successfully" : MessageLookupByLibrary.simpleMessage("The food has been rated successfully"),
     "the_food_was_removed_from_your_cart" : m0,
     "the_restaurant_has_been_rated_successfully" : MessageLookupByLibrary.simpleMessage("The restaurant has been rated successfully"),

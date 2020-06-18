@@ -14,6 +14,15 @@ class SignUpWidget extends StatefulWidget {
 class _SignUpWidgetState extends StateMVC<SignUpWidget> {
   UserController _con;
 
+  final textEditingContoller = TextEditingController();
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    textEditingContoller.dispose();
+    super.dispose();
+  }
+
+
   _SignUpWidgetState() : super(UserController()) {
     _con = controller;
   }
@@ -36,7 +45,8 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
               ),
             ),
             Positioned(
-              top: config.App(context).appHeight(29.5) - 120,
+//              top: config.App(context).appHeight(29.5) - 120,
+              top: config.App(context).appHeight(29.5) - 180,
               child: Container(
                 width: config.App(context).appWidth(84),
                 height: config.App(context).appHeight(29.5),
@@ -47,7 +57,8 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
               ),
             ),
             Positioned(
-              top: config.App(context).appHeight(29.5) - 50,
+//              top: config.App(context).appHeight(29.5) - 50,
+              top: config.App(context).appHeight(29.5) - 110,
               child: Container(
                 decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.all(Radius.circular(10)), boxShadow: [
                   BoxShadow(
@@ -105,8 +116,41 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                         obscureText: _con.hidePassword,
                         onSaved: (input) => _con.user.password = input,
                         validator: (input) => input.length < 6 ? S.of(context).should_be_more_than_6_letters : null,
+                        controller: textEditingContoller,
                         decoration: InputDecoration(
                           labelText: S.of(context).password,
+                          labelStyle: TextStyle(color: Theme.of(context).accentColor),
+                          contentPadding: EdgeInsets.all(12),
+                          hintText: '••••••••••••',
+                          hintStyle: TextStyle(color: Theme.of(context).focusColor.withOpacity(0.7)),
+                          prefixIcon: Icon(Icons.lock_outline, color: Theme.of(context).accentColor),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _con.hidePassword = !_con.hidePassword;
+                              });
+                            },
+                            color: Theme.of(context).focusColor,
+                            icon: Icon(_con.hidePassword ? Icons.visibility : Icons.visibility_off),
+                          ),
+                          border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
+                          focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.5))),
+                          enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                      TextFormField(
+                        obscureText: _con.hidePassword,
+                        validator: (input) {
+                          if (input.length < 3) {
+                            return S.of(context).should_be_more_than_3_letters;
+                          } else if (input != textEditingContoller.text) {
+                            return S.of(context).passwords_dont_match;
+                          }
+                          return null;
+                        },
+                        decoration: InputDecoration(
+                          labelText: S.of(context).confirm_password,
                           labelStyle: TextStyle(color: Theme.of(context).accentColor),
                           contentPadding: EdgeInsets.all(12),
                           hintText: '••••••••••••',
