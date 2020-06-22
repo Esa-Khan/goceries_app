@@ -43,6 +43,8 @@ class _CartWidgetState extends StateMVC<CartWidget> {
             onPressed: () {
               if (widget.routeArgument.param == '/Food') {
                 Navigator.of(context).pushReplacementNamed('/Food', arguments: RouteArgument(id: widget.routeArgument.id));
+              } else if(widget.routeArgument.param == '/Details') {
+                Navigator.pop(context);
               } else {
                 Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
               }
