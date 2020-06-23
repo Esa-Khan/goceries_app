@@ -29,7 +29,7 @@
   "favorite_foods": "Favorite Foods",
   "g": "g",
   "extras": "Extras",
-  "select_extras_to_add_them_on_the_food": "Select extras to add them on the food",
+  "similar_items_recommended_for_you": "Similar items recommended for you",
   "ingredients": "Ingredients",
   "nutrition": "Nutrition",
   "reviews": "Reviews",
@@ -186,8 +186,8 @@
   "show_only_open_stores": "Show only open Stores",
   "fields": "Fields",
   "this_food_was_added_to_cart": "This food was added to cart",
-  "foods_result": "Foods result",
-  "foods_results": "Foods Results",
+  "foods_result": "Item Results",
+  "item_results": "Item Resultss",
   "restaurants_results": "Restaurants Results",
   "all": "All",
   "this_restaurant_is_closed_": "This restaurant is closed !",
@@ -236,5 +236,11 @@
   "orderThisorderidHasBeenCanceled": "Order #{id} has been cancelled",
   "view": "View",
   "cuisines": "Cuisines",
-  "favorites_refreshed_successfuly": "Favorites refreshed successfuly"
+  "favorites_refreshed_successfuly": "Favorites refreshed successfuly",
+  "confirm_order": "Confirm Order?",
+  "okay": "Okay",
+  "your_order_will_be_placed": "Your order will be placed when you select 'Checkout'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.",
+  "your_order_will_be_placed_on_okay": "Your order will be placed when you select 'Okay'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info."
+
+
 }

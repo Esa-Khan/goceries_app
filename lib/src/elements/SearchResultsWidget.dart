@@ -88,7 +88,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                           dense: true,
                           contentPadding: EdgeInsets.symmetric(vertical: 0),
                           title: Text(
-                            S.of(context).foods_results,
+                            S.of(context).item_results,
                             style: Theme.of(context).textTheme.subtitle1,
                           ),
                         ),

@@ -69,7 +69,7 @@ class DeliveryPickupController extends CartController {
     });
   }
 
-  void togglePickUp() {
+  bool togglePickUp() {
     list.pickupList.forEach((element) {
       if (element != getPickUpMethod()) {
         element.selected = false;
@@ -78,6 +78,11 @@ class DeliveryPickupController extends CartController {
     setState(() {
       getPickUpMethod().selected = !getPickUpMethod().selected;
     });
+    if (getPickUpMethod().selected) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   PaymentMethod getSelectedMethod() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/elements/AislesItemWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -10,6 +11,8 @@ import '../elements/FoodsCarouselWidget.dart';
 import '../elements/SearchBarWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../models/route_argument.dart';
+import '../controllers/home_controller.dart';
+import '../models/category.dart';
 
 class MenuWidget extends StatefulWidget {
   @override
@@ -21,6 +24,7 @@ class MenuWidget extends StatefulWidget {
 
 class _MenuWidgetState extends StateMVC<MenuWidget> {
   RestaurantController _con;
+  HomeController _conHome;
 
   _MenuWidgetState() : super(RestaurantController()) {
     _con = controller;
@@ -64,39 +68,42 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SearchBarWidget(),
             ),
-            ListTile(
-              dense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              leading: Icon(
-                Icons.trending_up,
-                color: Theme.of(context).hintColor,
-              ),
-              title: Text(
-                S.of(context).trending_this_week,
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              subtitle: Text(
-                S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
-                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
-              ),
-            ),
-            FoodsCarouselWidget(heroTag: 'menu_trending_food', foodsList: _con.trendingFoods),
-            ListTile(
-              dense: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              leading: Icon(
-                Icons.list,
-                color: Theme.of(context).hintColor,
-              ),
-              title: Text(
-                S.of(context).all_menu,
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              subtitle: Text(
-                S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
-                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
-              ),
-            ),
+//            ListTile(
+//              dense: true,
+//              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//              leading: Icon(
+//                Icons.trending_up,
+//                color: Theme.of(context).hintColor,
+//              ),
+//              title: Text(
+//                S.of(context).trending_this_week,
+//                style: Theme.of(context).textTheme.headline4,
+//              ),
+//              subtitle: Text(
+//                S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
+//                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
+//              ),
+//            ),
+//            FoodsCarouselWidget(heroTag: 'menu_trending_food', foodsList: _con.trendingFoods),
+//            ListTile(
+//              dense: true,
+//              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//              leading: Icon(
+//                Icons.list,
+//                color: Theme.of(context).hintColor,
+//              ),
+//              title: Text(
+//                S.of(context).all_menu,
+//                style: Theme.of(context).textTheme.headline4,
+//              ),
+//              subtitle: Text(
+//                S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
+//                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
+//              ),
+//            ),
+
+        SizedBox(height: 10),
+
             _con.foods.isEmpty
                 ? CircularLoadingWidget(height: 250)
                 : ListView.separated(
@@ -108,10 +115,14 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                       return SizedBox(height: 10);
                     },
                     itemBuilder: (context, index) {
-                      return FoodItemWidget(
-                        heroTag: 'menu_list',
-                        food: _con.foods.elementAt(index),
+                      return AislesItemWidget(
+                          expanded: index == 0 ? true : false,
+                          aisle: _conHome.categories.elementAt(index),
                       );
+//                      return FoodItemWidget(
+//                        heroTag: 'menu_list',
+//                        food: _con.foods.elementAt(index),
+//                      );
                     },
                   ),
           ],

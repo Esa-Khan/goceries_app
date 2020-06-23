@@ -323,11 +323,11 @@ class S {
     );
   }
 
-  /// `Select extras to add them on the food`
-  String get select_extras_to_add_them_on_the_food {
+  /// `Similar items recommended for you`
+  String get similar_items_recommended_for_you {
     return Intl.message(
-      'Select extras to add them on the food',
-      name: 'select_extras_to_add_them_on_the_food',
+      'Similar items recommended for you',
+      name: 'similar_items_recommended_for_you',
       desc: '',
       args: [],
     );
@@ -1883,21 +1883,21 @@ class S {
     );
   }
 
-  /// `Foods result`
+  /// `Item Results`
   String get foods_result {
     return Intl.message(
-      'Foods result',
+      'Item Results',
       name: 'foods_result',
       desc: '',
       args: [],
     );
   }
 
-  /// `Foods Results`
-  String get foods_results {
+  /// `Item Resultss`
+  String get item_results {
     return Intl.message(
-      'Foods Results',
-      name: 'foods_results',
+      'Item Resultss',
+      name: 'item_results',
       desc: '',
       args: [],
     );
@@ -2388,6 +2388,46 @@ class S {
     return Intl.message(
       'Favorites refreshed successfuly',
       name: 'favorites_refreshed_successfuly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Order?`
+  String get confirm_order {
+    return Intl.message(
+      'Confirm Order?',
+      name: 'confirm_order',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Okay`
+  String get okay {
+    return Intl.message(
+      'Okay',
+      name: 'okay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your order will be placed when you select 'Checkout'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.`
+  String get your_order_will_be_placed {
+    return Intl.message(
+      'Your order will be placed when you select \'Checkout\'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.',
+      name: 'your_order_will_be_placed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your order will be placed when you select 'Okay'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.`
+  String get your_order_will_be_placed_on_okay {
+    return Intl.message(
+      'Your order will be placed when you select \'Okay\'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.',
+      name: 'your_order_will_be_placed_on_okay',
       desc: '',
       args: [],
     );

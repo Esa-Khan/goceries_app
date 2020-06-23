@@ -60,10 +60,10 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                       shrinkWrap: false,
                       slivers: <Widget>[
                         SliverAppBar(
-                          backgroundColor: Theme.of(context).accentColor.withOpacity(0.9),
+                          backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
                           expandedHeight: 300,
                           elevation: 0,
-                          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
+                          iconTheme: IconThemeData(color: Theme.of(context).accentColor),
                           flexibleSpace: FlexibleSpaceBar(
                             collapseMode: CollapseMode.parallax,
                             background: Hero(
@@ -165,22 +165,22 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 //                                ),
 //                                Divider(height: 20),
 //                                Helper.applyHtml(context, _con.food.description, style: TextStyle(fontSize: 12)),
-                                ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
-                                  leading: Icon(
-                                    Icons.add_circle,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                  title: Text(
-                                    S.of(context).extras,
-                                    style: Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                  subtitle: Text(
-                                    S.of(context).select_extras_to_add_them_on_the_food,
-                                    style: Theme.of(context).textTheme.caption,
-                                  ),
-                                ),
+//                                ListTile(
+//                                  dense: true,
+//                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
+//                                  leading: Icon(
+//                                    Icons.add_circle,
+//                                    color: Theme.of(context).hintColor,
+//                                  ),
+//                                  title: Text(
+//                                    S.of(context).extras,
+//                                    style: Theme.of(context).textTheme.subtitle1,
+//                                  ),
+//                                  subtitle: Text(
+//                                    S.of(context).similar_items_recommended_for_you,
+//                                    style: Theme.of(context).textTheme.caption,
+//                                  ),
+//                                ),
                                 _con.food.extraGroups == null
                                     ? CircularLoadingWidget(height: 100)
                                     : ListView.separated(
