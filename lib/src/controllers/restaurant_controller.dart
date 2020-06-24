@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -10,11 +11,15 @@ import '../repository/food_repository.dart';
 import '../repository/gallery_repository.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/settings_repository.dart';
+import '../models/category.dart';
+import '../repository/category_repository.dart';
+
 
 class RestaurantController extends ControllerMVC {
   Restaurant restaurant;
   List<Gallery> galleries = <Gallery>[];
   List<Food> foods = <Food>[];
+  List<Category> aisles = <Category>[];
   List<Food> trendingFoods = <Food>[];
   List<Food> featuredFoods = <Food>[];
   List<Review> reviews = <Review>[];
@@ -41,6 +46,16 @@ class RestaurantController extends ControllerMVC {
       }
     });
   }
+
+  Future<void> listenForCategories() async {
+    final Stream<Category> stream = await getCategories();
+    stream.listen((Category _category) {
+      setState(() => aisles.add(_category));
+    }, onError: (a) {
+      print(a);
+    }, onDone: () {});
+  }
+
 
   void listenForGalleries(String idRestaurant) async {
     final Stream<Gallery> stream = await getGalleries(idRestaurant);

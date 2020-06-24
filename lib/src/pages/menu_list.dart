@@ -13,6 +13,8 @@ import '../elements/ShoppingCartButtonWidget.dart';
 import '../models/route_argument.dart';
 import '../controllers/home_controller.dart';
 import '../models/category.dart';
+import 'package:food_delivery_app/src/models/food.dart';
+
 
 class MenuWidget extends StatefulWidget {
   @override
@@ -24,7 +26,6 @@ class MenuWidget extends StatefulWidget {
 
 class _MenuWidgetState extends StateMVC<MenuWidget> {
   RestaurantController _con;
-  HomeController _conHome;
 
   _MenuWidgetState() : super(RestaurantController()) {
     _con = controller;
@@ -33,6 +34,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   @override
   void initState() {
     _con.listenForFoods(widget.routeArgument.id);
+    _con.listenForCategories();
 //    _con.listenForTrendingFoods(widget.routeArgument.id);
     super.initState();
   }
@@ -104,20 +106,22 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
 
         SizedBox(height: 10),
 
-            _con.foods.isEmpty
+            _con.aisles.isEmpty
                 ? CircularLoadingWidget(height: 250)
                 : ListView.separated(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     primary: false,
-                    itemCount: _con.foods.length,
+                    itemCount: _con.aisles.length,
                     separatorBuilder: (context, index) {
                       return SizedBox(height: 10);
                     },
                     itemBuilder: (context, index) {
                       return AislesItemWidget(
-                          expanded: index == 0 ? true : false,
-                          aisle: _conHome.categories.elementAt(index),
+//                          expanded: index == 0 ? true : false,
+                          aisle: _con.aisles.elementAt(index),
+//                          foods: _con.foods,
+                          foods: getFoodsForAisle(_con.aisles.elementAt(index).id),
                       );
 //                      return FoodItemWidget(
 //                        heroTag: 'menu_list',
@@ -130,4 +134,19 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
       ),
     );
   }
+
+  List<Food> getFoodsForAisle(String aisleID) {
+    List<Food> currFood = new List<Food>();
+    if (_con.foods != null) {
+      for (int i = 0; i < _con.foods.length; i++) {
+        if (_con.foods.elementAt(i).category.id == aisleID) {
+          currFood.add(_con.foods.elementAt(i));
+//          _con.foods.removeAt(i);
+        }
+      }
+    }
+    return currFood;
+  }
+
+
 }
