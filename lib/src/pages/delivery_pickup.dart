@@ -93,11 +93,10 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                 paymentMethod: _con.getPickUpMethod(),
                 onPressed: (paymentMethod) {
 //                  showDialog(context: context, builder: (BuildContext context) {return ConfirmationDialogBox(); });
-                  _con.togglePickUp()
-                      ? ConfirmationDialogBox(
+                  if (_con.togglePickUp())
+                      ConfirmationDialogBox(
                             context: context,
-                        )
-                      : print("Test");
+                        );
 
                 }),
             Column(
@@ -173,10 +172,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                         address: _con.deliveryAddress,
                         onPressed: (Address _address) {
                           if (_con.deliveryAddress.id == null || _con.deliveryAddress.id == 'null') {
-//                            _address.description = "Main Address";
-//                            _con.addAddress(_address);
-//                          }
-//                          _con.toggleDelivery();
                             DeliveryAddressDialog(
                               context: context,
                               address: _address,
@@ -186,6 +181,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                             );
                           } else {
                             _con.toggleDelivery();
+
                           }
                         },
                         onLongPress: (Address _address) {

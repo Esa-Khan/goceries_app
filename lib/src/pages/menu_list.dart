@@ -148,5 +148,4 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
     return currFood;
   }
 
-
-}
+  }
