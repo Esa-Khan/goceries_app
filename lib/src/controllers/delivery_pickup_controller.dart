@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/models/route_argument.dart';
 
 import '../../generated/l10n.dart';
 import '../models/address.dart' as model;
@@ -21,7 +22,6 @@ class DeliveryPickupController extends CartController {
 
   void listenForDeliveryAddress() async {
     this.deliveryAddress = settingRepo.deliveryAddress.value;
-    print(this.deliveryAddress.id);
   }
 
   void addAddress(model.Address address) {
@@ -90,7 +90,7 @@ class DeliveryPickupController extends CartController {
   }
 
   @override
-  void goCheckout(BuildContext context) {
-    Navigator.of(context).pushNamed(getSelectedMethod().route);
+  void goCheckout(BuildContext context, [String time]) {
+    Navigator.of(context).pushNamed(getSelectedMethod().route, arguments: RouteArgument(id: 'hint', param: time));
   }
 }

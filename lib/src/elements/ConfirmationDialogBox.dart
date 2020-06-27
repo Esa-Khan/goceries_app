@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/models/route_argument.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/checkbox_form_field.dart';
@@ -9,9 +12,10 @@ import '../models/address.dart';
 class ConfirmationDialogBox {
   BuildContext context;
   String route;
+  String hint;
   GlobalKey<FormState> _deliveryAddressFormKey = new GlobalKey<FormState>();
 
-  ConfirmationDialogBox({this.context, this.route = ""}) {
+  ConfirmationDialogBox({this.context, this.route = "", this.hint}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -68,7 +72,7 @@ class ConfirmationDialogBox {
 
   void _submit() {
     if (route == '/CashOnDelivery') {
-      Navigator.of(context).pushNamed(route);
+      Navigator.of(context).pushNamed(route, arguments: new RouteArgument(id: hint, param: 'Cash on Delivery'));
     } else {
       Navigator.pop(context);
     }

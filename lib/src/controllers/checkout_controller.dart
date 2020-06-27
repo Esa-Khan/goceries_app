@@ -20,6 +20,7 @@ class CheckoutController extends CartController {
   double total = 0.0;
   CreditCard creditCard = new CreditCard();
   bool loading = true;
+  String hint = "";
   GlobalKey<ScaffoldState> scaffoldKey;
 
   CheckoutController() {
@@ -33,16 +34,17 @@ class CheckoutController extends CartController {
   }
 
   @override
-  void onLoadingCartDone() {
-    if (payment != null) addOrder(carts);
+  void onLoadingCartDone({String hint}) {
+    if (payment != null) addOrder(carts, hint);
     super.onLoadingCartDone();
   }
 
-  void addOrder(List<Cart> carts) async {
+  void addOrder(List<Cart> carts, String hint) async {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
     _order.tax = carts[0].food.restaurant.defaultTax;
     _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].food.restaurant.deliveryFee;
+    _order.hint = hint;
     OrderStatus _orderStatus = new OrderStatus();
     _orderStatus.id = '1'; // TODO default order status Id
     _order.orderStatus = _orderStatus;

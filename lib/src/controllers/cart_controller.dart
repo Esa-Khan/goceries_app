@@ -20,7 +20,7 @@ class CartController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void listenForCarts({String message}) async {
+  void listenForCarts({String message, String hint}) async {
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
       if (!carts.contains(_cart)) {
@@ -42,11 +42,11 @@ class CartController extends ControllerMVC {
           content: Text(message),
         ));
       }
-      onLoadingCartDone();
+      onLoadingCartDone(hint: hint);
     });
   }
 
-  void onLoadingCartDone() {}
+  void onLoadingCartDone({String hint}) {}
 
   void listenForCartsCount({String message}) async {
     final Stream<int> stream = await getCartCount();

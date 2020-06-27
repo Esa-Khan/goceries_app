@@ -14,12 +14,17 @@ class PaymentMethodsWidget extends StatefulWidget {
   PaymentMethodsWidget({Key key, this.routeArgument}) : super(key: key);
 
   @override
-  _PaymentMethodsWidgetState createState() => _PaymentMethodsWidgetState();
+  _PaymentMethodsWidgetState createState() => _PaymentMethodsWidgetState(routeArgument);
 }
 
 class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
   PaymentMethodList list;
+  RouteArgument routeArgument;
+  String hint;
 
+  _PaymentMethodsWidgetState(this.routeArgument) : super() {
+    hint = this.routeArgument.param;
+  }
   @override
   Widget build(BuildContext context) {
     list = new PaymentMethodList(context);
@@ -91,7 +96,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                 return SizedBox(height: 10);
               },
               itemBuilder: (context, index) {
-                return PaymentMethodListItemWidget(paymentMethod: list.paymentsList.elementAt(index));
+                return PaymentMethodListItemWidget(paymentMethod: list.paymentsList.elementAt(index), hint: this.hint,);
               },
             ),
 //            list.cashList.length > 0
@@ -125,7 +130,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                 return SizedBox(height: 10);
               },
               itemBuilder: (context, index) {
-                return PaymentMethodListItemWidget(paymentMethod: list.cashList.elementAt(index));
+                return PaymentMethodListItemWidget(paymentMethod: list.cashList.elementAt(index), hint: this.hint,);
               },
             ),
           ],

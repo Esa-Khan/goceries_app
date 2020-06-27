@@ -19,7 +19,7 @@ class OrderSuccessWidget extends StatefulWidget {
 
 class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
   CheckoutController _con;
-
+  String hint;
   _OrderSuccessWidgetState() : super(CheckoutController()) {
     _con = controller;
   }
@@ -27,8 +27,9 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
   @override
   void initState() {
     // route param contains the payment method
+    hint = widget.routeArgument.id;
     _con.payment = new Payment(widget.routeArgument.param);
-    _con.listenForCarts();
+    _con.listenForCarts(hint: this.hint);
     super.initState();
   }
 

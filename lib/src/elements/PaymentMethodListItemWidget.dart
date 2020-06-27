@@ -9,8 +9,9 @@ import 'ConfirmationDialogBox.dart';
 class PaymentMethodListItemWidget extends StatelessWidget {
   String heroTag;
   PaymentMethod paymentMethod;
+  String hint;
 
-  PaymentMethodListItemWidget({Key key, this.paymentMethod}) : super(key: key);
+  PaymentMethodListItemWidget({Key key, this.paymentMethod, this.hint}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,19 +20,20 @@ class PaymentMethodListItemWidget extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        if (this.paymentMethod.id == "mastercard" ||
-            this.paymentMethod.id == "visacard") {
+        if (this.paymentMethod.id == "mastercard" || this.paymentMethod.id == "visacard") {
           Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => CheckoutWidget(
                   cardType: this.paymentMethod.id,
+                  hint: this.hint,
                 ),
               ));
         } else {
           ConfirmationDialogBox(
             context: context,
-            route: this.paymentMethod.route
+            route: this.paymentMethod.route,
+            hint: this.hint,
           );
 //          Navigator.of(context).pushNamed(this.paymentMethod.route);
         }

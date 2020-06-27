@@ -12,26 +12,29 @@ import '../models/payment_method.dart';
 
 class CheckoutWidget extends StatefulWidget {
   final String cardType;
-  CheckoutWidget({Key key, @required this.cardType}) : super(key: key);
+  final String hint;
+  CheckoutWidget({Key key, @required this.cardType, this.hint}) : super(key: key);
 
 //  RouteArgument routeArgument;
 //  CheckoutWidget({Key key, this.routeArgument}) : super(key: key);
   @override
 //  _CheckoutWidgetState createState() => _CheckoutWidgetState();
-  _CheckoutWidgetState createState() => _CheckoutWidgetState(cardType);
+  _CheckoutWidgetState createState() => _CheckoutWidgetState(cardType, hint);
 }
 
 class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
   CheckoutController _con;
   final String cardType;
+  final String hint;
 
 //  _CheckoutWidgetState() : super(CheckoutController()) {
-    _CheckoutWidgetState(this.cardType) : super(CheckoutController()) {
+    _CheckoutWidgetState(this.cardType, this.hint) : super(CheckoutController()) {
     _con = controller;
   }
   @override
   void initState() {
     _con.listenForCarts();
+    _con.hint = this.hint;
     super.initState();
   }
 
@@ -191,7 +194,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                             child: FlatButton(
                               onPressed: () {
                                 if (_con.creditCard.validated()) {
-                                  Navigator.of(context).pushNamed('/OrderSuccess', arguments: new RouteArgument(param: 'Credit Card (Stripe Gateway)'));
+                                  Navigator.of(context).pushNamed('/OrderSuccess', arguments: new RouteArgument(id: this.hint, param: 'Credit Card (Stripe Gateway)'));
                                 } else {
                                   _con.scaffoldKey?.currentState?.showSnackBar(SnackBar(
                                     content: Text(S.of(context).your_credit_card_not_valid),
