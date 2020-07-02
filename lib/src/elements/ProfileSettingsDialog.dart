@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../models/user.dart';
@@ -16,6 +17,20 @@ class ProfileSettingsDialog extends StatefulWidget {
 class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
   GlobalKey<FormState> _profileSettingsFormKey = new GlobalKey<FormState>();
 
+  String validatePhone(String input){
+    if (input.trim().length == 0){
+      return "Invalid: Cannot leave empty";
+
+    } else if(int.tryParse(input) == null){
+      return "Invalid: Only numbers allowed";
+
+    } else if(input.trim().length != 11){
+      return "Invalid: Needs to be 11 digits";
+
+    } else {
+      return null;
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return FlatButton(
@@ -60,27 +75,27 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.text,
-                          decoration: getInputDecoration(hintText: '+136 269 9765', labelText: S.of(context).phone),
+                          decoration: getInputDecoration(hintText: '03001234567', labelText: S.of(context).phone),
                           initialValue: widget.user.phone,
-                          validator: (input) => input.trim().length < 3 ? S.of(context).not_a_valid_phone : null,
+                          validator: (input) => validatePhone(input),
                           onSaved: (input) => widget.user.phone = input,
                         ),
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.text,
                           decoration: getInputDecoration(hintText: S.of(context).your_address, labelText: S.of(context).address),
-                          initialValue: widget.user.address,
+                          initialValue: currentUser.value.address,
                           validator: (input) => input.trim().length < 3 ? S.of(context).not_a_valid_address : null,
                           onSaved: (input) => widget.user.address = input,
                         ),
-                        new TextFormField(
-                          style: TextStyle(color: Theme.of(context).hintColor),
-                          keyboardType: TextInputType.text,
-                          decoration: getInputDecoration(hintText: S.of(context).your_biography, labelText: S.of(context).about),
-                          initialValue: widget.user.bio,
-                          validator: (input) => input.trim().length < 3 ? S.of(context).not_a_valid_biography : null,
-                          onSaved: (input) => widget.user.bio = input,
-                        ),
+//                        new TextFormField(
+//                          style: TextStyle(color: Theme.of(context).hintColor),
+//                          keyboardType: TextInputType.text,
+//                          decoration: getInputDecoration(hintText: S.of(context).your_biography, labelText: S.of(context).about),
+//                          initialValue: widget.user.bio,
+//                          validator: (input) => input.trim().length < 3 ? S.of(context).not_a_valid_biography : null,
+//                          onSaved: (input) => widget.user.bio = input,
+//                        ),
                       ],
                     ),
                   ),

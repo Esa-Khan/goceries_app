@@ -100,12 +100,12 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             trailing: ButtonTheme(
                               padding: EdgeInsets.all(0),
                               minWidth: 50.0,
-                              height: 25.0,
+                              height: 250.0,
                               child: ProfileSettingsDialog(
                                 user: currentUser.value,
                                 onChanged: () {
                                   _con.update(currentUser.value);
-//                                  setState(() {});
+                                  setState(() {});
                                 },
                               ),
                             ),
@@ -162,20 +162,20 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                               style: TextStyle(color: Theme.of(context).focusColor),
                             ),
                           ),
-                          ListTile(
-                            onTap: () {},
-                            dense: true,
-                            title: Text(
-                              S.of(context).about,
-                              style: Theme.of(context).textTheme.bodyText2,
-                            ),
-                            trailing: Text(
-                              Helper.limitString(currentUser.value.bio),
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
+//                          ListTile(
+//                            onTap: () {},
+//                            dense: true,
+//                            title: Text(
+//                              S.of(context).about,
+//                              style: Theme.of(context).textTheme.bodyText2,
+//                            ),
+//                            trailing: Text(
+//                              Helper.limitString(currentUser.value.bio),
+//                              overflow: TextOverflow.fade,
+//                              softWrap: false,
+//                              style: TextStyle(color: Theme.of(context).focusColor),
+//                            ),
+//                          ),
                         ],
                       ),
                     ),

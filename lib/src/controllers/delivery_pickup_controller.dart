@@ -45,7 +45,7 @@ class DeliveryPickupController extends CartController {
       });
     }).whenComplete(() {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).the_address_updated_successfully),
+        content: Text(S.of(context).details_updated_successfully),
       ));
     });
   }
@@ -86,11 +86,18 @@ class DeliveryPickupController extends CartController {
   }
 
   PaymentMethod getSelectedMethod() {
-    return list.pickupList.firstWhere((element) => element.selected);
+      return list.pickupList.firstWhere((element) => element.selected);
   }
 
   @override
   void goCheckout(BuildContext context, [String time]) {
-    Navigator.of(context).pushNamed(getSelectedMethod().route, arguments: RouteArgument(id: 'hint', param: time));
+    try {
+      Navigator.of(context).pushNamed(getSelectedMethod().route, arguments: RouteArgument(id: 'hint', param: time));
+    } catch (e) {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(S.of(context).please_select_pickup_or_delivery),
+        duration: Duration(seconds: 1),
+      ));
+    }
   }
 }

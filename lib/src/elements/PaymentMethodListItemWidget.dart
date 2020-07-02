@@ -29,13 +29,14 @@ class PaymentMethodListItemWidget extends StatelessWidget {
                   hint: this.hint,
                 ),
               ));
+        } else if(this.paymentMethod.id == "paypal"){
+          Navigator.of(context).pushNamed(this.paymentMethod.route);
         } else {
           ConfirmationDialogBox(
             context: context,
             route: this.paymentMethod.route,
             hint: this.hint,
           );
-//          Navigator.of(context).pushNamed(this.paymentMethod.route);
         }
         print(CustomTrace(StackTrace.current, message: this.paymentMethod.name));
       },

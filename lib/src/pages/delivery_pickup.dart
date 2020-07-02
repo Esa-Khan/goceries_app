@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
 import 'package:food_delivery_app/src/elements/ConfirmationDialogBox.dart';
+import 'package:food_delivery_app/src/repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
@@ -21,8 +22,9 @@ import '../helpers/app_config.dart' as config;
 
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument routeArgument;
-
+  Address address;
   DeliveryPickupWidget({Key key, this.routeArgument}) : super(key: key);
+
 
   @override
   _DeliveryPickupWidgetState createState() => _DeliveryPickupWidgetState();
@@ -77,37 +79,37 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 10),
-              child: ListTile(
-                contentPadding: EdgeInsets.symmetric(vertical: 0),
-                leading: Icon(
-                  Icons.domain,
-                  color: Theme.of(context).hintColor,
-                ),
-                title: Text(
-                  S.of(context).pickup,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                subtitle: Text(
-                  S.of(context).select_to_pickup_your_food_from_the_store,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ),
-            ),
-            PickUpMethodItem(
-                paymentMethod: _con.getPickUpMethod(),
-                onPressed: (paymentMethod) {
+//            Padding(
+//              padding: const EdgeInsets.only(left: 20, right: 10),
+//              child: ListTile(
+//                contentPadding: EdgeInsets.symmetric(vertical: 0),
+//                leading: Icon(
+//                  Icons.domain,
+//                  color: Theme.of(context).hintColor,
+//                ),
+//                title: Text(
+//                  S.of(context).pickup,
+//                  maxLines: 1,
+//                  overflow: TextOverflow.ellipsis,
+//                  style: Theme.of(context).textTheme.headline4,
+//                ),
+//                subtitle: Text(
+//                  S.of(context).select_to_pickup_your_food_from_the_store,
+//                  maxLines: 1,
+//                  overflow: TextOverflow.ellipsis,
+//                  style: Theme.of(context).textTheme.caption,
+//                ),
+//              ),
+//            ),
+//            PickUpMethodItem(
+//                paymentMethod: _con.getPickUpMethod(),
+//                onPressed: (paymentMethod) {
 //                  showDialog(context: context, builder: (BuildContext context) {return ConfirmationDialogBox(); });
-                  if (_con.togglePickUp())
-                    ConfirmationDialogBox(
-                      context: context,
-                    );
-                }),
+//                  if (_con.togglePickUp())
+//                    ConfirmationDialogBox(
+//                      context: context,
+//                    );
+//                }),
             Column(
               children: <Widget>[
                 Padding(
@@ -129,9 +131,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                             Helper.canDelivery(_con.carts[0].food.restaurant,
                                 carts: _con.carts)
                         ? Text(
-                            S
-                                .of(context)
-                                .click_to_confirm_your_address_and_pay_or_long_press,
+                            S.of(context).click_to_confirm_your_address_and_pay_or_long_press,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.caption,
@@ -188,7 +188,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                         address: _con.deliveryAddress,
                         onPressed: (Address _address) {
                           if (_con.deliveryAddress.id == null ||
-                              _con.deliveryAddress.id == 'null') {
+                              _con.deliveryAddress.id == 'null' ||
+                              currentUser.value.phone == null) {
                             DeliveryAddressDialog(
                               context: context,
                               address: _address,

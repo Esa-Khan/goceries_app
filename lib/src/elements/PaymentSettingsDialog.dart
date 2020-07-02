@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/elements/CartBottomDetailsWidget.dart';
 
 import '../../generated/l10n.dart';
 import '../models/credit_card.dart';
@@ -16,6 +19,36 @@ class PaymentSettingsDialog extends StatefulWidget {
 
 class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
   GlobalKey<FormState> _paymentSettingsFormKey = new GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    super.initState();
+    // Start listening to changes.
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the widget tree.
+    super.dispose();
+  }
+
+  String validateEXP(String input) {
+    DateTime currDate = DateTime.now();
+    int inputMonth = int.tryParse(input.substring(0, 2));
+    int inputYear = int.tryParse(input.substring(3, 5));
+
+    if (!input.contains('/') || input.length != 5) {
+      return S.of(context).not_a_valid_date;
+    } else if(inputMonth > 12 || inputMonth < 1) {
+      return "Invalid: Month has to be 1 - 12";
+    } else if(inputYear < int.tryParse(currDate.year.toString().substring(2, 4))) {
+      return "Invalid: Date can't be in the past";
+    } else if(inputYear == int.tryParse(currDate.year.toString().substring(2, 4)) && inputMonth < currDate.month) {
+      return "Invalid: Date can't be in the past";
+    } else {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +77,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                       children: <Widget>[
                         new TextFormField(
                           style: TextStyle(color: Theme.of(context).hintColor),
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
                           decoration: getInputDecoration(hintText: '4242 4242 4242 4242', labelText: S.of(context).number),
                           initialValue: widget.creditCard.number.isNotEmpty ? widget.creditCard.number : null,
                           validator: (input) => input.trim().length != 16 ? S.of(context).not_a_valid_number : null,
@@ -52,11 +85,11 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                         ),
                         new TextFormField(
                             style: TextStyle(color: Theme.of(context).hintColor),
+//                            controller: expTextCon,
                             keyboardType: TextInputType.datetime,
                             decoration: getInputDecoration(hintText: 'mm/yy', labelText: S.of(context).exp_date),
                             initialValue: widget.creditCard.expMonth.isNotEmpty ? widget.creditCard.expMonth + '/' + widget.creditCard.expYear : null,
-                            // TODO validate date
-                            validator: (input) => !input.contains('/') || input.length != 5 ? S.of(context).not_a_valid_date : null,
+                            validator: (input) => validateEXP(input),
                             onSaved: (input) {
                               widget.creditCard.expMonth = input.split('/').elementAt(0);
                               widget.creditCard.expYear = input.split('/').elementAt(1);

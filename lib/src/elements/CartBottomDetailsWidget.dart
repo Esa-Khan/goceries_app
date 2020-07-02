@@ -56,8 +56,8 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(20),
-                    topLeft: Radius.circular(20)),
+                    topRight: Radius.circular(40),
+                    topLeft: Radius.circular(40)),
                 boxShadow: [
                   BoxShadow(
                       color: Theme.of(context).focusColor.withOpacity(0.15),
@@ -315,8 +315,8 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                           onPressed: () {
                             if (widget.con.runtimeType == CartController){
                               widget.con.goCheckout(context);
-                            } else if (_isVisible) {
-                              widget.con.goCheckout(context, "As Soon As Possible");
+                            } else if (_isVisible || _date == "Set Day" || _date == "Set Time") {
+                              widget.con.goCheckout(context);
                             } else {
                               widget.con.goCheckout(context, _date + " " + _time);
                             }

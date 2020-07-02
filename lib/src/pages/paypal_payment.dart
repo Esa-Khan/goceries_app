@@ -58,12 +58,12 @@ class _PayPalPaymentWidgetState extends StateMVC<PayPalPaymentWidget> {
           ),
           _con.progress < 1
               ? SizedBox(
-                  height: 3,
-                  child: LinearProgressIndicator(
-                    value: _con.progress,
-                    backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
-                  ),
-                )
+            height: 3,
+            child: LinearProgressIndicator(
+              value: _con.progress,
+              backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
+            ),
+          )
               : SizedBox(),
         ],
       ),

@@ -1,17 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/controllers/settings_controller.dart';
+import 'package:food_delivery_app/src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/checkbox_form_field.dart';
 import '../models/address.dart';
+import '../controllers/user_controller.dart';
 
 // ignore: must_be_immutable
 class DeliveryAddressDialog {
   BuildContext context;
   Address address;
+  int phone;
   ValueChanged<Address> onChanged;
   GlobalKey<FormState> _deliveryAddressFormKey = new GlobalKey<FormState>();
 
   DeliveryAddressDialog({this.context, this.address, this.onChanged}) {
+
+    String validatePhone(String input){
+      print(input.trim().length);
+      if (input.trim().length == 0){
+        return "Invalid: Cannot leave empty";
+
+      } else if(int.tryParse(input) == null){
+        return "Invalid: Only numbers allowed";
+
+      } else if(input.trim().length != 11){
+        return "Invalid: Needs to be 11 digits";
+
+      } else {
+        return null;
+      }
+    }
+
     showDialog(
         context: context,
         builder: (context) {
@@ -36,17 +57,17 @@ class DeliveryAddressDialog {
                 key: _deliveryAddressFormKey,
                 child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: new TextFormField(
-                        style: TextStyle(color: Theme.of(context).hintColor),
-                        keyboardType: TextInputType.text,
-                        decoration: getInputDecoration(hintText: S.of(context).home_address, labelText: S.of(context).description),
-                        initialValue: address.description?.isNotEmpty ?? false ? address.description : null,
-                        validator: (input) => input.trim().length == 0 ? 'Not valid address description' : null,
-                        onSaved: (input) => address.description = input,
-                      ),
-                    ),
+//                    Padding(
+//                      padding: const EdgeInsets.symmetric(horizontal: 20),
+//                      child: new TextFormField(
+//                        style: TextStyle(color: Theme.of(context).hintColor),
+//                        keyboardType: TextInputType.text,
+//                        decoration: getInputDecoration(hintText: S.of(context).home_address, labelText: S.of(context).description),
+//                        initialValue: address.description?.isNotEmpty ?? false ? address.description : null,
+//                        validator: (input) => input.trim().length == 0 ? 'Not valid address description' : null,
+//                        onSaved: (input) => address.description = input,
+//                      ),
+//                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: new TextFormField(
@@ -56,6 +77,17 @@ class DeliveryAddressDialog {
                         initialValue: address.address?.isNotEmpty ?? false ? address.address : null,
                         validator: (input) => input.trim().length == 0 ? 'Not valid address' : null,
                         onSaved: (input) => address.address = input,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: new TextFormField(
+                        style: TextStyle(color: Theme.of(context).hintColor),
+                        keyboardType: TextInputType.text,
+                        decoration: getInputDecoration(hintText: S.of(context).hint_full_address, labelText: S.of(context).phone_number),
+                        initialValue: currentUser.value.phone?.isNotEmpty ?? false ? currentUser.value.phone : null,
+                        validator: (input) => validatePhone(input),
+                        onSaved: (input) => currentUser.value.phone = input,
                       ),
                     ),
                     SizedBox(

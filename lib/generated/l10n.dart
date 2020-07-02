@@ -623,6 +623,16 @@ class S {
     );
   }
 
+  /// `Phone Number`
+  String get phone_number {
+    return Intl.message(
+      'Phone Number',
+      name: 'phone_number',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Address`
   String get address {
     return Intl.message(
@@ -1383,6 +1393,16 @@ class S {
     );
   }
 
+  /// `Details updated successfully`
+  String get details_updated_successfully {
+    return Intl.message(
+      'Details updated successfully',
+      name: 'details_updated_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Long press to edit item, swipe item to delete it`
   String get long_press_to_edit_item_swipe_item_to_delete_it {
     return Intl.message(
@@ -1488,6 +1508,16 @@ class S {
     return Intl.message(
       'Error! Verify email settings',
       name: 'error_verify_email_settings',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please select pickup or delivery`
+  String get please_select_pickup_or_delivery {
+    return Intl.message(
+      'Please select pickup or delivery',
+      name: 'please_select_pickup_or_delivery',
       desc: '',
       args: [],
     );
@@ -2283,10 +2313,10 @@ class S {
     );
   }
 
-  /// `Delivery method not allowed`
+  /// `No address given or delivery method not allowed`
   String get deliveryMethodNotAllowed {
     return Intl.message(
-      'Delivery method not allowed',
+      'No address given or delivery method not allowed',
       name: 'deliveryMethodNotAllowed',
       desc: '',
       args: [],

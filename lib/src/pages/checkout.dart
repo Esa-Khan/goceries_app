@@ -57,7 +57,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
               fit: StackFit.expand,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 255),
+                  padding: const EdgeInsets.only(bottom: 1),
                   child: SingleChildScrollView(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -77,12 +77,12 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.headline4,
                             ),
-                            subtitle: Text(
-                              S.of(context).select_your_preferred_payment_mode,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.caption,
-                            ),
+//                            subtitle: Text(
+//                              S.of(context).select_your_preferred_payment_mode,
+//                              maxLines: 1,
+//                              overflow: TextOverflow.ellipsis,
+//                              style: Theme.of(context).textTheme.caption,
+//                            ),
                           ),
                         ),
                         SizedBox(height: 20),
@@ -98,9 +98,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                 S.of(context).or_checkout_with,
                                 style: Theme.of(context).textTheme.caption,
                               )
-                            : SizedBox(
-                                height: 0,
-                              ),
+                            : SizedBox(height: 0),
                         SizedBox(height: 40),
                         setting.value.payPalEnabled
                             ? SizedBox(
@@ -118,10 +116,8 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                   ),
                                 ),
                               )
-                            : SizedBox(
-                                height: 0,
-                              ),
-                        SizedBox(height: 20),
+                            : SizedBox(height: 0),
+//                        SizedBox(height: 20),
                       ],
                     ),
                   ),
@@ -129,11 +125,11 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    height: 255,
+                    height: 210,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40)),
                         boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width - 40,
@@ -164,19 +160,18 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
                             ],
                           ),
-                          SizedBox(height: 3),
-                          Row(
-                            children: <Widget>[
-                              Expanded(
-                                child: Text(
-                                  "${S.of(context).tax} (${_con.carts[0].food.restaurant.defaultTax}%)",
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ),
-                              Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
-                            ],
-                          ),
-                          Divider(height: 30),
+//                          Row(
+//                            children: <Widget>[
+//                              Expanded(
+//                                child: Text(
+//                                  "${S.of(context).tax} (${_con.carts[0].food.restaurant.defaultTax}%)",
+//                                  style: Theme.of(context).textTheme.bodyText1,
+//                                ),
+//                              ),
+//                              Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
+//                            ],
+//                          ),
+                          Divider(height: 20),
                           Row(
                             children: <Widget>[
                               Expanded(

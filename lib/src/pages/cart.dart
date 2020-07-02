@@ -60,6 +60,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
             style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
         ),
+
         body: RefreshIndicator(
           onRefresh: _con.refreshCarts,
           child: _con.carts.isEmpty
