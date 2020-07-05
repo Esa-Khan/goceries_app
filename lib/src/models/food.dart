@@ -1,4 +1,6 @@
 import 'package:food_delivery_app/src/controllers/food_controller.dart';
+import 'package:food_delivery_app/src/models/address.dart';
+import 'package:food_delivery_app/src/repository/restaurant_repository.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/category.dart';
@@ -41,6 +43,8 @@ class Food {
       discountPrice = jsonMap['discount_price'] != null ? jsonMap['discount_price'].toDouble() : 0.0;
       price = discountPrice != 0 ? discountPrice : price;
       discountPrice = discountPrice == 0 ? discountPrice : jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0.0;
+      price = price*0.1 + price;
+
       description = jsonMap['description'];
       ingredients = jsonMap['ingredients'];
       weight = jsonMap['weight'] != null ? jsonMap['weight'].toString() : '';
@@ -49,6 +53,7 @@ class Food {
       featured = jsonMap['featured'] ?? false;
       deliverable = jsonMap['deliverable'] ?? false;
       restaurant = jsonMap['restaurant'] != null ? Restaurant.fromJSON(jsonMap['restaurant']) : Restaurant.fromJSON({});
+
       try {
         category = jsonMap['category_id'] != null ? Category.fromJSON(jsonMap['category_id']) : Category.fromJSON({});
       } catch (e) {

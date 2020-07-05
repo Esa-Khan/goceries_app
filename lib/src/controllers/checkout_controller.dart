@@ -46,7 +46,7 @@ class CheckoutController extends CartController {
     _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].food.restaurant.deliveryFee;
     _order.hint = hint;
     OrderStatus _orderStatus = new OrderStatus();
-    _orderStatus.id = '1'; // TODO default order status Id
+    _orderStatus.id = '1';
     _order.orderStatus = _orderStatus;
     _order.deliveryAddress = settingRepo.deliveryAddress.value;
     carts.forEach((_cart) {

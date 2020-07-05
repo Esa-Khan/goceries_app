@@ -10,25 +10,29 @@ import 'cart_controller.dart';
 
 class DeliveryPickupController extends CartController {
   GlobalKey<ScaffoldState> scaffoldKey;
-  model.Address deliveryAddress;
+  List<model.Address> deliveryAddress = new List<model.Address>();
   PaymentMethodList list;
 
   DeliveryPickupController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     super.listenForCarts();
-    listenForDeliveryAddress();
+//    listenForDeliveryAddress();
+    listenForAddresses();
     print(settingRepo.deliveryAddress.value.toMap());
   }
 
   void listenForDeliveryAddress() async {
-    this.deliveryAddress = settingRepo.deliveryAddress.value;
+//    this.deliveryAddress = settingRepo.deliveryAddress.value;
+    deliveryAddress.add(settingRepo.deliveryAddress.value);
+
   }
 
   void addAddress(model.Address address) {
     userRepo.addAddress(address).then((value) {
       setState(() {
         settingRepo.deliveryAddress.value = value;
-        this.deliveryAddress = value;
+        deliveryAddress.add(value);
+//        this.deliveryAddress = value;
       });
     }).whenComplete(() {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -37,11 +41,54 @@ class DeliveryPickupController extends CartController {
     });
   }
 
+  void listenForAddresses({String message}) async {
+    final Stream<model.Address> stream = await userRepo.getAddresses();
+    stream.listen((model.Address _address) {
+      setState(() {
+        bool repeatingAddress = false;
+        this.deliveryAddress.forEach((element) {
+          if (element.id == _address.id || element.address == _address.address){
+            element = _address;
+            repeatingAddress = true;
+          }
+        });
+        if (!repeatingAddress){
+          if (_address.isDefault){
+//          deliveryAddress = _address;
+            deliveryAddress.insert(0, _address);
+          } else {
+//          deliveryAddress = _address;
+            deliveryAddress.add(_address);
+          }
+        } else {
+          repeatingAddress = false;
+        }
+      });
+    }, onError: (a) {
+      print(a);
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(S.of(context).verify_your_internet_connection),
+      ));
+    }, onDone: () {
+      if (message != null) {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(message),
+        ));
+      }
+    });
+  }
+
   void updateAddress(model.Address address) {
     userRepo.updateAddress(address).then((value) {
       setState(() {
         settingRepo.deliveryAddress.value = value;
-        this.deliveryAddress = value;
+//        this.deliveryAddress = value;
+        deliveryAddress.forEach((element) {
+          if (element.id == value.id){
+            element = value;
+            return null;
+          }
+        });
       });
     }).whenComplete(() {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -58,14 +105,25 @@ class DeliveryPickupController extends CartController {
     return list.pickupList.elementAt(1);
   }
 
-  void toggleDelivery() {
+  void toggleDelivery({model.Address currAddress}) {
+    PaymentMethod currPaymentMethod = getDeliveryMethod();
     list.pickupList.forEach((element) {
-      if (element != getDeliveryMethod()) {
+      if (element != currPaymentMethod) {
         element.selected = false;
       }
     });
     setState(() {
-      getDeliveryMethod().selected = !getDeliveryMethod().selected;
+      if (currPaymentMethod.addressID == null || currPaymentMethod.addressID == currAddress.id || !currPaymentMethod.selected) {
+        currPaymentMethod.selected = !currPaymentMethod.selected;
+      } else {
+        currPaymentMethod.selected = !currPaymentMethod.selected;
+        currPaymentMethod.selected = !currPaymentMethod.selected;
+      }
+      if (currPaymentMethod.selected) {
+        settingRepo.deliveryAddress.value = currAddress;
+      }
+
+      currPaymentMethod.addressID = currAddress.id;
     });
   }
 

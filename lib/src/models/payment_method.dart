@@ -10,8 +10,9 @@ class PaymentMethod {
   String route;
   bool isDefault;
   bool selected;
+  String addressID;
 
-  PaymentMethod(this.id, this.name, this.description, this.route, this.logo, {this.isDefault = false, this.selected = false});
+  PaymentMethod(this.id, this.name, this.description, this.route, this.logo, {this.isDefault = false, this.selected = false, this.addressID});
 }
 
 class PaymentMethodList {
