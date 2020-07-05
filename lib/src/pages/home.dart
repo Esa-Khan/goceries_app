@@ -113,7 +113,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   subtitle: Text(
-                    S.of(context).near_to + " " + (settingsRepo.deliveryAddress.value?.address ?? S.of(context).unknown),
+                    settingsRepo.deliveryAddress.value?.address == null
+                        ? "Tap the location icon to start"
+                        : settingsRepo.deliveryAddress.value.address,
+//                    S.of(context).near_to + " " + (settingsRepo.deliveryAddress.value?.address ?? S.of(context).unknown),
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),

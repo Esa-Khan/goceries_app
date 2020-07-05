@@ -78,6 +78,22 @@ Future<Stream<OrderStatus>> getOrderStatus() async {
   });
 }
 
+Future<Null> getDrivers() async {
+  User _user = userRepo.currentUser.value;
+  if (_user.apiToken == null) {
+    return new Stream.value(null);
+  }
+  final String _apiToken = 'api_token=${_user.apiToken}';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}drivers?$_apiToken';
+
+  final client = new http.Client();
+  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
+
+  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+    return User.fromJSON(data);
+  });
+}
+
 Future<Order> addOrder(Order order, Payment payment) async {
   User _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {

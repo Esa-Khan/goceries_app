@@ -131,7 +131,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                   Positioned(
                     bottom: 0,
                     child: Container(
-                      height: 255,
+                      height: 210,
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
@@ -180,7 +180,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
 //                                Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
 //                              ],
 //                            ),
-                            Divider(height: 30),
+                            Divider(height: 10),
                             Row(
                               children: <Widget>[
                                 Expanded(

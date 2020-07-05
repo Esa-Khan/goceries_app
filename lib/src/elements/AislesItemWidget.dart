@@ -41,6 +41,10 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                 margin: EdgeInsets.only(top: 14),
                 padding: EdgeInsets.only(top: 20, bottom: 5),
                 decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(widget.aisle.aisleImage),
+                    fit: BoxFit.fitWidth,
+                  ),
                   color: Theme.of(context).primaryColor.withOpacity(0.9),
                   boxShadow: [
                     BoxShadow(
@@ -57,10 +61,9 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                       children: <Widget>[
                         Text(
                           widget.aisle.name,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4
-                              .apply(color: Theme.of(context).accentColor),
+                          style: Theme.of(context).textTheme.headline2.apply(color: Theme.of(context).primaryColor),
+                          maxLines: 1,
+                          textScaleFactor: 1.3,
                         ),
                       ],
 //                      crossAxisAlignment: CrossAxisAlignment.center,

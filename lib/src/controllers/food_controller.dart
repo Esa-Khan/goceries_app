@@ -76,22 +76,20 @@ class FoodController extends ControllerMVC {
     var _oldCart = isExistInCart(_newCart);
     if (_oldCart != null) {
       _oldCart.quantity += this.quantity;
-      updateCart(_oldCart).then((value) {
+      updateCart(_oldCart).whenComplete(() {
         setState(() {
           this.loadCart = false;
         });
-      }).whenComplete(() {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).this_food_was_added_to_cart),
         ));
       });
     } else {
       // the food doesnt exist in the cart add new one
-      addCart(_newCart, reset).then((value) {
+      addCart(_newCart, reset).whenComplete(() {
         setState(() {
           this.loadCart = false;
         });
-      }).whenComplete(() {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).this_food_was_added_to_cart),
         ));

@@ -48,7 +48,7 @@ class CreditCardsWidget extends StatelessWidget {
         ),
         Container(
           margin: EdgeInsets.only(top: 25),
-          width: 300,
+          width: MediaQuery.of(context).size.width - 40,
           height: 195,
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,

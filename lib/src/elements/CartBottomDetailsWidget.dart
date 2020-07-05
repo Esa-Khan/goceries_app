@@ -41,7 +41,13 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
   void showScheduler() {
     setState(() {
       _isVisible = !_isVisible;
+      if (!_isVisible){
+        _date = "Set Day";
+        _time = "Set Time";
+      }
+
     });
+
   }
 
   @override

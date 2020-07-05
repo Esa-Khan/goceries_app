@@ -240,7 +240,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "thisRestaurantNotSupportDeliveryMethod" : MessageLookupByLibrary.simpleMessage("This store does not deliver"),
     "this_account_not_exist" : MessageLookupByLibrary.simpleMessage("This account not exist"),
     "this_email_account_exists" : MessageLookupByLibrary.simpleMessage("This email account exists"),
-    "this_food_was_added_to_cart" : MessageLookupByLibrary.simpleMessage("This food was added to cart"),
+    "this_food_was_added_to_cart" : MessageLookupByLibrary.simpleMessage("Item was added to cart"),
     "this_restaurant_is_closed_" : MessageLookupByLibrary.simpleMessage("This restaurant is closed !"),
     "total" : MessageLookupByLibrary.simpleMessage("Total"),
     "tracking_order" : MessageLookupByLibrary.simpleMessage("Tracking Order"),

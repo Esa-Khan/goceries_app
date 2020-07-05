@@ -93,30 +93,30 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                             },
                         cardType: cardType),
                         SizedBox(height: 40),
-                        setting.value.payPalEnabled
-                            ? Text(
-                                S.of(context).or_checkout_with,
-                                style: Theme.of(context).textTheme.caption,
-                              )
-                            : SizedBox(height: 0),
-                        SizedBox(height: 40),
-                        setting.value.payPalEnabled
-                            ? SizedBox(
-                                width: 320,
-                                child: FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pushReplacementNamed('/PayPal');
-                                  },
-                                  padding: EdgeInsets.symmetric(vertical: 12),
-                                  color: Theme.of(context).focusColor.withOpacity(0.2),
-                                  shape: StadiumBorder(),
-                                  child: Image.asset(
-                                    'assets/img/paypal2.png',
-                                    height: 28,
-                                  ),
-                                ),
-                              )
-                            : SizedBox(height: 0),
+//                        setting.value.payPalEnabled
+//                            ? Text(
+//                                S.of(context).or_checkout_with,
+//                                style: Theme.of(context).textTheme.caption,
+//                              )
+//                            : SizedBox(height: 0),
+//                        SizedBox(height: 40),
+//                        setting.value.payPalEnabled
+//                            ? SizedBox(
+//                                width: 320,
+//                                child: FlatButton(
+//                                  onPressed: () {
+//                                    Navigator.of(context).pushReplacementNamed('/PayPal');
+//                                  },
+//                                  padding: EdgeInsets.symmetric(vertical: 12),
+//                                  color: Theme.of(context).focusColor.withOpacity(0.2),
+//                                  shape: StadiumBorder(),
+//                                  child: Image.asset(
+//                                    'assets/img/paypal2.png',
+//                                    height: 28,
+//                                  ),
+//                                ),
+//                              )
+//                            : SizedBox(height: 0),
 //                        SizedBox(height: 20),
                       ],
                     ),

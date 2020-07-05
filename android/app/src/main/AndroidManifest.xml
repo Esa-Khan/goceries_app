@@ -18,8 +18,8 @@
         <meta-data android:name="com.google.android.geo.API_KEY"
                    android:value="AIzaSyC_uhVPL3z-PbgFlmbftM5y50HZBVWI2rg"/>
         <meta-data
-                android:name="com.google.firebase.messaging.default_notification_icon"
-                android:resource="@mipmap/ic_notification" />
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_notification" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

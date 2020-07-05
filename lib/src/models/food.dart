@@ -1,3 +1,5 @@
+import 'package:food_delivery_app/src/controllers/food_controller.dart';
+
 import '../helpers/custom_trace.dart';
 import '../models/category.dart';
 import '../models/extra.dart';
@@ -6,6 +8,8 @@ import '../models/media.dart';
 import '../models/nutrition.dart';
 import '../models/restaurant.dart';
 import '../models/review.dart';
+import '../controllers/food_controller.dart' as foodCon;
+
 
 class Food {
   String id;
@@ -45,7 +49,11 @@ class Food {
       featured = jsonMap['featured'] ?? false;
       deliverable = jsonMap['deliverable'] ?? false;
       restaurant = jsonMap['restaurant'] != null ? Restaurant.fromJSON(jsonMap['restaurant']) : Restaurant.fromJSON({});
-      category = jsonMap['category_id'] != null ? Category.fromID(jsonMap['category_id']) : Category.fromJSON({});
+      try {
+        category = jsonMap['category_id'] != null ? Category.fromJSON(jsonMap['category_id']) : Category.fromJSON({});
+      } catch (e) {
+        category = jsonMap['category_id'] != null ? Category.fromID(jsonMap['category_id']) : Category.fromJSON({});
+      };
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
       extras = jsonMap['extras'] != null && (jsonMap['extras'] as List).length > 0
           ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toSet().toList()
@@ -81,6 +89,54 @@ class Food {
       print(CustomTrace(StackTrace.current, message: e));
     }
   }
+
+
+
+  Food.fromID(int id) {
+    try {
+      FoodController _con = new FoodController();
+      _con.listenForFood(foodId: id.toString());
+      id = int.parse(_con.food.id);
+      name = _con.food.name;
+      price = _con.food.price;
+      discountPrice = _con.food.discountPrice;
+      description = _con.food.description;
+      ingredients = _con.food.ingredients;
+      weight = _con.food.weight;
+      unit = _con.food.unit;
+      packageItemsCount = _con.food.packageItemsCount;
+      featured = _con.food.featured;
+      deliverable = _con.food.deliverable;
+      restaurant = _con.food.restaurant;
+      category = _con.food.category;
+      image = _con.food.image;
+      extras = _con.food.extras;
+      extraGroups = _con.food.extraGroups;
+      foodReviews = _con.food.foodReviews;
+      nutritions = _con.food.nutritions;
+    } catch (e) {
+      id = 0;
+      name = '';
+      price = 0.0;
+      discountPrice = 0.0;
+      description = '';
+      weight = '';
+      ingredients = '';
+      unit = '';
+      packageItemsCount = '';
+      featured = false;
+      deliverable = false;
+      restaurant = Restaurant.fromJSON({});
+      category = Category.fromJSON({});
+      image = new Media();
+      extras = [];
+      extraGroups = [];
+      foodReviews = [];
+      nutritions = [];
+      print(CustomTrace(StackTrace.current, message: e));
+    }
+  }
+
 
   Map toMap() {
     var map = new Map<String, dynamic>();

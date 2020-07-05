@@ -1903,10 +1903,10 @@ class S {
     );
   }
 
-  /// `This food was added to cart`
+  /// `Item was added to cart`
   String get this_food_was_added_to_cart {
     return Intl.message(
-      'This food was added to cart',
+      'Item was added to cart',
       name: 'this_food_was_added_to_cart',
       desc: '',
       args: [],
