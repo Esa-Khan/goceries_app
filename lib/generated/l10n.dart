@@ -1923,10 +1923,10 @@ class S {
     );
   }
 
-  /// `Item Resultss`
+  /// `Item Results`
   String get item_results {
     return Intl.message(
-      'Item Resultss',
+      'Item Results',
       name: 'item_results',
       desc: '',
       args: [],

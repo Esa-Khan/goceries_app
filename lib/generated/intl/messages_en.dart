@@ -126,7 +126,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "i_remember_my_password_return_to_login" : MessageLookupByLibrary.simpleMessage("I remember my password return to login"),
     "information" : MessageLookupByLibrary.simpleMessage("Information"),
     "ingredients" : MessageLookupByLibrary.simpleMessage("Ingredients"),
-    "item_results" : MessageLookupByLibrary.simpleMessage("Item Resultss"),
+    "item_results" : MessageLookupByLibrary.simpleMessage("Item Results"),
     "items" : MessageLookupByLibrary.simpleMessage("Items"),
     "john_doe" : MessageLookupByLibrary.simpleMessage("John Doe"),
     "keep_your_old_meals_of_this_restaurant" : MessageLookupByLibrary.simpleMessage("Keep your old meals of this restaurant"),
