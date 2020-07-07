@@ -102,8 +102,25 @@ class RestaurantController extends ControllerMVC {
   void listenForSearchedFoods({String idRestaurant, String search}) async {
     Address _address = deliveryAddress.value;
     final Stream<Food> stream = await searchFoods(search, _address, storeID: idRestaurant);
+    Food currFood;
     stream.listen((Food _food) {
-      setState(() => foods.add(_food));
+      if (foods.isEmpty){
+        setState(() => foods.add(_food));
+
+      } else {
+        for (int i = 0; i < foods.length; i++) {
+          currFood = foods.elementAt(i);
+          int temp = currFood.name.toString().compareTo(_food.name.toString());
+          if (_food.name.toString().compareTo(currFood.name.toString()) < 0) {
+            setState(() => foods.insert(i, _food));
+            break;
+          }
+          if (i == foods.length - 1) {
+            setState(() => foods.add(_food));
+            break;
+          }
+        }
+      }
     }, onError: (a) {
       print(a);
     }, onDone: () {
