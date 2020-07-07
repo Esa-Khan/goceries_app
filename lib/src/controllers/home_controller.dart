@@ -24,7 +24,7 @@ class HomeController extends ControllerMVC {
 //    listenForTrendingFoods();
     listenForCategories();
 //    listenForPopularRestaurants();
-//    listenForRecentReviews();
+    listenForRecentReviews();
   }
 
   Future<void> listenForCategories() async {
@@ -51,12 +51,12 @@ class HomeController extends ControllerMVC {
 //    }, onError: (a) {}, onDone: () {});
 //  }
 
-//  Future<void> listenForRecentReviews() async {
-//    final Stream<Review> stream = await getRecentReviews();
-//    stream.listen((Review _review) {
-//      setState(() => recentReviews.add(_review));
-//    }, onError: (a) {}, onDone: () {});
-//  }
+  Future<void> listenForRecentReviews() async {
+    final Stream<Review> stream = await getRecentReviews();
+    stream.listen((Review _review) {
+      setState(() => recentReviews.add(_review));
+    }, onError: (a) {}, onDone: () {});
+  }
 
 //  Future<void> listenForTrendingFoods() async {
 //    final Stream<Food> stream = await getTrendingFoods(deliveryAddress.value);

@@ -65,12 +65,14 @@ class FoodItemWidget extends StatelessWidget {
                           maxLines: 2,
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
-                        Text(
+                        this.heroTag != 'store_search_list'
+                        ? Text(
                           food.restaurant.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: Theme.of(context).textTheme.caption,
-                        ),
+                        )
+                            : SizedBox(height: 0),
                       ],
                     ),
                   ),

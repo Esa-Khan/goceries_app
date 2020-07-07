@@ -17,8 +17,9 @@ import '../repository/settings_repository.dart';
 
 class DetailsWidget extends StatefulWidget {
   final RouteArgument routeArgument;
+  final GlobalKey<ScaffoldState> parentScaffoldKey;
 
-  DetailsWidget({Key key, this.routeArgument}) : super(key: key);
+  DetailsWidget({Key key, this.routeArgument, this.parentScaffoldKey}) : super(key: key);
 
   @override
   _DetailsWidgetState createState() {
@@ -28,6 +29,7 @@ class DetailsWidget extends StatefulWidget {
 
 class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   RestaurantController _con;
+  var _searchBarController = TextEditingController();
 
   _DetailsWidgetState() : super(RestaurantController()) {
     _con = controller;
@@ -37,10 +39,13 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   void initState() {
     _con.listenForRestaurant(id: widget.routeArgument.id);
     _con.listenForGalleries(widget.routeArgument.id);
-    _con.listenForFoods(widget.routeArgument.id);
-    _con.listenForRestaurantReviews(id: widget.routeArgument.id);
+//    _con.listenForFoods(widget.routeArgument.id);
+    _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id);
+//    _con.listenForRestaurantReviews(id: widget.routeArgument.id);
+
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,10 +76,12 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                   children: <Widget>[
                     CustomScrollView(
                       primary: true,
-                      shrinkWrap: false,
+                      shrinkWrap: true,
                       slivers: <Widget>[
                         SliverToBoxAdapter(
-                          child: Wrap(
+                          child: Flex(
+                            direction: Axis.vertical,
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 60),
@@ -256,23 +263,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                               ),
 
 
-//                              _con.foods.isEmpty
-//                                  ? SizedBox(height: 0)
-//                                  : Padding(
-//                                      padding: const EdgeInsets.symmetric(horizontal: 20),
-//                                      child: ListTile(
-//                                        dense: true,
-//                                        contentPadding: EdgeInsets.symmetric(vertical: 0),
-//                                        leading: Icon(
-//                                          Icons.restaurant,
-//                                          color: Theme.of(context).hintColor,
-//                                        ),
-//                                        title: Text(
-//                                          S.of(context).store,
-//                                          style: Theme.of(context).textTheme.headline4,
-//                                        ),
-//                                      ),
-//                                    ),
                               Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 20),
                                 child: ListTile(
@@ -289,13 +279,38 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 ),
                               ),
 
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(12, 1, 12, 1),
+                                child: TextField(
+                                  onSubmitted: (text) async {
+                                    await _con.refreshSearch(text);
+                                  },
+                                  controller: _searchBarController,
+                                  decoration: InputDecoration(
+                                    hintText: S.of(context).search_for_items_in_this_store,
+                                    hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
+                                    contentPadding: EdgeInsets.only(right: 12),
+                                    prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
+                                    suffixIcon: IconButton(
+                                      onPressed: () async {
+                                        await _con.refreshSearch("").whenComplete(() => _searchBarController.clear());;
+                                      },
+                                      color: Theme.of(context).focusColor,
+                                      icon: Icon(Icons.clear),
+                                    ),
+                                    border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.3))),
+                                    focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.7))),
+                                    enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.3))),
+
+                                  ),
+                                ),
+                              ),
 
                               _con.foods.isEmpty
-                                  ? CircularLoadingWidget(height: 500)
-                                  : ListView.separated(
-//                                      padding: EdgeInsets.symmetric(vertical: 10),
-                                      padding:
-                                          EdgeInsets.only(top: 10, bottom: 90),
+                                  ? CircularLoadingWidget(height: 288)
+                                  : Flexible(
+                                child:
+                                    ListView.separated(
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
                                       primary: false,
@@ -305,11 +320,36 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                       },
                                       itemBuilder: (context, index) {
                                         return FoodItemWidget(
-                                          heroTag: 'details_featured_food',
+                                          heroTag: 'store_search_list',
                                           food: _con.foods.elementAt(index),
-                                        );
-                                      },
+                                          );
+                                        },
+                                      ),
                                     ),
+                            ],
+                          ),
+                        ),
+
+//                              _con.foods.isEmpty
+//                                  ? CircularLoadingWidget(height: 500)
+//                                  : ListView.separated(
+////                                      padding: EdgeInsets.symmetric(vertical: 10),
+//                                      padding:
+//                                          EdgeInsets.only(top: 10, bottom: 90),
+//                                      scrollDirection: Axis.vertical,
+//                                      shrinkWrap: true,
+//                                      primary: false,
+//                                      itemCount: _con.foods.length,
+//                                      separatorBuilder: (context, index) {
+//                                        return SizedBox(height: 10);
+//                                      },
+//                                      itemBuilder: (context, index) {
+//                                        return FoodItemWidget(
+//                                          heroTag: 'details_featured_food',
+//                                          food: _con.foods.elementAt(index),
+//                                        );
+//                                      },
+//                                    ),
 
 //                              SizedBox(height: 100),
 //                              _con.reviews.isEmpty
@@ -335,9 +375,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 //                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
 //                                      child: ReviewsListWidget(reviewsList: _con.reviews),
 //                                    ),
-                            ],
-                          ),
-                        ),
                       ],
                     ),
                     Positioned(

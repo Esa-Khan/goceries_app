@@ -1,5 +1,6 @@
 {
   "search_for_stores_or_items": "Search for items or nearby stores",
+  "search_for_items_in_this_store": "Search for items in this stores",
   "closest_stores": "Closest Stores",
   "ordered_by_nearby_first": "Ordered by Nearby first",
   "trending_this_week": "Trending This Week",
@@ -189,9 +190,8 @@
   "show_only_open_stores": "Show only open Stores",
   "fields": "Fields",
   "this_food_was_added_to_cart": "Item was added to cart",
-  "foods_result": "Item Results",
   "item_results": "Item Results",
-  "restaurants_results": "Restaurants Results",
+  "store_results": "Store Results",
   "all": "All",
   "this_restaurant_is_closed_": "This restaurant is closed !",
   "unknown": "Unknown",

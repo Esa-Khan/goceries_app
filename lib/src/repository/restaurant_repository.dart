@@ -97,7 +97,7 @@ Future<Stream<Restaurant>> searchRestaurants(String search, Address address) asy
 Future<Stream<Restaurant>> getRestaurant(String id, Address address) async {
   Uri uri = Helper.getUri('api/restaurants/$id');
   Map<String, dynamic> _queryParams = {};
-  if (!address.isUnknown()) {
+  if (!address.isUnknown() && address != null) {
     _queryParams['myLon'] = address.longitude.toString();
     _queryParams['myLat'] = address.latitude.toString();
     _queryParams['areaLon'] = address.longitude.toString();
@@ -114,6 +114,31 @@ Future<Stream<Restaurant>> getRestaurant(String id, Address address) async {
     return new Stream.value(new Restaurant.fromJSON({}));
   }
 }
+
+
+
+
+Future<Restaurant> getStoreByID(int id) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}restaurants/$id';
+  final client = new http.Client();
+  try {
+    final response = await client.get(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    if (response.statusCode == 200) {
+      return Restaurant.fromJSON(json.decode(response.body)['data']);
+    } else {
+      print(CustomTrace(StackTrace.current, message: response.body).toString());
+      return Restaurant.fromJSON({});
+    }
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url).toString());
+    return Restaurant.fromJSON({});
+  }
+}
+
+
 
 Future<Stream<Review>> getRestaurantReviews(String id) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}restaurant_reviews?with=user&search=restaurant_id:$id';

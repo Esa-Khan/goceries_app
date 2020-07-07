@@ -43,6 +43,16 @@ class S {
     );
   }
 
+  /// `Search for items in this stores`
+  String get search_for_items_in_this_store {
+    return Intl.message(
+      'Search for items in this stores',
+      name: 'search_for_items_in_this_store',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Closest Stores`
   String get closest_stores {
     return Intl.message(
@@ -1914,16 +1924,6 @@ class S {
   }
 
   /// `Item Results`
-  String get foods_result {
-    return Intl.message(
-      'Item Results',
-      name: 'foods_result',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Item Results`
   String get item_results {
     return Intl.message(
       'Item Results',
@@ -1933,11 +1933,11 @@ class S {
     );
   }
 
-  /// `Restaurants Results`
-  String get restaurants_results {
+  /// `Store Results`
+  String get store_results {
     return Intl.message(
-      'Restaurants Results',
-      name: 'restaurants_results',
+      'Store Results',
+      name: 'store_results',
       desc: '',
       args: [],
     );

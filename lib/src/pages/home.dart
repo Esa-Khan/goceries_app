@@ -140,6 +140,25 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
               CategoriesCarouselWidget(
                 categories: _con.categories,
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ListTile(
+                  dense: true,
+                  contentPadding: EdgeInsets.symmetric(vertical: 20),
+                  leading: Icon(
+                    Icons.recent_actors,
+                    color: Theme.of(context).hintColor,
+                  ),
+                  title: Text(
+                    S.of(context).recent_reviews,
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ReviewsListWidget(reviewsList: _con.recentReviews),
+              ),
             ],
           ),
         ),

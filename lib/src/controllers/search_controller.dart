@@ -1,3 +1,4 @@
+import 'package:food_delivery_app/src/controllers/restaurant_controller.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../models/address.dart';
@@ -11,10 +12,14 @@ import '../repository/settings_repository.dart';
 class SearchController extends ControllerMVC {
   List<Restaurant> restaurants = <Restaurant>[];
   List<Food> foods = <Food>[];
+  String storeID;
 
-  SearchController() {
-    listenForRestaurants();
+  SearchController({String storeID}) {
+    this.storeID = storeID;
+    if (storeID == null)
+      listenForRestaurants();
     listenForFoods();
+
   }
 
   void listenForRestaurants({String search}) async {
@@ -30,18 +35,21 @@ class SearchController extends ControllerMVC {
     }, onDone: () {});
   }
 
-  void listenForFoods({String search}) async {
-    if (search == null) {
-      search = await getRecentSearch();
-    }
+  Future<void> listenForFoods({String search}) async {
+//    if (search == null && storeID == null) {
+//      search = await getRecentSearch();
+//    }
     Address _address = deliveryAddress.value;
-    final Stream<Food> stream = await searchFoods(search, _address);
+    final Stream<Food> stream = await searchFoods(search, _address, storeID: storeID);
     stream.listen((Food _food) {
       setState(() => foods.add(_food));
     }, onError: (a) {
       print(a);
-    }, onDone: () {});
+    }, onDone: () {
+
+    });
   }
+
 
   Future<void> refreshSearch(search) async {
     setState(() {

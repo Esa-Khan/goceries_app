@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/models/address.dart';
 import 'package:food_delivery_app/src/models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -96,6 +97,25 @@ class RestaurantController extends ControllerMVC {
     }, onError: (a) {
       print(a);
     }, onDone: () {});
+  }
+
+  void listenForSearchedFoods({String idRestaurant, String search}) async {
+    Address _address = deliveryAddress.value;
+    final Stream<Food> stream = await searchFoods(search, _address, storeID: idRestaurant);
+    stream.listen((Food _food) {
+      setState(() => foods.add(_food));
+    }, onError: (a) {
+      print(a);
+    }, onDone: () {
+
+    });
+  }
+
+  Future<void> refreshSearch(search) async {
+    setState(() {
+      foods = <Food>[];
+    });
+    listenForSearchedFoods(search: search, idRestaurant: restaurant.id);
   }
 
 //  void listenForTrendingFoods(String idRestaurant) async {
