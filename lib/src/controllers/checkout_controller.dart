@@ -11,6 +11,7 @@ import '../repository/order_repository.dart' as orderRepo;
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 import 'cart_controller.dart';
+import '../helpers/helper.dart';
 
 class CheckoutController extends CartController {
   Payment payment;

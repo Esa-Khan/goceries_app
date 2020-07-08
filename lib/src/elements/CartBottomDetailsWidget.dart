@@ -57,8 +57,8 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
     return widget.con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-            height: widget.con.runtimeType == DeliveryPickupController ? 250 : 150,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            height: widget.con.runtimeType == DeliveryPickupController ? 260 : 170,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.only(
@@ -280,7 +280,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                           style: Theme.of(context).textTheme.subtitle1)
                     ],
                   ),
-//                  SizedBox(height: 5),
+                  SizedBox(height: 5),
                   Row(
                     children: <Widget>[
                       Expanded(
@@ -290,7 +290,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                         ),
                       ),
                       if (Helper.canDelivery(widget.con.carts[0].food.restaurant,
-                          carts: widget.con.carts))
+                          carts: widget.con.carts) && widget.con.subTotal < widget.con.deliveryFeeLimit)
                         Helper.getPrice(
                             widget.con.carts[0].food.restaurant.deliveryFee, context,
                             style: Theme.of(context).textTheme.subtitle1)
@@ -310,7 +310,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
 //                      Helper.getPrice(widget.con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
 //                    ],
 //                  ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Stack(
                     fit: StackFit.loose,
                     alignment: AlignmentDirectional.centerEnd,

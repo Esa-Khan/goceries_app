@@ -51,7 +51,7 @@ class Food {
       featured = jsonMap['featured'] ?? false;
       deliverable = jsonMap['deliverable'] ?? false;
       restaurant = jsonMap['restaurant'] != null ? Restaurant.fromJSON(jsonMap['restaurant']) : Restaurant.fromJSON({});
-      price = price*(restaurant.defaultTax/100) + price;
+      price = price*restaurant.defaultTax + price;
       try {
         category = jsonMap['category_id'] != null ? Category.fromJSON(jsonMap['category_id']) : Category.fromJSON({});
       } catch (e) {

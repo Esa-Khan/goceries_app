@@ -24,6 +24,7 @@ class Setting {
   ValueNotifier<Locale> mobileLanguage = new ValueNotifier(Locale('en', ''));
   String appVersion;
   bool enableVersion = true;
+  double deliveryFeeLimit;
 
   ValueNotifier<Brightness> brightness = new ValueNotifier(Brightness.light);
 
@@ -52,6 +53,11 @@ class Setting {
       payPalEnabled = jsonMap['enable_paypal'] == null || jsonMap['enable_paypal'] == '0' ? false : true;
       stripeEnabled = jsonMap['enable_stripe'] == null || jsonMap['enable_stripe'] == '0' ? false : true;
       razorPayEnabled = jsonMap['enable_razorpay'] == null || jsonMap['enable_razorpay'] == '0' ? false : true;
+      try {
+        deliveryFeeLimit = double.parse(jsonMap['delivery_fee_limit']);
+      } catch (e) {
+        deliveryFeeLimit = double.maxFinite;
+      }
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }

@@ -1863,6 +1863,16 @@ class S {
     );
   }
 
+  /// `You are eligible for free delivery!`
+  String get eligible_for_free_delivery {
+    return Intl.message(
+      'You are eligible for free delivery!',
+      name: 'eligible_for_free_delivery',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Filter`
   String get filter {
     return Intl.message(

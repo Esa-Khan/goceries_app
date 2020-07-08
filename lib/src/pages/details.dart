@@ -170,25 +170,38 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 child: Helper.applyHtml(context, _con.restaurant.description),
                               ),
                               ImageThumbCarouselWidget(galleriesList: _con.galleries),
-//                              Padding(
-//                                padding: const EdgeInsets.symmetric(horizontal: 20),
-//                                child: ListTile(
-//                                  dense: true,
-//                                  contentPadding: EdgeInsets.symmetric(vertical: 0),
-//                                  leading: Icon(
-//                                    Icons.stars,
-//                                    color: Theme.of(context).hintColor,
-//                                  ),
-//                                  title: Text(
-//                                    S.of(context).information,
-//                                    style: Theme.of(context).textTheme.headline4,
-//                                  ),
-//                                ),
-//                              ),
-//                              Padding(
-//                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-//                                child: Helper.applyHtml(context, _con.restaurant.information),
-//                              ),
+                              _con.restaurant.information == "<p>.</p>"
+                              ? SizedBox(height: 0)
+                                  : {
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  child: ListTile(
+                                    dense: true,
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 0),
+                                    leading: Icon(
+                                      Icons.stars,
+                                      color: Theme.of(context).hintColor,
+                                    ),
+                                    title: Text(
+                                      S
+                                          .of(context)
+                                          .information,
+                                      style: Theme
+                                          .of(context)
+                                          .textTheme
+                                          .headline4,
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20, vertical: 12),
+                                  child: Helper.applyHtml(context, _con
+                                      .restaurant.information),
+                                ),
+                              },
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                 margin: const EdgeInsets.symmetric(vertical: 5),

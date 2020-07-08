@@ -157,7 +157,10 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
-                              Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                              _con.subTotal < setting.value.deliveryFeeLimit
+                                  ? Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                                  : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
+
                             ],
                           ),
 //                          Row(

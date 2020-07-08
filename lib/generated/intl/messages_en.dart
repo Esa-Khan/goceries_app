@@ -93,6 +93,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "dont_have_any_notifications" : MessageLookupByLibrary.simpleMessage("Don\'t have any notifications"),
     "double_click_on_the_food_to_add_it_to_the" : MessageLookupByLibrary.simpleMessage("Double click on the food to add it to the cart"),
     "edit" : MessageLookupByLibrary.simpleMessage("Edit"),
+    "eligible_for_free_delivery" : MessageLookupByLibrary.simpleMessage("You are eligible for free delivery!"),
     "email" : MessageLookupByLibrary.simpleMessage("Email"),
     "email_address" : MessageLookupByLibrary.simpleMessage("Email Address"),
     "email_to_reset_password" : MessageLookupByLibrary.simpleMessage("Email to reset password"),

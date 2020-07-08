@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_html/style.dart';
+import 'package:food_delivery_app/src/controllers/cart_controller.dart';
+import 'package:food_delivery_app/src/repository/user_repository.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
@@ -21,12 +23,15 @@ import '../models/restaurant.dart';
 import '../repository/settings_repository.dart';
 import 'app_config.dart' as config;
 import 'custom_trace.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
+
 
 class Helper {
   BuildContext context;
 
   Helper.of(BuildContext _context) {
     this.context = _context;
+
   }
 
   // for mapping data retrieved form json array
@@ -182,8 +187,10 @@ class Helper {
     order.foodOrders.forEach((foodOrder) {
       total += getTotalOrderPrice(foodOrder);
     });
-    total += order.deliveryFee;
-    total += order.tax * total / 100;
+    if (total < settingsRepo.setting.value.deliveryFeeLimit){
+      total += order.deliveryFee;
+    }
+//    total += order.tax * total / 100;
     return total;
   }
 

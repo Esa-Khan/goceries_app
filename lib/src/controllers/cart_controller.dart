@@ -15,6 +15,8 @@ class CartController extends ControllerMVC {
   int cartCount = 0;
   double subTotal = 0.0;
   double total = 0.0;
+  double deliveryFeeLimit = 1000.0;
+  bool notifyFreeDelivery = false;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   CartController() {
@@ -94,7 +96,19 @@ class CartController extends ControllerMVC {
       deliveryFee = carts[0].food.restaurant.deliveryFee;
     }
     taxAmount = (subTotal + deliveryFee) * carts[0].food.restaurant.defaultTax / 100;
-    total = subTotal + taxAmount + deliveryFee;
+    if (subTotal < deliveryFeeLimit) {
+      total = subTotal + deliveryFee;
+      notifyFreeDelivery = true;
+    } else {
+      if (notifyFreeDelivery){
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).eligible_for_free_delivery),
+          duration: Duration(seconds: 2),
+        ));
+      }
+      notifyFreeDelivery = false;
+      total = subTotal;
+    }
     setState(() {});
   }
 
@@ -115,7 +129,6 @@ class CartController extends ControllerMVC {
   }
 
   void goCheckout(BuildContext context) {
-
     if (!currentUser.value.profileCompleted()) {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).completeYourProfileDetailsToContinue),
@@ -137,4 +150,5 @@ class CartController extends ControllerMVC {
       }
     }
   }
+
 }

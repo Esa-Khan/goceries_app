@@ -6,6 +6,7 @@ import '../helpers/helper.dart';
 import '../models/order.dart';
 import '../models/route_argument.dart';
 import 'FoodOrderItemWidget.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 
 class OrderItemWidget extends StatefulWidget {
   final bool expanded;
@@ -85,20 +86,22 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                     style: Theme.of(context).textTheme.bodyText1,
                                   ),
                                 ),
-                                Helper.getPrice(widget.order.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                                Helper.getTotalOrdersPrice(widget.order) < settingsRepo.setting.value.deliveryFeeLimit
+                                ? Helper.getPrice(widget.order.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                                    : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
                               ],
                             ),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Text(
-                                    '${S.of(context).tax} (${widget.order.tax}%)',
-                                    style: Theme.of(context).textTheme.bodyText1,
-                                  ),
-                                ),
-                                Helper.getPrice(Helper.getTaxOrder(widget.order), context, style: Theme.of(context).textTheme.subtitle1)
-                              ],
-                            ),
+//                            Row(
+//                              children: <Widget>[
+//                                Expanded(
+//                                  child: Text(
+//                                    '${S.of(context).tax} (${widget.order.tax}%)',
+//                                    style: Theme.of(context).textTheme.bodyText1,
+//                                  ),
+//                                ),
+//                                Helper.getPrice(Helper.getTaxOrder(widget.order), context, style: Theme.of(context).textTheme.subtitle1)
+//                              ],
+//                            ),
                             Row(
                               children: <Widget>[
                                 Expanded(
