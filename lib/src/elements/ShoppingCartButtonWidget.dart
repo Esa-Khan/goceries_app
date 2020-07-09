@@ -37,7 +37,11 @@ class _ShoppingCartButtonWidgetState extends StateMVC<ShoppingCartButtonWidget> 
     return FlatButton(
       onPressed: () {
         if (currentUser.value.apiToken != null) {
-          Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument(param: '/Pages', id: '2'));
+          Navigator.of(context).pushNamed('/Cart',
+              arguments: RouteArgument(
+                  param: '/Pages',
+                  id: '2'
+              ));
         } else {
           Navigator.of(context).pushNamed('/Login');
         }

@@ -248,6 +248,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "tracking_refreshed_successfuly" : MessageLookupByLibrary.simpleMessage("Tracking refreshed successfully"),
     "trending_this_week" : MessageLookupByLibrary.simpleMessage("Trending This Week"),
     "unknown" : MessageLookupByLibrary.simpleMessage("Unknown"),
+    "valid_email" : MessageLookupByLibrary.simpleMessage("Valid Email"),
     "verify" : MessageLookupByLibrary.simpleMessage("Verify"),
     "verify_your_internet_connection" : MessageLookupByLibrary.simpleMessage("Verify your internet connection"),
     "verify_your_quantity_and_click_checkout" : MessageLookupByLibrary.simpleMessage("Verify your quantity and click checkout"),

@@ -38,12 +38,12 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             top: 0,
             child: Container(
               width: config.App(context).appWidth(100),
-              height: config.App(context).appHeight(37),
+              height: config.App(context).appHeight(30),
               decoration: BoxDecoration(color: Theme.of(context).accentColor),
             ),
           ),
           Positioned(
-            top: config.App(context).appHeight(37) - 120,
+            top: config.App(context).appHeight(37) - 140,
             child: Container(
               width: config.App(context).appWidth(84),
               height: config.App(context).appHeight(37),
@@ -54,7 +54,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             ),
           ),
           Positioned(
-            top: config.App(context).appHeight(37) - 50,
+            top: config.App(context).appHeight(37) - 80,
             child: Container(
               decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.all(Radius.circular(10)), boxShadow: [
                 BoxShadow(

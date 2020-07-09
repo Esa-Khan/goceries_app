@@ -59,6 +59,7 @@
   "profile_settings": "Profile Settings",
   "full_name": "Full name",
   "email": "Email",
+  "valid_email": "Valid Email",
   "phone": "Phone",
   "phone_number": "Phone Number",
   "address": "Address",

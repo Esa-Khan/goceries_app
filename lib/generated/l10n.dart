@@ -623,6 +623,16 @@ class S {
     );
   }
 
+  /// `Valid Email`
+  String get valid_email {
+    return Intl.message(
+      'Valid Email',
+      name: 'valid_email',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Phone`
   String get phone {
     return Intl.message(

@@ -100,7 +100,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                         onSaved: (input) => _con.user.email = input,
                         validator: (input) => !input.contains('@') ? S.of(context).should_be_a_valid_email : null,
                         decoration: InputDecoration(
-                          labelText: S.of(context).email,
+                          labelText: S.of(context).valid_email,
                           labelStyle: TextStyle(color: Theme.of(context).accentColor),
                           contentPadding: EdgeInsets.all(12),
                           hintText: 'johndoe@gmail.com',

@@ -33,7 +33,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async => true,
       child: Scaffold(
         key: _con.scaffoldKey,
         bottomNavigationBar: CartBottomDetailsWidget(con: _con),

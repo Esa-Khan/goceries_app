@@ -55,24 +55,24 @@ class _ProfileWidgetState extends StateMVC<ProfileWidget> {
               child: Column(
                 children: <Widget>[
                   ProfileAvatarWidget(user: currentUser.value),
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    leading: Icon(
-                      Icons.person,
-                      color: Theme.of(context).hintColor,
-                    ),
-                    title: Text(
-                      S.of(context).about,
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      currentUser.value?.bio ?? "",
-                      style: Theme.of(context).textTheme.bodyText2,
-                    ),
-                  ),
+//                  ListTile(
+//                    contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//                    leading: Icon(
+//                      Icons.person,
+//                      color: Theme.of(context).hintColor,
+//                    ),
+//                    title: Text(
+//                      S.of(context).about,
+//                      style: Theme.of(context).textTheme.headline4,
+//                    ),
+//                  ),
+//                  Padding(
+//                    padding: const EdgeInsets.symmetric(horizontal: 20),
+//                    child: Text(
+//                      currentUser.value?.bio ?? "",
+//                      style: Theme.of(context).textTheme.bodyText2,
+//                    ),
+//                  ),
                   ListTile(
                     contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     leading: Icon(
