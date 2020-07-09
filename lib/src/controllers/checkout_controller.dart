@@ -43,8 +43,7 @@ class CheckoutController extends CartController {
   void addOrder(List<Cart> carts, String hint) async {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
-    _order.tax = carts[0].food.restaurant.defaultTax;
-    _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].food.restaurant.deliveryFee;
+    _order.tax = 0;//carts[0].food.restaurant.defaultTax;
     _order.hint = hint;
     OrderStatus _orderStatus = new OrderStatus();
     _orderStatus.id = '1';
@@ -58,6 +57,11 @@ class CheckoutController extends CartController {
       _foodOrder.extras = _cart.extras;
       _order.foodOrders.add(_foodOrder);
     });
+    if (Helper.getTotalOrdersPrice(_order) < settingRepo.setting.value.deliveryFeeLimit){
+      _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].food.restaurant.deliveryFee;
+    } else {
+      _order.deliveryFee = 0;
+    };
     orderRepo.addOrder(_order, this.payment).then((value) {
       if (value is Order) {
         setState(() {

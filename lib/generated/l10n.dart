@@ -2303,10 +2303,10 @@ class S {
     );
   }
 
-  /// `Want to cancel order?`
+  /// `Want to cancel this order? You cannot cancel once the order has been accepted.`
   String get areYouSureYouWantToCancelThisOrder {
     return Intl.message(
-      'Want to cancel order?',
+      'Want to cancel this order? You cannot cancel once the order has been accepted.',
       name: 'areYouSureYouWantToCancelThisOrder',
       desc: '',
       args: [],

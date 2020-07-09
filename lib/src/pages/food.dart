@@ -239,9 +239,11 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 //                                  ),
 //                                ),
 //                                Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
-                                ListTile(
+                              _con.food.nutritions.isEmpty
+                                ? SizedBox(height: 0)
+                                : ListTile(
                                   dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 4),
                                   leading: Icon(
                                     Icons.local_activity,
                                     color: Theme.of(context).hintColor,

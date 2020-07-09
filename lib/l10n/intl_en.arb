@@ -227,7 +227,7 @@
   "faqsRefreshedSuccessfuly": "FAQs refreshed",
   "clickOnTheFoodToGetMoreDetailsAboutIt": "Click on an item to get more details",
   "youDontHaveAnyOrder": "Don't have any orders",
-  "areYouSureYouWantToCancelThisOrder": "Want to cancel order?",
+  "areYouSureYouWantToCancelThisOrder": "Want to cancel this order? You cannot cancel once the order has been accepted.",
   "yes": "Yes",
   "deliveryMethodNotAllowed": "No address given or delivery method not allowed",
   "razorpayPayment": "RazorPay Payment",

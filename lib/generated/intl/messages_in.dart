@@ -108,7 +108,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "not_a_valid_phone" : MessageLookupByLibrary.simpleMessage("Not a valid phone"),
     "notifications" : MessageLookupByLibrary.simpleMessage("Notifications"),
     "notifications_refreshed_successfuly" : MessageLookupByLibrary.simpleMessage("Notifications refreshed successfuly"),
-    "nutrition" : MessageLookupByLibrary.simpleMessage("Nutrition"),
+    "nutrition" : MessageLookupByLibrary.simpleMessage("Nutrition mg/ml"),
     "or_checkout_with" : MessageLookupByLibrary.simpleMessage("Or Checkout With"),
     "order_id" : MessageLookupByLibrary.simpleMessage("Order Id"),
     "order_refreshed_successfuly" : MessageLookupByLibrary.simpleMessage("Order refreshed successfuly"),

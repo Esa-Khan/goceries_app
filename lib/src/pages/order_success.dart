@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/repository/settings_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -165,7 +166,10 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                           style: Theme.of(context).textTheme.bodyText1,
                                         ),
                                       ),
-                                      Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                                      _con.subTotal < setting.value.deliveryFeeLimit
+                                          ? Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                                          : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
+
                                     ],
                                   ),
                             SizedBox(height: 3),

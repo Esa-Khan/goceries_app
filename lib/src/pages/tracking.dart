@@ -209,17 +209,17 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                                                     Helper.getPrice(_con.order.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
                                                   ],
                                                 ),
-                                                Row(
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      child: Text(
-                                                        '${S.of(context).tax} (${_con.order.tax}%)',
-                                                        style: Theme.of(context).textTheme.bodyText1,
-                                                      ),
-                                                    ),
-                                                    Helper.getPrice(Helper.getTaxOrder(_con.order), context, style: Theme.of(context).textTheme.subtitle1)
-                                                  ],
-                                                ),
+//                                                Row(
+//                                                  children: <Widget>[
+//                                                    Expanded(
+//                                                      child: Text(
+//                                                        '${S.of(context).tax} (${_con.order.tax}%)',
+//                                                        style: Theme.of(context).textTheme.bodyText1,
+//                                                      ),
+//                                                    ),
+//                                                    Helper.getPrice(Helper.getTaxOrder(_con.order), context, style: Theme.of(context).textTheme.subtitle1)
+//                                                  ],
+//                                                ),
                                                 Row(
                                                   children: <Widget>[
                                                     Expanded(
@@ -266,20 +266,20 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                                                     actions: <Widget>[
                                                       FlatButton(
                                                         child: new Text(
-                                                          S.of(context).yes,
+                                                          S.of(context).close,
                                                           style: TextStyle(color: Theme.of(context).hintColor),
                                                         ),
                                                         onPressed: () {
-                                                          _con.doCancelOrder();
                                                           Navigator.of(context).pop();
                                                         },
                                                       ),
                                                       FlatButton(
                                                         child: new Text(
-                                                          S.of(context).close,
+                                                          S.of(context).yes,
                                                           style: TextStyle(color: Colors.orange),
                                                         ),
                                                         onPressed: () {
+                                                          _con.doCancelOrder();
                                                           Navigator.of(context).pop();
                                                         },
                                                       ),

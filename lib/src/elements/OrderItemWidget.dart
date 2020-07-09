@@ -157,20 +157,20 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                 actions: <Widget>[
                                   FlatButton(
                                     child: new Text(
-                                      S.of(context).yes,
+                                      S.of(context).close,
                                       style: TextStyle(color: Theme.of(context).hintColor),
                                     ),
                                     onPressed: () {
-                                      widget.onCanceled(widget.order);
                                       Navigator.of(context).pop();
                                     },
                                   ),
                                   FlatButton(
                                     child: new Text(
-                                      S.of(context).close,
+                                      S.of(context).yes,
                                       style: TextStyle(color: Colors.orange),
                                     ),
                                     onPressed: () {
+                                      widget.onCanceled(widget.order);
                                       Navigator.of(context).pop();
                                     },
                                   ),

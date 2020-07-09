@@ -39,7 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "app_settings" : MessageLookupByLibrary.simpleMessage("App Settings"),
     "application_preferences" : MessageLookupByLibrary.simpleMessage("Application Preferences"),
     "apply_filters" : MessageLookupByLibrary.simpleMessage("Apply Filters"),
-    "areYouSureYouWantToCancelThisOrder" : MessageLookupByLibrary.simpleMessage("Want to cancel order?"),
+    "areYouSureYouWantToCancelThisOrder" : MessageLookupByLibrary.simpleMessage("Want to cancel this order? You cannot cancel once the order has been accepted."),
     "cancel" : MessageLookupByLibrary.simpleMessage("Cancel"),
     "cancelOrder" : MessageLookupByLibrary.simpleMessage("Cancel Order"),
     "canceled" : MessageLookupByLibrary.simpleMessage("Cancelled"),
