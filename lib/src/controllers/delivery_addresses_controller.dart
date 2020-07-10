@@ -16,6 +16,8 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
 
   DeliveryAddressesController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
+    if (settingRepo.deliveryAddress.value != null && settingRepo.deliveryAddress.value.id != "null")
+      addresses.add(settingRepo.deliveryAddress.value);
     listenForAddresses();
     listenForCart();
   }

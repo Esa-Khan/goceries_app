@@ -30,6 +30,17 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
     }
   }
 
+
+  IconData getIcon() {
+    if (paymentMethod == null || (paymentMethod.selected && paymentMethod.addressID == address.id)){
+      return Icons.check;
+    } else if (address == null){
+      return Icons.error;
+    } else {
+      return Icons.local_shipping;
+    }
+  }
+
   InkWell buildItem(BuildContext context) {
     return InkWell(
       splashColor: Theme.of(context).accentColor,
@@ -39,7 +50,8 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
         this.onPressed(address);
       },
       onLongPress: () {
-        this.onLongPress(address);
+        if (address != null)
+          this.onLongPress(address);
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -61,10 +73,11 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(8)),
 //                      color: (address?.isDefault ?? false) || paymentMethod.selected ? Theme.of(context).accentColor : Theme.of(context).focusColor),
-                      color: (address?.isDefault ?? false) ? Theme.of(context).accentColor : Theme.of(context).focusColor),
+                      color: (address?.isDefault ?? false) ? Theme.of(context).accentColor
+                          : address != null ? Theme.of(context).focusColor : Colors.redAccent),
                   child: Icon(
 //                    paymentMethod == null || (paymentMethod.selected && paymentMethod.addressID == address.id) ? Icons.check : Icons.local_shipping,
-                    paymentMethod == null || (paymentMethod.selected && paymentMethod.addressID == address.id) ? Icons.check : Icons.local_shipping,
+                    getIcon(),
                     color: Theme.of(context).primaryColor,
                     size: 38,
                   ),
@@ -89,7 +102,7 @@ class DeliveryAddressesItemWidget extends StatelessWidget {
                               )
                             : SizedBox(height: 0),
                         Text(
-                          address?.address ?? S.of(context).unknown,
+                          address?.address ?? S.of(context).choose_an_address,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: address?.description != null ? Theme.of(context).textTheme.caption : Theme.of(context).textTheme.subtitle1,

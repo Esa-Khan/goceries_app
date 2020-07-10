@@ -188,7 +188,7 @@ class _DeliveryAddressBottomSheetWidgetState extends StateMVC<DeliveryAddressBot
                           Navigator.of(widget.scaffoldKey.currentContext).pop();
                         });
                       },
-                      child: _con.addresses == null || _con.addresses.first.address == null
+                      child: _con.addresses == null || _con.addresses.first.address == null || _con.addresses.first.id == 'null'
                           ? SizedBox(height: 0)
                           : Row(
                         mainAxisAlignment: MainAxisAlignment.start,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
 import 'package:food_delivery_app/src/elements/ConfirmationDialogBox.dart';
+import 'package:food_delivery_app/src/elements/DeliveryAddressBottomSheetWidget.dart';
+import 'package:food_delivery_app/src/repository/settings_repository.dart';
 import 'package:food_delivery_app/src/repository/user_repository.dart';
+import 'package:google_map_location_picker/google_map_location_picker.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
@@ -22,8 +25,9 @@ import '../helpers/app_config.dart' as config;
 
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument routeArgument;
+  final GlobalKey<ScaffoldState> parentScaffoldKey;
 
-  DeliveryPickupWidget({Key key, this.routeArgument}) : super(key: key);
+  DeliveryPickupWidget({Key key, this.routeArgument, this.parentScaffoldKey}) : super(key: key);
 
 
   @override
@@ -63,9 +67,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S
-              .of(context)
-              .delivery_or_pickup,
+          S.of(context).delivery,
           style: Theme
               .of(context)
               .textTheme
@@ -172,8 +174,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   ),
                 ),
                 _con.carts.isNotEmpty &&
-                    Helper.canDelivery(_con.carts[0].food.restaurant,
-                        carts: _con.carts)
+                    Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
 //                ? ListView.separated(
 //                    padding: EdgeInsets.symmetric(vertical: 15),
 //                    scrollDirection: Axis.vertical,
@@ -247,6 +248,179 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                     );
                   },
                 )
+          : CircularLoadingWidget(height: 150),
+
+                SizedBox(height: 30),
+
+                InkWell(
+                  splashColor: Theme.of(context).accentColor,
+                  focusColor: Theme.of(context).accentColor,
+                  highlightColor: Theme.of(context).primaryColor,
+                  onTap: () async {
+                    LocationResult result = await showLocationPicker(
+                      context,
+                      setting.value.googleMapsKey,
+                      initialCenter: LatLng(deliveryAddress.value?.latitude ?? 0, deliveryAddress.value?.longitude ?? 0),
+                      //automaticallyAnimateToCurrentLocation: true,
+                      //mapStylePath: 'assets/mapStyle.json',
+                      myLocationButtonEnabled: true,
+                      //resultCardAlignment: Alignment.bottomCenter,
+                    );
+                    _con.addAddress(new Address.fromJSON({
+                      'address': result.address,
+                      'latitude': result.latLng.latitude,
+                      'longitude': result.latLng.longitude,
+                    }));
+                    print("result = $result");
+                    // Navigator.of(widget.scaffoldKey.currentContext).pop();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withOpacity(0.9),
+                      boxShadow: [
+                        BoxShadow(
+                            color:
+                                Theme.of(context).focusColor.withOpacity(0.1),
+                            blurRadius: 5,
+                            offset: Offset(0, 2)),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Stack(
+                          alignment: AlignmentDirectional.center,
+                          children: <Widget>[
+                            Container(
+                              height: 20,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                                  color: Theme.of(context).primaryColor),
+                              child: Icon(
+                                Icons.add_circle_outline,
+                                color: Theme.of(context).accentColor,
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 15),
+                        Flexible(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      S.of(context).add_new_delivery_address,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: Theme.of(context).textTheme.subtitle1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                color: Theme.of(context).focusColor,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 5),
+
+                InkWell(
+                  splashColor: Theme.of(context).accentColor,
+                  focusColor: Theme.of(context).accentColor,
+                  highlightColor: Theme.of(context).primaryColor,
+                  onTap: () {
+                    _con.changeDeliveryAddressToCurrentLocation().then((value) {
+                      setState(() { });
+//                      Navigator.of(widget.scaffoldKey.currentContext).pop();
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withOpacity(0.9),
+                      boxShadow: [
+                        BoxShadow(
+                            color:
+                            Theme.of(context).focusColor.withOpacity(0.1),
+                            blurRadius: 5,
+                            offset: Offset(0, 2)),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+
+                      children: <Widget>[
+                        Stack(
+                          alignment: AlignmentDirectional.center,
+                          children: <Widget>[
+                            Container(
+                              height: 20,
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(8)),
+                                  color: Theme.of(context).primaryColor),
+                              child: Icon(
+                                Icons.my_location,
+                                color: Theme.of(context).accentColor,
+                                size: 30,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(width: 15),
+                        Flexible(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      S.of(context).current_location,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: Theme.of(context).textTheme.subtitle1,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 8),
+                              Icon(
+                                Icons.keyboard_arrow_right,
+                                color: Theme.of(context).focusColor,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 180),
+
+
+
+
+
 //                DeliveryAddressesItemWidget(
 //                        paymentMethod: _con.getDeliveryMethod(),
 //                        address: _con.deliveryAddress.first,
@@ -276,7 +450,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 //                        },
 //                      )
 //                    : NotDeliverableAddressesItemWidget()
-                    : CircularLoadingWidget(height: 150),
               ],
             )
           ],

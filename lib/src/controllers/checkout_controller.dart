@@ -49,6 +49,7 @@ class CheckoutController extends CartController {
     _orderStatus.id = '1';
     _order.orderStatus = _orderStatus;
     _order.deliveryAddress = settingRepo.deliveryAddress.value;
+    _order.deliveryFee = carts[0].food.restaurant.deliveryFee;
     carts.forEach((_cart) {
       FoodOrder _foodOrder = new FoodOrder();
       _foodOrder.quantity = _cart.quantity;

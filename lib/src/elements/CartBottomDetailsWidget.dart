@@ -52,8 +52,6 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
 
   @override
   Widget build(BuildContext context) {
-
-
     return widget.con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
@@ -66,8 +64,8 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                     topLeft: Radius.circular(40)),
                 boxShadow: [
                   BoxShadow(
-                      color: Theme.of(context).focusColor.withOpacity(0.15),
-                      offset: Offset(0, -2),
+                      color: Theme.of(context).focusColor.withOpacity(0.55),
+                      offset: Offset(0, -4),
                       blurRadius: 5.0)
                 ]),
             child: SizedBox(

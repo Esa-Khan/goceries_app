@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/helpers/helper.dart';
 import 'package:food_delivery_app/src/models/route_argument.dart';
+import 'package:food_delivery_app/src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../models/address.dart' as model;
@@ -153,9 +155,52 @@ class DeliveryPickupController extends CartController {
       Navigator.of(context).pushNamed(getSelectedMethod().route, arguments: RouteArgument(id: 'hint', param: time));
     } catch (e) {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).please_select_pickup_or_delivery),
+        content: Text(S.of(context).please_select_delivery),
         duration: Duration(seconds: 1),
       ));
     }
   }
+
+
+  void requestForCurrentLocation(BuildContext context) {
+    OverlayEntry loader = Helper.overlayLoader(context);
+    Overlay.of(context).insert(loader);
+    settingRepo.setCurrentLocation().then((_address) async {
+      deliveryAddress.add(_address);
+      currentUser.value.address = _address;
+      loader.remove();
+    }).catchError((e) {
+      loader.remove();
+    });
+  }
+
+  Future<void> changeDeliveryAddressToCurrentLocation() async {
+    model.Address _address = await settingRepo.setCurrentLocation();
+    setState(() {
+      bool repeatedAddress = false;
+      for (var currAddress in deliveryAddress) {
+        if (!repeatedAddress && currAddress.address == _address.address) {
+          repeatedAddress = true;
+          break;
+        }
+      }
+      if (!repeatedAddress) {
+        addAddress(_address);
+        settingRepo.deliveryAddress.value = _address;
+        currentUser.value.address = _address.address;
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).added_current_address),
+          duration: Duration(seconds: 1),
+        ));
+      } else {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).address_is_already_added),
+          duration: Duration(seconds: 1),
+        ));
+      }
+
+    });
+    settingRepo.deliveryAddress.notifyListeners();
+  }
+
 }

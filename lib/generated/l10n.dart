@@ -1533,11 +1533,11 @@ class S {
     );
   }
 
-  /// `Please select pickup or delivery`
-  String get please_select_pickup_or_delivery {
+  /// `Please select address for delivery`
+  String get please_select_delivery {
     return Intl.message(
-      'Please select pickup or delivery',
-      name: 'please_select_pickup_or_delivery',
+      'Please select address for delivery',
+      name: 'please_select_delivery',
       desc: '',
       args: [],
     );
@@ -1673,6 +1673,16 @@ class S {
     );
   }
 
+  /// `Delivery`
+  String get delivery {
+    return Intl.message(
+      'Delivery',
+      name: 'delivery',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Payment card updated successfully`
   String get payment_card_updated_successfully {
     return Intl.message(
@@ -1708,16 +1718,6 @@ class S {
     return Intl.message(
       'Items',
       name: 'items',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Delivery`
-  String get delivery {
-    return Intl.message(
-      'Delivery',
-      name: 'delivery',
       desc: '',
       args: [],
     );
@@ -1788,6 +1788,26 @@ class S {
     return Intl.message(
       'Current location',
       name: 'current_location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Added current address`
+  String get added_current_address {
+    return Intl.message(
+      'Added current address',
+      name: 'added_current_address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address is already added.`
+  String get address_is_already_added {
+    return Intl.message(
+      'Address is already added.',
+      name: 'address_is_already_added',
       desc: '',
       args: [],
     );
@@ -1988,6 +2008,16 @@ class S {
     return Intl.message(
       'Unknown',
       name: 'unknown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No addresses given. Tap to select one.`
+  String get choose_an_address {
+    return Intl.message(
+      'No addresses given. Tap to select one.',
+      name: 'choose_an_address',
       desc: '',
       args: [],
     );
