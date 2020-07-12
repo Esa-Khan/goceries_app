@@ -364,7 +364,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-
                       children: <Widget>[
                         Stack(
                           alignment: AlignmentDirectional.center,

@@ -1803,6 +1803,16 @@ class S {
     );
   }
 
+  /// `Getting current location`
+  String get getting_current_location {
+    return Intl.message(
+      'Getting current location',
+      name: 'getting_current_location',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Address is already added.`
   String get address_is_already_added {
     return Intl.message(

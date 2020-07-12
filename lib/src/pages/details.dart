@@ -50,6 +50,27 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(
+          color: Theme.of(context).accentColor,
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: Text(
+          S.of(context).delivery,
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
+        ),
+//        actions: <Widget>[
+//          new ShoppingCartButtonWidget(
+//              iconColor: Theme
+//                  .of(context)
+//                  .hintColor,
+//              labelColor: Theme
+//                  .of(context)
+//                  .accentColor),
+//        ],
+      ),
         key: _con.scaffoldKey,
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -84,7 +105,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 60),
+                                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 10),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
@@ -280,7 +301,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                               ),
 
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(12, 1, 12, 1),
+                                padding: const EdgeInsets.fromLTRB(12, 1, 12, 10),
                                 child: TextField(
                                   onSubmitted: (text) async {
                                     await _con.refreshSearch(text);
@@ -311,6 +332,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   : Flexible(
                                 child:
                                     ListView.separated(
+                                      padding: EdgeInsets.only(bottom: 80),
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
                                       primary: false,

@@ -43,10 +43,7 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
         centerTitle: true,
         title: Text(
           S.of(context).delivery_addresses,
-          style: Theme.of(context)
-              .textTheme
-              .headline6
-              .merge(TextStyle(letterSpacing: 1.3)),
+          style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(
@@ -102,9 +99,7 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   subtitle: Text(
-                    S
-                        .of(context)
-                        .long_press_to_edit_item_swipe_item_to_delete_it,
+                    S.of(context).long_press_to_edit_item_swipe_item_to_delete_it,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.caption,

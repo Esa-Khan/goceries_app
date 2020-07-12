@@ -20,7 +20,6 @@ class DeliveryPickupController extends CartController {
     super.listenForCarts();
 //    listenForDeliveryAddress();
     listenForAddresses();
-    print(settingRepo.deliveryAddress.value.toMap());
   }
 
   void listenForDeliveryAddress() async {
@@ -175,6 +174,10 @@ class DeliveryPickupController extends CartController {
   }
 
   Future<void> changeDeliveryAddressToCurrentLocation() async {
+    scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      content: Text(S.of(context).getting_current_location),
+      duration: Duration(seconds: 3),
+    ));
     model.Address _address = await settingRepo.setCurrentLocation();
     setState(() {
       bool repeatedAddress = false;
@@ -201,6 +204,7 @@ class DeliveryPickupController extends CartController {
 
     });
     settingRepo.deliveryAddress.notifyListeners();
+
   }
 
 }

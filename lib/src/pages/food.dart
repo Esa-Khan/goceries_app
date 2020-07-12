@@ -43,6 +43,31 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 
   @override
   Widget build(BuildContext context) {
+
+    void addToCart() async {
+      if (currentUser.value.apiToken == null) {
+        Navigator.of(context).pushNamed("/Login");
+      } else {
+        if (_con.isSameRestaurants(_con.food)) {
+          await _con.addToCart(_con.food);
+        } else {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AddToCartAlertDialogWidget(
+                  oldFood: _con.carts.elementAt(0)?.food,
+                  newFood: _con.food,
+                  onPressed: (food, {reset: true}) {
+                    return _con.addToCart(_con.food, reset: true);
+                  });
+            },
+          );
+        }
+      }
+    }
+
+
     return Scaffold(
       key: _con.scaffoldKey,
       body: _con.food == null || _con.food?.image == null
@@ -403,26 +428,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       width: MediaQuery.of(context).size.width - 110,
                                       child: FlatButton(
                                         onPressed: () {
-                                          if (currentUser.value.apiToken == null) {
-                                            Navigator.of(context).pushNamed("/Login");
-                                          } else {
-                                            if (_con.isSameRestaurants(_con.food)) {
-                                              _con.addToCart(_con.food);
-                                            } else {
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  // return object of type Dialog
-                                                  return AddToCartAlertDialogWidget(
-                                                      oldFood: _con.carts.elementAt(0)?.food,
-                                                      newFood: _con.food,
-                                                      onPressed: (food, {reset: true}) {
-                                                        return _con.addToCart(_con.food, reset: true);
-                                                      });
-                                                },
-                                              );
-                                            }
-                                          }
+                                          addToCart();
                                         },
                                         padding: EdgeInsets.symmetric(vertical: 14),
                                         color: Theme.of(context).accentColor,

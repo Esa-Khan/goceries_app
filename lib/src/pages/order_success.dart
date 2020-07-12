@@ -40,13 +40,13 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
         key: _con.scaffoldKey,
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            icon: Icon(Icons.arrow_back),
-            color: Theme.of(context).hintColor,
-          ),
+//          leading: IconButton(
+//            onPressed: () {
+//              Navigator.of(context).pop();
+//            },
+//            icon: Icon(Icons.arrow_back),
+//            color: Theme.of(context).hintColor,
+//          ),
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: true,

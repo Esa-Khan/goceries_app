@@ -178,6 +178,7 @@
   "delivery_address": "Delivery Address",
   "current_location": "Current location",
   "added_current_address": "Added current address",
+  "getting_current_location": "Getting current location",
   "address_is_already_added": "Address is already added.",
   "delivery_address_removed_successfully": "Delivery Address removed successfully",
   "add_new_delivery_address": "Add new delivery address",

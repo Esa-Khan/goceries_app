@@ -90,6 +90,7 @@ class Restaurant {
       openTime_min = int.parse(times[0].substring(times[0].indexOf(':') + 1, times[0].length-1));
       times[0] = times[0].replaceAll(":" + openTime_min.toString(), "");
     }
+
     if (times[0].endsWith('a') || (times[1].contains("12") && times[1].endsWith("p"))){
       openTime_hour = int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
     } else if (times[0].endsWith('p') || (times[1].contains("12") && times[1].endsWith("a"))) {
@@ -101,6 +102,7 @@ class Restaurant {
       closeTime_min = int.parse(times[1].substring(times[1].indexOf(':') + 1, times[1].length-1));
       times[1] = times[1].replaceAll(":" + closeTime_min.toString(), "");
     }
+
     if (times[1].endsWith('p') || (times[1].contains("12") && times[1].endsWith("a"))){
       closeTime_hour = 12 + int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
     } else if ((times[1].endsWith('a') && int.parse(times[1].replaceAll("a", "")) > openTime_hour) || (times[1].contains("12") && times[1].endsWith("p"))) {
@@ -109,10 +111,9 @@ class Restaurant {
       closeTime_hour = 24 + int.parse(times[1].replaceAll("a", ""));
     }
 
-
-    if (now > openTime_hour + openTime_min/100 && now < closeTime_hour + closeTime_min/100){
+    if (now >= (openTime_hour + openTime_min/100) && now <= (closeTime_hour + closeTime_min/100))
       closed = false;
-    }
+
 
     return closed;
   }

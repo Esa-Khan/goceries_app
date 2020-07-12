@@ -26,11 +26,19 @@ class CartController extends ControllerMVC {
   void listenForCarts({String message, String hint}) async {
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
-      if (!carts.contains(_cart)) {
+//      bool repeatingFood = false;
+//      for (var currCart in carts){
+//        if (currCart.food.id == _cart.food.id) {
+//          currCart.quantity += _cart.quantity;
+//          repeatingFood = true;
+//          break;
+//        }
+//      }
+//      if (!repeatingFood) {
         setState(() {
           carts.add(_cart);
         });
-      }
+//      }
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -80,6 +88,7 @@ class CartController extends ControllerMVC {
       calculateSubtotal();
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).the_food_was_removed_from_your_cart(_cart.food.name)),
+        duration: Duration(seconds: 1),
       ));
     });
   }

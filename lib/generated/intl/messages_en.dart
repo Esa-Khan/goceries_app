@@ -117,6 +117,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "full_address" : MessageLookupByLibrary.simpleMessage("Full Address"),
     "full_name" : MessageLookupByLibrary.simpleMessage("Full name"),
     "g" : MessageLookupByLibrary.simpleMessage("g"),
+    "getting_current_location" : MessageLookupByLibrary.simpleMessage("Getting current location"),
     "guest" : MessageLookupByLibrary.simpleMessage("Guest"),
     "help__support" : MessageLookupByLibrary.simpleMessage("Help & Support"),
     "help_supports" : MessageLookupByLibrary.simpleMessage("Help & Support"),

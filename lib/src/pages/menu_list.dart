@@ -54,22 +54,25 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
           softWrap: false,
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 0)),
         ),
+        leading: BackButton(
+          color: Theme.of(context).accentColor,
+        ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.only(top: 10, bottom: 50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SearchBarWidget(),
-            ),
+//            Padding(
+//              padding: const EdgeInsets.symmetric(horizontal: 20),
+//              child: SearchBarWidget(),
+//            ),
 //            ListTile(
 //              dense: true,
 //              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),

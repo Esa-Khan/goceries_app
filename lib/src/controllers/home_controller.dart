@@ -72,7 +72,7 @@ class HomeController extends ControllerMVC {
     Overlay.of(context).insert(loader);
     setCurrentLocation().then((_address) async {
       deliveryAddress.value = _address;
-      currentUser.value.address = _address;
+      if (currentUser.value.apiToken != null) currentUser.value.address = _address.address;
       await refreshHome();
       loader.remove();
     }).catchError((e) {

@@ -43,8 +43,9 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage(widget.aisle.aisleImage),
-                    fit: BoxFit.fitWidth,
+                    fit: BoxFit.cover,
                   ),
+
                   color: Theme.of(context).primaryColor.withOpacity(0.9),
                   boxShadow: [
                     BoxShadow(
