@@ -55,7 +55,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
     return widget.con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-            height: widget.con.runtimeType == DeliveryPickupController ? 260 : 170,
+            height: widget.con.runtimeType == DeliveryPickupController ? MediaQuery.of(context).size.height/2.7 : MediaQuery.of(context).size.height/4,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -315,6 +315,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                     children: <Widget>[
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 40,
+                        height: MediaQuery.of(context).size.height/12,
                         child: FlatButton(
                           onPressed: () {
                             if (widget.con.runtimeType == CartController){
@@ -336,8 +337,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                             S.of(context).checkout,
                             textAlign: TextAlign.start,
                             style: Theme.of(context).textTheme.bodyText1.merge(
-                                TextStyle(
-                                    color: Theme.of(context).primaryColor)),
+                                TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
                           ),
                         ),
                       ),

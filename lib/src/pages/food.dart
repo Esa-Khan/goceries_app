@@ -44,12 +44,12 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
   @override
   Widget build(BuildContext context) {
 
-    void addToCart() async {
+    void addToCart() {
       if (currentUser.value.apiToken == null) {
         Navigator.of(context).pushNamed("/Login");
       } else {
         if (_con.isSameRestaurants(_con.food)) {
-          await _con.addToCart(_con.food);
+          _con.addToCart(_con.food);
         } else {
           showDialog(
             context: context,
@@ -94,7 +94,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                             background: Hero(
                               tag: widget.routeArgument.heroTag ?? '' + _con.food.id,
                               child: CachedNetworkImage(
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                                 imageUrl: _con.food.image.url,
                                 placeholder: (context, url) => Image.asset(
                                   'assets/img/loading.gif',
@@ -340,7 +340,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                   Positioned(
                     bottom: 0,
                     child: Container(
-                      height: 150,
+                      height: MediaQuery.of(context).size.height/4.5,//180,
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
@@ -357,7 +357,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                 Expanded(
                                   child: Text(
                                     S.of(context).quantity,
-                                    style: Theme.of(context).textTheme.subtitle1,
+                                    style: Theme.of(context).textTheme.subtitle1.apply(fontSizeFactor: 1.5),
                                   ),
                                 ),
                                 Row(
@@ -367,17 +367,17 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       onPressed: () {
                                         _con.decrementQuantity();
                                       },
-                                      iconSize: 30,
+                                      iconSize: 40,
                                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                       icon: Icon(Icons.remove_circle_outline),
                                       color: Theme.of(context).hintColor,
                                     ),
-                                    Text(_con.quantity.toString(), style: Theme.of(context).textTheme.subtitle1),
+                                    Text(_con.quantity.toString(), style: Theme.of(context).textTheme.subtitle1.apply(fontSizeFactor: 1.5)),
                                     IconButton(
                                       onPressed: () {
                                         _con.incrementQuantity();
                                       },
-                                      iconSize: 30,
+                                      iconSize: 40,
                                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                       icon: Icon(Icons.add_circle_outline),
                                       color: Theme.of(context).hintColor,
@@ -395,7 +395,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                           onPressed: () {
                                             _con.removeFromFavorite(_con.favorite);
                                           },
-                                          padding: EdgeInsets.symmetric(vertical: 14),
+                                          padding: EdgeInsets.symmetric(vertical: 20),
                                           color: Theme.of(context).primaryColor,
                                           shape: StadiumBorder(),
                                           borderSide: BorderSide(color: Theme.of(context).accentColor),
@@ -411,7 +411,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                               _con.addToFavorite(_con.food);
                                             }
                                           },
-                                          padding: EdgeInsets.symmetric(vertical: 14),
+                                          padding: EdgeInsets.symmetric(vertical: 20),
                                           color: Theme.of(context).accentColor,
                                           shape: StadiumBorder(),
                                           child: Icon(
@@ -426,6 +426,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   children: <Widget>[
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width - 110,
+                                      height: MediaQuery.of(context).size.height/12,
                                       child: FlatButton(
                                         onPressed: () {
                                           addToCart();
@@ -439,7 +440,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                           child: Text(
                                             S.of(context).add_to_cart,
                                             textAlign: TextAlign.start,
-                                            style: TextStyle(color: Theme.of(context).primaryColor),
+                                            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20),
                                           ),
                                         ),
                                       ),

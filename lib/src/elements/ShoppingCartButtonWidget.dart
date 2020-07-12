@@ -62,7 +62,7 @@ class _ShoppingCartButtonWidgetState extends StateMVC<ShoppingCartButtonWidget> 
                     TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),
                   ),
             ),
-            padding: EdgeInsets.all(0),
+            padding: EdgeInsets.all(1.5),
             decoration: BoxDecoration(color: this.widget.labelColor, borderRadius: BorderRadius.all(Radius.circular(10))),
             constraints: BoxConstraints(minWidth: 15, maxWidth: 15, minHeight: 15, maxHeight: 15),
           ),

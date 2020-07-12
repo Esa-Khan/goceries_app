@@ -245,6 +245,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                           },
                         );
                       },
+                      onDismissed: (Address _address) {
+                        _con.removeDeliveryAddress(_address);
+                      },
                     );
                   },
                 )

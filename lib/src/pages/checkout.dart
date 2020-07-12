@@ -125,7 +125,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    height: 210,
+                    height: MediaQuery.of(context).size.height/3.5, //210,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
@@ -189,6 +189,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                           SizedBox(height: 20),
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 40,
+                            height: MediaQuery.of(context).size.height/12,
                             child: FlatButton(
                               onPressed: () {
                                 if (_con.creditCard.validated()) {

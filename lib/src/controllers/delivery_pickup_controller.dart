@@ -191,10 +191,6 @@ class DeliveryPickupController extends CartController {
         addAddress(_address);
         settingRepo.deliveryAddress.value = _address;
         currentUser.value.address = _address.address;
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).added_current_address),
-          duration: Duration(seconds: 1),
-        ));
       } else {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).address_is_already_added),
@@ -204,7 +200,19 @@ class DeliveryPickupController extends CartController {
 
     });
     settingRepo.deliveryAddress.notifyListeners();
+  }
 
+
+  void removeDeliveryAddress(model.Address address) async {
+    userRepo.removeDeliveryAddress(address).then((value) {
+      setState(() {
+        this.deliveryAddress.remove(address);
+      });
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(S.of(context).delivery_address_removed_successfully),
+        duration: Duration(seconds: 1),
+      ));
+    });
   }
 
 }

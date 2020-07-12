@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,6 +10,8 @@ import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
+
+ValueNotifier<List<Cart>> currentCart = new ValueNotifier(List<Cart>());
 
 Future<Stream<Cart>> getCart() async {
   User _user = userRepo.currentUser.value;

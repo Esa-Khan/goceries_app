@@ -1393,10 +1393,10 @@ class S {
     );
   }
 
-  /// `New Address added successfully`
+  /// `Address added successfully`
   String get new_address_added_successfully {
     return Intl.message(
-      'New Address added successfully',
+      'Address added successfully',
       name: 'new_address_added_successfully',
       desc: '',
       args: [],
@@ -1823,10 +1823,10 @@ class S {
     );
   }
 
-  /// `Delivery Address removed successfully`
+  /// `Delivery address removed successfully`
   String get delivery_address_removed_successfully {
     return Intl.message(
-      'Delivery Address removed successfully',
+      'Delivery address removed successfully',
       name: 'delivery_address_removed_successfully',
       desc: '',
       args: [],
@@ -1964,10 +1964,10 @@ class S {
   }
 
   /// `Item was added to cart`
-  String get this_food_was_added_to_cart {
+  String get item_was_added_to_cart {
     return Intl.message(
       'Item was added to cart',
-      name: 'this_food_was_added_to_cart',
+      name: 'item_was_added_to_cart',
       desc: '',
       args: [],
     );
@@ -2053,10 +2053,10 @@ class S {
     );
   }
 
-  /// `Select to confirm your address for delivery, Long press to edit your address`
+  /// `Select you address, Swipe to delete, Long press to edit address`
   String get click_to_confirm_your_address_and_pay_or_long_press {
     return Intl.message(
-      'Select to confirm your address for delivery, Long press to edit your address',
+      'Select you address, Swipe to delete, Long press to edit address',
       name: 'click_to_confirm_your_address_and_pay_or_long_press',
       desc: '',
       args: [],
@@ -2518,6 +2518,16 @@ class S {
     return Intl.message(
       'Your order will be placed when you select \'Okay\'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.',
       name: 'your_order_will_be_placed_on_okay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Adding food to cart, please wait.`
+  String get adding_food_to_cart_please_wait {
+    return Intl.message(
+      'Adding food to cart, please wait.',
+      name: 'adding_food_to_cart_please_wait',
       desc: '',
       args: [],
     );

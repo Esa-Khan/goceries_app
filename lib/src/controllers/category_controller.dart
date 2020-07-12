@@ -89,7 +89,7 @@ class CategoryController extends ControllerMVC {
         });
       }).whenComplete(() {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_food_was_added_to_cart),
+          content: Text(S.of(context).item_was_added_to_cart),
         ));
       });
     } else {
@@ -102,7 +102,7 @@ class CategoryController extends ControllerMVC {
         if (reset) carts.clear();
         carts.add(_newCart);
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_food_was_added_to_cart),
+          content: Text(S.of(context).item_was_added_to_cart),
         ));
       });
     }

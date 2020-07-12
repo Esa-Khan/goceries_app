@@ -65,35 +65,41 @@ class FoodController extends ControllerMVC {
   }
 
   void addToCart(Food food, {bool reset = false}) async {
-    setState(() {
-      this.loadCart = true;
-    });
-    var _newCart = new Cart();
-    _newCart.food = food;
-    _newCart.extras = food.extras.where((element) => element.checked).toList();
-    _newCart.quantity = this.quantity;
-    // if food exist in the cart then increment quantity
-    var _oldCart = isExistInCart(_newCart);
-    if (_oldCart != null) {
-      _oldCart.quantity += this.quantity;
-      updateCart(_oldCart).whenComplete(() {
-        setState(() {
-          this.loadCart = false;
-        });
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_food_was_added_to_cart),
-        ));
-      });
+    if (this.loadCart) {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(S.of(context).adding_food_to_cart_please_wait),
+        duration: Duration(seconds: 1),
+      ));
     } else {
-      // the food doesnt exist in the cart add new one
-      addCart(_newCart, reset).whenComplete(() {
-        setState(() {
-          this.loadCart = false;
+      setState(() => this.loadCart = true);
+      var _newCart = new Cart();
+      _newCart.food = food;
+      _newCart.extras = food.extras.where((element) => element.checked).toList();
+      _newCart.quantity = this.quantity;
+      // if food exist in the cart then increment quantity
+      var _oldCart = isExistInCart(_newCart);
+      if (_oldCart != null) {
+        _oldCart.quantity += this.quantity;
+        updateCart(_oldCart).whenComplete(() {
+          setState(() {
+            this.loadCart = false;
+          });
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text(S.of(context).item_was_added_to_cart),
+            duration: Duration(seconds: 1),
+          ));
         });
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_food_was_added_to_cart),
-        ));
-      });
+      } else {
+        // The food doesn't exist in the cart add new one
+        addCart(_newCart, reset).whenComplete(() {
+          setState(() {
+            this.loadCart = false;
+          });
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text(S.of(context).item_was_added_to_cart),
+          ));
+        });
+      }
     }
   }
 

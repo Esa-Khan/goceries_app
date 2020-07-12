@@ -136,7 +136,7 @@
   "addresses_refreshed_successfuly": "Addresses refreshed successfuly",
   "delivery_addresses": "Delivery Addresses",
   "add": "Add",
-  "new_address_added_successfully": "New Address added successfully",
+  "new_address_added_successfully": "Address added successfully",
   "the_address_updated_successfully": "Address updated successfully",
   "details_updated_successfully": "Details updated successfully",
   "long_press_to_edit_item_swipe_item_to_delete_it": "Long press to edit item, swipe item to delete it",
@@ -180,7 +180,7 @@
   "added_current_address": "Added current address",
   "getting_current_location": "Getting current location",
   "address_is_already_added": "Address is already added.",
-  "delivery_address_removed_successfully": "Delivery Address removed successfully",
+  "delivery_address_removed_successfully": "Delivery address removed successfully",
   "add_new_delivery_address": "Add new delivery address",
   "restaurants_near_to_your_current_location": "Restaurants near to your current location",
   "restaurants_near_to": "Restaurants near to",
@@ -194,7 +194,7 @@
   "apply_filters": "Apply Filters",
   "show_only_open_stores": "Show only open Stores",
   "fields": "Fields",
-  "this_food_was_added_to_cart": "Item was added to cart",
+  "item_was_added_to_cart": "Item was added to cart",
   "item_results": "Item Results",
   "store_results": "Store Results",
   "all": "All",
@@ -203,7 +203,7 @@
   "choose_an_address": "No addresses given. Tap to select one.",
   "how_would_you_rate_this_restaurant": "Leave a rating ?",
   "click_on_the_stars_below_to_leave_comments": "Click on the stars below to leave comments",
-  "click_to_confirm_your_address_and_pay_or_long_press": "Select to confirm your address for delivery, Long press to edit your address",
+  "click_to_confirm_your_address_and_pay_or_long_press": "Select you address, Swipe to delete, Long press to edit address",
   "visa_card": "Visa Card",
   "mastercard": "MasterCard",
   "paypal": "PayPal",
@@ -249,7 +249,6 @@
   "confirm_order": "Confirm Order?",
   "okay": "Okay",
   "your_order_will_be_placed": "Your order will be placed when you select 'Checkout'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.",
-  "your_order_will_be_placed_on_okay": "Your order will be placed when you select 'Okay'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info."
-
-
+  "your_order_will_be_placed_on_okay": "Your order will be placed when you select 'Okay'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.",
+  "adding_food_to_cart_please_wait": "Adding food to cart, please wait."
 }
