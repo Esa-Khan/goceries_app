@@ -69,15 +69,16 @@ class _MapWidgetState extends StateMVC<MapWidget> {
               _con.goCurrentLocation();
             },
           ),
-          IconButton(
-            icon: Icon(
-              Icons.filter_list,
-              color: Theme.of(context).hintColor,
-            ),
-            onPressed: () {
-              widget.parentScaffoldKey.currentState.openEndDrawer();
-            },
-          ),
+          SizedBox(width: 10,)
+//          IconButton(
+//            icon: Icon(
+//              Icons.filter_list,
+//              color: Theme.of(context).hintColor,
+//            ),
+//            onPressed: () {
+//              widget.parentScaffoldKey.currentState.openEndDrawer();
+//            },
+//          ),
         ],
       ),
       body: Stack(

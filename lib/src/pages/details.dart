@@ -402,13 +402,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                     Positioned(
                       top: 15,
                       right: 20,
-                      child: _con.loadCart
-                          ? SizedBox(
-                              width: 60,
-                              height: 60,
-                              child: RefreshProgressIndicator(),
-                            )
-                          : ShoppingCartFloatButtonWidget(
+                      child: ShoppingCartFloatButtonWidget(
                               iconColor: Theme.of(context).primaryColor,
                               labelColor: Theme.of(context).hintColor,
                             ),

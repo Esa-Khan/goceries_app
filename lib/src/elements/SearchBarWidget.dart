@@ -35,15 +35,15 @@ class SearchBarWidget extends StatelessWidget {
                 style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
               ),
             ),
-            InkWell(
-              onTap: () {
-                onClickFilter('e');
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(right: 5, left: 5, top: 3, bottom: 3),
-                child: Icon(Icons.filter_list, color: Theme.of(context).accentColor),
-              ),
-            ),
+//            InkWell(
+//              onTap: () {
+//                onClickFilter('e');
+//              },
+//              child: Padding(
+//                padding: const EdgeInsets.only(right: 5, left: 5, top: 3, bottom: 3),
+//                child: Icon(Icons.filter_list, color: Theme.of(context).accentColor),
+//              ),
+//            ),
           ],
         ),
       ),

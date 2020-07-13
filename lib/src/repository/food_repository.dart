@@ -66,9 +66,11 @@ Future<Stream<Food>> searchFoods(String search, Address address, {String storeID
   Map<String, dynamic> _queryParams = {};
   _queryParams['search'] = 'name:$search;description:$search;';
   _queryParams['searchFields'] = 'name:like;description:like';
-  _queryParams['limit'] = '5';
-  if (storeID != null)
+  if (storeID != null) {
     _queryParams['restaurant_id'] = storeID;
+  } else {
+    _queryParams['limit'] = '5';
+  }
   if (!address.isUnknown()) {
     _queryParams['myLon'] = address.longitude.toString();
     _queryParams['myLat'] = address.latitude.toString();
