@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/elements/AislesItemWidget.dart';
+import 'package:food_delivery_app/src/models/food.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../../generated/l10n.dart';
 import '../controllers/restaurant_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/DrawerWidget.dart';
-import '../elements/FoodItemWidget.dart';
-import '../elements/FoodsCarouselWidget.dart';
-import '../elements/SearchBarWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../models/route_argument.dart';
-import '../controllers/home_controller.dart';
-import '../models/category.dart';
-import 'package:food_delivery_app/src/models/food.dart';
 
 
 class MenuWidget extends StatefulWidget {

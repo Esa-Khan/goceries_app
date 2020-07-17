@@ -103,11 +103,15 @@ class RestaurantController extends ControllerMVC {
     Address _address = deliveryAddress.value;
     final Stream<Food> stream = await searchFoods(search, _address, storeID: idRestaurant);
     Food currFood;
+    bool isOtherType = false;
     stream.listen((Food _food) {
-      if (foods.isEmpty){
+      if (_food.ingredients != "<p>.</p>") {
+        var IDs = _food.ingredients.split('-');
+        isOtherType = (IDs.elementAt(0) != _food.id);
+      }
+      if (foods.isEmpty && !isOtherType){
         setState(() => foods.add(_food));
-
-      } else {
+      } else if (!isOtherType){
         for (int i = 0; i < foods.length; i++) {
           currFood = foods.elementAt(i);
           int temp = currFood.name.toString().compareTo(_food.name.toString());

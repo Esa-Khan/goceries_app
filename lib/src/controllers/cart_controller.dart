@@ -7,6 +7,7 @@ import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../repository/cart_repository.dart';
 import '../repository/user_repository.dart';
+import '../repository/settings_repository.dart';
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
@@ -15,7 +16,6 @@ class CartController extends ControllerMVC {
   int cartCount = 0;
   double subTotal = 0.0;
   double total = 0.0;
-  double deliveryFeeLimit = 1000.0;
   bool notifyFreeDelivery = false;
   GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -105,7 +105,7 @@ class CartController extends ControllerMVC {
       deliveryFee = carts[0].food.restaurant.deliveryFee;
     }
     taxAmount = (subTotal + deliveryFee) * carts[0].food.restaurant.defaultTax / 100;
-    if (subTotal < deliveryFeeLimit) {
+    if (subTotal < setting.value.deliveryFeeLimit) {
       total = subTotal + deliveryFee;
       notifyFreeDelivery = true;
     } else {

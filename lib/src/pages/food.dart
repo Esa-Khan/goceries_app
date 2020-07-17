@@ -94,11 +94,11 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                             background: Hero(
                               tag: widget.routeArgument.heroTag ?? '' + _con.food.id,
                               child: CachedNetworkImage(
-                                fit: BoxFit.contain,
+                                fit: BoxFit.fitHeight,
                                 imageUrl: _con.food.image.url,
                                 placeholder: (context, url) => Image.asset(
                                   'assets/img/loading.gif',
-                                  fit: BoxFit.cover,
+                                  fit: BoxFit.contain,
                                 ),
                                 errorWidget: (context, url, error) => Icon(Icons.error),
                               ),
@@ -153,8 +153,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                     ),
                                   ],
                                 ),
-//                                Row(
-//                                  children: <Widget>[
+                                Row(
+                                  children: <Widget>[
 //                                    Container(
 //                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
 //                                      decoration: BoxDecoration(
@@ -171,25 +171,30 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 //                                            ),
 //                                    ),
 //                                    Expanded(child: SizedBox(height: 0)),
-//                                    Container(
-//                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-//                                        decoration: BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.circular(24)),
-//                                        child: Text(
-//                                          _con.food.weight + " " + _con.food.unit,
-//                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-//                                        )),
-//                                    SizedBox(width: 5),
-//                                    Container(
+                                  _con.food.weight == '0' || _con.food.weight == '' ? SizedBox(height: 0)
+                                  : Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                                        decoration: BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.circular(24)),
+                                        child: Text(
+                                          _con.food.weight + " " + _con.food.unit,
+                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                        )),
+                                    SizedBox(width: 5),
+//                                    _con.food.packageItemsCount == '0' || _con.food.packageItemsCount == ''
+//                                        ? SizedBox(height: 0,)
+//                                        : {Container(
 //                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
 //                                        decoration: BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.circular(24)),
 //                                        child: Text(
 //                                          _con.food.packageItemsCount + " " + S.of(context).items,
 //                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
 //                                        )),
-//                                  ],
-//                                ),
-//                                Divider(height: 20),
-//                                Helper.applyHtml(context, _con.food.description, style: TextStyle(fontSize: 12)),
+//                                        Divider(height: 10)},
+                                  ],
+                                ),
+//                                Divider(height: 10),
+                                _con.food.description == '' ? SizedBox(height: 0,)
+                                : Helper.applyHtml(context, _con.food.description, style: TextStyle(fontSize: 12)),
 //                                ListTile(
 //                                  dense: true,
 //                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -206,51 +211,51 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 //                                    style: Theme.of(context).textTheme.caption,
 //                                  ),
 //                                ),
-                                _con.food.extraGroups == null
-                                    ? CircularLoadingWidget(height: 100)
-                                    : ListView.separated(
-                                        padding: EdgeInsets.all(0),
-                                        itemBuilder: (context, extraGroupIndex) {
-                                          var extraGroup = _con.food.extraGroups.elementAt(extraGroupIndex);
-                                          return Wrap(
-                                            children: <Widget>[
-                                              ListTile(
-                                                dense: true,
-                                                contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                                leading: Icon(
-                                                  Icons.add_circle_outline,
-                                                  color: Theme.of(context).hintColor,
-                                                ),
-                                                title: Text(
-                                                  extraGroup.name,
-                                                  style: Theme.of(context).textTheme.subtitle1,
-                                                ),
-                                              ),
-                                              ListView.separated(
-                                                padding: EdgeInsets.all(0),
-                                                itemBuilder: (context, extraIndex) {
-                                                  return ExtraItemWidget(
-                                                    extra: _con.food.extras.where((extra) => extra.extraGroupId == extraGroup.id).elementAt(extraIndex),
-                                                    onChanged: _con.calculateTotal,
-                                                  );
-                                                },
-                                                separatorBuilder: (context, index) {
-                                                  return SizedBox(height: 20);
-                                                },
-                                                itemCount: _con.food.extras.where((extra) => extra.extraGroupId == extraGroup.id).length,
-                                                primary: false,
-                                                shrinkWrap: true,
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                        separatorBuilder: (context, index) {
-                                          return SizedBox(height: 20);
-                                        },
-                                        itemCount: _con.food.extraGroups.length,
-                                        primary: false,
-                                        shrinkWrap: true,
-                                      ),
+//                                _con.food.extraGroups == null
+//                                    ? CircularLoadingWidget(height: 100)
+//                                    : ListView.separated(
+//                                        padding: EdgeInsets.all(0),
+//                                        itemBuilder: (context, extraGroupIndex) {
+//                                          var extraGroup = _con.food.extraGroups.elementAt(extraGroupIndex);
+//                                          return Wrap(
+//                                            children: <Widget>[
+//                                              ListTile(
+//                                                dense: true,
+//                                                contentPadding: EdgeInsets.symmetric(vertical: 0),
+//                                                leading: Icon(
+//                                                  Icons.add_circle_outline,
+//                                                  color: Theme.of(context).hintColor,
+//                                                ),
+//                                                title: Text(
+//                                                  extraGroup.name,
+//                                                  style: Theme.of(context).textTheme.subtitle1,
+//                                                ),
+//                                              ),
+//                                              ListView.separated(
+//                                                padding: EdgeInsets.all(0),
+//                                                itemBuilder: (context, extraIndex) {
+//                                                  return ExtraItemWidget(
+//                                                    extra: _con.food.extras.where((extra) => extra.extraGroupId == extraGroup.id).elementAt(extraIndex),
+//                                                    onChanged: _con.calculateTotal,
+//                                                  );
+//                                                },
+//                                                separatorBuilder: (context, index) {
+//                                                  return SizedBox(height: 20);
+//                                                },
+//                                                itemCount: _con.food.extras.where((extra) => extra.extraGroupId == extraGroup.id).length,
+//                                                primary: false,
+//                                                shrinkWrap: true,
+//                                              ),
+//                                            ],
+//                                          );
+//                                        },
+//                                        separatorBuilder: (context, index) {
+//                                          return SizedBox(height: 20);
+//                                        },
+//                                        itemCount: _con.food.extraGroups.length,
+//                                        primary: false,
+//                                        shrinkWrap: true,
+//                                      ),
 //                                ListTile(
 //                                  dense: true,
 //                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -268,7 +273,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                 ? SizedBox(height: 0)
                                 : ListTile(
                                   dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 4),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 0),
                                   leading: Icon(
                                     Icons.local_activity,
                                     color: Theme.of(context).hintColor,

@@ -42,10 +42,9 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                 padding: EdgeInsets.only(top: 20, bottom: 5),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage(widget.aisle.aisleImage),
+                    image: NetworkImage(widget.aisle.aisleImage),
                     fit: BoxFit.cover,
                   ),
-
                   color: Theme.of(context).primaryColor.withOpacity(0.9),
                   boxShadow: [
                     BoxShadow(
@@ -62,7 +61,30 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                       children: <Widget>[
                         Text(
                           widget.aisle.name,
-                          style: Theme.of(context).textTheme.headline2.apply(color: Theme.of(context).primaryColor),
+//                          style: Theme.of(context).textTheme.headline2.apply(color: Theme.of(context).primaryColor),
+                          style: TextStyle(
+                              inherit: true,
+                              fontSize: Theme.of(context).textTheme.headline2.fontSize,
+                              color: Theme.of(context).primaryColor,
+                              shadows: [
+                                Shadow( // bottomLeft
+                                    offset: Offset(-0.5, -0.5),
+                                    color: Colors.black
+                                ),
+                                Shadow( // bottomRight
+                                    offset: Offset(0.5, -0.5),
+                                    color: Colors.black
+                                ),
+                                Shadow( // topRight
+                                    offset: Offset(0.5, 0.5),
+                                    color: Colors.black
+                                ),
+                                Shadow( // topLeft
+                                    offset: Offset(-0.5, 0.5),
+                                    color: Colors.black
+                                ),
+                              ]
+                          ),
                           maxLines: 1,
                           textScaleFactor: 1.3,
                         ),

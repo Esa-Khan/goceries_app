@@ -43,7 +43,7 @@ class Food {
       discountPrice = jsonMap['discount_price'] != null ? jsonMap['discount_price'].toDouble() : 0.0;
       price = discountPrice != 0 ? discountPrice : price;
       discountPrice = discountPrice == 0 ? discountPrice : jsonMap['price'] != null ? jsonMap['price'].toDouble() : 0.0;
-      description = jsonMap['description'];
+      description = jsonMap['description'] == "<p>.</p>" ? '' : jsonMap['description'];
       ingredients = jsonMap['ingredients'];
       weight = jsonMap['weight'] != null ? jsonMap['weight'].toString() : '';
       unit = jsonMap['unit'] != null ? jsonMap['unit'].toString() : '';

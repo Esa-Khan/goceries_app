@@ -7,6 +7,8 @@ import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
 import '../helpers/helper.dart';
 import '../helpers/app_config.dart' as config;
+import 'package:food_delivery_app/src/repository/settings_repository.dart';
+
 
 class CartBottomDetailsWidget extends StatefulWidget{
   final con;
@@ -55,13 +57,13 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
     return widget.con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-            height: widget.con.runtimeType == DeliveryPickupController ? MediaQuery.of(context).size.height/2.7 : MediaQuery.of(context).size.height/4,
+            height: widget.con.runtimeType == DeliveryPickupController ? MediaQuery.of(context).size.height/2.6 : MediaQuery.of(context).size.height/3.8,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(40),
-                    topLeft: Radius.circular(40)),
+                    topRight: Radius.circular(20),
+                    topLeft: Radius.circular(20)),
                 boxShadow: [
                   BoxShadow(
                       color: Theme.of(context).focusColor.withOpacity(0.55),
@@ -126,7 +128,6 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                                     showTitleActions: true,
                                     minTime: DateTime.now(),
                                     maxTime: DateTime(DateTime.now().year, DateTime.now().month + 1, 31), onConfirm: (date) {
-                                      print('confirm $date');
                                       _date = '${date.day}/${date.month}/${date.year}';
                                       setState(() {});
                                     },
@@ -179,7 +180,6 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                                     ),
                                     showTitleActions: true,
                                     onConfirm: (time) {
-//                                      print('confirm $time');
                                       _time = '${time.hour} : ${time.minute.toString().padLeft(2, '0')}';
                                       setState(() {});
                                     },
@@ -288,7 +288,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                         ),
                       ),
                       if (Helper.canDelivery(widget.con.carts[0].food.restaurant,
-                          carts: widget.con.carts) && widget.con.subTotal < widget.con.deliveryFeeLimit)
+                          carts: widget.con.carts) && widget.con.subTotal < setting.value.deliveryFeeLimit)
                         Helper.getPrice(
                             widget.con.carts[0].food.restaurant.deliveryFee, context,
                             style: Theme.of(context).textTheme.subtitle1)
@@ -328,17 +328,20 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                           },
                           disabledColor:
                               Theme.of(context).focusColor.withOpacity(0.5),
-                          padding: EdgeInsets.symmetric(vertical: 14),
+                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
                           color: !widget.con.carts[0].food.restaurant.closed
                               ? Theme.of(context).accentColor
                               : Theme.of(context).focusColor.withOpacity(0.5),
                           shape: StadiumBorder(),
-                          child: Text(
-                            S.of(context).checkout,
-                            textAlign: TextAlign.start,
-                            style: Theme.of(context).textTheme.bodyText1.merge(
-                                TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
-                          ),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              S.of(context).checkout,
+//                              textAlign: TextAlign.start,
+                              style: Theme.of(context).textTheme.bodyText1.merge(
+                                  TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
+                            ),
+                          )
                         ),
                       ),
                       Padding(
