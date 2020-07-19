@@ -102,16 +102,16 @@ class RestaurantController extends ControllerMVC {
   void listenForSearchedFoods({String idRestaurant, String search}) async {
     Address _address = deliveryAddress.value;
     final Stream<Food> stream = await searchFoods(search, _address, storeID: idRestaurant);
-    Food currFood;
-    bool isOtherType = false;
+    bool isOtherType;
     stream.listen((Food _food) {
+      isOtherType = false;
       if (_food.ingredients != "<p>.</p>") {
         var IDs = _food.ingredients.split('-');
         isOtherType = (IDs.elementAt(0) != _food.id);
       }
-      if (foods.isEmpty && !isOtherType){
-        setState(() => foods.add(_food));
-      } else if (!isOtherType){
+
+      if (foods.isNotEmpty && !isOtherType){
+        Food currFood;
         for (int i = 0; i < foods.length; i++) {
           currFood = foods.elementAt(i);
           int temp = currFood.name.toString().compareTo(_food.name.toString());
@@ -124,7 +124,12 @@ class RestaurantController extends ControllerMVC {
             break;
           }
         }
+
+      } else if (!isOtherType){
+        print(_food.name);
+        setState(() => foods.add(_food));
       }
+
     }, onError: (a) {
       print(a);
     }, onDone: () {

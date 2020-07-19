@@ -228,6 +228,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "should_be_more_than_3_letters" : MessageLookupByLibrary.simpleMessage("Should be more than 3 letters"),
     "should_be_more_than_6_letters" : MessageLookupByLibrary.simpleMessage("Password should be more than 6 letters"),
     "show_only_open_stores" : MessageLookupByLibrary.simpleMessage("Show only open Stores"),
+    "similar_items" : MessageLookupByLibrary.simpleMessage("Similar items"),
     "similar_items_recommended_for_you" : MessageLookupByLibrary.simpleMessage("Similar items recommended for you"),
     "skip" : MessageLookupByLibrary.simpleMessage("Skip"),
     "start_exploring" : MessageLookupByLibrary.simpleMessage("Start Exploring"),

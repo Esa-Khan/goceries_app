@@ -37,13 +37,12 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
   @override
   void initState() {
+    super.initState();
     _con.listenForRestaurant(id: widget.routeArgument.id);
     _con.listenForGalleries(widget.routeArgument.id);
 //    _con.listenForFoods(widget.routeArgument.id);
     _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id);
 //    _con.listenForRestaurantReviews(id: widget.routeArgument.id);
-
-    super.initState();
   }
 
 
@@ -58,18 +57,10 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S.of(context).delivery,
+//          S.of(context).delivery,
+            _con.restaurant?.name ?? '',
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
-//        actions: <Widget>[
-//          new ShoppingCartButtonWidget(
-//              iconColor: Theme
-//                  .of(context)
-//                  .hintColor,
-//              labelColor: Theme
-//                  .of(context)
-//                  .accentColor),
-//        ],
       ),
         key: _con.scaffoldKey,
         floatingActionButton: FloatingActionButton.extended(
@@ -79,7 +70,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
           isExtended: true,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           icon: Icon(
-            Icons.restaurant,
+            Icons.category,
             color: Theme.of(context).primaryColor,
           ),
           label: Text(
@@ -104,30 +95,32 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                             direction: Axis.vertical,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 10),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Container(
-                                      child: Text(
-                                        _con.restaurant?.name ?? '',
-                                        overflow: TextOverflow.fade,
-                                        softWrap: false,
-                                        maxLines: 2,
-                                        style: Theme.of(context).textTheme.headline3,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+//                              Padding(
+//                                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 10),
+//                                child: Row(
+//                                  crossAxisAlignment: CrossAxisAlignment.start,
+//                                  children: <Widget>[
+//                                    Container(
+//                                      child: Text(
+//                                        _con.restaurant?.name ?? '',
+//                                        overflow: TextOverflow.fade,
+//                                        softWrap: false,
+//                                        maxLines: 2,
+//                                        style: Theme.of(context).textTheme.headline3,
+//                                      ),
+//                                    ),
+//                                  ],
+//                                ),
+//                              ),
                               Row(
                                 children: <Widget>[
-                                  SizedBox(width: 20),
+                                  SizedBox(width: 20, height: 50),
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                     decoration:
-                                        BoxDecoration(color: _con.restaurant.closed ? Colors.black : Colors.green, borderRadius: BorderRadius.circular(24)),
+                                        BoxDecoration(color: (_con.restaurant.closed == null && _con.restaurant.closed)
+                                            ? Colors.black
+                                            : Colors.green, borderRadius: BorderRadius.circular(24)),
                                     child: _con.restaurant.closed
                                         ? Text(
                                             S.of(context).closed,
@@ -290,7 +283,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   dense: true,
                                   contentPadding: EdgeInsets.symmetric(vertical: 0),
                                   leading: Icon(
-                                    Icons.restaurant,
+                                    Icons.store,
+                                    size: 35,
                                     color: Theme.of(context).hintColor,
                                   ),
                                   title: Text(
@@ -301,7 +295,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                               ),
 
                               Padding(
-                                padding: const EdgeInsets.fromLTRB(12, 1, 12, 10),
+                                padding: const EdgeInsets.fromLTRB(12, 1, 12, 30),
                                 child: TextField(
                                   onSubmitted: (text) async {
                                     await _con.refreshSearch(text);
@@ -329,9 +323,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
                               _con.foods.isEmpty
                                   ? CircularLoadingWidget(height: 288)
-                                  : Flexible(
-                                child:
-                                    ListView.separated(
+                                  : ListView.separated(
                                       padding: EdgeInsets.only(bottom: 80),
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
@@ -347,7 +339,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                           );
                                         },
                                       ),
-                                    ),
                             ],
                           ),
                         ),

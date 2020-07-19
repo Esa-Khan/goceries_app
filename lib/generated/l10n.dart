@@ -93,16 +93,6 @@ class S {
     );
   }
 
-  /// `Aisles`
-  String get aisles {
-    return Intl.message(
-      'Aisles',
-      name: 'aisles',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Most Popular`
   String get most_popular {
     return Intl.message(
@@ -273,6 +263,16 @@ class S {
     );
   }
 
+  /// `Aisles`
+  String get aisles {
+    return Intl.message(
+      'Aisles',
+      name: 'aisles',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Information`
   String get information {
     return Intl.message(
@@ -338,6 +338,16 @@ class S {
     return Intl.message(
       'Similar items recommended for you',
       name: 'similar_items_recommended_for_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Similar items`
+  String get similar_items {
+    return Intl.message(
+      'Similar items',
+      name: 'similar_items',
       desc: '',
       args: [],
     );
@@ -1673,16 +1683,6 @@ class S {
     );
   }
 
-  /// `Delivery`
-  String get delivery {
-    return Intl.message(
-      'Delivery',
-      name: 'delivery',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Payment card updated successfully`
   String get payment_card_updated_successfully {
     return Intl.message(
@@ -1718,6 +1718,16 @@ class S {
     return Intl.message(
       'Items',
       name: 'items',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery`
+  String get delivery {
+    return Intl.message(
+      'Delivery',
+      name: 'delivery',
       desc: '',
       args: [],
     );

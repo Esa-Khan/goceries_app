@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/elements/FoodItemWidget.dart';
+import 'package:food_delivery_app/src/elements/SimilarItemListWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -174,7 +176,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   _con.food.weight == '0' || _con.food.weight == '' ? SizedBox(height: 0)
                                   : Container(
                                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                        decoration: BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.circular(24)),
+                                        decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
                                         child: Text(
                                           _con.food.weight + " " + _con.food.unit,
                                           style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
@@ -256,22 +258,11 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 //                                        primary: false,
 //                                        shrinkWrap: true,
 //                                      ),
-//                                ListTile(
-//                                  dense: true,
-//                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
-//                                  leading: Icon(
-//                                    Icons.donut_small,
-//                                    color: Theme.of(context).hintColor,
-//                                  ),
-//                                  title: Text(
-//                                    S.of(context).ingredients,
-//                                    style: Theme.of(context).textTheme.subtitle1,
-//                                  ),
-//                                ),
-//                                Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
-                              _con.food.nutritions.isEmpty
-                                ? SizedBox(height: 0)
-                                : ListTile(
+
+
+                                _con.food.nutritions.isEmpty
+                                    ? SizedBox(height: 0)
+                                    : ListTile(
                                   dense: true,
                                   contentPadding: EdgeInsets.symmetric(vertical: 0),
                                   leading: Icon(
@@ -305,6 +296,43 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                     );
                                   }),
                                 ),
+
+                                _con.similarItems == null || _con.similarItems.isEmpty
+                                    ? SizedBox(height: 0)
+                                    : ListTile(
+                                  dense: true,
+                                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                  leading: Icon(
+                                    Icons.add_circle_outline,
+                                    color: Theme.of(context).hintColor,
+                                  ),
+                                  title: Text(
+                                    S.of(context).similar_items,
+                                    style: Theme.of(context).textTheme.subtitle1,
+                                  ),
+                                ),
+                                _con.similarItems == null || _con.similarItems.isEmpty
+                                ? SizedBox(height: 0)
+                                : ListView.separated(
+                                    padding: EdgeInsets.only(bottom: 80),
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: _con.similarItems.length,
+                                    separatorBuilder: (context, index) {
+                                      return SizedBox(height: 10);
+                                    },
+                                    itemBuilder: (context, index) {
+                                      return SimilarItemListWidget(
+                                        food: _con.similarItems.elementAt(index),
+                                      );
+                                    },
+                                  ),
+//                                Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
+
+
+
+
 //                                ListTile(
 //                                  dense: true,
 //                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
@@ -327,6 +355,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                       ],
                     ),
                   ),
+
+
                   Positioned(
                     top: 32,
                     right: 20,

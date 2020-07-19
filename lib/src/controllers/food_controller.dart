@@ -11,6 +11,7 @@ import '../repository/food_repository.dart';
 
 class FoodController extends ControllerMVC {
   Food food;
+  List<Food> similarItems = new List<Food>();
   double quantity = 1;
   double total = 0;
   List<Cart> carts = [];
@@ -26,6 +27,19 @@ class FoodController extends ControllerMVC {
     final Stream<Food> stream = await getFood(foodId);
     stream.listen((Food _food) {
       setState(() => food = _food);
+
+      if (_food.ingredients != "<p>.</p>") {
+        var otherItems = _food.ingredients.split('-');
+        otherItems.remove(_food.id);
+        otherItems.forEach((element) async {
+          final Stream<Food> currStream = await getFood(element);
+          currStream.listen((Food _food) {
+            setState(() => similarItems.add(_food));
+          });
+
+        });
+      }
+
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState?.showSnackBar(SnackBar(
