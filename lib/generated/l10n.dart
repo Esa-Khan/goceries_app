@@ -2513,6 +2513,16 @@ class S {
     );
   }
 
+  /// `+ Options`
+  String get add_options {
+    return Intl.message(
+      '+ Options',
+      name: 'add_options',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Your order will be placed when you select 'Checkout'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.`
   String get your_order_will_be_placed {
     return Intl.message(

@@ -126,9 +126,9 @@ class RestaurantController extends ControllerMVC {
         }
 
       } else if (!isOtherType){
-        print(_food.name);
         setState(() => foods.add(_food));
       }
+
 
     }, onError: (a) {
       print(a);
@@ -141,7 +141,7 @@ class RestaurantController extends ControllerMVC {
     setState(() {
       foods = <Food>[];
     });
-    listenForSearchedFoods(search: search, idRestaurant: restaurant.id);
+    await listenForSearchedFoods(search: search, idRestaurant: restaurant.id);
   }
 
 //  void listenForTrendingFoods(String idRestaurant) async {

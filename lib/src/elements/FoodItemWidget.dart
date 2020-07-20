@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/generated/l10n.dart';
 
 import '../helpers/helper.dart';
 import '../models/food.dart';
@@ -77,7 +78,22 @@ class FoodItemWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 8),
-                  Helper.getPrice(food.price, context, style: Theme.of(context).textTheme.headline4),
+                  Column(
+                    children: <Widget>[
+                      Helper.getPrice(food.price, context, style: Theme.of(context).textTheme.headline4),
+                      food.ingredients != "<p>.</p>" && food.ingredients.isNotEmpty
+                      ? Container(
+                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration:
+                        BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(24)),
+                        child: Text(
+                            S.of(context).add_options,
+                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                        ),
+                      )
+                      : SizedBox(height: 0),
+                    ],
+                  )
                 ],
               ),
             )

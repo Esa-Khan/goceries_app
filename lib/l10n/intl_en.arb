@@ -247,6 +247,7 @@
   "favorites_refreshed_successfuly": "Favorites refreshed successfuly",
   "confirm_order": "Confirm Order?",
   "okay": "Okay",
+  "add_options": "+ Options",
   "your_order_will_be_placed": "Your order will be placed when you select 'Checkout'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.",
   "your_order_will_be_placed_on_okay": "Your order will be placed when you select 'Okay'. Warning: Payment must be ready on order submition or on delivery. See Terms and Conditions for more info.",
   "adding_food_to_cart_please_wait": "Adding food to cart, please wait."

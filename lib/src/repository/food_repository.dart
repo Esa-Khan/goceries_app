@@ -71,7 +71,7 @@ Future<Stream<Food>> searchFoods(String search, Address address, {String storeID
   } else {
     _queryParams['limit'] = '5';
   }
-  _queryParams['limit'] = '20';
+  _queryParams['limit'] = '100';
   if (!address.isUnknown()) {
     _queryParams['myLon'] = address.longitude.toString();
     _queryParams['myLat'] = address.latitude.toString();

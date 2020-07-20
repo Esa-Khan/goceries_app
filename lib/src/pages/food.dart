@@ -96,7 +96,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                             background: Hero(
                               tag: widget.routeArgument.heroTag ?? '' + _con.food.id,
                               child: CachedNetworkImage(
-                                fit: BoxFit.fitHeight,
+                                fit: BoxFit.contain,
                                 imageUrl: _con.food.image.url,
                                 placeholder: (context, url) => Image.asset(
                                   'assets/img/loading.gif',
