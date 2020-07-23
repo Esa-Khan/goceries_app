@@ -328,7 +328,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                           },
                           disabledColor:
                               Theme.of(context).focusColor.withOpacity(0.5),
-                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
                           color: !widget.con.carts[0].food.restaurant.closed
                               ? Theme.of(context).accentColor
                               : Theme.of(context).focusColor.withOpacity(0.5),

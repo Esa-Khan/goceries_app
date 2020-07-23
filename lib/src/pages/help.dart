@@ -60,21 +60,21 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
-                          SearchBarWidget(),
-                          SizedBox(height: 15),
-                          ListTile(
-                            contentPadding: EdgeInsets.symmetric(vertical: 0),
-                            leading: Icon(
-                              Icons.help,
-                              color: Theme.of(context).hintColor,
-                            ),
-                            title: Text(
-                              S.of(context).help_supports,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.headline4,
-                            ),
-                          ),
+//                          SearchBarWidget(),
+//                          SizedBox(height: 15),
+//                          ListTile(
+//                            contentPadding: EdgeInsets.symmetric(vertical: 0),
+//                            leading: Icon(
+//                              Icons.help,
+//                              color: Theme.of(context).hintColor,
+//                            ),
+//                            title: Text(
+//                              S.of(context).help_supports,
+//                              maxLines: 1,
+//                              overflow: TextOverflow.ellipsis,
+//                              style: Theme.of(context).textTheme.headline4,
+//                            ),
+//                          ),
                           ListView.separated(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             scrollDirection: Axis.vertical,

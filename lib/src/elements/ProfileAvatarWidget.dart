@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/repository/settings_repository.dart';
 
 import '../models/user.dart';
 
@@ -72,7 +73,7 @@ class ProfileAvatarWidget extends StatelessWidget {
             style: Theme.of(context).textTheme.headline5.merge(TextStyle(color: Theme.of(context).primaryColor)),
           ),
           Text(
-            user.address,
+            deliveryAddress.value.address,
             style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
           ),
         ],

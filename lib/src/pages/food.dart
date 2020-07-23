@@ -375,7 +375,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                   Positioned(
                     bottom: 0,
                     child: Container(
-                      height: MediaQuery.of(context).size.height/4.5,//180,
+                      height: 170,
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
@@ -392,7 +392,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                 Expanded(
                                   child: Text(
                                     S.of(context).quantity,
-                                    style: Theme.of(context).textTheme.subtitle1.apply(fontSizeFactor: 1.5),
+                                    style: Theme.of(context).textTheme.subtitle1.apply(fontSizeFactor: 1.3),
                                   ),
                                 ),
                                 Row(
@@ -402,7 +402,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       onPressed: () {
                                         _con.decrementQuantity();
                                       },
-                                      iconSize: 40,
+                                      iconSize: 35,
                                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                       icon: Icon(Icons.remove_circle_outline),
                                       color: Theme.of(context).hintColor,
@@ -412,7 +412,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       onPressed: () {
                                         _con.incrementQuantity();
                                       },
-                                      iconSize: 40,
+                                      iconSize: 35,
                                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                       icon: Icon(Icons.add_circle_outline),
                                       color: Theme.of(context).hintColor,
@@ -461,7 +461,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   children: <Widget>[
                                     SizedBox(
                                       width: MediaQuery.of(context).size.width - 110,
-                                      height: MediaQuery.of(context).size.height/12,
+                                      height: 60,
                                       child: FlatButton(
                                         onPressed: () {
                                           addToCart();

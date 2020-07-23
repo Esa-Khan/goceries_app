@@ -36,7 +36,8 @@ class FaqItemWidget extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor, borderRadius: BorderRadius.only(bottomRight: Radius.circular(5), bottomLeft: Radius.circular(5))),
             child: Text(
-              Helper.skipHtml(this.faq.answer),
+//              Helper.skipHtml(this.faq.answer),
+              this.faq.answer,
               style: Theme.of(context).textTheme.bodyText2,
             ),
           ),
