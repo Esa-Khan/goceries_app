@@ -34,15 +34,15 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => showPopup());
+//    WidgetsBinding.instance.addPostFrameCallback((_) => showPopup());
   }
 
-void showPopup() async {
-  aabwait showDialog(
-      context: context,
-      builder: (_) => ImageDialog()
-  );
-}
+//void showPopup() async {
+//  await showDialog(
+//      context: context,
+//      builder: (_) => ImageDialog()
+//  );
+//}
 
   @override
   Widget build(BuildContext context) {
