@@ -63,7 +63,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
             child: TextField(
               onSubmitted: (text) async {
                 await _con.refreshSearch(text);
-                _con.saveSearch(text);
+//                _con.saveSearch(text);
               },
               autofocus: true,
               decoration: InputDecoration(
@@ -82,32 +82,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
               : Expanded(
                   child: ListView(
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: ListTile(
-                          dense: true,
-                          contentPadding: EdgeInsets.symmetric(vertical: 0),
-                          title: Text(
-                            S.of(context).item_results,
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                        ),
-                      ),
-                      ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: _con.foods.length,
-                        separatorBuilder: (context, index) {
-                          return SizedBox(height: 10);
-                        },
-                        itemBuilder: (context, index) {
-                          return FoodItemWidget(
-                            heroTag: 'search_list',
-                            food: _con.foods.elementAt(index),
-                          );
-                        },
-                      ),
+                      _con.restaurants.isEmpty ? SizedBox(height: 0) :
                       Padding(
                         padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
                         child: ListTile(
@@ -119,6 +94,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                           ),
                         ),
                       ),
+                      _con.restaurants.isEmpty ? SizedBox(height: 0) :
                       ListView.builder(
                         shrinkWrap: true,
                         primary: false,
@@ -136,9 +112,39 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                           );
                         },
                       ),
+
+                      _con.foods.isEmpty ? CircularLoadingWidget(height: 288) :
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20),
+                        child: ListTile(
+                          dense: true,
+                          contentPadding: EdgeInsets.symmetric(vertical: 0),
+                          title: Text(
+                            S.of(context).item_results,
+                            style: Theme.of(context).textTheme.subtitle1,
+                          ),
+                        ),
+                      ),
+                      _con.foods.isEmpty ? CircularLoadingWidget(height: 288) :
+                      ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: _con.foods.length,
+                        separatorBuilder: (context, index) {
+                          return SizedBox(height: 10);
+                        },
+                        itemBuilder: (context, index) {
+                          return FoodItemWidget(
+                            heroTag: 'search_list',
+                            food: _con.foods.elementAt(index),
+                                );
+                              },
+                            ),
                     ],
                   ),
                 ),
+          SizedBox(height: 20),
         ],
       ),
     );

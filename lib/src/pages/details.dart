@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:food_delivery_app/src/models/food.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -31,6 +32,11 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   RestaurantController _con;
   var _searchBarController = TextEditingController();
 
+  final ScrollController _scrollController = ScrollController();
+  List<Food> itemList = new List<Food>();
+  bool _hasMore = true, _isLoading = true, _initialLoading = true;
+  int numOfItemsToAdd = 70;
+
   _DetailsWidgetState() : super(RestaurantController()) {
     _con = controller;
   }
@@ -41,13 +47,47 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
     _con.listenForRestaurant(id: widget.routeArgument.id);
     _con.listenForGalleries(widget.routeArgument.id);
 //    _con.listenForFoods(widget.routeArgument.id);
-    _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id);
+    _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id, limit: numOfItemsToAdd);
 //    _con.listenForRestaurantReviews(id: widget.routeArgument.id);
+    _scrollController.addListener(loadMore);
+
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+    _searchBarController.dispose();
+  }
+
+  loadMore() async {
+    if (_scrollController.hasClients &&
+        !_isLoading &&
+        _scrollController.position?.extentAfter < 2000 &&
+        _hasMore &&
+        _con.foods.isNotEmpty) {
+        _isLoading = true;
+        await _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id, limit: (numOfItemsToAdd).floor());
+        setState(() {
+//          _hasMore = false;
+          _isLoading = false;
+        });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (_initialLoading && _con.foods.isNotEmpty) {
+//      int numOfItemsToAdd = 5;
+      if (_con.foods.length > numOfItemsToAdd + 1) {
+        itemList.addAll(_con.foods.sublist(0, numOfItemsToAdd));
+      } else {
+        itemList = List.from(_con.foods);
+//        _hasMore = false;
+      }
+      _initialLoading = false;
+    }
+
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -87,7 +127,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                   fit: StackFit.expand,
                   children: <Widget>[
                     CustomScrollView(
-                      primary: true,
+                      controller: _scrollController,
+//                      primary: true,
                       shrinkWrap: true,
                       slivers: <Widget>[
                         SliverToBoxAdapter(
@@ -298,7 +339,13 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 padding: const EdgeInsets.fromLTRB(12, 1, 12, 30),
                                 child: TextField(
                                   onSubmitted: (text) async {
-                                    await _con.refreshSearch(text);
+//                                    setState(() {_isLoading = true;});
+                                    await _con.refreshSearch(text).whenComplete(() {
+                                      setState(() {
+//                                        itemList = _con.foods;
+                                        _isLoading = false;
+                                      });
+                                    });
                                   },
                                   controller: _searchBarController,
                                   decoration: InputDecoration(
@@ -321,24 +368,43 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 ),
                               ),
 
+//                              itemList.isEmpty
                               _con.foods.isEmpty
-                                  ? CircularLoadingWidget(height: 288)
+//                                  ? CircularLoadingWidget(height: 100)
+                                  ? Center(heightFactor: 2,
+                                          child: SizedBox( width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5,)))
                                   : ListView.separated(
                                       padding: EdgeInsets.only(bottom: 80),
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
                                       primary: false,
                                       itemCount: _con.foods.length,
+//                                      itemCount: itemList.length,
                                       separatorBuilder: (context, index) {
                                         return SizedBox(height: 10);
                                       },
                                       itemBuilder: (context, index) {
-                                        return FoodItemWidget(
-                                          heroTag: 'store_search_list',
-                                          food: _con.foods.elementAt(index),
+                                        if (index == itemList.length - 1)
+                                        if (index == _con.foods.length - 1)
+                                          _isLoading = false;
+
+//                                        if (itemList.isNotEmpty) {
+                                        if (_con.foods.isNotEmpty) {
+                                          return FoodItemWidget(
+                                            heroTag: 'store_search_list',
+                                            food: _con.foods.elementAt(index),
+//                                            food: itemList.elementAt(index),
                                           );
-                                        },
-                                      ),
+                                        } else {
+                                          return SizedBox(height: 0);
+                                        }
+
+                                      },
+                                    ),
+                              !_initialLoading && _hasMore
+                                  ? Center(heightFactor: 2,
+                                              child: SizedBox(width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5,)))
+                                  : SizedBox(height: 0),
                             ],
                           ),
                         ),

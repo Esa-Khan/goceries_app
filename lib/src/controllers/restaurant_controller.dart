@@ -99,43 +99,47 @@ class RestaurantController extends ControllerMVC {
     }, onDone: () {});
   }
 
-  void listenForSearchedFoods({String idRestaurant, String search}) async {
-    Address _address = deliveryAddress.value;
-    final Stream<Food> stream = await searchFoods(search, _address, storeID: idRestaurant);
-    bool isOtherType;
-    stream.listen((Food _food) {
-      isOtherType = false;
-      if (_food.ingredients != "<p>.</p>") {
-        var IDs = _food.ingredients.split('-');
-        isOtherType = (IDs.elementAt(0) != _food.id);
+  bool loading = false;
+  void listenForSearchedFoods({String idRestaurant, String search, int limit}) async {
+      Address _address = deliveryAddress.value;
+      if (this.foods.isNotEmpty) {
+        int lastItemID = int.parse(this.foods.last.id);
+        String idRange = (lastItemID + 1).toString() + "-" + (lastItemID + limit).toString();
+        Stream<Food> actualStream = await searchFoods(search, _address, storeID: idRestaurant, id: idRange);
+        actualStream.listen((Food _food) {
+          addItem(_food);
+
+        }, onError: (a) {
+          print(a);
+        }, onDone: () async {
+          print("-------- ${this.foods.length.toString()} Actual Items Added--------");
+        });
+      } else {
+        Stream<Food> initialStream = await searchFoods(search, _address, storeID: idRestaurant, limit: limit.toString());
+        initialStream.listen((Food _food) {
+          addItem(_food);
+
+        }, onError: (a) {
+          print(a);
+        }, onDone: () async {
+          print("-------- ${this.foods.length.toString()} Initial Items Added--------");
+        });
       }
-
-      if (foods.isNotEmpty && !isOtherType){
-        Food currFood;
-        for (int i = 0; i < foods.length; i++) {
-          currFood = foods.elementAt(i);
-          int temp = currFood.name.toString().compareTo(_food.name.toString());
-          if (_food.name.toString().compareTo(currFood.name.toString()) < 0) {
-            setState(() => foods.insert(i, _food));
-            break;
-          }
-          if (i == foods.length - 1) {
-            setState(() => foods.add(_food));
-            break;
-          }
-        }
-
-      } else if (!isOtherType){
-        setState(() => foods.add(_food));
-      }
-
-
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {
-
-    });
   }
+
+
+
+  void addItem(Food _food) {
+    if (_food.ingredients != "<p>.</p>" && _food.ingredients != "0" && _food.ingredients != null) {
+      var IDs = _food.ingredients.split('-');
+      if (IDs.elementAt(0) == _food.id)
+        setState(() => this.foods.add(_food));
+    } else {
+      setState(() => this.foods.add(_food));
+    }
+  }
+
+
 
   Future<void> refreshSearch(search) async {
     setState(() {

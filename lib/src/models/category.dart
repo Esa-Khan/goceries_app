@@ -14,7 +14,7 @@ class Category {
     '12': {"Canned", "https://goceries.org/storage/app/public/aisles/canned.png"},
     '14': {"Cleaning", "https://goceries.org/storage/app/public/aisles/cleaning.png"},
     '16': {"Condiments/Spices", "https://goceries.org/storage/app/public/aisles/spices.png"},
-    '17': {"Cooking", "https://goceries.org/storage/app/public/aisles/cooking.png"},
+    '17': {"Cooking", "https://goceries.org/storage/app/public/aisles/cooking.jpg"},
     '18': {"Dairy", "https://goceries.org/storage/app/public/aisles/dairy.png"},
     '20': {"Frozen Foods", "https://goceries.org/storage/app/public/aisles/frozen.png"},
     '22': {"Fruits", "https://goceries.org/storage/app/public/aisles/fruits.png"},

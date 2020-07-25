@@ -81,7 +81,7 @@ class FoodItemWidget extends StatelessWidget {
                   Column(
                     children: <Widget>[
                       Helper.getPrice(food.price, context, style: Theme.of(context).textTheme.headline4),
-                      food.ingredients != "<p>.</p>" && food.ingredients.isNotEmpty
+                      food.ingredients != "<p>.</p>" && food.ingredients.isNotEmpty && food.ingredients != "0"
                       ? Container(
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                         decoration:

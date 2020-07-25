@@ -173,7 +173,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 //                                            ),
 //                                    ),
 //                                    Expanded(child: SizedBox(height: 0)),
-                                  _con.food.weight == '0' || _con.food.weight == '' ? SizedBox(height: 0)
+                                  _con.food.weight == '0' || _con.food.weight == '' || _con.food.weight == "<p>.</p>" ? SizedBox(height: 0)
                                   : Container(
                                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                         decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),

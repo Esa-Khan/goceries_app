@@ -60,17 +60,24 @@ Future<Stream<Food>> getFood(String foodId) async {
   }
 }
 
-Future<Stream<Food>> searchFoods(String search, Address address, {String storeID}) async {
+Future<Stream<Food>> searchFoods(String search, Address address, {String storeID, String limit, String id}) async {
   if (search == null) search = "";
   Uri uri = Helper.getUri('api/foods');
   Map<String, dynamic> _queryParams = {};
   _queryParams['search'] = 'name:$search;description:$search;';
   _queryParams['searchFields'] = 'name:like;description:like';
-  if (storeID != null) {
+  if (id != null)
+    _queryParams['id'] = id;
+
+  if (storeID != null && limit != null) {
+    _queryParams['restaurant_id'] = storeID;
+    _queryParams['limit'] = limit;
+  } else if (storeID != null){
     _queryParams['restaurant_id'] = storeID;
   } else {
     _queryParams['limit'] = '10';
   }
+
   if (!address.isUnknown()) {
     _queryParams['myLon'] = address.longitude.toString();
     _queryParams['myLat'] = address.latitude.toString();
