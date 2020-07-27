@@ -106,7 +106,10 @@ class RestaurantController extends ControllerMVC {
         print(a);
       }, onDone: () {
         print("All items loaded: ${allItems.length}");
-        setState(() => allItemsLoaded = true);
+        setState(() {
+          allItemsLoaded = true;
+          this.foods = this.allItems;
+        });
 
 
       });

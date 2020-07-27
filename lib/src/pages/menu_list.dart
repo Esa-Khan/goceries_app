@@ -20,7 +20,7 @@ class MenuWidget extends StatefulWidget {
 
 class _MenuWidgetState extends StateMVC<MenuWidget> {
   RestaurantController _con;
-  int itemsToAdd = 200;
+  int itemsToAdd = 300;
 
   _MenuWidgetState() : super(RestaurantController()) {
     _con = controller;
@@ -45,15 +45,15 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   }
 
 
-  void loadAllItems() async {
-    while (_con.allItems.isEmpty && _con.foods.length < _con.allItems.length){
-      await _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
-    }
-  }
+//  void loadAllItems() async {
+//    while (_con.allItems.isEmpty || _con.foods.length < _con.allItems.length){
+//      await _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
-    loadAllItems();
+//    loadAllItems();
 //    if (_con.foods.isNotEmpty) {
 //      _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
 //    }
@@ -86,7 +86,8 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            _con.allItemsLoaded ? SizedBox(height: 0)
+            _con.allItemsLoaded
+                ? SizedBox(height: 0)
                 : Center(child: SizedBox(width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5))),
 //            Padding(
 //              padding: const EdgeInsets.symmetric(horizontal: 20),
