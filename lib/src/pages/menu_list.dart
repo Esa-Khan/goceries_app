@@ -20,7 +20,7 @@ class MenuWidget extends StatefulWidget {
 
 class _MenuWidgetState extends StateMVC<MenuWidget> {
   RestaurantController _con;
-  int itemsToAdd = 100;
+  int itemsToAdd = 200;
 
   _MenuWidgetState() : super(RestaurantController()) {
     _con = controller;
@@ -28,21 +28,36 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
 
   @override
   void initState() {
-    GlobalKey<ScaffoldState> origScaffold = _con.scaffoldKey;
-    _con = widget.routeArgument.param;
-    _con.scaffoldKey = origScaffold;
+    try {
+      List<Food> oldFoods = widget.routeArgument.param?.foods;
+      if  (oldFoods?.isNotEmpty){
+        _con.foods = List.from(oldFoods);
+      }
+    } catch(e) {
+
+    }
 
     _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
+    _con.listenForAllItems(widget.routeArgument.id);
     _con.listenForCategories();
 //    _con.listenForTrendingFoods(widget.routeArgument.id);
     super.initState();
   }
 
+
+  void loadAllItems() async {
+    while (_con.allItems.isEmpty && _con.foods.length < _con.allItems.length){
+      await _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    loadAllItems();
 //    if (_con.foods.isNotEmpty) {
 //      _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
 //    }
+
     return Scaffold(
       key: _con.scaffoldKey,
       drawer: DrawerWidget(),
