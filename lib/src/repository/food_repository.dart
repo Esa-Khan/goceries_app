@@ -60,6 +60,34 @@ Future<Stream<Food>> getFood(String foodId) async {
   }
 }
 
+
+
+Future<Stream<Food>> getStoreItems(String storeID, {String limit, String id}) async {
+  Uri uri = Helper.getUri('api/foods');
+  Map<String, dynamic> _queryParams = {};
+  if (id != null)
+    _queryParams['id'] = id;
+  if (limit != null)
+    _queryParams['limit'] = limit;
+
+  _queryParams['restaurant_id'] = storeID;
+  _queryParams['short'] = 'yes';
+
+  uri = uri.replace(queryParameters: _queryParams);
+  try {
+    final client = new http.Client();
+    final streamedRest = await client.send(http.Request('get', uri));
+
+    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+      return Food.fromJSON(data);
+    });
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+    return new Stream.value(new Food.fromJSON({}));
+  }
+}
+
+
 Future<Stream<Food>> searchFoods(String search, Address address, {String storeID, String limit, String id}) async {
   if (search == null) search = "";
   Uri uri = Helper.getUri('api/foods');

@@ -35,7 +35,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   final ScrollController _scrollController = ScrollController();
   List<Food> itemList = new List<Food>();
   bool _hasMore = true, _isLoading = true, _initialLoading = true;
-  int numOfItemsToAdd = 70;
+  int numOfItemsToAdd = 200;
 
   _DetailsWidgetState() : super(RestaurantController()) {
     _con = controller;
@@ -46,8 +46,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
     super.initState();
     _con.listenForRestaurant(id: widget.routeArgument.id);
     _con.listenForGalleries(widget.routeArgument.id);
-//    _con.listenForFoods(widget.routeArgument.id);
-    _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id, limit: numOfItemsToAdd);
+//    _con.listenForAllItems(widget.routeArgument.id);
+    _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: numOfItemsToAdd);
 //    _con.listenForRestaurantReviews(id: widget.routeArgument.id);
     _scrollController.addListener(loadMore);
 
@@ -60,18 +60,25 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
     _searchBarController.dispose();
   }
 
+  int oldNumOfItems = 0;
   loadMore() async {
     if (_scrollController.hasClients &&
         !_isLoading &&
-        _scrollController.position?.extentAfter < 2000 &&
+        _scrollController.position?.extentAfter < 10000 &&
         _hasMore &&
-        _con.foods.isNotEmpty) {
+        _con.foods.isNotEmpty ) {
+
+        oldNumOfItems = _con.foods.length;
+        print("-----LoadNext-----");
         _isLoading = true;
-        await _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id, limit: (numOfItemsToAdd).floor());
-        setState(() {
-//          _hasMore = false;
-          _isLoading = false;
-        });
+        await _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: (numOfItemsToAdd).floor());
+        if (_con.allItemsLoaded) {
+          setState(() {
+//            _hasMore = false;
+//            _isLoading = false;
+            print("-----DONE-----");
+          });
+        }
     }
   }
 
@@ -105,8 +112,26 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
         key: _con.scaffoldKey,
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            Navigator.of(context).pushNamed('/Menu', arguments: new RouteArgument(id: widget.routeArgument.id));
+//            if (_con.allItemsLoaded) {
+//              Navigator.of(context).pushNamed('/Menu',
+//                  arguments: new RouteArgument(id: widget.routeArgument.id,
+//                                                param: _con.allItemsLoaded,
+//                                                param2: _con.allItems));
+//            } else if (_con.foods.isNotEmpty){
+//              Navigator.of(context).pushNamed('/Menu',
+//                  arguments: new RouteArgument(id: widget.routeArgument.id,
+//                      param: true,
+//                      param2: _con.foods));
+//            } else {
+//              Navigator.of(context).pushNamed('/Menu',
+//                  arguments: new RouteArgument(id: widget.routeArgument.id,
+//                      param: false));
+//            }
+            Navigator.of(context).pushNamed('/Menu',
+                arguments: new RouteArgument(id: widget.routeArgument.id,
+                    param: _con));
           },
+
           isExtended: true,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           icon: Icon(
@@ -339,10 +364,9 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 padding: const EdgeInsets.fromLTRB(12, 1, 12, 30),
                                 child: TextField(
                                   onSubmitted: (text) async {
-//                                    setState(() {_isLoading = true;});
+                                    setState(() {_isLoading = true;});
                                     await _con.refreshSearch(text).whenComplete(() {
                                       setState(() {
-//                                        itemList = _con.foods;
                                         _isLoading = false;
                                       });
                                     });
@@ -355,7 +379,9 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                     prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
                                     suffixIcon: IconButton(
                                       onPressed: () async {
-                                        await _con.refreshSearch("").whenComplete(() => _searchBarController.clear());;
+                                        _searchBarController.clear();
+                                        await _con.refreshSearch("");
+//                                        _con.searchedItems.clear();
                                       },
                                       color: Theme.of(context).focusColor,
                                       icon: Icon(Icons.clear),
@@ -368,32 +394,53 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 ),
                               ),
 
-//                              itemList.isEmpty
-                              _con.foods.isEmpty
+                              _con.searchedItems.isNotEmpty
+                              ?ListView.separated(
+                                padding: EdgeInsets.only(bottom: 40),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                primary: false,
+                                itemCount: _con.searchedItems.length,
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(height: 10);
+                                },
+                                itemBuilder: (context, index) {
+                                  if (index == _con.searchedItems.length - 1)
+                                    _isLoading = false;
+
+                                  if (_con.searchedItems.isNotEmpty) {
+                                    return FoodItemWidget(
+                                      heroTag: 'store_search_list',
+                                      food: _con.searchedItems.elementAt(index),
+                                    );
+                                  } else {
+                                    return SizedBox(height: 0);
+                                  }
+
+                                },
+                              )
+
+                              : _con.foods.isEmpty
 //                                  ? CircularLoadingWidget(height: 100)
                                   ? Center(heightFactor: 2,
                                           child: SizedBox( width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5,)))
                                   : ListView.separated(
-                                      padding: EdgeInsets.only(bottom: 80),
+                                      padding: EdgeInsets.only(bottom: 40),
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,
                                       primary: false,
                                       itemCount: _con.foods.length,
-//                                      itemCount: itemList.length,
                                       separatorBuilder: (context, index) {
                                         return SizedBox(height: 10);
                                       },
                                       itemBuilder: (context, index) {
-                                        if (index == itemList.length - 1)
                                         if (index == _con.foods.length - 1)
                                           _isLoading = false;
 
-//                                        if (itemList.isNotEmpty) {
                                         if (_con.foods.isNotEmpty) {
                                           return FoodItemWidget(
                                             heroTag: 'store_search_list',
                                             food: _con.foods.elementAt(index),
-//                                            food: itemList.elementAt(index),
                                           );
                                         } else {
                                           return SizedBox(height: 0);
@@ -401,10 +448,11 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
                                       },
                                     ),
-                              !_initialLoading && _hasMore
-                                  ? Center(heightFactor: 2,
-                                              child: SizedBox(width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5,)))
+
+                              !_initialLoading && _isLoading && _hasMore
+                                  ? Center(child: SizedBox(width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5)))
                                   : SizedBox(height: 0),
+                              SizedBox(height: 30)
                             ],
                           ),
                         ),

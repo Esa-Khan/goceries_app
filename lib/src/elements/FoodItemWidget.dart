@@ -24,7 +24,7 @@ class FoodItemWidget extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor.withOpacity(0.9),
+          color: Theme.of(context).primaryColor.withOpacity(1),
           boxShadow: [
             BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.5), blurRadius: 5, offset: Offset(0, 2)),
           ],

@@ -1043,10 +1043,10 @@ class S {
     );
   }
 
-  /// `Don't have any items in your cart`
+  /// `No items in your cart`
   String get dont_have_any_item_in_your_cart {
     return Intl.message(
-      'Don\'t have any items in your cart',
+      'No items in your cart',
       name: 'dont_have_any_item_in_your_cart',
       desc: '',
       args: [],
@@ -1063,10 +1063,10 @@ class S {
     );
   }
 
-  /// `Don't have any notifications`
+  /// `No notifications`
   String get dont_have_any_notifications {
     return Intl.message(
-      'Don\'t have any notifications',
+      'No notifications',
       name: 'dont_have_any_notifications',
       desc: '',
       args: [],
@@ -2353,10 +2353,10 @@ class S {
     );
   }
 
-  /// `Don't have any orders`
+  /// `No orders`
   String get youDontHaveAnyOrder {
     return Intl.message(
-      'Don\'t have any orders',
+      'No orders',
       name: 'youDontHaveAnyOrder',
       desc: '',
       args: [],
