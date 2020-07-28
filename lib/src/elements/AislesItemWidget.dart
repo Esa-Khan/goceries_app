@@ -1,30 +1,43 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/controllers/category_controller.dart';
 import 'package:food_delivery_app/src/models/food.dart';
+import 'package:food_delivery_app/src/models/restaurant.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../generated/l10n.dart';
 import '../models/category.dart' as category;
 import 'FoodItemWidget.dart';
+import '../controllers/category_controller.dart';
 
 class AislesItemWidget extends StatefulWidget {
-  final bool expanded;
-  final category.Category aisle;
-  final List<Food> foods;
-
-
-  AislesItemWidget({Key key, this.expanded, this.aisle, this.foods})
-      : super(key: key);
-
   @override
   _AislesItemWidgetState createState() => _AislesItemWidgetState();
-}
+  final category.Category aisle;
+  final Restaurant store;
+
+
+  AislesItemWidget({Key key, this.aisle, this.store}) : super(key: key);
+
+ }
 
 class _AislesItemWidgetState extends State<AislesItemWidget> {
+  CategoryController _con = new CategoryController();
+  bool expanded = false;
+
 
   @override
   void initState() {
     super.initState();
+    _con.category = widget.aisle;
+//    _con.listenForFoodsByCategory(id: widget.aisle.id, storeID: widget.store.id);
+  }
+
+  void loadItems() async {
+    if (expanded && !_con.itemsLoaded){
+      await _con.listenForFoodsByCategory(id: widget.aisle.id, storeID: widget.store.id);
+      print(" ------------ Loaded Items: " + _con.foods.length.toString());
+    }
   }
 
   @override
@@ -56,6 +69,10 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                 child: Theme(
                   data: theme,
                   child: ExpansionTile(
+                    onExpansionChanged: (bool) async {
+                      setState(() => expanded = !expanded);
+                      await loadItems();
+                    },
 //                    initiallyExpanded: widget.expanded,
                     title: Column(
                       children: <Widget>[
@@ -106,11 +123,14 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 //                        },
 //                      )),
                       SizedBox(height: 10),
-                      ListView.separated(
+                      _con.foods.isEmpty
+                      ? Center(heightFactor: 2,
+                          child: SizedBox( width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5,)))
+                      : ListView.separated(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: widget.foods.length,
+                        itemCount: _con.foods.length,
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 10);
                         },
@@ -119,7 +139,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                             return FoodItemWidget(
                               heroTag: 'menu_list',
 //                              food: widget.foods.elementAt(index),
-                              food: widget.foods.elementAt(index),
+                              food: _con.foods.elementAt(index),
                             );
                         },
                       ),

@@ -11,6 +11,8 @@ import '../repository/food_repository.dart';
 
 class CategoryController extends ControllerMVC {
   List<Food> foods = <Food>[];
+  bool noItems = false;
+  bool itemsLoaded = false;
   GlobalKey<ScaffoldState> scaffoldKey;
   Category category;
   bool loadCart = false;
@@ -20,17 +22,26 @@ class CategoryController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void listenForFoodsByCategory({String id, String message}) async {
-    final Stream<Food> stream = await getFoodsByCategory(id);
+  void listenForFoodsByCategory({String id, String storeID, String message}) async {
+    print("Getting items in ${category.name}");
+    final Stream<Food> stream = await getFoodsByCategory(id, storeID: storeID);
     stream.listen((Food _food) {
-      setState(() {
-        foods.add(_food);
-      });
+      foods.add(_food);
+      addItem(_food);
     }, onError: (a) {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
+      setState(() {
+        itemsLoaded = true;
+      });
+      if (foods.isEmpty) {
+          noItems = true;
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text("No items in ${category.name}"),
+        ));
+      }
       if (message != null) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(message),
@@ -38,6 +49,18 @@ class CategoryController extends ControllerMVC {
       }
     });
   }
+
+  void addItem(Food _food) {
+    if (_food.ingredients != "<p>.</p>" && _food.ingredients != "0" && _food.ingredients != null) {
+      var IDs = _food.ingredients.split('-');
+      if (IDs.elementAt(0) == _food.id) {
+        setState(() => foods.add(_food));
+      }
+    } else {
+      setState(() => foods.add(_food));
+    }
+  }
+
 
   void listenForCategory({String id, String message}) async {
     final Stream<Category> stream = await getCategory(id);

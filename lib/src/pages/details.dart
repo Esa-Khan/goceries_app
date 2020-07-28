@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -34,8 +36,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
   final ScrollController _scrollController = ScrollController();
   List<Food> itemList = new List<Food>();
-  bool _hasMore = true, _isLoading = true, _initialLoading = true;
-  int numOfItemsToAdd = 200;
+  bool _hasMore = true, _isLoading = true, _initialLoading = true, _isSearching = false, _isSearched = false, _searchBarTapped = false;
+  int numOfItemsToAdd = 80;
 
   _DetailsWidgetState() : super(RestaurantController()) {
     _con = controller;
@@ -62,20 +64,47 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
   int oldNumOfItems = 0;
   loadMore() async {
-    if (_scrollController.hasClients &&
-        !_isLoading &&
-        _scrollController.position?.extentAfter < 10000 &&
-        _hasMore &&
-        _con.foods.isNotEmpty ) {
+//    if (_scrollController.hasClients &&
+//        !_isLoading &&
+//        _scrollController.position?.extentBefore > 20000 &&
+//        _con.foods.length > numOfItemsToAdd * 2) {
+//      print("--------Too Many Items Loaded: ${_con.foods.length}----------");
+//      _con.listRange.insert(0, _con.listRange.elementAt(0) + (numOfItemsToAdd * 2).floor());
+//      await setState(() => _con.foods.removeRange(0, (numOfItemsToAdd).floor()));
+//
+//      print("--------Removed Items: ${_con.foods.length}----------");
+//
+//
+//
+//    } else if (!_isSearched && _scrollController.hasClients &&
+//        !_isLoading &&
+//        _scrollController.position?.extentBefore < 2000 &&
+//        _con.foods.isNotEmpty &&
+//        int.parse(_con.foods.elementAt(0).id) > int.parse(_con.allItems.elementAt(0).id)) {
+//        print("--------Top of List Items Pre-Loaded: ${_con.foods.length}----------");
+//        await setState(() => _con.foods.insertAll(0,
+//                _con.allItems.sublist((_con.listRange.elementAt(0) - numOfItemsToAdd).clamp(0, 50000),
+//                                        _con.listRange.elementAt(0))));
+//        print("--------Top of List Items Loaded: ${_con.foods.length}----------");
+//    }
 
-        oldNumOfItems = _con.foods.length;
-        print("-----LoadNext-----");
-        _isLoading = true;
+
+
+    if (!_isSearched && _scrollController.hasClients &&
+        !_isLoading &&
+        _scrollController.position?.extentAfter < 30 &&
+        _hasMore &&
+        _con.foods.isNotEmpty &&
+        !_con.allItemsLoaded) {
+
+//        print("-----LoadNext-----");
+        setState(() => _isLoading = true);
         await _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: (numOfItemsToAdd).floor());
+        setState(() => _isLoading = false);
+
         if (_con.allItemsLoaded) {
           setState(() {
-//            _hasMore = false;
-//            _isLoading = false;
+            _hasMore = false;
             print("-----DONE-----");
           });
         }
@@ -84,16 +113,9 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_initialLoading && _con.foods.isNotEmpty) {
-//      int numOfItemsToAdd = 5;
-      if (_con.foods.length > numOfItemsToAdd + 1) {
-        itemList.addAll(_con.foods.sublist(0, numOfItemsToAdd));
-      } else {
-        itemList = List.from(_con.foods);
-//        _hasMore = false;
-      }
+    if (_initialLoading && _con.foods.isNotEmpty)
       _initialLoading = false;
-    }
+
 
     return Scaffold(
       appBar: AppBar(
@@ -110,28 +132,12 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
         ),
       ),
         key: _con.scaffoldKey,
-        floatingActionButton: _con.restaurant?.information != null &&_con.restaurant?.information == 'R'
+        floatingActionButton: (_con.restaurant?.information != null &&_con.restaurant?.information == 'R') || _searchBarTapped
         ? SizedBox(height: 0)
         : FloatingActionButton.extended(
           onPressed: () {
-//            if (_con.allItemsLoaded) {
-//              Navigator.of(context).pushNamed('/Menu',
-//                  arguments: new RouteArgument(id: widget.routeArgument.id,
-//                                                param: _con.allItemsLoaded,
-//                                                param2: _con.allItems));
-//            } else if (_con.foods.isNotEmpty){
-//              Navigator.of(context).pushNamed('/Menu',
-//                  arguments: new RouteArgument(id: widget.routeArgument.id,
-//                      param: true,
-//                      param2: _con.foods));
-//            } else {
-//              Navigator.of(context).pushNamed('/Menu',
-//                  arguments: new RouteArgument(id: widget.routeArgument.id,
-//                      param: false));
-//            }
             Navigator.of(context).pushNamed('/Menu',
-                arguments: new RouteArgument(id: widget.routeArgument.id,
-                    param: _con));
+                arguments: new RouteArgument(id: widget.routeArgument.id, param: _con.restaurant));
           },
           isExtended: true,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -162,23 +168,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                             direction: Axis.vertical,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-//                              Padding(
-//                                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10, top: 10),
-//                                child: Row(
-//                                  crossAxisAlignment: CrossAxisAlignment.start,
-//                                  children: <Widget>[
-//                                    Container(
-//                                      child: Text(
-//                                        _con.restaurant?.name ?? '',
-//                                        overflow: TextOverflow.fade,
-//                                        softWrap: false,
-//                                        maxLines: 2,
-//                                        style: Theme.of(context).textTheme.headline3,
-//                                      ),
-//                                    ),
-//                                  ],
-//                                ),
-//                              ),
                               Row(
                                 children: <Widget>[
                                   SizedBox(width: 20, height: 50),
@@ -199,21 +188,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                           ),
                                   ),
                                   SizedBox(width: 10),
-//                                  Container(
-//                                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-//                                    decoration: BoxDecoration(
-//                                        color: Helper.canDelivery(_con.restaurant) ? Colors.green : Colors.orange, borderRadius: BorderRadius.circular(24)),
-//                                    child: Helper.canDelivery(_con.restaurant)
-//                                        ? Text(
-//                                            S.of(context).delivery,
-//                                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-//                                          )
-//                                        : Text(
-//                                            S.of(context).pickup,
-//                                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-//                                          ),
-//                                  ),
-//                                  Expanded(child: SizedBox(height: 0)),
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                     decoration: BoxDecoration(
@@ -365,12 +339,16 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                 padding: const EdgeInsets.fromLTRB(12, 1, 12, 30),
                                 child: TextField(
                                   onSubmitted: (text) async {
-                                    setState(() {_isLoading = true;});
-                                    await _con.refreshSearch(text).whenComplete(() {
-                                      setState(() {
-                                        _isLoading = false;
-                                      });
+                                    setState(() => _isSearching = true);
+                                    await _con.refreshSearch(text);
+                                    setState(() {
+                                      _searchBarTapped = false;
+                                      _isSearching = false;
+                                      _isSearched = true;
                                     });
+                                  },
+                                  onTap: () {
+                                    setState(() => _searchBarTapped = true);
                                   },
                                   controller: _searchBarController,
                                   decoration: InputDecoration(
@@ -380,12 +358,17 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                     prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
                                     suffixIcon: IconButton(
                                       onPressed: () async {
+                                        FocusScopeNode currentFocus = FocusScope.of(context);
+                                        if (!currentFocus.hasPrimaryFocus) {
+                                          currentFocus.unfocus();
+                                        }
+
+                                        setState(() => _isSearched = false);
                                         _searchBarController.clear();
                                         await _con.refreshSearch("");
-//                                        _con.searchedItems.clear();
                                       },
                                       color: Theme.of(context).focusColor,
-                                      icon: Icon(Icons.clear),
+                                      icon: Icon(Icons.clear, size: 30),
                                     ),
                                     border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.3))),
                                     focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.7))),
@@ -394,32 +377,42 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   ),
                                 ),
                               ),
-
-                              _con.searchedItems.isNotEmpty
-                              ?ListView.separated(
-                                padding: EdgeInsets.only(bottom: 40),
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                primary: false,
-                                itemCount: _con.searchedItems.length,
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(height: 10);
-                                },
-                                itemBuilder: (context, index) {
-                                  if (index == _con.searchedItems.length - 1)
-                                    _isLoading = false;
-
-                                  if (_con.searchedItems.isNotEmpty) {
-                                    return FoodItemWidget(
-                                      heroTag: 'store_search_list',
-                                      food: _con.searchedItems.elementAt(index),
-                                    );
-                                  } else {
-                                    return SizedBox(height: 0);
-                                  }
-
-                                },
+                              _isSearching
+                                  ? Column(
+                                children: <Widget>[
+                                  Center(child: SizedBox(width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5))),
+                                  SizedBox(height: 30)
+                                ],
                               )
+                                  : SizedBox(height: 0),
+                              _isSearched && _con.searchedItems.isEmpty
+                              ? SizedBox(height: 300)
+                              : _con.searchedItems.isNotEmpty
+                                ? ListView.separated(
+                                  padding: EdgeInsets.only(bottom: 40),
+                                  scrollDirection: Axis.vertical,
+
+                                  shrinkWrap: true,
+                                  primary: false,
+                                  itemCount: _con.searchedItems.length,
+                                  separatorBuilder: (context, index) {
+                                    return SizedBox(height: 10);
+                                  },
+                                  itemBuilder: (context, index) {
+                                    if (index == _con.searchedItems.length - 1)
+                                      _isLoading = false;
+
+                                    if (_con.searchedItems.isNotEmpty) {
+                                      return FoodItemWidget(
+                                        heroTag: 'store_search_list',
+                                        food: _con.searchedItems.elementAt(index),
+                                      );
+                                    } else {
+                                      return SizedBox(height: 0);
+                                    }
+
+                                  },
+                                )
 
                               : _con.foods.isEmpty
 //                                  ? CircularLoadingWidget(height: 100)
@@ -439,8 +432,9 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                           _isLoading = false;
 
                                         if (_con.foods.isNotEmpty) {
+                                          Random random = new Random();
                                           return FoodItemWidget(
-                                            heroTag: 'store_search_list',
+                                            heroTag: 'store_list',
                                             food: _con.foods.elementAt(index),
                                           );
                                         } else {

@@ -24,6 +24,7 @@ class RestaurantController extends ControllerMVC {
   List<Food> searchedItems = <Food>[];
   List<Food> allItems = <Food>[];
   bool allItemsLoaded = false;
+  var listRange = [0, 0];
 
   List<Category> aisles = <Category>[];
   List<Food> trendingFoods = <Food>[];
@@ -122,7 +123,6 @@ class RestaurantController extends ControllerMVC {
       Stream<Food> initialStream = await searchFoods(search, _address, storeID: idRestaurant);
       initialStream.listen((Food _food) {
           setState(() => this.searchedItems.add(_food));
-//          addItem(_food);
         }, onError: (a) {
           print(a);
         }, onDone: () async {
@@ -133,16 +133,10 @@ class RestaurantController extends ControllerMVC {
 
 
   void listenForIncrementalItems({String idRestaurant, int limit}) async {
-    if (allItemsLoaded && this.foods.length < allItems.length ){
-      if (this.foods.length + limit < allItems.length) {
-        setState(() => this.foods.addAll(List.from(allItems.sublist(this.foods.length, this.foods.length + limit))));
-      } else {
-        setState(() => this.foods.addAll(List.from(allItems.sublist(this.foods.length))));
-      }
-    } else {
       if (this.foods.isNotEmpty) {
         int lastItemID = int.parse(this.foods.last.id);
         String idRange = (lastItemID + 1).toString() + "-" + (lastItemID + limit).toString();
+        int oldItemListLen = this.listRange.elementAt(1);
         Stream<Food> actualStream = await getStoreItems(idRestaurant, id: idRange);
         actualStream.listen((Food _food) {
           addItem(_food);
@@ -150,10 +144,15 @@ class RestaurantController extends ControllerMVC {
         }, onError: (a) {
           print(a);
         }, onDone: () async {
-          print("-------- ${this.foods.length.toString()} Actual Items Added--------");
+          if (oldItemListLen == this.listRange.elementAt(1)) {
+            allItemsLoaded = true;
+            print("-------- ${this.foods.length.toString()} DONE--------");
+          } else {
+            print("-------- ${this.foods.length.toString()} Actual Items Added--------");
+          }
+
         });
       } else {
-
         Stream<Food> initialStream = await getStoreItems(idRestaurant, limit: limit.toString());
         initialStream.listen((Food _food) {
           addItem(_food);
@@ -163,26 +162,21 @@ class RestaurantController extends ControllerMVC {
           print("-------- ${this.foods.length.toString()} Initial Items Added--------");
         });
       }
-    }
+//    }
   }
 
 
-
-
-
-
-
-
-
-
-
   void addItem(Food _food) {
+    listRange.insert(1, listRange.elementAt(1) + 1);
     if (_food.ingredients != "<p>.</p>" && _food.ingredients != "0" && _food.ingredients != null) {
       var IDs = _food.ingredients.split('-');
-      if (IDs.elementAt(0) == _food.id)
+      if (IDs.elementAt(0) == _food.id) {
         setState(() => this.foods.add(_food));
+        allItems.add(_food);
+      }
     } else {
       setState(() => this.foods.add(_food));
+      allItems.add(_food);
     }
   }
 
@@ -192,7 +186,8 @@ class RestaurantController extends ControllerMVC {
     setState(() {
       searchedItems = <Food>[];
     });
-    await listenForSearchedFoods(search: search, idRestaurant: restaurant.id);
+    if (search != null)
+      await listenForSearchedFoods(search: search, idRestaurant: restaurant.id);
   }
 
 //  void listenForTrendingFoods(String idRestaurant) async {

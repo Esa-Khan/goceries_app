@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/elements/AislesItemWidget.dart';
 import 'package:food_delivery_app/src/models/food.dart';
+import 'package:food_delivery_app/src/models/restaurant.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../controllers/restaurant_controller.dart';
@@ -20,7 +21,8 @@ class MenuWidget extends StatefulWidget {
 
 class _MenuWidgetState extends StateMVC<MenuWidget> {
   RestaurantController _con;
-  int itemsToAdd = 300;
+  Restaurant store;
+
 
   _MenuWidgetState() : super(RestaurantController()) {
     _con = controller;
@@ -28,20 +30,12 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
 
   @override
   void initState() {
-    try {
-      List<Food> oldFoods = widget.routeArgument.param?.foods;
-      if  (oldFoods?.isNotEmpty){
-        _con.foods = List.from(oldFoods);
-      }
-    } catch(e) {
-
-    }
-
-    _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
-    _con.listenForAllItems(widget.routeArgument.id);
+    super.initState();
+    store = widget.routeArgument.param;
+//    _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
+//    _con.listenForAllItems(widget.routeArgument.id);
     _con.listenForCategories();
 //    _con.listenForTrendingFoods(widget.routeArgument.id);
-    super.initState();
   }
 
 
@@ -53,10 +47,6 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
 
   @override
   Widget build(BuildContext context) {
-//    loadAllItems();
-//    if (_con.foods.isNotEmpty) {
-//      _con.listenForSearchedFoods(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
-//    }
 
     return Scaffold(
       key: _con.scaffoldKey,
@@ -66,7 +56,8 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          _con.foods.isNotEmpty ? _con.foods[0].restaurant.name : '',
+          store.name,
+//          _con.foods.isNotEmpty ? _con.foods[0].restaurant.name : '',
           overflow: TextOverflow.fade,
           softWrap: false,
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 0)),
@@ -86,9 +77,14 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            _con.allItemsLoaded
-                ? SizedBox(height: 0)
-                : Center(child: SizedBox(width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5))),
+//            _con.allItemsLoaded
+//                ? SizedBox(height: 0)
+//                :
+//            Center(
+//                child: SizedBox(
+//                    width: 60,
+//                    height: 60,
+//                    child: CircularProgressIndicator(strokeWidth: 5))),
 //            Padding(
 //              padding: const EdgeInsets.symmetric(horizontal: 20),
 //              child: SearchBarWidget(),
@@ -143,8 +139,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                       return AislesItemWidget(
 //                          expanded: index == 0 ? true : false,
                           aisle: _con.aisles.elementAt(index),
-//                          foods: _con.foods,
-                          foods: getFoodsForAisle(_con.aisles.elementAt(index).id),
+                          store: store
                       );
 //                      return FoodItemWidget(
 //                        heroTag: 'menu_list',
@@ -158,17 +153,17 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
     );
   }
 
-  List<Food> getFoodsForAisle(String aisleID) {
-    List<Food> currFood = new List<Food>();
-    if (_con.foods != null) {
-      for (int i = 0; i < _con.foods.length; i++) {
-        if (_con.foods.elementAt(i).category.id == aisleID) {
-          currFood.add(_con.foods.elementAt(i));
-//          _con.foods.removeAt(i);
-        }
-      }
-    }
-    return currFood;
-  }
+//  List<Food> getFoodsForAisle(String aisleID) {
+//    List<Food> currFood = new List<Food>();
+//    if (_con.foods != null) {
+//      for (int i = 0; i < _con.foods.length; i++) {
+//        if (_con.foods.elementAt(i).category.id == aisleID) {
+//          currFood.add(_con.foods.elementAt(i));
+////          _con.foods.removeAt(i);
+//        }
+//      }
+//    }
+//    return currFood;
+//  }
 
   }

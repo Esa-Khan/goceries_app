@@ -66,7 +66,20 @@ class FoodItemWidget extends StatelessWidget {
                           maxLines: 2,
                           style: Theme.of(context).textTheme.subtitle1,
                         ),
-                        this.heroTag != 'store_search_list'
+                        SizedBox(height: 5),
+
+                        food.weight != "<p>.</p>" && food.weight.isNotEmpty && food.weight != "0"
+                        ? Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration:
+                          BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
+                          child: Text(
+                            food.weight,
+                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                          ),
+                        )
+                        : SizedBox(height: 0),
+                        this.heroTag != 'store_search_list' && this.heroTag != 'store_list'
                         ? Text(
                           food.restaurant.name,
                           overflow: TextOverflow.ellipsis,
