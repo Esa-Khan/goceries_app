@@ -4,6 +4,7 @@ import '../models/media.dart';
 class Category {
   String id;
   String name;
+  String desc;
   Media image;
   String aisleImage;
   var IDtoCategoryMap = {
@@ -34,7 +35,8 @@ class Category {
       id = jsonMap['id'].toString();
       name = jsonMap['name'];
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media();
-      aisleImage = IDtoCategoryMap[id].elementAt(1);
+//      aisleImage = IDtoCategoryMap[id].elementAt(1);
+      aisleImage = jsonMap['description'];
     } catch (e) {
       id = '';
       name = '';

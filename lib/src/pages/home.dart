@@ -179,6 +179,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
   }
 }
 
+
 class ImageDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -14,16 +14,19 @@ class AislesItemWidget extends StatefulWidget {
   @override
   _AislesItemWidgetState createState() => _AislesItemWidgetState();
   final category.Category aisle;
+  final bool expanded;
   final Restaurant store;
+  final List<Food> items;
+  final VoidCallback onPressed;
 
 
-  AislesItemWidget({Key key, this.aisle, this.store}) : super(key: key);
+
+  AislesItemWidget({Key key, this.expanded, this.aisle, this.store, this.items, this.onPressed}) : super(key: key);
 
  }
 
 class _AislesItemWidgetState extends State<AislesItemWidget> {
   CategoryController _con = new CategoryController();
-  bool expanded = false;
 
 
   @override
@@ -31,13 +34,6 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
     super.initState();
     _con.category = widget.aisle;
 //    _con.listenForFoodsByCategory(id: widget.aisle.id, storeID: widget.store.id);
-  }
-
-  void loadItems() async {
-    if (expanded && !_con.itemsLoaded){
-      await _con.listenForFoodsByCategory(id: widget.aisle.id, storeID: widget.store.id);
-      print(" ------------ Loaded Items: " + _con.foods.length.toString());
-    }
   }
 
   @override
@@ -69,16 +65,11 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                 child: Theme(
                   data: theme,
                   child: ExpansionTile(
-                    onExpansionChanged: (bool) async {
-                      setState(() => expanded = !expanded);
-                      await loadItems();
-                    },
-//                    initiallyExpanded: widget.expanded,
+                    onExpansionChanged: (bool) => widget.onPressed(),
                     title: Column(
                       children: <Widget>[
                         Text(
                           widget.aisle.name,
-//                          style: Theme.of(context).textTheme.headline2.apply(color: Theme.of(context).primaryColor),
                           style: TextStyle(
                               inherit: true,
                               fontSize: Theme.of(context).textTheme.headline2.fontSize,
@@ -106,31 +97,17 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                           textScaleFactor: 1.3,
                         ),
                       ],
-//                      crossAxisAlignment: CrossAxisAlignment.center,
-//                      mainAxisAlignment: MainAxisAlignment.center,
                     ),
-//                    trailing: Column(
-//                      crossAxisAlignment: CrossAxisAlignment.end,
-//                      mainAxisAlignment: MainAxisAlignment.center,
-//                    ),
                     children: <Widget>[
-//                      Column(
-//                          children: List.generate(
-//                        widget.order.foodOrders.length,
-//                        (indexFood) {
-//                          return FoodOrderItemWidget(
-//                              heroTag: 'mywidget.orders', order: widget.order, foodOrder: widget.order.foodOrders.elementAt(indexFood));
-//                        },
-//                      )),
                       SizedBox(height: 10),
-                      _con.foods.isEmpty
+                      widget.items.isEmpty
                       ? Center(heightFactor: 2,
                           child: SizedBox( width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5,)))
                       : ListView.separated(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: _con.foods.length,
+                        itemCount: widget.items.length,
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 10);
                         },
@@ -138,8 +115,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                         itemBuilder: (context, index) {
                             return FoodItemWidget(
                               heroTag: 'menu_list',
-//                              food: widget.foods.elementAt(index),
-                              food: _con.foods.elementAt(index),
+                              food: widget.items.elementAt(index),
                             );
                         },
                       ),

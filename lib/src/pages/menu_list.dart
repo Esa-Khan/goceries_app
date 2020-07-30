@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/elements/AislesItemWidget.dart';
 import 'package:food_delivery_app/src/models/food.dart';
 import 'package:food_delivery_app/src/models/restaurant.dart';
+import 'package:food_delivery_app/src/models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../controllers/restaurant_controller.dart';
@@ -32,10 +33,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   void initState() {
     super.initState();
     store = widget.routeArgument.param;
-//    _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
-//    _con.listenForAllItems(widget.routeArgument.id);
     _con.listenForCategories();
-//    _con.listenForTrendingFoods(widget.routeArgument.id);
   }
 
 
@@ -136,17 +134,32 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                       return SizedBox(height: 10);
                     },
                     itemBuilder: (context, index) {
+                      Category currAisle = _con.aisles.elementAt(index);
                       return AislesItemWidget(
-//                          expanded: index == 0 ? true : false,
-                          aisle: _con.aisles.elementAt(index),
-                          store: store
-                      );
-//                      return FoodItemWidget(
-//                        heroTag: 'menu_list',
-//                        food: _con.foods.elementAt(index),
-//                      );
-                    },
-                  ),
+                          expanded: _con.isExpandedList[currAisle.id],
+                          aisle: currAisle,
+                          store: store,
+                          items: _con.aisleItemsList[currAisle.id],
+                          onPressed: () async {
+                            if (!_con.isExpandedList[currAisle.id]) {
+                              _con.isExpandedList.forEach((key, value) {
+                                _con.isExpandedList[key] = false;
+                              });
+                              _con.isExpandedList[currAisle.id] = true;
+                            } else {
+                              _con.isExpandedList.forEach((key, value) {
+                                _con.isExpandedList[key] = false;
+                              });
+                            }
+
+                            if (!_con.isAisleLoadedList[currAisle.id] && _con.isExpandedList[currAisle.id]) {
+                              print("Tapped ${currAisle.name}");
+                              await _con.listenForFoodsByCategory(id: currAisle.id, storeID: store.id);
+                              _con.isAisleLoadedList[currAisle.id] = true;
+                            }
+                          });
+                    })
+
           ],
         ),
       ),
@@ -166,4 +179,4 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
 //    return currFood;
 //  }
 
-  }
+}

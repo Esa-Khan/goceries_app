@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/models/address.dart';
 import 'package:food_delivery_app/src/models/category.dart';
@@ -27,12 +29,14 @@ class RestaurantController extends ControllerMVC {
   var listRange = [0, 0];
 
   List<Category> aisles = <Category>[];
+  HashMap aisleItemsList = new HashMap<String, List<Food>>();
+  HashMap isExpandedList = new HashMap<String, bool>();
+  HashMap isAisleLoadedList = new HashMap<String, bool>();
+
   List<Food> trendingFoods = <Food>[];
   List<Food> featuredFoods = <Food>[];
   List<Review> reviews = <Review>[];
   GlobalKey<ScaffoldState> scaffoldKey;
-
-
 
 
   RestaurantController() {
@@ -60,11 +64,52 @@ class RestaurantController extends ControllerMVC {
   Future<void> listenForCategories() async {
     final Stream<Category> stream = await getCategories();
     stream.listen((Category _category) {
-      setState(() => aisles.add(_category));
+      if (_category.id.length < 3) {
+        setState(() {
+          aisles.add(_category);
+          isExpandedList[_category.id] = false;
+          isAisleLoadedList[_category.id] = false;
+          aisleItemsList[_category.id] = new List<Food>();
+        });
+      }
+
     }, onError: (a) {
       print(a);
     }, onDone: () {});
   }
+
+  void listenForFoodsByCategory({String id, String storeID, String message}) async {
+    if (!this.isAisleLoadedList[id]) {
+      final Stream<Food> stream = await getFoodsByCategory(id, storeID: storeID);
+      stream.listen((Food _food) {
+        addItemToAisle(_food, id);
+      }, onError: (a) {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).verify_your_internet_connection),
+        ));
+      }, onDone: () {
+        if (message != null) {
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text(message),
+          ));
+        }
+      });
+    }
+  }
+
+
+  void addItemToAisle(Food _food, String aisleID) {
+    listRange.insert(1, listRange.elementAt(1) + 1);
+    if (_food.ingredients != "<p>.</p>" && _food.ingredients != "0" && _food.ingredients != null) {
+      var IDs = _food.ingredients.split('-');
+      if (IDs.elementAt(0) == _food.id)
+        setState(() => aisleItemsList[aisleID].add(_food));
+
+    } else {
+      setState(() => aisleItemsList[aisleID].add(_food));
+    }
+  }
+
 
 
   void listenForGalleries(String idRestaurant) async {

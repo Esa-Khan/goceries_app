@@ -57,8 +57,8 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
     return widget.con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-            height: widget.con.runtimeType == DeliveryPickupController ? MediaQuery.of(context).size.height/2.6 : MediaQuery.of(context).size.height/3.8,
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+            height: widget.con.runtimeType == DeliveryPickupController ? 300 : 230,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.only(
@@ -110,7 +110,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                             ),
                           ),
                     replacement: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: Container(
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
@@ -352,10 +352,17 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                           style: Theme.of(context).textTheme.headline4.merge(
                               TextStyle(color: Theme.of(context).primaryColor)),
                         ),
-                      )
+                      ),
+
                     ],
                   ),
-//                  SizedBox(height: 10),
+                  SizedBox(height: 3),
+                  Text(
+                    "*Prices may vary slightly in actual bill due to price fluctuations",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.caption.merge(
+                        TextStyle(color: Theme.of(context).accentColor)),
+                  ),
                 ],
               ),
             ),

@@ -79,7 +79,7 @@ class FoodItemWidget extends StatelessWidget {
                           ),
                         )
                         : SizedBox(height: 0),
-                        this.heroTag != 'store_search_list' && this.heroTag != 'store_list'
+                        this.heroTag != 'store_search_list' && this.heroTag != 'store_list' && this.heroTag != 'menu_list'
                         ? Text(
                           food.restaurant.name,
                           overflow: TextOverflow.ellipsis,
