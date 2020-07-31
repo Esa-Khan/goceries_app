@@ -27,7 +27,8 @@ class Food {
   bool featured;
   bool deliverable;
   Restaurant restaurant;
-  Category category;
+//  Category category;
+  int category;
   List<Extra> extras;
   List<ExtraGroup> extraGroups;
   List<Review> foodReviews;
@@ -52,11 +53,7 @@ class Food {
       deliverable = jsonMap['deliverable'] ?? false;
       restaurant = jsonMap['restaurant'] != null ? Restaurant.fromJSON(jsonMap['restaurant']) : Restaurant.fromJSON({});
       price = price*restaurant.defaultTax + price;
-      try {
-        category = jsonMap['category_id'] != null ? Category.fromJSON(jsonMap['category_id']) : Category.fromJSON({});
-      } catch (e) {
-        category = jsonMap['category_id'] != null ? Category.fromID(jsonMap['category_id']) : Category.fromJSON({});
-      };
+      category = jsonMap['category_id'] != null ? jsonMap['category_id'] : 0;
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0])
                                                                                 : new Media();
       extras = jsonMap['extras'] != null && (jsonMap['extras'] as List).length > 0
@@ -84,54 +81,8 @@ class Food {
       featured = false;
       deliverable = false;
       restaurant = Restaurant.fromJSON({});
-      category = Category.fromJSON({});
-      image = new Media();
-      extras = [];
-      extraGroups = [];
-      foodReviews = [];
-      nutritions = [];
-      print(CustomTrace(StackTrace.current, message: e));
-    }
-  }
-
-
-
-  Food.fromID(int id) {
-    try {
-      FoodController _con = new FoodController();
-      _con.listenForFood(foodId: id.toString());
-      id = int.parse(_con.food.id);
-      name = _con.food.name;
-      price = _con.food.price;
-      discountPrice = _con.food.discountPrice;
-      description = _con.food.description;
-      ingredients = _con.food.ingredients;
-      weight = _con.food.weight;
-      unit = _con.food.unit;
-      packageItemsCount = _con.food.packageItemsCount;
-      featured = _con.food.featured;
-      deliverable = _con.food.deliverable;
-      restaurant = _con.food.restaurant;
-      category = _con.food.category;
-      image = _con.food.image;
-      extras = _con.food.extras;
-      extraGroups = _con.food.extraGroups;
-      foodReviews = _con.food.foodReviews;
-      nutritions = _con.food.nutritions;
-    } catch (e) {
-      id = 0;
-      name = '';
-      price = 0.0;
-      discountPrice = 0.0;
-      description = '';
-      weight = '';
-      ingredients = '';
-      unit = '';
-      packageItemsCount = '';
-      featured = false;
-      deliverable = false;
-      restaurant = Restaurant.fromJSON({});
-      category = Category.fromJSON({});
+//      category = Category.fromJSON({});
+      category = 0;
       image = new Media();
       extras = [];
       extraGroups = [];

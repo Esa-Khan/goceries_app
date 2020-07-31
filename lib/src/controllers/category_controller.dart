@@ -8,6 +8,7 @@ import '../models/food.dart';
 import '../repository/cart_repository.dart';
 import '../repository/category_repository.dart';
 import '../repository/food_repository.dart';
+import 'dart:collection';
 
 class CategoryController extends ControllerMVC {
   List<Food> foods = <Food>[];
@@ -17,27 +18,113 @@ class CategoryController extends ControllerMVC {
   bool loadCart = false;
   List<Cart> carts = [];
 
+  List<Category> aisles = <Category>[];
+  HashMap aisleToSubaisleMap = new HashMap<String, List<Category>>();
+  HashMap subaisleToItemsMap = new HashMap<String, List<Food>>();
+  HashMap isExpandedList = new HashMap<String, bool>();
+  HashMap isAisleLoadedList = new HashMap<String, bool>();
+
   CategoryController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
+
   }
 
-  void listenForFoodsByCategory({String id, String message}) async {
-    final Stream<Food> stream = await getFoodsByCategory(id);
-    stream.listen((Food _food) {
-      setState(() {
-        foods.add(_food);
-      });
-    }, onError: (a) {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
-      ));
-    }, onDone: () {
-      if (message != null) {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
+
+  Future<void> listenForCategories() async {
+    final Stream<Category> stream = await getCategories();
+    stream.listen((Category _category) {
+      if (_category.id.length > 2) {
+        String mainAisleID = _category.id.substring(_category.id.length - 2, _category.id.length);
+        mainAisleID = (int.parse(mainAisleID)).toString();
+        if (aisleToSubaisleMap[mainAisleID] == null) {
+          aisleToSubaisleMap[mainAisleID] = new List<Category>();
+          setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
+        } else {
+          setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
+        }
+        setState(() => subaisleToItemsMap[_category.id] = new List<Food>());
+      } else {
+        setState(() => aisles.add(_category));
       }
-    });
+        setState(() {
+          isExpandedList[_category.id] = false;
+          isAisleLoadedList[_category.id] = false;
+        });
+
+    }, onError: (a) {
+      print(a);
+    }, onDone: () {});
+  }
+
+
+//  Future<void> listenForSubCategories(String id) async {
+//    final Stream<Category> stream = await getCategories();
+//    stream.listen((Category _category) {
+//      if (_category.id.length > 2) {
+//        setState(() {
+//          subCategory.add(_category);
+//        });
+//      }
+//
+//    }, onError: (a) {
+//      print(a);
+//    }, onDone: () {});
+//  }
+
+
+  void listenForFoodsByCategory({String id, String message}) async {
+      final Stream<Food> stream = await getFoodsByCategory(id);
+      stream.listen((Food _food) {
+        setState(() => this.foods.add(_food));
+      }, onError: (a) {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).verify_your_internet_connection),
+        ));
+      }, onDone: () {
+        if (message != null) {
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text(message),
+          ));
+        }
+      });
+  }
+
+  void listenForItemsByCategory({String id, String storeID, String message}) async {
+    if (!this.isAisleLoadedList[id]) {
+      final Stream<Food> stream = await getFoodsByCategory(id, storeID: storeID);
+      stream.listen((Food _food) {
+        print("Loaded: ${_food.name}");
+        addItemToAisle(_food, id);
+      }, onError: (a) {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).verify_your_internet_connection),
+        ));
+      }, onDone: () {
+        if (message != null) {
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text(message),
+          ));
+        }
+      });
+    }
+  }
+
+
+  void addItemToAisle(Food _food, String aisleID) {
+    if (this.subaisleToItemsMap[aisleID] == null)
+      this.subaisleToItemsMap[aisleID] = new List<Food>();
+
+    if (_food.ingredients != "<p>.</p>" &&
+        _food.ingredients != "0" &&
+        _food.ingredients != null) {
+      var IDs = _food.ingredients.split('-');
+      if (IDs.elementAt(0) == _food.id)
+        setState(() => this.subaisleToItemsMap[aisleID].add(_food));
+//        subaisleToItemsMap[aisleID].add(_food);
+    } else {
+      setState(() => this.subaisleToItemsMap[aisleID].add(_food));
+//      subaisleToItemsMap[aisleID].add(_food);
+    }
   }
 
   void listenForCategory({String id, String message}) async {

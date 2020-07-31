@@ -6,6 +6,7 @@ import 'package:food_delivery_app/src/models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../controllers/restaurant_controller.dart';
+import '../controllers/category_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/DrawerWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
@@ -21,11 +22,11 @@ class MenuWidget extends StatefulWidget {
 }
 
 class _MenuWidgetState extends StateMVC<MenuWidget> {
-  RestaurantController _con;
+  CategoryController _con;
   Restaurant store;
 
 
-  _MenuWidgetState() : super(RestaurantController()) {
+  _MenuWidgetState() : super(CategoryController()) {
     _con = controller;
     }
 
@@ -36,12 +37,6 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
     _con.listenForCategories();
   }
 
-
-//  void loadAllItems() async {
-//    while (_con.allItems.isEmpty || _con.foods.length < _con.allItems.length){
-//      await _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: itemsToAdd);
-//    }
-//  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +49,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          store.name,
+          store == null ? "Store" : store.name,
 //          _con.foods.isNotEmpty ? _con.foods[0].restaurant.name : '',
           overflow: TextOverflow.fade,
           softWrap: false,
@@ -131,33 +126,36 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                     primary: false,
                     itemCount: _con.aisles.length,
                     separatorBuilder: (context, index) {
-                      return SizedBox(height: 10);
+                      return SizedBox(height: 20);
                     },
                     itemBuilder: (context, index) {
                       Category currAisle = _con.aisles.elementAt(index);
-                      return AislesItemWidget(
-                          expanded: _con.isExpandedList[currAisle.id],
-                          aisle: currAisle,
-                          store: store,
-                          items: _con.aisleItemsList[currAisle.id],
-                          onPressed: () async {
-                            if (!_con.isExpandedList[currAisle.id]) {
+                      if (_con.aisleToSubaisleMap[currAisle.id] == null) {
+                        return SizedBox(height: 10);
+                      } else {
+                        // Define a Aisle dropdown
+                        return AislesItemWidget(
+                            aisle: currAisle,
+                            store: store,
+                            items: _con.subaisleToItemsMap,
+                            subAisles: _con.aisleToSubaisleMap[currAisle.id],
+                            onPressed: (aisleVal) async {
                               _con.isExpandedList.forEach((key, value) {
                                 _con.isExpandedList[key] = false;
                               });
-                              _con.isExpandedList[currAisle.id] = true;
-                            } else {
-                              _con.isExpandedList.forEach((key, value) {
-                                _con.isExpandedList[key] = false;
-                              });
-                            }
+                              if (!_con.isExpandedList[aisleVal.id])
+                                _con.isExpandedList[aisleVal.id] = true;
 
-                            if (!_con.isAisleLoadedList[currAisle.id] && _con.isExpandedList[currAisle.id]) {
-                              print("Tapped ${currAisle.name}");
-                              await _con.listenForFoodsByCategory(id: currAisle.id, storeID: store.id);
-                              _con.isAisleLoadedList[currAisle.id] = true;
-                            }
-                          });
+                              if (aisleVal.id.length > 2 &&
+                                  !_con.isAisleLoadedList[aisleVal.id] &&
+                                  _con.isExpandedList[aisleVal.id]) {
+                                print(aisleVal.name);
+                                await _con.listenForItemsByCategory(id: aisleVal.id, storeID: store.id);
+                                _con.isAisleLoadedList[aisleVal.id] = true;
+                              }
+                            });
+                      }
+
                     })
 
           ],

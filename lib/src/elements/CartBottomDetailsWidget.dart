@@ -358,7 +358,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget>{
                   ),
                   SizedBox(height: 3),
                   Text(
-                    "*Prices may vary slightly in actual bill due to price fluctuations",
+                    "*Prices may vary on store receipt but this is official payable amount",
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.caption.merge(
                         TextStyle(color: Theme.of(context).accentColor)),

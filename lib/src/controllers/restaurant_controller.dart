@@ -1,8 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/models/address.dart';
-import 'package:food_delivery_app/src/models/category.dart';
+import '../models/address.dart';
+import '../models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -99,7 +99,6 @@ class RestaurantController extends ControllerMVC {
 
 
   void addItemToAisle(Food _food, String aisleID) {
-    listRange.insert(1, listRange.elementAt(1) + 1);
     if (_food.ingredients != "<p>.</p>" && _food.ingredients != "0" && _food.ingredients != null) {
       var IDs = _food.ingredients.split('-');
       if (IDs.elementAt(0) == _food.id)
