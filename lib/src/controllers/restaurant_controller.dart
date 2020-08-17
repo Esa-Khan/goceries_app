@@ -26,6 +26,7 @@ class RestaurantController extends ControllerMVC {
   List<Food> searchedItems = <Food>[];
   List<Food> allItems = <Food>[];
   bool allItemsLoaded = false;
+  bool isLoading = false;
   var listRange = [0, 0];
 
   List<Category> aisles = <Category>[];
@@ -177,17 +178,20 @@ class RestaurantController extends ControllerMVC {
 
 
   void listenForIncrementalItems({String idRestaurant, int limit}) async {
-      if (this.foods.isNotEmpty) {
+      if (!this.isLoading && this.foods.isNotEmpty) {
+        this.isLoading = true;
         int lastItemID = int.parse(this.foods.last.id);
         String idRange = (lastItemID + 1).toString() + "-" + (lastItemID + limit).toString();
         int oldItemListLen = this.listRange.elementAt(1);
         Stream<Food> actualStream = await getStoreItems(idRestaurant, id: idRange);
         actualStream.listen((Food _food) {
-          addItem(_food);
-
+          if (int.parse(foods.last.id) < int.parse(_food.id)) {
+            addItem(_food);
+          }
         }, onError: (a) {
           print(a);
         }, onDone: () async {
+          this.isLoading = false;
           if (oldItemListLen == this.listRange.elementAt(1)) {
             allItemsLoaded = true;
             print("-------- ${this.foods.length.toString()} DONE--------");
@@ -196,13 +200,15 @@ class RestaurantController extends ControllerMVC {
           }
 
         });
-      } else {
+      } else if (!this.isLoading) {
+        this.isLoading = true;
         Stream<Food> initialStream = await getStoreItems(idRestaurant, limit: limit.toString());
         initialStream.listen((Food _food) {
           addItem(_food);
         }, onError: (a) {
           print(a);
         }, onDone: () async {
+          this.isLoading = false;
           print("-------- ${this.foods.length.toString()} Initial Items Added--------");
         });
       }
@@ -212,7 +218,8 @@ class RestaurantController extends ControllerMVC {
 
   void addItem(Food _food) {
     listRange.insert(1, listRange.elementAt(1) + 1);
-    if (_food.ingredients != "<p>.</p>" && _food.ingredients != "0" && _food.ingredients != null) {
+    if (_food.ingredients != "<p>.</p>" && _food.ingredients != "0" &&
+        _food.ingredients != null) {
       var IDs = _food.ingredients.split('-');
       if (IDs.elementAt(0) == _food.id) {
         setState(() => this.foods.add(_food));

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
-import 'package:food_delivery_app/src/elements/ConfirmationDialogBox.dart';
-import 'package:food_delivery_app/src/elements/DeliveryAddressBottomSheetWidget.dart';
 import 'package:food_delivery_app/src/repository/settings_repository.dart';
 import 'package:food_delivery_app/src/repository/user_repository.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
@@ -13,15 +11,11 @@ import '../controllers/delivery_pickup_controller.dart';
 import '../elements/CartBottomDetailsWidget.dart';
 import '../elements/DeliveryAddressDialog.dart';
 import '../elements/DeliveryAddressesItemWidget.dart';
-import '../elements/NotDeliverableAddressesItemWidget.dart';
-import '../elements/PickUpMethodItemWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
-import '../controllers/delivery_addresses_controller.dart';
-import '../helpers/app_config.dart' as config;
 
 class DeliveryPickupWidget extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -59,9 +53,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       bottomNavigationBar: CartBottomDetailsWidget(con: _con),
       appBar: AppBar(
         leading: BackButton(
-          color: Theme
-              .of(context)
-              .accentColor,
+          color: Theme.of(context).accentColor,
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -76,9 +68,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(
-              iconColor: Theme
-                  .of(context)
-                  .hintColor,
+              iconColor: Theme.of(context).hintColor,
               labelColor: Theme
                   .of(context)
                   .accentColor),
@@ -131,45 +121,27 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                     contentPadding: EdgeInsets.symmetric(vertical: 0),
                     leading: Icon(
                       Icons.map,
-                      color: Theme
-                          .of(context)
-                          .hintColor,
+                      color: Theme.of(context).hintColor,
                     ),
                     title: Text(
-                      S
-                          .of(context)
-                          .delivery,
+                      S.of(context).delivery,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .headline4,
+                      style: Theme.of(context).textTheme.headline4,
                     ),
                     subtitle: _con.carts.isNotEmpty &&
                         Helper.canDelivery(_con.carts[0].food.restaurant,
                             carts: _con.carts)
                         ? Text(
-                      S
-                          .of(context)
-                          .click_to_confirm_your_address_and_pay_or_long_press,
+                      S.of(context).click_to_confirm_your_address_and_pay_or_long_press,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .caption,
+                      style: Theme.of(context).textTheme.caption,
                     )
-                        : Text(
-                      S
-                          .of(context)
-                          .deliveryMethodNotAllowed,
+                        : Text(S.of(context).deliveryMethodNotAllowed,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .caption,
+                      style: Theme.of(context).textTheme.caption,
                     ),
                   ),
                 ),

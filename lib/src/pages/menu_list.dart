@@ -126,12 +126,17 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                     primary: false,
                     itemCount: _con.aisles.length,
                     separatorBuilder: (context, index) {
-                      return SizedBox(height: 20);
+                      Category currAisle = _con.aisles.elementAt(index);
+                      if (_con.aisleToSubaisleMap[currAisle.id] == null) {
+                        return SizedBox(height: 0);
+                      } else {
+                        return SizedBox(height: 20);
+                      }
                     },
                     itemBuilder: (context, index) {
                       Category currAisle = _con.aisles.elementAt(index);
                       if (_con.aisleToSubaisleMap[currAisle.id] == null) {
-                        return SizedBox(height: 10);
+                        return SizedBox(height: 0);
                       } else {
                         // Define a Aisle dropdown
                         return AislesItemWidget(

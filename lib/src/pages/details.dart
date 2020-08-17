@@ -64,32 +64,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
   int oldNumOfItems = 0;
   loadMore() async {
-//    if (_scrollController.hasClients &&
-//        !_isLoading &&
-//        _scrollController.position?.extentBefore > 20000 &&
-//        _con.foods.length > numOfItemsToAdd * 2) {
-//      print("--------Too Many Items Loaded: ${_con.foods.length}----------");
-//      _con.listRange.insert(0, _con.listRange.elementAt(0) + (numOfItemsToAdd * 2).floor());
-//      await setState(() => _con.foods.removeRange(0, (numOfItemsToAdd).floor()));
-//
-//      print("--------Removed Items: ${_con.foods.length}----------");
-//
-//
-//
-//    } else if (!_isSearched && _scrollController.hasClients &&
-//        !_isLoading &&
-//        _scrollController.position?.extentBefore < 2000 &&
-//        _con.foods.isNotEmpty &&
-//        int.parse(_con.foods.elementAt(0).id) > int.parse(_con.allItems.elementAt(0).id)) {
-//        print("--------Top of List Items Pre-Loaded: ${_con.foods.length}----------");
-//        await setState(() => _con.foods.insertAll(0,
-//                _con.allItems.sublist((_con.listRange.elementAt(0) - numOfItemsToAdd).clamp(0, 50000),
-//                                        _con.listRange.elementAt(0))));
-//        print("--------Top of List Items Loaded: ${_con.foods.length}----------");
-//    }
-
-
-
     if (!_isSearched && _scrollController.hasClients &&
         !_isLoading &&
         _scrollController.position?.extentAfter < 30 &&
@@ -97,7 +71,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
         _con.foods.isNotEmpty &&
         !_con.allItemsLoaded) {
 
-//        print("-----LoadNext-----");
         setState(() => _isLoading = true);
         await _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: (numOfItemsToAdd).floor());
         setState(() => _isLoading = false);
@@ -347,6 +320,13 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                       _isSearched = true;
                                     });
                                   },
+                                  onChanged: (val) async {
+                                    if (val == "") {
+                                      setState(() => _isSearched = false);
+                                      _searchBarController.clear();
+                                      await _con.refreshSearch("");
+                                    }
+                                  },
                                   onTap: () {
                                     setState(() => _searchBarTapped = true);
                                   },
@@ -384,35 +364,34 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   SizedBox(height: 30)
                                 ],
                               )
-                                  : SizedBox(height: 0),
-                              _isSearched && _con.searchedItems.isEmpty
-                              ? SizedBox(height: 300)
-                              : _con.searchedItems.isNotEmpty
-                                ? ListView.separated(
-                                  padding: EdgeInsets.only(bottom: 40),
-                                  scrollDirection: Axis.vertical,
+                                  : _isSearched && _con.searchedItems.isEmpty
+                                      ? SizedBox(height: 300)
+                                      : _con.searchedItems.isNotEmpty
+                                        ? ListView.separated(
+                                          padding: EdgeInsets.only(bottom: 40),
+                                          scrollDirection: Axis.vertical,
 
-                                  shrinkWrap: true,
-                                  primary: false,
-                                  itemCount: _con.searchedItems.length,
-                                  separatorBuilder: (context, index) {
-                                    return SizedBox(height: 10);
-                                  },
-                                  itemBuilder: (context, index) {
-                                    if (index == _con.searchedItems.length - 1)
-                                      _isLoading = false;
+                                          shrinkWrap: true,
+                                          primary: false,
+                                          itemCount: _con.searchedItems.length,
+                                          separatorBuilder: (context, index) {
+                                            return SizedBox(height: 10);
+                                          },
+                                          itemBuilder: (context, index) {
+                                            if (index == _con.searchedItems.length - 1)
+                                              _isLoading = false;
 
-                                    if (_con.searchedItems.isNotEmpty) {
-                                      return FoodItemWidget(
-                                        heroTag: 'store_search_list',
-                                        food: _con.searchedItems.elementAt(index),
-                                      );
-                                    } else {
-                                      return SizedBox(height: 0);
-                                    }
+                                            if (_con.searchedItems.isNotEmpty) {
+                                              return FoodItemWidget(
+                                                heroTag: 'store_search_list',
+                                                food: _con.searchedItems.elementAt(index),
+                                              );
+                                            } else {
+                                              return SizedBox(height: 0);
+                                            }
 
-                                  },
-                                )
+                                          },
+                                        )
 
                               : _con.foods.isEmpty
 //                                  ? CircularLoadingWidget(height: 100)

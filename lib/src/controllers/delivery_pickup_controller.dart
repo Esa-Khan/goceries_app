@@ -215,4 +215,12 @@ class DeliveryPickupController extends CartController {
     });
   }
 
+
+  void showTimingSnack() {
+    scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      content: Text("Delivery not available at that time."),
+      duration: Duration(seconds: 2),
+    ));
+  }
+
 }

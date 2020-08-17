@@ -42,6 +42,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _con.scaffoldKey,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -125,7 +126,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    height: MediaQuery.of(context).size.height/3.5, //210,
+                    height: 190,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
@@ -174,7 +175,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
 //                              Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
 //                            ],
 //                          ),
-                          Divider(height: 20),
+                          Divider(height: 10),
                           Row(
                             children: <Widget>[
                               Expanded(
@@ -186,7 +187,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               Helper.getPrice(_con.total, context, style: Theme.of(context).textTheme.headline6)
                             ],
                           ),
-                          SizedBox(height: 20),
+                          Divider(height: 10),
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 40,
                             height: MediaQuery.of(context).size.height/12,
