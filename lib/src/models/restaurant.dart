@@ -82,7 +82,8 @@ class Restaurant {
     if (desc == null) return true;
 
     bool closed = true;
-    var now = new DateTime.now().hour + new DateTime.now().minute/100;
+//    var now = new DateTime.now().hour + new DateTime.now().minute/100;
+    var now = 12;
     var times = desc.toString().replaceAll(" ", "").replaceAll("m", "").replaceAll("<p>", "").replaceAll("</p>", "").split('-');
     var openTime_hour = -1, closeTime_hour = -1, openTime_min = 0, closeTime_min = 0;
 

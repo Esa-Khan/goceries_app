@@ -120,7 +120,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                     ),
 
                     children: <Widget>[
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
 
                       widget.subAisles != null && widget.subAisles?.isNotEmpty
                       ? ListView.separated(
@@ -129,7 +129,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                         primary: false,
                         itemCount: widget.subAisles.length,
                         separatorBuilder: (context, index) {
-                          return SizedBox(height: 10);
+                          return const SizedBox(height: 10);
                         },
                         // ignore: missing_return
                         itemBuilder: (context, index) {
@@ -210,7 +210,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                             ],
                                           ),
                                           children: <Widget>[
-                                            SizedBox(height: 10),
+                                            const SizedBox(height: 10),
                                             items == null || items.isEmpty
                                             ? Center(heightFactor: 2, child: SizedBox(width: 60, height: 60,
                                                     child: CircularProgressIndicator(

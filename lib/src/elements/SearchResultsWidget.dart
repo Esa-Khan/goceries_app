@@ -82,7 +82,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
               : Expanded(
                   child: ListView(
                     children: <Widget>[
-                      _con.restaurants.isEmpty ? SizedBox(height: 0) :
+                      _con.restaurants.isEmpty ? const SizedBox(height: 0) :
                       Padding(
                         padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
                         child: ListTile(
@@ -94,7 +94,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                           ),
                         ),
                       ),
-                      _con.restaurants.isEmpty ? SizedBox(height: 0) :
+                      _con.restaurants.isEmpty ? const SizedBox(height: 0) :
                       ListView.builder(
                         shrinkWrap: true,
                         primary: false,
@@ -132,7 +132,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                         primary: false,
                         itemCount: _con.foods.length,
                         separatorBuilder: (context, index) {
-                          return SizedBox(height: 10);
+                          return const SizedBox(height: 10);
                         },
                         itemBuilder: (context, index) {
                           return FoodItemWidget(
@@ -144,7 +144,7 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                     ],
                   ),
                 ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ],
       ),
     );

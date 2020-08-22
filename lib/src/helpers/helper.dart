@@ -213,7 +213,8 @@ class Helper {
     if (_unit == 'km') {
       _deliveryRange /= 1.60934;
     }
-    _can &= _restaurant.availableForDelivery && (_restaurant.distance <= _deliveryRange) && !deliveryAddress.value.isUnknown();
+//    _can &= _restaurant.availableForDelivery && (_restaurant.distance <= _deliveryRange) && !deliveryAddress.value.isUnknown();
+    _can &= _restaurant.availableForDelivery && (_restaurant.distance <= _deliveryRange);
     return _can;
   }
 
@@ -286,7 +287,9 @@ class Helper {
 
   static String getCreditCardNumber(String number) {
     String result = '';
-    if (number != null && number.isNotEmpty && number.length == 16) {
+    number.replaceAll(" ", "");
+//    if (number != null && number.isNotEmpty && number.length == 16) {
+    if (number != null && number.isNotEmpty) {
       result = number.substring(0, 4);
       result += ' ' + number.substring(4, 8);
       result += ' ' + number.substring(8, 12);

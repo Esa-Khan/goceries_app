@@ -40,7 +40,7 @@ class _EmptyNotificationsWidgetState extends State<EmptyNotificationsWidget> {
                   backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
                 ),
               )
-            : SizedBox(),
+            : const SizedBox(),
         Container(
           alignment: AlignmentDirectional.center,
           padding: EdgeInsets.symmetric(horizontal: 30),
@@ -92,7 +92,7 @@ class _EmptyNotificationsWidgetState extends State<EmptyNotificationsWidget> {
                   )
                 ],
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               Opacity(
                 opacity: 0.4,
                 child: Text(
@@ -101,7 +101,7 @@ class _EmptyNotificationsWidgetState extends State<EmptyNotificationsWidget> {
                   style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),
               ),
-              SizedBox(height: 50),
+              const SizedBox(height: 50),
               !loading
                   ? FlatButton(
                       onPressed: () {
@@ -115,7 +115,7 @@ class _EmptyNotificationsWidgetState extends State<EmptyNotificationsWidget> {
                         style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
                       ),
                     )
-                  : SizedBox(),
+                  : const SizedBox(),
             ],
           ),
         ),

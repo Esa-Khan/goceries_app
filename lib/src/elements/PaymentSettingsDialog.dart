@@ -21,7 +21,6 @@ class PaymentSettingsDialog extends StatefulWidget {
 class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
   GlobalKey<FormState> _paymentSettingsFormKey = new GlobalKey<FormState>();
   TextEditingController creditNumberCon = TextEditingController();
-  TextEditingController expCon = TextEditingController();
 
   @override
   void initState() {
@@ -90,16 +89,15 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                             new LengthLimitingTextInputFormatter(19),
                             new CardNumberInputFormatter()
                           ],
-                          controller: creditNumberCon,
+//                          controller: creditNumberCon,
                           decoration: getInputDecoration(hintText: '4242 4242 4242 4242', labelText: S.of(context).number),
-                          initialValue: widget.creditCard.number.isNotEmpty ? widget.creditCard.number : null,
+                          initialValue: widget.creditCard.number != null && widget.creditCard.number.isNotEmpty ? widget.creditCard.number : 'Test',
 //                          validator: (input) => input.trim().length != 16 ? S.of(context).not_a_valid_number : null,
                           validator: (input) => validateCardNumWithLuhnAlgorithm(input),
                           onSaved: (input) => widget.creditCard.number = input,
                         ),
                         new TextFormField(
                             style: TextStyle(color: Theme.of(context).hintColor),
-                            controller: expCon,
                             keyboardType: TextInputType.datetime,
                             inputFormatters: [
                               WhitelistingTextInputFormatter.digitsOnly,
@@ -134,7 +132,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                     children: <Widget>[
                       MaterialButton(
                         onPressed: () {
-                          creditNumberCon.clear();
+//                          creditNumberCon.clear();
                           Navigator.pop(context);
                         },
                         child: Text(S.of(context).cancel),
@@ -194,6 +192,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
       return "Number is invalid";
     }
     int sum = 0;
+    input = input.replaceAll(" ", "");
     int length = input.length;
     for (var i = 0; i < length; i++) {
       // get digits in reverse order

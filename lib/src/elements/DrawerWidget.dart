@@ -46,7 +46,9 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Theme.of(context).accentColor,
-                      backgroundImage: NetworkImage(currentUser.value.image.thumb),
+                      backgroundImage: currentUser.value.image.thumb == 'https://goceries.org/images/image_default.png'
+                          ? AssetImage('assets/img/profile_picture.jpg')
+                          : NetworkImage(currentUser.value.image.thumb),
                     ),
                   )
                 : Container(

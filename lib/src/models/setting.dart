@@ -21,6 +21,10 @@ class Setting {
   String scaffoldDarkColor;
   String scaffoldColor;
   String googleMapsKey;
+  String whatsapp_number;
+  String facebook_url;
+  String instagram_url;
+  String phone_number;
   ValueNotifier<Locale> mobileLanguage = new ValueNotifier(Locale('en', ''));
   String appVersion;
   bool enableVersion = true;
@@ -53,6 +57,10 @@ class Setting {
       payPalEnabled = jsonMap['enable_paypal'] == null || jsonMap['enable_paypal'] == '0' ? false : true;
       stripeEnabled = jsonMap['enable_stripe'] == null || jsonMap['enable_stripe'] == '0' ? false : true;
       razorPayEnabled = jsonMap['enable_razorpay'] == null || jsonMap['enable_razorpay'] == '0' ? false : true;
+      whatsapp_number = jsonMap['whatsapp_number'];
+      facebook_url = jsonMap['facebook_url'];
+      instagram_url = jsonMap['instagram_url'];
+      phone_number = jsonMap['phone_number'];
       try {
         deliveryFeeLimit = double.parse(jsonMap['delivery_fee_limit']);
       } catch (e) {

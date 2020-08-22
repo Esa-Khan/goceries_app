@@ -94,7 +94,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
                         ),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 15),
                       TextFormField(
                         keyboardType: TextInputType.emailAddress,
                         onSaved: (input) => _con.user.email = input,
@@ -111,7 +111,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
                         ),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 15),
                       TextFormField(
                         obscureText: _con.hidePassword,
                         onSaved: (input) => _con.user.password = input,
@@ -126,9 +126,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           prefixIcon: Icon(Icons.lock_outline, color: Theme.of(context).accentColor),
                           suffixIcon: IconButton(
                             onPressed: () {
-                              setState(() {
-                                _con.hidePassword = !_con.hidePassword;
-                              });
+                              setState(() => _con.hidePassword = !_con.hidePassword);
                             },
                             color: Theme.of(context).focusColor,
                             icon: Icon(_con.hidePassword ? Icons.visibility_off : Icons.visibility),
@@ -138,9 +136,10 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
                         ),
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 15),
                       TextFormField(
                         obscureText: _con.hidePassword,
+                        onSaved: (input) => _con.user.confirm_password = input,
                         validator: (input) {
                           if (input.length < 3) {
                             return S.of(context).should_be_more_than_3_letters;
@@ -158,12 +157,10 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           prefixIcon: Icon(Icons.lock_outline, color: Theme.of(context).accentColor),
                           suffixIcon: IconButton(
                             onPressed: () {
-                              setState(() {
-                                _con.hidePassword = !_con.hidePassword;
-                              });
+                              setState(() => _con.hidePassword = !_con.hidePassword);
                             },
                             color: Theme.of(context).focusColor,
-                            icon: Icon(_con.hidePassword ? Icons.visibility : Icons.visibility_off),
+                            icon: Icon(_con.hidePassword ? Icons.visibility_off : Icons.visibility),
                           ),
                           border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
                           focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.5))),
@@ -211,7 +208,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                 textColor: Theme.of(context).hintColor,
                 child: Text(S.of(context).i_have_account_back_to_login),
               ),
-            )
+            ),
           ],
         ),
       ),

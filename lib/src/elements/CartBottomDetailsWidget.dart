@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:food_delivery_app/src/controllers/delivery_pickup_controller.dart';
-import 'package:food_delivery_app/src/pages/delivery_pickup.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
 import '../helpers/helper.dart';
-import '../helpers/app_config.dart' as config;
 import 'package:food_delivery_app/src/repository/settings_repository.dart';
+import 'OrderNotesWidget.dart';
 
 
 class CartBottomDetailsWidget extends StatefulWidget{
@@ -55,8 +54,8 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
     return widget.con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-      height: widget.con.runtimeType == DeliveryPickupController ? 260 : 193,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            height: widget.con.runtimeType == DeliveryPickupController ? 260 : 200,
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
           color: Theme
               .of(context)
@@ -336,18 +335,10 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                 if (Helper.canDelivery(widget.con.carts[0].food.restaurant,
                     carts: widget.con.carts) &&
                     widget.con.subTotal < setting.value.deliveryFeeLimit)
-                  Helper.getPrice(
-                      widget.con.carts[0].food.restaurant.deliveryFee, context,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .subtitle1)
+                  Helper.getPrice(widget.con.carts[0].food.restaurant.deliveryFee, context,
+                      style: Theme.of(context).textTheme.subtitle1)
                 else
-                  Helper.getPrice(0, context,
-                      style: Theme
-                          .of(context)
-                          .textTheme
-                          .subtitle1)
+                  Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
               ],
             ),
 //                  Row(
@@ -367,46 +358,25 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
               alignment: AlignmentDirectional.centerEnd,
               children: <Widget>[
                 SizedBox(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width - 40,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height / 12,
+                  width: MediaQuery.of(context).size.width - 40,
+                  height: 60,
                   child: FlatButton(
                       onPressed: () => checkout(),
                       disabledColor:
-                      Theme
-                          .of(context)
-                          .focusColor
-                          .withOpacity(0.5),
+                      Theme.of(context).focusColor.withOpacity(0.5),
                       padding: EdgeInsets.symmetric(
                           vertical: 14, horizontal: 25),
                       color: !widget.con.carts[0].food.restaurant.closed
-                          ? Theme
-                          .of(context)
-                          .accentColor
-                          : Theme
-                          .of(context)
-                          .focusColor
+                          ? Theme.of(context).accentColor
+                          : Theme.of(context).focusColor
                           .withOpacity(0.5),
                       shape: StadiumBorder(),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          S
-                              .of(context)
-                              .checkout,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyText1
-                              .merge(
-                              TextStyle(color: Theme
-                                  .of(context)
-                                  .primaryColor, fontSize: 20)),
+                          S.of(context).checkout,
+                          style: Theme.of(context).textTheme.bodyText1.merge(
+                              TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
                         ),
                       )
                   ),
@@ -416,14 +386,9 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                   child: Helper.getPrice(
                     widget.con.total,
                     context,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headline4
+                    style: Theme.of(context).textTheme.headline4
                         .merge(
-                        TextStyle(color: Theme
-                            .of(context)
-                            .primaryColor)),
+                        TextStyle(color: Theme.of(context).primaryColor)),
                   ),
                 ),
 
@@ -459,7 +424,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
           var desc = widget.con.carts[0].food?.restaurant?.description;
           var now = int.parse(_time.trim().split(':')[0]) + int.parse(_time.trim().split(':')[1])/100;
 
-          var times = desc.toString().replaceAll(" ", "").replaceAll("m", "").replaceAll("<p>", "").replaceAll("</p>", "").split('-');
+          var times = desc.replaceAll(" ", "").replaceAll("m", "").replaceAll("<p>", "").replaceAll("</p>", "").split('-');
           var openTime_hour = -1, closeTime_hour = -1, openTime_min = 0, closeTime_min = 0;
 
           if (times[0].contains(":")) {
@@ -489,12 +454,29 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
           if (now >= (openTime_hour + openTime_min/100) && now <= (closeTime_hour + closeTime_min/100)) {
             widget.con.goCheckout(context, _date + " " + _time);
           } else {
-            widget.con.showTimingSnack();
+            desc = desc.replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("-", " - ");
+            widget.con.showTimingSnack(desc);
           }
 
         }
 
       }
     }
+  }
+
+}
+
+class _SystemPadding extends StatelessWidget {
+  final Widget child;
+
+  _SystemPadding({Key key, this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    return new AnimatedContainer(
+        padding: mediaQuery.viewInsets,
+        duration: const Duration(milliseconds: 300),
+        child: child);
   }
 }

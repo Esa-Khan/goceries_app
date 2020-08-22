@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/elements/FoodItemWidget.dart';
 import 'package:food_delivery_app/src/elements/SimilarItemListWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'dart:async';
 
 import '../../generated/l10n.dart';
 import '../controllers/food_controller.dart';
@@ -30,6 +31,8 @@ class FoodWidget extends StatefulWidget {
 
 class _FoodWidgetState extends StateMVC<FoodWidget> {
   FoodController _con;
+  Timer _timer;
+  bool hasTimedout = false;
 
   _FoodWidgetState() : super(FoodController()) {
     _con = controller;
@@ -43,32 +46,40 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     super.initState();
   }
 
-  @override
-  Widget build(BuildContext context) {
-
-    void addToCart() {
-      if (currentUser.value.apiToken == null) {
-        Navigator.of(context).pushNamed("/Login");
+  void addToCart() {
+    if (currentUser.value.apiToken == null) {
+      Navigator.of(context).pushNamed("/Login");
+    } else {
+      if (_con.isSameRestaurants(_con.food)) {
+        _con.addToCart(_con.food);
       } else {
-        if (_con.isSameRestaurants(_con.food)) {
-          _con.addToCart(_con.food);
-        } else {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              // return object of type Dialog
-              return AddToCartAlertDialogWidget(
-                  oldFood: _con.carts.elementAt(0)?.food,
-                  newFood: _con.food,
-                  onPressed: (food, {reset: true}) {
-                    return _con.addToCart(_con.food, reset: true);
-                  });
-            },
-          );
-        }
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AddToCartAlertDialogWidget(
+                oldFood: _con.carts.elementAt(0)?.food,
+                newFood: _con.food,
+                onPressed: (food, {reset: true}) {
+                  return _con.addToCart(_con.food, reset: true);
+                });
+          },
+        );
       }
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    if (!hasTimedout) {
+      _timer = new Timer(const Duration(seconds: 10), () {
+        if (mounted) {
+          setState(() => hasTimedout = true);
+          print("--------------TIMEDOUT------------");
+          _timer.cancel();
+        }
+      });
+    }
 
     return Scaffold(
       key: _con.scaffoldKey,
@@ -298,7 +309,21 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                 ),
 
                                 _con.similarItems == null || _con.similarItems.isEmpty
-                                    ? SizedBox(height: 0)
+                                    ? hasTimedout
+                                      ? const SizedBox()
+                                      : Column(
+                                            children: <Widget>[
+                                              Center(
+                                                  heightFactor: 2,
+                                                  child: SizedBox(
+                                                      width: 60,
+                                                      height: 60,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                              strokeWidth: 5))),
+                                              SizedBox(height: 300)
+                                            ],
+                                          )
                                     : ListTile(
                                   dense: true,
                                   contentPadding: EdgeInsets.symmetric(vertical: 0),
@@ -312,7 +337,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   ),
                                 ),
                                 _con.similarItems == null || _con.similarItems.isEmpty
-                                ? SizedBox(height: 0)
+                                ? const SizedBox(height: 0)
                                 : ListView.separated(
                                     padding: EdgeInsets.only(bottom: 80),
                                     scrollDirection: Axis.vertical,
@@ -361,10 +386,10 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                     top: 32,
                     right: 20,
                     child: _con.loadCart
-                        ? SizedBox(
+                        ? const SizedBox(
                             width: 60,
                             height: 60,
-                            child: RefreshProgressIndicator(),
+                            child: const RefreshProgressIndicator(),
                           )
                         : ShoppingCartFloatButtonWidget(
                             iconColor: Theme.of(context).primaryColor,
@@ -492,7 +517,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                           ],
                         ),
                       ),

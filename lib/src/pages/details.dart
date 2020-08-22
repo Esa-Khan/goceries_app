@@ -49,7 +49,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
     _con.listenForRestaurant(id: widget.routeArgument.id);
     _con.listenForGalleries(widget.routeArgument.id);
 //    _con.listenForAllItems(widget.routeArgument.id);
-    _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: numOfItemsToAdd);
 //    _con.listenForRestaurantReviews(id: widget.routeArgument.id);
     _scrollController.addListener(loadMore);
 
@@ -86,8 +85,11 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (_initialLoading && _con.foods.isNotEmpty)
+    if (_initialLoading && _con.foods.isNotEmpty) {
       _initialLoading = false;
+    } else if (_initialLoading && _con.restaurant != null) {
+      _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: numOfItemsToAdd);
+    }
 
 
     return Scaffold(
@@ -99,7 +101,6 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-//          S.of(context).delivery,
             _con.restaurant?.name ?? '',
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
@@ -127,7 +128,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
         body: RefreshIndicator(
           onRefresh: _con.refreshRestaurant,
           child: _con.restaurant == null
-              ? CircularLoadingWidget(height: 500)
+//              ? CircularLoadingWidget(height: 500)
+              ? Center(child: SizedBox(width: 90, height: 90, child: CircularProgressIndicator(strokeWidth: 5)))
               : Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
@@ -305,6 +307,13 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                     S.of(context).store,
                                     style: Theme.of(context).textTheme.headline4,
                                   ),
+                                  subtitle: _isSearched
+                                                    ? Text(
+                                                        "Search Results",
+                                                        style: Theme.of(context).textTheme.caption)
+                                                    : Text(
+                                                        "Featured Items and Discounts.",
+                                                    style: Theme.of(context).textTheme.caption),
                                 ),
                               ),
 
@@ -395,8 +404,13 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
                               : _con.foods.isEmpty
 //                                  ? CircularLoadingWidget(height: 100)
-                                  ? Center(heightFactor: 2,
-                                          child: SizedBox( width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5,)))
+                                  ? Column (
+                                children: <Widget>[
+                                  Center(heightFactor: 2,
+                                      child: SizedBox( width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5))),
+                                      SizedBox(height: 300)
+                                ],
+                              )
                                   : ListView.separated(
                                       padding: EdgeInsets.only(bottom: 40),
                                       scrollDirection: Axis.vertical,
@@ -423,7 +437,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                       },
                                     ),
 
-                              !_initialLoading && _isLoading && _hasMore
+                              !_initialLoading && _isLoading && _hasMore && !_isSearching
                                   ? Center(child: SizedBox(width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5)))
                                   : SizedBox(height: 0),
                               SizedBox(height: 30)

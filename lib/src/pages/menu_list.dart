@@ -4,6 +4,7 @@ import 'package:food_delivery_app/src/models/food.dart';
 import 'package:food_delivery_app/src/models/restaurant.dart';
 import 'package:food_delivery_app/src/models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'dart:async';
 
 import '../controllers/restaurant_controller.dart';
 import '../controllers/category_controller.dart';
@@ -24,6 +25,8 @@ class MenuWidget extends StatefulWidget {
 class _MenuWidgetState extends StateMVC<MenuWidget> {
   CategoryController _con;
   Restaurant store;
+  Timer _timer;
+  bool hasTimedout = false;
 
 
   _MenuWidgetState() : super(CategoryController()) {
@@ -35,12 +38,21 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
     super.initState();
     store = widget.routeArgument.param;
     _con.listenForCategories();
+
+    if (!hasTimedout) {
+      _timer = new Timer(const Duration(seconds: 10), () {
+        if (mounted) {
+          setState(() => hasTimedout = true);
+          print("--------------TIMEDOUT------------");
+          _timer.cancel();
+        }
+      });
+    }
   }
 
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _con.scaffoldKey,
       drawer: DrawerWidget(),
@@ -64,7 +76,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 10, bottom: 50),
+        padding: const EdgeInsets.only(top: 10, bottom: 50),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -116,9 +128,10 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
 //              ),
 //            ),
 
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
 
-            _con.aisles.isEmpty
+//            _con.aisles.isEmpty && !hasTimedout
+            !_con.hasAislesLoaded
                 ? CircularLoadingWidget(height: 250)
                 : ListView.separated(
                     scrollDirection: Axis.vertical,
@@ -128,15 +141,15 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                     separatorBuilder: (context, index) {
                       Category currAisle = _con.aisles.elementAt(index);
                       if (_con.aisleToSubaisleMap[currAisle.id] == null) {
-                        return SizedBox(height: 0);
+                        return const SizedBox();
                       } else {
-                        return SizedBox(height: 20);
+                        return const SizedBox(height: 20);
                       }
                     },
                     itemBuilder: (context, index) {
                       Category currAisle = _con.aisles.elementAt(index);
                       if (_con.aisleToSubaisleMap[currAisle.id] == null) {
-                        return SizedBox(height: 0);
+                        return const SizedBox();
                       } else {
                         // Define a Aisle dropdown
                         return AislesItemWidget(

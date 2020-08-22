@@ -273,14 +273,31 @@ Future<Stream<Food>> getTrendingFoodsOfRestaurant(String restaurantId) async {
   }
 }
 
-Future<Stream<Food>> getFeaturedFoodsOfRestaurant(String restaurantId) async {
+Future<Stream<Food>> getFeaturedFoodsOfRestaurant(String storeID, {String limit, String id}) async {
   Uri uri = Helper.getUri('api/foods');
+  Map<String, dynamic> _queryParams = {};
   uri = uri.replace(queryParameters: {
     'with': 'restaurant',
-    'search': 'restaurant_id:$restaurantId;featured:1',
+    'search': 'restaurant_id:$storeID;featured:1',
     'searchFields': 'restaurant_id:=;featured:=',
     'searchJoin': 'and',
   });
+  _queryParams['with'] = 'restaurant';
+  _queryParams['search'] = 'restaurant_id:$storeID;featured:1';
+  _queryParams['searchFields'] = 'restaurant_id:=;featured:=';
+  _queryParams['searchJoin'] = 'and';
+  if (id != null)
+    _queryParams['id'] = id;
+
+  if (storeID != null && limit != null) {
+    _queryParams['restaurant_id'] = storeID;
+    _queryParams['limit'] = limit;
+  } else if (storeID != null){
+    _queryParams['restaurant_id'] = storeID;
+  } else {
+    _queryParams['limit'] = '10';
+  }
+  uri = uri.replace(queryParameters: _queryParams);
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));

@@ -44,7 +44,7 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                 title: Row(
                   children: <Widget>[
                     Icon(Icons.person),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Text(
                       S.of(context).profile_settings,
                       style: Theme.of(context).textTheme.bodyText1,
@@ -99,7 +99,7 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     children: <Widget>[
                       MaterialButton(
@@ -118,7 +118,7 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
                     ],
                     mainAxisAlignment: MainAxisAlignment.end,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                 ],
               );
             });

@@ -44,7 +44,7 @@ class RestaurantController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void listenForRestaurant({String id, String message}) async {
+  Future<void> listenForRestaurant({String id, String message}) async {
     final Stream<Restaurant> stream = await getRestaurant(id, deliveryAddress.value);
     stream.listen((Restaurant _restaurant) {
       setState(() => restaurant = _restaurant);
@@ -183,7 +183,12 @@ class RestaurantController extends ControllerMVC {
         int lastItemID = int.parse(this.foods.last.id);
         String idRange = (lastItemID + 1).toString() + "-" + (lastItemID + limit).toString();
         int oldItemListLen = this.listRange.elementAt(1);
-        Stream<Food> actualStream = await getStoreItems(idRestaurant, id: idRange);
+        Stream<Food> actualStream;
+        if (restaurant.information == 'S') {
+          actualStream = await getFeaturedFoodsOfRestaurant(idRestaurant, id: idRange);
+        } else {
+          actualStream = await getStoreItems(idRestaurant, id: idRange);
+        }
         actualStream.listen((Food _food) {
           if (int.parse(foods.last.id) < int.parse(_food.id)) {
             addItem(_food);
@@ -202,7 +207,12 @@ class RestaurantController extends ControllerMVC {
         });
       } else if (!this.isLoading) {
         this.isLoading = true;
-        Stream<Food> initialStream = await getStoreItems(idRestaurant, limit: limit.toString());
+        Stream<Food> initialStream;
+        if (restaurant.information == 'S') {
+          initialStream = await getFeaturedFoodsOfRestaurant(idRestaurant, limit: limit.toString());
+        } else {
+          initialStream = await getStoreItems(idRestaurant, limit: limit.toString());
+        }
         initialStream.listen((Food _food) {
           addItem(_food);
         }, onError: (a) {

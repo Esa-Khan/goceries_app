@@ -30,7 +30,11 @@ class HomeController extends ControllerMVC {
   Future<void> listenForCategories() async {
     final Stream<Category> stream = await getCategories();
     stream.listen((Category _category) {
-      setState(() => categories.add(_category));
+      if (_category.id.length > 2 && _category.name != 'Misc.') {
+        setState(() {
+          categories.add(_category);
+        });
+      }
     }, onError: (a) {
       print(a);
     }, onDone: () {});
@@ -84,14 +88,14 @@ class HomeController extends ControllerMVC {
     setState(() {
       categories = <Category>[];
       closestStores = <Restaurant>[];
-      popularRestaurants = <Restaurant>[];
+//      popularRestaurants = <Restaurant>[];
       recentReviews = <Review>[];
-      trendingFoods = <Food>[];
+//      trendingFoods = <Food>[];
     });
     await listenForClosestStores();
 //    await listenForTrendingFoods();
     await listenForCategories();
 //    await listenForPopularRestaurants();
-//    await listenForRecentReviews();
+    await listenForRecentReviews();
   }
 }

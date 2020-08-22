@@ -62,7 +62,7 @@ class TrackingController extends ControllerMVC {
                 style: Theme.of(context).textTheme.caption,
                 overflow: TextOverflow.ellipsis,
               )
-            : SizedBox(height: 0),
+            : const SizedBox(height: 0),
         content: SizedBox(
             width: double.infinity,
             child: Text(

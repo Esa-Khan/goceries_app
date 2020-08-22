@@ -126,7 +126,6 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                 Positioned(
                   bottom: 0,
                   child: Container(
-                    height: 190,
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                     decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
@@ -149,7 +148,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               Helper.getPrice(_con.subTotal, context, style: Theme.of(context).textTheme.subtitle1)
                             ],
                           ),
-                          SizedBox(height: 3),
+                          const SizedBox(height: 3),
                           Row(
                             children: <Widget>[
                               Expanded(
@@ -175,7 +174,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
 //                              Helper.getPrice(_con.taxAmount, context, style: Theme.of(context).textTheme.subtitle1)
 //                            ],
 //                          ),
-                          Divider(height: 10),
+                          const Divider(height: 10),
                           Row(
                             children: <Widget>[
                               Expanded(
@@ -187,7 +186,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               Helper.getPrice(_con.total, context, style: Theme.of(context).textTheme.headline6)
                             ],
                           ),
-                          Divider(height: 10),
+                          const Divider(height: 10),
                           SizedBox(
                             width: MediaQuery.of(context).size.width - 40,
                             height: MediaQuery.of(context).size.height/12,
@@ -203,7 +202,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               },
                               padding: EdgeInsets.symmetric(vertical: 14),
                               color: Theme.of(context).accentColor,
-                              shape: StadiumBorder(),
+                              shape: const StadiumBorder(),
                               child: Text(
                                 S.of(context).confirm_payment,
                                 textAlign: TextAlign.start,
@@ -211,7 +210,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                         ],
                       ),
                     ),

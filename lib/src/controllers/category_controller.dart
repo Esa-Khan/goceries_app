@@ -19,6 +19,7 @@ class CategoryController extends ControllerMVC {
   List<Cart> carts = [];
 
   List<Category> aisles = <Category>[];
+  bool hasAislesLoaded = false;
   HashMap aisleToSubaisleMap = new HashMap<String, List<Category>>();
   HashMap subaisleToItemsMap = new HashMap<String, List<Food>>();
   HashMap isExpandedList = new HashMap<String, bool>();
@@ -53,7 +54,9 @@ class CategoryController extends ControllerMVC {
 
     }, onError: (a) {
       print(a);
-    }, onDone: () {});
+    }, onDone: () {
+      setState(() => hasAislesLoaded = true);
+    });
   }
 
 

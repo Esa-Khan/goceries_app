@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/elements/SocialMediaOrdering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -26,7 +27,6 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends StateMVC<HomeWidget> {
   HomeController _con;
-  bool firstStart = true;
   _HomeWidgetState() : super(HomeController()) {
     _con = controller;
   }
@@ -34,7 +34,12 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
   @override
   void initState() {
     super.initState();
-//    WidgetsBinding.instance.addPostFrameCallback((_) => showPopup());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (settingsRepo.firstStart.value && settingsRepo.deliveryAddress.value?.address == null) {
+        _con.requestForCurrentLocation(context);
+      }
+    });
   }
 
 //void showPopup() async {
@@ -46,6 +51,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    settingsRepo.firstStart.value = false;
     return Scaffold(
       appBar: AppBar(
         leading: new IconButton(
@@ -76,7 +82,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
       body: RefreshIndicator(
         onRefresh: _con.refreshHome,
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -94,7 +100,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                 padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
                 child: ListTile(
                   dense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 0),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 0),
                   leading: Icon(
                     Icons.stars,
                     color: Theme.of(context).hintColor,
@@ -134,11 +140,11 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                 ),
               ),
               CardsCarouselWidget(restaurantsList: _con.closestStores, heroTag: 'home_top_restaurants'),
+              SocialMediaOrdering(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListTile(
                   dense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 0),
                   leading: Icon(
                     Icons.category,
                     color: Theme.of(context).hintColor,
@@ -149,14 +155,13 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                   ),
                 ),
               ),
-              CategoriesCarouselWidget(
-                categories: _con.categories,
-              ),
+//              CategoriesCarouselWidget(categories: _con.categories),
+              CategoriesCarouselWidget(categories: _con.categories),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: ListTile(
                   dense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 20),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 20),
                   leading: Icon(
                     Icons.recent_actors,
                     color: Theme.of(context).hintColor,
@@ -199,12 +204,12 @@ class ImageDialog extends StatelessWidget {
             width: double.infinity,
             height: 82,
           ),
-          errorWidget: (context, url, error) => Icon(Icons.error),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
         ),
       ),
       elevation: 10,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30.0))),
+      shape: const RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(30.0))),
     );
   }
 }

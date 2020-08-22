@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -154,86 +155,88 @@ class _DeliveryAddressBottomSheetWidgetState extends StateMVC<DeliveryAddressBot
                     ],
                   ),
                 ),
-                ListView.separated(
-                  padding: EdgeInsets.symmetric(vertical: 25),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  primary: false,
-                  itemCount: _con.addresses.length,
-                  separatorBuilder: (context, index) {
-                    return SizedBox(height: 25);
-                  },
-                  itemBuilder: (context, index) {
-//                return DeliveryAddressesItemWidget(
-//                  address: _con.addresses.elementAt(index),
-//                  onPressed: (Address _address) {
-//                    _con.chooseDeliveryAddress(_address);
-//                  },
-//                  onLongPress: (Address _address) {
-//                    DeliveryAddressDialog(
-//                      context: context,
-//                      address: _address,
-//                      onChanged: (Address _address) {
-//                        _con.updateAddress(_address);
-//                      },
-//                    );
-//                  },
-//                  onDismissed: (Address _address) {
-//                    _con.removeDeliveryAddress(_address);
-//                  },
-//                );
-                    return InkWell(
-                      onTap: () {
-                        _con.changeDeliveryAddress(_con.addresses.elementAt(index)).then((value) {
-                          Navigator.of(widget.scaffoldKey.currentContext).pop();
-                        });
+                _con.addresses.isNotEmpty
+                  ? CircularLoadingWidget(height: 200)
+                  : ListView.separated(
+                      padding: EdgeInsets.symmetric(vertical: 25),
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemCount: _con.addresses.length,
+                      separatorBuilder: (context, index) {
+                        return SizedBox(height: 25);
                       },
-                      child: _con.addresses == null || _con.addresses.first.address == null || _con.addresses.first.id == 'null'
-                          ? SizedBox(height: 0)
-                          : Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            height: 36,
-                            width: 36,
-                            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: Theme.of(context).focusColor),
-                            child: Icon(
-                              Icons.place,
-                              color: Theme.of(context).primaryColor,
-                              size: 22,
-                            ),
-                          ),
-                          SizedBox(width: 15),
-                          Flexible(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        _con.addresses.elementAt(index).address,
-                                        overflow: TextOverflow.ellipsis,
-                                        maxLines: 3,
-                                        style: Theme.of(context).textTheme.bodyText2,
+                      itemBuilder: (context, index) {
+    //                return DeliveryAddressesItemWidget(
+    //                  address: _con.addresses.elementAt(index),
+    //                  onPressed: (Address _address) {
+    //                    _con.chooseDeliveryAddress(_address);
+    //                  },
+    //                  onLongPress: (Address _address) {
+    //                    DeliveryAddressDialog(
+    //                      context: context,
+    //                      address: _address,
+    //                      onChanged: (Address _address) {
+    //                        _con.updateAddress(_address);
+    //                      },
+    //                    );
+    //                  },
+    //                  onDismissed: (Address _address) {
+    //                    _con.removeDeliveryAddress(_address);
+    //                  },
+    //                );
+                        return InkWell(
+                          onTap: () {
+                            _con.changeDeliveryAddress(_con.addresses.elementAt(index)).then((value) {
+                              Navigator.of(widget.scaffoldKey.currentContext).pop();
+                            });
+                          },
+                          child: _con.addresses == null || _con.addresses.first.address == null || _con.addresses.first.id == 'null'
+                              ? SizedBox(height: 0)
+                              : Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                height: 36,
+                                width: 36,
+                                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(5)), color: Theme.of(context).focusColor),
+                                child: Icon(
+                                  Icons.place,
+                                  color: Theme.of(context).primaryColor,
+                                  size: 22,
+                                ),
+                              ),
+                              SizedBox(width: 15),
+                              Flexible(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            _con.addresses.elementAt(index).address,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 3,
+                                            style: Theme.of(context).textTheme.bodyText2,
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                    SizedBox(width: 8),
+                                    Icon(
+                                      Icons.keyboard_arrow_right,
+                                      color: Theme.of(context).focusColor,
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(width: 8),
-                                Icon(
-                                  Icons.keyboard_arrow_right,
-                                  color: Theme.of(context).focusColor,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
               ],
             ),
           ),

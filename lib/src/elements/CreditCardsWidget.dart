@@ -95,7 +95,8 @@ class CreditCardsWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.caption,
                 ),
                 Text(
-                  Helper.getCreditCardNumber(creditCard.number),
+//                  Helper.getCreditCardNumber(creditCard.number),
+                  creditCard.number,
                   style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                 ),
                 SizedBox(height: 15),
