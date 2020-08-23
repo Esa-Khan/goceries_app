@@ -11,6 +11,7 @@ import '../repository/category_repository.dart';
 import '../repository/food_repository.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/settings_repository.dart';
+import '../repository/user_repository.dart' as userRepo;
 
 class HomeController extends ControllerMVC {
   List<Category> categories = <Category>[];

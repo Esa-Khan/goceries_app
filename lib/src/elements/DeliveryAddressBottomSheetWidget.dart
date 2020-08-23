@@ -155,8 +155,8 @@ class _DeliveryAddressBottomSheetWidgetState extends StateMVC<DeliveryAddressBot
                     ],
                   ),
                 ),
-                _con.addresses.isNotEmpty
-                  ? CircularLoadingWidget(height: 200)
+                _con.addresses.isEmpty
+                  ? CircularLoadingWidget(height: 100)
                   : ListView.separated(
                       padding: EdgeInsets.symmetric(vertical: 25),
                       scrollDirection: Axis.vertical,

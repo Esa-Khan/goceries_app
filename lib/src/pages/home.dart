@@ -35,10 +35,15 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (settingsRepo.firstStart.value && settingsRepo.deliveryAddress.value?.address == null) {
-        _con.requestForCurrentLocation(context);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (currentUser.value.apiToken == null && settingsRepo.firstStart.value && settingsRepo.deliveryAddress.value?.address == null) {
+        settingsRepo.firstStart.value = false;
+        await _con.requestForCurrentLocation(context);
+        setState(() {settingsRepo.deliveryAddress.value.address;});
+      } else {
+
       }
+      settingsRepo.firstStart.value = false;
     });
   }
 
@@ -51,7 +56,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    settingsRepo.firstStart.value = false;
     return Scaffold(
       appBar: AppBar(
         leading: new IconButton(

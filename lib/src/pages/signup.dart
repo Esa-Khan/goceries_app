@@ -129,7 +129,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                               setState(() => _con.hidePassword = !_con.hidePassword);
                             },
                             color: Theme.of(context).focusColor,
-                            icon: Icon(_con.hidePassword ? Icons.visibility_off : Icons.visibility),
+                            icon: Icon(_con.hidePassword ? Icons.visibility : Icons.visibility_off),
                           ),
                           border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
                           focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.5))),
