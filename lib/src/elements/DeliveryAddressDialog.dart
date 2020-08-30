@@ -12,22 +12,19 @@ import '../controllers/user_controller.dart';
 class DeliveryAddressDialog {
   BuildContext context;
   Address address;
-  int phone;
+  String phone;
   ValueChanged<Address> onChanged;
   GlobalKey<FormState> _deliveryAddressFormKey = new GlobalKey<FormState>();
+  TextEditingController phoneTextCon = new TextEditingController(text: currentUser.value.phone);
 
   DeliveryAddressDialog({this.context, this.address, this.onChanged}) {
-
-
+    phoneTextCon.text = currentUser.value.phone;
     String validatePhone(String input){
       if (input.trim().length == 0){
         return "Invalid: Cannot leave empty";
 
       } else if(int.tryParse(input) == null){
         return "Invalid: Only numbers allowed";
-
-      } else if(input.trim().length != 11){
-        return "Invalid: Needs to be 11 digits";
 
       } else {
         return null;
@@ -86,14 +83,15 @@ class DeliveryAddressDialog {
                       child: new TextFormField(
                         style: TextStyle(color: Theme.of(context).hintColor),
                         keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
+                        controller: phoneTextCon,
                         inputFormatters: [
                           WhitelistingTextInputFormatter.digitsOnly,
                           new LengthLimitingTextInputFormatter(11)
                         ],
                         decoration: getInputDecoration(hintText: "03001234567", labelText: S.of(context).phone_number),
-                        initialValue: currentUser.value.phone?.isNotEmpty ?? false ? currentUser.value.phone : null,
+//                        initialValue: currentUser.value.phone?.isNotEmpty ?? false ? currentUser.value.phone : "",
                         validator: (input) => validatePhone(input),
-                        onSaved: (input) => currentUser.value.phone = input,
+//                        onSaved: (input) => currentUser.value.phone = input,
                       ),
                     ),
                     SizedBox(
@@ -155,7 +153,11 @@ class DeliveryAddressDialog {
     if (_deliveryAddressFormKey.currentState.validate()) {
       _deliveryAddressFormKey.currentState.save();
       onChanged(address);
+      currentUser.value.phone = phoneTextCon.value.text;
+      update(currentUser.value);
       Navigator.pop(context);
     }
   }
+
+
 }

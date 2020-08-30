@@ -25,13 +25,24 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
   void listenForAddresses({String message}) async {
     final Stream<model.Address> stream = await userRepo.getAddresses();
     stream.listen((model.Address _address) {
-      setState(() {
-        if (_address.isDefault){
-          addresses.insert(0, _address);
+        bool repeatingAddress = false;
+        this.addresses.forEach((element) {
+          if (element.id == _address.id || element.address == _address.address){
+            element = _address;
+            repeatingAddress = true;
+          }
+        });
+        if (!repeatingAddress && _address.address != null && _address.id != null){
+          if (_address.isDefault){
+//          deliveryAddress = _address;
+            setState(() => addresses.insert(0, _address));
+          } else {
+//          deliveryAddress = _address;
+            setState(() => addresses.add(_address));
+          }
         } else {
-          addresses.add(_address);
+          repeatingAddress = false;
         }
-      });
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -45,6 +56,30 @@ class DeliveryAddressesController extends ControllerMVC with ChangeNotifier {
       }
     });
   }
+
+//  void listenForAddresses({String message}) async {
+//    final Stream<model.Address> stream = await userRepo.getAddresses();
+//    stream.listen((model.Address _address) {
+//      setState(() {
+//        if (_address.isDefault){
+//          addresses.insert(0, _address);
+//        } else {
+//          addresses.add(_address);
+//        }
+//      });
+//    }, onError: (a) {
+//      print(a);
+//      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//        content: Text(S.of(context).verify_your_internet_connection),
+//      ));
+//    }, onDone: () {
+//      if (message != null) {
+//        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//          content: Text(message),
+//        ));
+//      }
+//    });
+//  }
 
   void listenForCart() async {
     final Stream<Cart> stream = await getCart();

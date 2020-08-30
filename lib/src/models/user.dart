@@ -33,6 +33,7 @@ class User {
       } catch (e) {
         phone = "";
       }
+      phone = jsonMap['number'];
       try {
         address = jsonMap['custom_fields']['address']['view'];
       } catch (e) {
@@ -60,6 +61,7 @@ class User {
       map["device_token"] = deviceToken;
     }
     map["phone"] = phone;
+    map["number"] = phone;
     map["address"] = address;
     map["bio"] = bio;
     map["media"] = image?.toMap();

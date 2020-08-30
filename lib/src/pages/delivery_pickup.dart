@@ -186,43 +186,47 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   primary: false,
 //                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   itemBuilder: (context, index) {
-                    return DeliveryAddressesItemWidget(
-                      paymentMethod: _con.getDeliveryMethod(),
-                      address: _con.deliveryAddress.elementAt(index),
-                      onPressed: (Address _address) {
-                        if (_address.id == null || _address.id == 'null' || currentUser.value.phone == null || currentUser.value.phone == "") {
+                    if (_con.deliveryAddress.elementAt(index).address != null && _con.deliveryAddress.elementAt(index).id != null) {
+                      return DeliveryAddressesItemWidget(
+                        paymentMethod: _con.getDeliveryMethod(),
+                        address: _con.deliveryAddress.elementAt(index),
+                        onPressed: (Address _address) {
+                          if (_address.id == null || _address.id == 'null' || currentUser.value.phone == null || currentUser.value.phone == "") {
+                            DeliveryAddressDialog(
+                              context: context,
+                              address: _address,
+                              onChanged: (Address _address) {
+                                _con.toggleDelivery(currAddress: _address);
+//                              _con.addAddress(_address);
+                              },
+                            );
+
+                          } else {
+                            _con.toggleDelivery(currAddress: _address);
+                          }
+                        },
+                        onLongPress: (Address _address) {
                           DeliveryAddressDialog(
                             context: context,
                             address: _address,
                             onChanged: (Address _address) {
-                              _con.toggleDelivery(currAddress: _address);
-//                              _con.addAddress(_address);
+                              _con.updateAddress(_address);
                             },
                           );
+                        },
+                        onDismissed: (Address _address) {
+                          _con.removeDeliveryAddress(_address);
+                        },
+                      );
+                    } else {
+                      return SizedBox(height: 0);
+                    }
 
-                        } else {
-                          _con.toggleDelivery(currAddress: _address);
-                        }
-                      },
-                      onLongPress: (Address _address) {
-                        DeliveryAddressDialog(
-                          context: context,
-                          address: _address,
-                          onChanged: (Address _address) {
-                            _con.updateAddress(_address);
-                          },
-                        );
-                      },
-                      onDismissed: (Address _address) {
-                        _con.removeDeliveryAddress(_address);
-                      },
-                    );
                   },
                 )
           : CircularLoadingWidget(height: 150),
 
                 SizedBox(height: 30),
-
                 InkWell(
                   splashColor: Theme.of(context).accentColor,
                   focusColor: Theme.of(context).accentColor,
@@ -251,8 +255,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       color: Theme.of(context).primaryColor.withOpacity(0.9),
                       boxShadow: [
                         BoxShadow(
-                            color:
-                                Theme.of(context).focusColor.withOpacity(0.1),
+                            color: Theme.of(context).focusColor.withOpacity(0.1),
                             blurRadius: 5,
                             offset: Offset(0, 2)),
                       ],
@@ -315,10 +318,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   focusColor: Theme.of(context).accentColor,
                   highlightColor: Theme.of(context).primaryColor,
                   onTap: () {
-                    _con.changeDeliveryAddressToCurrentLocation().then((value) {
-                      setState(() { });
-//                      Navigator.of(widget.scaffoldKey.currentContext).pop();
-                    });
+                    _con.changeDeliveryAddressToCurrentLocation();
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
