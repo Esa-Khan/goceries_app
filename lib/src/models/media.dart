@@ -1,6 +1,7 @@
 import 'package:global_configuration/global_configuration.dart';
 
 import '../helpers/custom_trace.dart';
+import 'package:http/http.dart' as http;
 
 class Media {
   String id;
@@ -14,6 +15,20 @@ class Media {
     url = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
     thumb = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
     icon = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+  }
+
+
+  Media.fromURL (String image_url) {
+        try {
+          url = image_url;
+          thumb = image_url;
+          icon = image_url;
+        } catch (e) {
+          url = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+          thumb = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+          icon = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
+          print(CustomTrace(StackTrace.current, message: e));
+        }
   }
 
   Media.fromJSON(Map<String, dynamic> jsonMap) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:food_delivery_app/src/controllers/delivery_pickup_controller.dart';
+import 'package:food_delivery_app/src/repository/cart_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
@@ -35,18 +36,17 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
 class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
   bool _isVisible = false;
-  String _date = "Set Day";
-  String _time = "Set Time";
+  TextEditingController textCont = new TextEditingController();
 
 
   void showScheduler() {
-    setState(() {
-      _isVisible = !_isVisible;
-      if (!_isVisible) {
-        _date = "Set Day";
-        _time = "Set Time";
-      }
-    });
+    setState(() => _isVisible = !_isVisible);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    textCont = TextEditingController(text: currentCart_note.value);
   }
 
   @override
@@ -54,7 +54,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
     return widget.con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-            height: widget.con.runtimeType == DeliveryPickupController ? 260 : 200,
+            height: 260,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
           color: Theme
@@ -81,10 +81,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            widget.con.runtimeType == DeliveryPickupController
-                ? Visibility(
-              visible: !_isVisible,
-              child: Padding(
+            Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: Container(
                   child: Column(
@@ -99,17 +96,86 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                             .of(context)
                             .primaryColor,
                         onPressed: () {
-                          showScheduler();
+                          showDialog(
+                          context: context,
+                          builder: (context)
+                          {
+                            textCont.text = currentCart_note.value;
+                            return SimpleDialog(
+                              //            contentPadding: EdgeInsets.symmetric(horizontal: 20),
+                              titlePadding: EdgeInsets.fromLTRB(16, 25, 16, 0),
+                              title: Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.speaker_notes,
+                                    color: Theme
+                                        .of(context)
+                                        .hintColor,
+                                  ),
+                                  SizedBox(width: 15),
+                                  Expanded(
+                                    child: Text(
+                                      "If you need a specific item or want to let our team know something about this order:",
+                                      style: Theme.of(context).textTheme.bodyText1,
+//                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.fade,
+                                      maxLines: 5,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              contentPadding: EdgeInsets.fromLTRB(
+                                  20, 10, 16, 0),
+                              children: <Widget>[
+                                TextField(
+                                  keyboardType: TextInputType.multiline,
+                                  controller: textCont,
+                                  minLines: 1,
+                                  //Normal textInputField will be displayed
+                                  maxLines: 20, // when user presses enter it will adapt to it
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: <Widget>[
+                                    MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        S.of(context).cancel,
+                                        style: TextStyle(color: Theme.of(context).hintColor),
+                                      ),
+                                    ),
+                                    MaterialButton(
+                                      onPressed: () {
+                                        currentCart_note.value = textCont.value.text;
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        S.of(context).okay,
+                                        style: TextStyle(color: Theme.of(context).accentColor),
+                                      ),
+                                    ),
+                                  ],
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                ),
+                              ],
+                            );
+                          }
+                          );
                         },
                         child: Container(
                             alignment: Alignment.center,
                             height: 50.0,
                             child: Text(
-                              "Schedule Pickup/Delivery for Later",
+                              currentCart_note.value == ""
+                              ? "Couldn't find an item or have special instructions? Let us know!"
+                              : currentCart_note.value.length < 80
+                                ? currentCart_note.value
+                                : currentCart_note.value.toString().substring(0, 80) + "...",
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Theme
-                                      .of(context)
-                                      .accentColor),
+                                  color: Theme.of(context).accentColor),
                             )
                         ),
                       ),
@@ -117,205 +183,16 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                   ),
                 ),
               ),
-              replacement: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                child: Container(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        elevation: 4.0,
-                        onPressed: () {
-                          DatePicker.showDatePicker(context,
-                              theme: DatePickerTheme(
-                                itemHeight: 100.0,
-                              ),
-                              showTitleActions: true,
-                              minTime: DateTime.now(),
-                              maxTime: DateTime(DateTime
-                                  .now()
-                                  .year, DateTime
-                                  .now()
-                                  .month + 1, 31),
-                              onConfirm: (date) {
-                                _date =
-                                '${date.day}/${date.month}/${date.year}';
-                                setState(() {});
-                              },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.en);
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 50.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.date_range,
-                                          size: 18.0,
-                                          color:
-                                          Theme
-                                              .of(context)
-                                              .accentColor,
-                                        ),
-                                        Text(
-                                          " $_date",
-                                          style: TextStyle(
-                                              color: Theme
-                                                  .of(context)
-                                                  .accentColor,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14.0),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        color: Theme
-                            .of(context)
-                            .primaryColor,
-                      ),
-                      SizedBox(width: 10),
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.0)),
-                        elevation: 4.0,
-                        onPressed: () {
-                          DatePicker.showTimePicker(context,
-                              theme: DatePickerTheme(
-                                containerHeight: 190.0,
-                              ),
-                              showTitleActions: true,
-                              onConfirm: (time) {
-                                _time = '${time.hour} : ${time.minute.toString()
-                                    .padLeft(2, '0')}';
-                                setState(() {});
-                              },
-                              currentTime: DateTime.now(),
-                              locale: LocaleType.en,
-                              showSecondsColumn: false);
-                          setState(() {});
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          height: 50.0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Container(
-                                    child: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.access_time,
-                                          size: 18.0,
-                                          color:
-                                          Theme
-                                              .of(context)
-                                              .accentColor,
-                                        ),
-                                        Text(
-                                          " $_time",
-                                          style: TextStyle(
-                                              color: Theme
-                                                  .of(context)
-                                                  .accentColor,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15.0),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        color: Theme
-                            .of(context)
-                            .primaryColor,
-                      ),
-                      SizedBox(width: 10),
-                      ButtonTheme(
-                          minWidth: 10.0,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(100.0)),
-                            elevation: 4.0,
-                            onPressed: () {
-                              showScheduler();
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50.0,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Row(
-                                    children: <Widget>[
-                                      Container(
-                                        child: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.highlight_off,
-                                              size: 40.0,
-                                              color:
-                                              Theme
-                                                  .of(context)
-                                                  .accentColor,
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            color: Theme
-                                .of(context)
-                                .primaryColor,
-                          )
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-                : SizedBox(height: 0),
             Row(
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    S
-                        .of(context)
-                        .subtotal,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyText1,
+                    S.of(context).subtotal,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
                 Helper.getPrice(widget.con.subTotal, context,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .subtitle1)
+                    style: Theme.of(context).textTheme.subtitle1)
               ],
             ),
             SizedBox(height: 5),
@@ -323,13 +200,8 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    S
-                        .of(context)
-                        .delivery_fee,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodyText1,
+                    S.of(context).delivery_fee,
+                    style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
                 if (Helper.canDelivery(widget.con.carts[0].food.restaurant,
@@ -398,10 +270,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
             Text(
               "*Prices may vary on store receipt but this is official payable amount",
               textAlign: TextAlign.center,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .caption
+              style: Theme.of(context).textTheme.caption
                   .merge(
                   TextStyle(color: Theme
                       .of(context)
@@ -414,69 +283,8 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
   }
 
   void checkout() {
-    if (widget.con.runtimeType == CartController) {
       widget.con.goCheckout(context);
-    } else {
-      if (!_isVisible || (_date == "Set Day" && _time == "Set Time")) {
-        widget.con.goCheckout(context);
-      } else {
-        if (_time != "Set Time") {
-          var desc = widget.con.carts[0].food?.restaurant?.description;
-          var now = int.parse(_time.trim().split(':')[0]) + int.parse(_time.trim().split(':')[1])/100;
-
-          var times = desc.replaceAll(" ", "").replaceAll("m", "").replaceAll("<p>", "").replaceAll("</p>", "").split('-');
-          var openTime_hour = -1, closeTime_hour = -1, openTime_min = 0, closeTime_min = 0;
-
-          if (times[0].contains(":")) {
-            openTime_min = int.parse(times[0].substring(times[0].indexOf(':') + 1, times[0].length-1));
-            times[0] = times[0].replaceAll(":" + openTime_min.toString(), "");
-          }
-
-          if (times[0].endsWith('a') || (times[1].contains("12") && times[1].endsWith("p"))){
-            openTime_hour = int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
-          } else if (times[0].endsWith('p') || (times[1].contains("12") && times[1].endsWith("a"))) {
-            openTime_hour = 12 + int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
-          }
-
-          if (times[1].contains(":")) {
-            closeTime_min = int.parse(times[1].substring(times[1].indexOf(':') + 1, times[1].length-1));
-            times[1] = times[1].replaceAll(":" + closeTime_min.toString(), "");
-          }
-
-          if (times[1].endsWith('p') || (times[1].contains("12") && times[1].endsWith("a"))){
-            closeTime_hour = 12 + int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
-          } else if ((times[1].endsWith('a') && int.parse(times[1].replaceAll("a", "")) > openTime_hour) || (times[1].contains("12") && times[1].endsWith("p"))) {
-            closeTime_hour = int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
-          } else if (times[1].endsWith("a") && int.parse(times[1].replaceAll("a", "")) < openTime_hour) {
-            closeTime_hour = 24 + int.parse(times[1].replaceAll("a", ""));
-          }
-
-          if (now >= (openTime_hour + openTime_min/100) && now <= (closeTime_hour + closeTime_min/100)) {
-            widget.con.goCheckout(context, _date + " " + _time);
-          } else {
-            desc = desc.replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("-", " - ");
-            widget.con.showTimingSnack(desc);
-          }
-
-        }
-
-      }
-    }
   }
 
 }
 
-class _SystemPadding extends StatelessWidget {
-  final Widget child;
-
-  _SystemPadding({Key key, this.child}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var mediaQuery = MediaQuery.of(context);
-    return new AnimatedContainer(
-        padding: mediaQuery.viewInsets,
-        duration: const Duration(milliseconds: 300),
-        child: child);
-  }
-}

@@ -26,7 +26,8 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   CategoryController _con;
   Restaurant store;
   Timer _timer;
-  bool hasTimedout = false;
+//  bool hasTimedout = false;
+  bool hasTimedout = true;
 
 
   _MenuWidgetState() : super(CategoryController()) {
@@ -37,17 +38,17 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   void initState() {
     super.initState();
     store = widget.routeArgument.param;
-    _con.listenForCategories();
+    _con.listenForUsedCategories(store.used_cats);
 
-    if (!hasTimedout) {
-      _timer = new Timer(const Duration(seconds: 10), () {
-        if (mounted) {
-          setState(() => hasTimedout = true);
-          print("--------------TIMEDOUT------------");
-          _timer.cancel();
-        }
-      });
-    }
+//    if (!hasTimedout) {
+//      _timer = new Timer(const Duration(seconds: 10), () {
+//        if (mounted) {
+//          setState(() => hasTimedout = true);
+//          print("--------------TIMEDOUT------------");
+//          _timer.cancel();
+//        }
+//      });
+//    }
   }
 
 

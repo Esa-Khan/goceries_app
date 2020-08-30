@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food_delivery_app/src/controllers/settings_controller.dart';
 import 'package:food_delivery_app/src/repository/user_repository.dart';
 
@@ -47,7 +48,8 @@ class DeliveryAddressDialog {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  S.of(context).add_delivery_address,
+                  "Confirm address and number!",
+//                  S.of(context).add_delivery_address,
                   style: Theme.of(context).textTheme.bodyText1,
                 )
               ],
@@ -83,8 +85,12 @@ class DeliveryAddressDialog {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: new TextFormField(
                         style: TextStyle(color: Theme.of(context).hintColor),
-                        keyboardType: TextInputType.text,
-                        decoration: getInputDecoration(hintText: S.of(context).hint_full_address, labelText: S.of(context).phone_number),
+                        keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
+                        inputFormatters: [
+                          WhitelistingTextInputFormatter.digitsOnly,
+                          new LengthLimitingTextInputFormatter(11)
+                        ],
+                        decoration: getInputDecoration(hintText: "03001234567", labelText: S.of(context).phone_number),
                         initialValue: currentUser.value.phone?.isNotEmpty ?? false ? currentUser.value.phone : null,
                         validator: (input) => validatePhone(input),
                         onSaved: (input) => currentUser.value.phone = input,

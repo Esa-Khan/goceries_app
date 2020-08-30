@@ -9,9 +9,8 @@ import 'ConfirmationDialogBox.dart';
 class PaymentMethodListItemWidget extends StatelessWidget {
   String heroTag;
   PaymentMethod paymentMethod;
-  String hint;
 
-  PaymentMethodListItemWidget({Key key, this.paymentMethod, this.hint}) : super(key: key);
+  PaymentMethodListItemWidget({Key key, this.paymentMethod}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,6 @@ class PaymentMethodListItemWidget extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => CheckoutWidget(
                   cardType: this.paymentMethod.id,
-                  hint: this.hint,
                 ),
               ));
         } else if(this.paymentMethod.id == "paypal"){
@@ -35,7 +33,6 @@ class PaymentMethodListItemWidget extends StatelessWidget {
           ConfirmationDialogBox(
             context: context,
             route: this.paymentMethod.route,
-            hint: this.hint,
           );
         }
         print(CustomTrace(StackTrace.current, message: this.paymentMethod.name));

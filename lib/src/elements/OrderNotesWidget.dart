@@ -10,10 +10,13 @@ import '../models/address.dart';
 
 // ignore: must_be_immutable
 class OrderNotesWidget {
+  final con;
+  TextEditingController textCont = new TextEditingController();
   BuildContext context;
   GlobalKey<FormState> _deliveryAddressFormKey = new GlobalKey<FormState>();
 
-  OrderNotesWidget({this.context}) {
+
+  OrderNotesWidget({this.context, this.con}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -26,18 +29,27 @@ class OrderNotesWidget {
                   Icons.speaker_notes,
                   color: Theme.of(context).hintColor,
                 ),
-                Text(
-                  "Any special notes?",
-                  style: Theme.of(context).textTheme.bodyText1,
-                  textAlign: TextAlign.center,
+                SizedBox(width: 15),
+                Expanded(
+                  child: Text(
+                    con.hint == null
+                        ? "Have special instructions for this order?"
+                        : con.hint,
+                    style: Theme.of(context).textTheme.bodyText1,
+                    textAlign: TextAlign.left,
+//                    overflow: TextOverflow.fade,
+//                    maxLines: 5,
+                  ),
                 ),
               ],
             ),
             contentPadding: EdgeInsets.fromLTRB(20, 10, 16, 0),
             children: <Widget>[
-              Text(
-                    "Do you have any special instructions related to this order?",
-                style: Theme.of(context).textTheme.bodyText2,
+              TextField(
+              keyboardType: TextInputType.multiline,
+                controller: textCont,
+                minLines: 1,//Normal textInputField will be displayed
+                maxLines: 5,// when user presses enter it will adapt to it
               ),
               SizedBox(height: 10),
               Row(
@@ -67,11 +79,7 @@ class OrderNotesWidget {
   }
 
   void _submit() {
-//    if (route == '/CashOnDelivery') {
-//      Navigator.of(context).pushNamed(route, arguments: new RouteArgument(id: hint, param: 'Cash on Delivery'));
-//    } else {
-//      Navigator.pop(context);
-//    }
-  print("-----SUBMITTED-----");
+    con.hint = textCont.value.text;
+    Navigator.pop(context);
   }
 }

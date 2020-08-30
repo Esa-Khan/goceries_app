@@ -20,11 +20,15 @@ class PaymentMethodsWidget extends StatefulWidget {
 class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
   PaymentMethodList list;
   RouteArgument routeArgument;
-  String hint;
 
   _PaymentMethodsWidgetState(this.routeArgument) : super() {
-    hint = this.routeArgument.param;
   }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     list = new PaymentMethodList(context);
@@ -96,7 +100,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                 return SizedBox(height: 10);
               },
               itemBuilder: (context, index) {
-                return PaymentMethodListItemWidget(paymentMethod: list.paymentsList.elementAt(index), hint: this.hint,);
+                return PaymentMethodListItemWidget(paymentMethod: list.paymentsList.elementAt(index));
               },
             ),
 //            list.cashList.length > 0
@@ -130,7 +134,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
                 return SizedBox(height: 10);
               },
               itemBuilder: (context, index) {
-                return PaymentMethodListItemWidget(paymentMethod: list.cashList.elementAt(index), hint: this.hint,);
+                return PaymentMethodListItemWidget(paymentMethod: list.cashList.elementAt(index));
               },
             ),
           ],

@@ -151,7 +151,7 @@ class DeliveryPickupController extends CartController {
   @override
   void goCheckout(BuildContext context, [String time]) {
     try {
-      Navigator.of(context).pushNamed(getSelectedMethod().route, arguments: RouteArgument(id: 'hint', param: time));
+      Navigator.of(context).pushNamed(getSelectedMethod().route);
     } catch (e) {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).please_select_delivery),
@@ -219,8 +219,14 @@ class DeliveryPickupController extends CartController {
   void showTimingSnack(String desc) {
     scaffoldKey?.currentState?.showSnackBar(SnackBar(
       content: Text("Delivery not available at that time. Timings: ${desc}.", textScaleFactor: 0.92),
-      duration: Duration(seconds: 5),
+      duration: Duration(seconds: 3),
     ));
   }
 
+  void showSnackToSelectBothTimeAndDate() {
+    scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      content: Text("Please specify both date and time.", textScaleFactor: 0.92),
+      duration: Duration(seconds: 3),
+    ));
+  }
 }

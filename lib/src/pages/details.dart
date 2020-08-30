@@ -106,8 +106,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
         ),
       ),
         key: _con.scaffoldKey,
-        floatingActionButton: (_con.restaurant?.information != null &&_con.restaurant?.information == 'R') || _searchBarTapped
-        ? SizedBox(height: 0)
+        floatingActionButton: _con.restaurant == null || (_con.restaurant?.information != null &&_con.restaurant?.information == 'R') || _searchBarTapped
+        ? const SizedBox(height: 0)
         : FloatingActionButton.extended(
           onPressed: () {
             Navigator.of(context).pushNamed('/Menu',
@@ -129,7 +129,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
           onRefresh: _con.refreshRestaurant,
           child: _con.restaurant == null
 //              ? CircularLoadingWidget(height: 500)
-              ? Center(child: SizedBox(width: 90, height: 90, child: CircularProgressIndicator(strokeWidth: 5)))
+              ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
               : Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
@@ -265,7 +265,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   children: <Widget>[
                                     Expanded(
                                       child: Text(
-                                        '${_con.restaurant.phone}',
+//                                        '${_con.restaurant.phone}',
+                                        'Need help with your order?',
                                         overflow: TextOverflow.ellipsis,
                                         style: Theme.of(context).textTheme.bodyText1,
                                       ),
@@ -277,7 +278,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                       child: FlatButton(
                                         padding: EdgeInsets.all(0),
                                         onPressed: () {
-                                          launch("tel:${_con.restaurant.phone}");
+//                                          launch("tel:${_con.restaurant.phone}");
+                                          launch("tel:${setting.value.phone_number}");
                                         },
                                         child: Icon(
                                           Icons.call,

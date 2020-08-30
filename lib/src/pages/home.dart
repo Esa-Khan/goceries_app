@@ -34,17 +34,12 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      if (currentUser.value.apiToken == null && settingsRepo.firstStart.value && settingsRepo.deliveryAddress.value?.address == null) {
-        settingsRepo.firstStart.value = false;
-        await _con.requestForCurrentLocation(context);
-        setState(() {settingsRepo.deliveryAddress.value.address;});
-      } else {
-
-      }
-      settingsRepo.firstStart.value = false;
-    });
+//    WidgetsBinding.instance.addPostFrameCallback((_) {
+//      if (currentUser.value.apiToken == null && settingsRepo.firstStart.value && settingsRepo.deliveryAddress.value?.address == null) {
+//        settingsRepo.firstStart.value = false;
+//        getLocation();
+//      }
+//    });
   }
 
 //void showPopup() async {
@@ -111,19 +106,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                   ),
                   trailing: IconButton(
                     onPressed: () {
-                      if (currentUser.value.apiToken == null) {
-                        _con.requestForCurrentLocation(context);
-                      } else {
-                        var bottomSheetController = widget.parentScaffoldKey.currentState.showBottomSheet(
-                          (context) => DeliveryAddressBottomSheetWidget(scaffoldKey: widget.parentScaffoldKey),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                          ),
-                        );
-                        bottomSheetController.closed.then((value) {
-                          _con.refreshHome();
-                        });
-                      }
+                      getLocation();
                     },
                     icon: Icon(
                       Icons.my_location,
@@ -138,7 +121,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                     settingsRepo.deliveryAddress.value?.address == null
                         ? "Tap the location icon to start"
                         : settingsRepo.deliveryAddress.value.address,
-//                    S.of(context).near_to + " " + (settingsRepo.deliveryAddress.value?.address ?? S.of(context).unknown),
                     style: Theme.of(context).textTheme.caption,
                   ),
                 ),
@@ -185,6 +167,22 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
         ),
       ),
     );
+  }
+
+  void getLocation() {
+    if (currentUser.value.apiToken == null) {
+      _con.requestForCurrentLocation(context);
+    } else {
+      var bottomSheetController = widget.parentScaffoldKey.currentState.showBottomSheet(
+            (context) => DeliveryAddressBottomSheetWidget(scaffoldKey: widget.parentScaffoldKey),
+        shape: RoundedRectangleBorder(
+          borderRadius: new BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        ),
+      );
+      bottomSheetController.closed.then((value) {
+        _con.refreshHome();
+      });
+    }
   }
 }
 

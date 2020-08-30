@@ -60,6 +60,39 @@ class CategoryController extends ControllerMVC {
   }
 
 
+  Future<void> listenForUsedCategories(String usedCats) async {
+    var usedCatIDs = usedCats.split("-");
+    final Stream<Category> stream = await getCategories();
+    stream.listen((Category _category) {
+
+        if (_category.id.length > 2) {
+          if (usedCatIDs.contains(_category.id)) {
+            String mainAisleID = _category.id.substring(_category.id.length - 2, _category.id.length);
+            mainAisleID = (int.parse(mainAisleID)).toString();
+            if (aisleToSubaisleMap[mainAisleID] == null) {
+              aisleToSubaisleMap[mainAisleID] = new List<Category>();
+              setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
+            } else {
+              setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
+            }
+            setState(() => subaisleToItemsMap[_category.id] = new List<Food>());
+          }
+
+        } else {
+          setState(() => aisles.add(_category));
+        }
+        setState(() {
+          isExpandedList[_category.id] = false;
+          isAisleLoadedList[_category.id] = false;
+        });
+    }, onError: (a) {
+      print(a);
+    }, onDone: () {
+      setState(() => hasAislesLoaded = true);
+    });
+  }
+
+
 //  Future<void> listenForSubCategories(String id) async {
 //    final Stream<Category> stream = await getCategories();
 //    stream.listen((Category _category) {

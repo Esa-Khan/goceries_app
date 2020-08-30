@@ -12,6 +12,8 @@ import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
 ValueNotifier<List<Cart>> currentCart = new ValueNotifier(List<Cart>());
+ValueNotifier<String> currentCart_note = new ValueNotifier("");
+ValueNotifier<String> currentCart_time = new ValueNotifier("");
 
 Future<Stream<Cart>> getCart() async {
   User _user = userRepo.currentUser.value;

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:food_delivery_app/src/models/address.dart';
 import 'package:food_delivery_app/src/repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
@@ -76,14 +77,18 @@ class HomeController extends ControllerMVC {
     OverlayEntry loader = Helper.overlayLoader(context);
     Overlay.of(context).insert(loader);
     setCurrentLocation().then((_address) async {
-      deliveryAddress.value = _address;
-      if (currentUser.value.apiToken != null) currentUser.value.address = _address.address;
+      setState(() => deliveryAddress.value = _address);
+      if (currentUser.value.apiToken != null) {
+        currentUser.value.address = _address.address;
+      }
+      //      currentUser.value.address = _address.address;
       await refreshHome();
       loader.remove();
     }).catchError((e) {
       loader.remove();
     });
   }
+
 
   Future<void> refreshHome() async {
     setState(() {

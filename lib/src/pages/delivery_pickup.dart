@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
+import 'package:food_delivery_app/src/elements/DeliveryBottomDetailsWidget.dart';
 import 'package:food_delivery_app/src/repository/settings_repository.dart';
 import 'package:food_delivery_app/src/repository/user_repository.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
@@ -50,7 +51,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     }
     return Scaffold(
       key: _con.scaffoldKey,
-      bottomNavigationBar: CartBottomDetailsWidget(con: _con),
+      bottomNavigationBar: DeliveryBottomDetailsWidget(con: _con),
       appBar: AppBar(
         leading: BackButton(
           color: Theme.of(context).accentColor,
@@ -60,18 +61,13 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         centerTitle: true,
         title: Text(
           S.of(context).delivery,
-          style: Theme
-              .of(context)
-              .textTheme
-              .headline6
+          style: Theme.of(context).textTheme.headline6
               .merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(
               iconColor: Theme.of(context).hintColor,
-              labelColor: Theme
-                  .of(context)
-                  .accentColor),
+              labelColor: Theme.of(context).accentColor),
         ],
       ),
       body: SingleChildScrollView(
@@ -194,13 +190,13 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       paymentMethod: _con.getDeliveryMethod(),
                       address: _con.deliveryAddress.elementAt(index),
                       onPressed: (Address _address) {
-                        if (_address.id == null || _address.id == 'null' ||
-                            currentUser.value.phone == null) {
+                        if (_address.id == null || _address.id == 'null' || currentUser.value.phone == null || currentUser.value.phone == "") {
                           DeliveryAddressDialog(
                             context: context,
                             address: _address,
                             onChanged: (Address _address) {
-                              _con.addAddress(_address);
+                              _con.toggleDelivery(currAddress: _address);
+//                              _con.addAddress(_address);
                             },
                           );
 
@@ -389,7 +385,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   ),
                 ),
 
-                SizedBox(height: 180),
+                SizedBox(height: 90),
 
 
 

@@ -7,6 +7,7 @@ class Restaurant {
   Media image;
   String rate;
   String address;
+  String used_cats;
   String description;
   String phone;
   String mobile;
@@ -33,6 +34,7 @@ class Restaurant {
       adminCommission = jsonMap['admin_commission'] != null ? jsonMap['admin_commission'].toDouble() : 0.0;
       deliveryRange = jsonMap['delivery_range'] != null ? jsonMap['delivery_range'].toDouble() : 0.0;
       address = jsonMap['address'];
+      used_cats = jsonMap['used_categories'];
       description = jsonMap['description'];
       phone = jsonMap['phone'];
       mobile = jsonMap['mobile'];

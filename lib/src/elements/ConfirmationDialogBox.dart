@@ -12,10 +12,8 @@ import '../models/address.dart';
 class ConfirmationDialogBox {
   BuildContext context;
   String route;
-  String hint;
-  GlobalKey<FormState> _deliveryAddressFormKey = new GlobalKey<FormState>();
 
-  ConfirmationDialogBox({this.context, this.route = "", this.hint}) {
+  ConfirmationDialogBox({this.context, this.route = ""}) {
     showDialog(
         context: context,
         builder: (context) {
@@ -72,7 +70,7 @@ class ConfirmationDialogBox {
 
   void _submit() {
     if (route == '/CashOnDelivery') {
-      Navigator.of(context).pushNamed(route, arguments: new RouteArgument(id: hint, param: 'Cash on Delivery'));
+      Navigator.of(context).pushNamed(route, arguments: new RouteArgument(param: 'Cash on Delivery'));
     } else {
       Navigator.pop(context);
     }

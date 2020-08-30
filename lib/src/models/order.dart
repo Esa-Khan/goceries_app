@@ -12,6 +12,7 @@ class Order {
   double tax;
   double deliveryFee;
   String hint;
+  String scheduled_time;
   bool active;
   DateTime dateTime;
   User user;
@@ -56,6 +57,7 @@ class Order {
     map["order_status_id"] = orderStatus?.id;
     map["tax"] = tax;
     map['hint'] = hint;
+    map['scheduled_time'] = scheduled_time;
     map["delivery_fee"] = deliveryFee;
     map["foods"] = foodOrders.map((element) => element.toMap()).toList();
     map["payment"] = payment?.toMap();
