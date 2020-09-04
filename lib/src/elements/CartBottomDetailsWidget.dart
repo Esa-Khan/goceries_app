@@ -268,13 +268,9 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
             ),
             SizedBox(height: 3),
             Text(
-              "*Prices may vary on store receipt but this is official payable amount",
+              "Free delivery for orders over Rs. " + setting.value.deliveryFeeLimit.toString(),
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.caption
-                  .merge(
-                  TextStyle(color: Theme
-                      .of(context)
-                      .accentColor)),
+              style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).accentColor, fontSize: 15)),
             ),
           ],
         ),

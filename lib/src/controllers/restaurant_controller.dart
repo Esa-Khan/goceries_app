@@ -178,35 +178,35 @@ class RestaurantController extends ControllerMVC {
 
 
   void listenForIncrementalItems({String idRestaurant, int limit}) async {
-      if (!this.isLoading && this.foods.isNotEmpty) {
-        this.isLoading = true;
-        int lastItemID = int.parse(this.foods.last.id);
-        String idRange = (lastItemID + 1).toString() + "-" + (lastItemID + limit).toString();
-        int oldItemListLen = this.listRange.elementAt(1);
-        Stream<Food> actualStream;
-        if (restaurant.information == 'S') {
-          actualStream = await getFeaturedFoodsOfRestaurant(idRestaurant, id: idRange);
-        } else {
-          actualStream = await getStoreItems(idRestaurant, id: idRange);
-        }
-        actualStream.listen((Food _food) {
-          if (int.parse(foods.last.id) < int.parse(_food.id)) {
-            addItem(_food);
-          }
-        }, onError: (a) {
-          print(a);
-        }, onDone: () async {
-          this.isLoading = false;
-          if (oldItemListLen == this.listRange.elementAt(1)) {
-            allItemsLoaded = true;
-            print("-------- ${this.foods.length.toString()} DONE--------");
+      if (!this.isLoading) {
+        setState(() => isLoading = true);
+        if (this.foods.isNotEmpty) {
+          int lastItemID = int.parse(this.foods.last.id);
+          String idRange = (lastItemID + 1).toString() + "-" + (lastItemID + limit).toString();
+          int oldItemListLen = this.listRange.elementAt(1);
+          Stream<Food> actualStream;
+          if (restaurant.information == 'S') {
+            actualStream = await getFeaturedFoodsOfRestaurant(idRestaurant, id: idRange);
           } else {
-            print("-------- ${this.foods.length.toString()} Actual Items Added--------");
+            actualStream = await getStoreItems(idRestaurant, id: idRange);
           }
+          actualStream.listen((Food _food) {
+            if (int.parse(foods.last.id) < int.parse(_food.id)) {
+              addItem(_food);
+            }
+          }, onError: (a) {
+            print(a);
+          }, onDone: () async {
+            this.isLoading = false;
+            if (oldItemListLen == this.listRange.elementAt(1)) {
+              allItemsLoaded = true;
+              print("-------- ${this.foods.length.toString()} DONE--------");
+            } else {
+              print("-------- ${this.foods.length.toString()} Actual Items Added--------");
+            }
 
-        });
-      } else if (!this.isLoading) {
-        this.isLoading = true;
+          });
+      } else {
         Stream<Food> initialStream;
         if (restaurant.information == 'S') {
           initialStream = await getFeaturedFoodsOfRestaurant(idRestaurant, limit: limit.toString());
@@ -222,7 +222,7 @@ class RestaurantController extends ControllerMVC {
           print("-------- ${this.foods.length.toString()} Initial Items Added--------");
         });
       }
-//    }
+    }
   }
 
 

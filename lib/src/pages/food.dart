@@ -10,8 +10,6 @@ import '../../generated/l10n.dart';
 import '../controllers/food_controller.dart';
 import '../elements/AddToCartAlertDialog.dart';
 import '../elements/CircularLoadingWidget.dart';
-import '../elements/ExtraItemWidget.dart';
-import '../elements/ReviewsListWidget.dart';
 import '../elements/ShoppingCartFloatButtonWidget.dart';
 import '../helpers/helper.dart';
 import '../models/route_argument.dart';
@@ -72,7 +70,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
   @override
   Widget build(BuildContext context) {
     if (!hasTimedout) {
-      _timer = new Timer(const Duration(seconds: 10), () {
+      _timer = new Timer(const Duration(seconds: 3), () {
         if (mounted) {
           setState(() => hasTimedout = true);
           print("--------------TIMEDOUT------------");
@@ -84,8 +82,9 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     return Scaffold(
       key: _con.scaffoldKey,
       body: _con.food == null || _con.food?.image == null
-          ? CircularLoadingWidget(height: 500)
-          : RefreshIndicator(
+          ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
+          : SafeArea(
+            child: RefreshIndicator(
               onRefresh: _con.refreshFood,
               child: Stack(
                 fit: StackFit.expand,
@@ -526,6 +525,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                 ],
               ),
             ),
+      ),
     );
   }
 }

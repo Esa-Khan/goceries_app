@@ -36,8 +36,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
 
   final ScrollController _scrollController = ScrollController();
   List<Food> itemList = new List<Food>();
-  bool _hasMore = true, _isLoading = true, _initialLoading = true, _isSearching = false, _isSearched = false, _searchBarTapped = false;
-  int numOfItemsToAdd = 80;
+  bool _hasMore = true, _initialLoading = true, _isSearching = false, _isSearched = false, _searchBarTapped = false;
+  int numOfItemsToAdd = 50;
 
   _DetailsWidgetState() : super(RestaurantController()) {
     _con = controller;
@@ -64,15 +64,13 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   int oldNumOfItems = 0;
   loadMore() async {
     if (!_isSearched && _scrollController.hasClients &&
-        !_isLoading &&
+        !_con.isLoading &&
         _scrollController.position?.extentAfter < 30 &&
         _hasMore &&
         _con.foods.isNotEmpty &&
         !_con.allItemsLoaded) {
 
-        setState(() => _isLoading = true);
         await _con.listenForIncrementalItems(idRestaurant: widget.routeArgument.id, limit: (numOfItemsToAdd).floor());
-        setState(() => _isLoading = false);
 
         if (_con.allItemsLoaded) {
           setState(() {
@@ -106,7 +104,8 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
         ),
       ),
         key: _con.scaffoldKey,
-        floatingActionButton: _con.restaurant == null || (_con.restaurant?.information != null &&_con.restaurant?.information == 'R') || _searchBarTapped
+        floatingActionButton: _con.restaurant == null || _con.restaurant.information == "" || _con.restaurant.information == null ||
+                                  (_con.restaurant?.information != null &&_con.restaurant?.information == 'R') || _searchBarTapped
         ? const SizedBox(height: 0)
         : FloatingActionButton.extended(
           onPressed: () {
@@ -149,10 +148,10 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                   Container(
                                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                     decoration:
-                                        BoxDecoration(color: (_con.restaurant.closed == null && _con.restaurant.closed)
+                                        BoxDecoration(color: (_con.restaurant != null && _con.restaurant?.closed == null && _con.restaurant?.closed)
                                             ? Colors.black
                                             : Colors.green, borderRadius: BorderRadius.circular(24)),
-                                    child: _con.restaurant.closed
+                                    child: _con.restaurant != null && _con.restaurant.closed
                                         ? Text(
                                             S.of(context).closed,
                                             style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
@@ -390,7 +389,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                           },
                                           itemBuilder: (context, index) {
                                             if (index == _con.searchedItems.length - 1)
-                                              _isLoading = false;
+                                              _con.isLoading = false;
 
                                             if (_con.searchedItems.isNotEmpty) {
                                               return FoodItemWidget(
@@ -424,7 +423,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                       },
                                       itemBuilder: (context, index) {
                                         if (index == _con.foods.length - 1)
-                                          _isLoading = false;
+                                          _con.isLoading = false;
 
                                         if (_con.foods.isNotEmpty) {
                                           Random random = new Random();
@@ -439,7 +438,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                       },
                                     ),
 
-                              !_initialLoading && _isLoading && _hasMore && !_isSearching
+                              !_initialLoading && _con.isLoading && _hasMore && !_isSearching
                                   ? Center(child: SizedBox(width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5)))
                                   : SizedBox(height: 0),
                               SizedBox(height: 30)

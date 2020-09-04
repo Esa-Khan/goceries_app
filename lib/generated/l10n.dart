@@ -1388,7 +1388,7 @@ class S {
 
   String get please_select_delivery {
     return Intl.message(
-      'Please select address for delivery',
+      'Please select an address for delivery',
       name: 'please_select_delivery',
       desc: '',
       args: [],

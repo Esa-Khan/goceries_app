@@ -56,15 +56,14 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(top: 14),
-                padding: EdgeInsets.only(top: 20, bottom: 5),
+                padding: EdgeInsets.only(top: 40, bottom: 40),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: NetworkImage(widget.aisle.aisleImage),
+                    image: widget.aisle.aisleImage == null ? Image.asset('assets/img/loading.gif').image : Image.network(widget.aisle.aisleImage).image,
                     fit: BoxFit.cover,
                     colorFilter: new ColorFilter.mode(Colors.white.withOpacity(imageOpacity), BlendMode.dstIn),
                     onError: (dynamic, StackTrace) {
                       print("Error Loading Image: ${widget.aisle.aisleImage}");
-
                     },
                   ),
                   color: Theme.of(context).primaryColor.withOpacity(0.9),
@@ -87,6 +86,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                       widget.onPressed(_con.category);
                     },
                     title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         Text(
                           widget.aisle.name,
@@ -151,7 +151,10 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                       padding: EdgeInsets.only(top: 20, bottom: 5),
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
-                                            image: NetworkImage(currSubAisle.aisleImage),
+                                            image: currSubAisle.aisleImage == null
+                                                      ? Image.asset('assets/img/loading.gif').image
+                                                      : Image.network(currSubAisle.aisleImage).image,
+//                                            image: NetworkImage(currSubAisle.aisleImage),
                                             fit: BoxFit.cover,
                                             onError: (dynamic, StackTrace) {
                                               print("Error Loading Image: ${currSubAisle.aisleImage}");

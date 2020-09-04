@@ -5,12 +5,19 @@ import 'package:food_delivery_app/generated/l10n.dart';
 import '../helpers/helper.dart';
 import '../models/food.dart';
 import '../models/route_argument.dart';
+import 'package:http/http.dart' as http;
 
 class FoodItemWidget extends StatelessWidget {
   final String heroTag;
   final Food food;
 
+
   const FoodItemWidget({Key key, this.food, this.heroTag}) : super(key: key);
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +54,13 @@ class FoodItemWidget extends StatelessWidget {
                     height: 60,
                     width: 60,
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+//        errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/img/image_default.png',
+                    fit: BoxFit.cover,
+                    height: 60,
+                    width: 60,
+                  ),
                 ),
               ),
             ),

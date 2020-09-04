@@ -64,7 +64,6 @@ class CategoryController extends ControllerMVC {
     var usedCatIDs = usedCats.split("-");
     final Stream<Category> stream = await getCategories();
     stream.listen((Category _category) {
-
         if (_category.id.length > 2) {
           if (usedCatIDs.contains(_category.id)) {
             String mainAisleID = _category.id.substring(_category.id.length - 2, _category.id.length);

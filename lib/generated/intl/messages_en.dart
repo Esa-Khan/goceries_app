@@ -193,7 +193,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "phone" : MessageLookupByLibrary.simpleMessage("Phone"),
     "phone_number" : MessageLookupByLibrary.simpleMessage("Phone Number"),
     "pickup" : MessageLookupByLibrary.simpleMessage("Pickup"),
-    "please_select_delivery" : MessageLookupByLibrary.simpleMessage("Please select address for delivery"),
+    "please_select_delivery" : MessageLookupByLibrary.simpleMessage("Please select an address for delivery"),
     "profile" : MessageLookupByLibrary.simpleMessage("Profile"),
     "profile_settings" : MessageLookupByLibrary.simpleMessage("Profile Settings"),
     "profile_settings_updated_successfully" : MessageLookupByLibrary.simpleMessage("Profile settings updated successfully"),

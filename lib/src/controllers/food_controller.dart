@@ -17,6 +17,7 @@ class FoodController extends ControllerMVC {
   List<Cart> carts = [];
   Favorite favorite;
   bool loadCart = false;
+  bool showMessage = true;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   FoodController() {
@@ -80,11 +81,17 @@ class FoodController extends ControllerMVC {
 
   void addToCart(Food food, {bool reset = false}) async {
     if (this.loadCart) {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).adding_food_to_cart_please_wait),
-        duration: Duration(seconds: 1),
-      ));
+      if (showMessage) {
+        showMessage = false;
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S
+              .of(context)
+              .adding_food_to_cart_please_wait),
+          duration: Duration(seconds: 1),
+        ));
+      }
     } else {
+      showMessage = true;
       setState(() => this.loadCart = true);
       var _newCart = new Cart();
       _newCart.food = food;
