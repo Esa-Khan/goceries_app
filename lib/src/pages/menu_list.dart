@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/generated/l10n.dart';
 import 'package:food_delivery_app/src/elements/AislesItemWidget.dart';
+import 'package:food_delivery_app/src/elements/FoodItemWidget.dart';
 import 'package:food_delivery_app/src/models/food.dart';
 import 'package:food_delivery_app/src/models/restaurant.dart';
 import 'package:food_delivery_app/src/models/category.dart';
@@ -25,10 +27,8 @@ class MenuWidget extends StatefulWidget {
 class _MenuWidgetState extends StateMVC<MenuWidget> {
   CategoryController _con;
   Restaurant store;
-  Timer _timer;
-//  bool hasTimedout = false;
-  bool hasTimedout = true;
-
+  var _searchBarController = TextEditingController();
+  bool _isSearching = false, _isSearched = false, _searchBarTapped = false;
 
   _MenuWidgetState() : super(CategoryController()) {
     _con = controller;
@@ -38,17 +38,11 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   void initState() {
     super.initState();
     store = widget.routeArgument.param;
+    _con.restaurant = store;
+    while (store.used_cats == null) {
+      Future.delayed(Duration(microseconds: 100));
+    }
     _con.listenForUsedCategories(store.used_cats);
-
-//    if (!hasTimedout) {
-//      _timer = new Timer(const Duration(seconds: 10), () {
-//        if (mounted) {
-//          setState(() => hasTimedout = true);
-//          print("--------------TIMEDOUT------------");
-//          _timer.cancel();
-//        }
-//      });
-//    }
   }
 
 
@@ -83,117 +77,145 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-//            _con.allItemsLoaded
-//                ? SizedBox(height: 0)
-//                :
-//            Center(
-//                child: SizedBox(
-//                    width: 60,
-//                    height: 60,
-//                    child: CircularProgressIndicator(strokeWidth: 5))),
-//            Padding(
-//              padding: const EdgeInsets.symmetric(horizontal: 20),
-//              child: SearchBarWidget(),
-//            ),
-//            ListTile(
-//              dense: true,
-//              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-//              leading: Icon(
-//                Icons.trending_up,
-//                color: Theme.of(context).hintColor,
-//              ),
-//              title: Text(
-//                S.of(context).trending_this_week,
-//                style: Theme.of(context).textTheme.headline4,
-//              ),
-//              subtitle: Text(
-//                S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
-//                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
-//              ),
-//            ),
-//            FoodsCarouselWidget(heroTag: 'menu_trending_food', foodsList: _con.trendingFoods),
-//            ListTile(
-//              dense: true,
-//              contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-//              leading: Icon(
-//                Icons.list,
-//                color: Theme.of(context).hintColor,
-//              ),
-//              title: Text(
-//                S.of(context).all_menu,
-//                style: Theme.of(context).textTheme.headline4,
-//              ),
-//              subtitle: Text(
-//                S.of(context).clickOnTheFoodToGetMoreDetailsAboutIt,
-//                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 11)),
-//              ),
-//            ),
-
-        const SizedBox(height: 10),
-
-//            _con.aisles.isEmpty && !hasTimedout
-            !_con.hasAislesLoaded
-                ? CircularLoadingWidget(height: 250)
-                : ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: _con.aisles.length,
-                    separatorBuilder: (context, index) {
-                      Category currAisle = _con.aisles.elementAt(index);
-                      if (_con.aisleToSubaisleMap[currAisle.id] == null) {
-                        return const SizedBox();
-                      } else {
-                        return const SizedBox(height: 20);
+            const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 1, 12, 30),
+              child: TextField(
+                onSubmitted: (text) async {
+                  setState(() => _isSearching = true);
+                  await _con.refreshSearch(text);
+                  setState(() {
+                    _searchBarTapped = false;
+                    _isSearching = false;
+                    _isSearched = true;
+                  });
+                },
+                onChanged: (val) async {
+                  if (val == "") {
+                    setState(() => _isSearched = false);
+                    _searchBarController.clear();
+                    await _con.refreshSearch("");
+                  }
+                },
+                onTap: () {
+                  setState(() => _searchBarTapped = true);
+                },
+                controller: _searchBarController,
+                decoration: InputDecoration(
+                  hintText: S.of(context).search_for_items_in_this_store,
+                  hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
+                  contentPadding: EdgeInsets.only(right: 12),
+                  prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
+                  suffixIcon: IconButton(
+                    onPressed: () async {
+                      FocusScopeNode currentFocus = FocusScope.of(context);
+                      if (!currentFocus.hasPrimaryFocus) {
+                        currentFocus.unfocus();
                       }
+                      setState(() => _isSearched = false);
+                      _searchBarController.clear();
+                      await _con.refreshSearch("");
                     },
-                    itemBuilder: (context, index) {
-                      Category currAisle = _con.aisles.elementAt(index);
-                      if (_con.aisleToSubaisleMap[currAisle.id] == null) {
-                        return const SizedBox();
-                      } else {
-                        // Define a Aisle dropdown
-                        return AislesItemWidget(
-                            aisle: currAisle,
-                            store: store,
-                            items: _con.subaisleToItemsMap,
-                            subAisles: _con.aisleToSubaisleMap[currAisle.id],
-                            onPressed: (aisleVal) async {
-                              _con.isExpandedList.forEach((key, value) {
-                                _con.isExpandedList[key] = false;
-                              });
-                              if (!_con.isExpandedList[aisleVal.id])
-                                _con.isExpandedList[aisleVal.id] = true;
+                    color: Theme.of(context).focusColor,
+                    icon: Icon(Icons.clear, size: 30),
+                  ),
+                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.3))),
+                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.7))),
+                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.3))),
 
-                              if (aisleVal.id.length > 2 &&
-                                  !_con.isAisleLoadedList[aisleVal.id] &&
-                                  _con.isExpandedList[aisleVal.id]) {
-                                print(aisleVal.name);
-                                await _con.listenForItemsByCategory(id: aisleVal.id, storeID: store.id);
-                                _con.isAisleLoadedList[aisleVal.id] = true;
-                              }
-                            });
-                      }
+                ),
+              ),
+            ),
+            _isSearching
+                ? Column(
+              children: <Widget>[
+                SizedBox(height: 50),
+                Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
+              ],
+            )
+                : _isSearched && _con.searchedItems.isEmpty
+                  ? SizedBox(height: 300)
+                  : _con.searchedItems.isNotEmpty
+                ? ListView.separated(
+              padding: EdgeInsets.only(bottom: 40),
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              primary: false,
+              itemCount: _con.searchedItems.length,
+              separatorBuilder: (context, index) {
+                return SizedBox(height: 10);
+              },
+              itemBuilder: (context, index) {
+                if (index == _con.searchedItems.length - 1)
+                  _con.isLoading = false;
 
-                    })
+                if (_con.searchedItems.isNotEmpty) {
+                  return FoodItemWidget(
+                    heroTag: 'store_search_list',
+                    food: _con.searchedItems.elementAt(index),
+                  );
+                } else {
+                  return SizedBox(height: 0);
+                }
+              },
+            )
 
-          ],
-        ),
-      ),
-    );
-  }
+                : !_con.hasAislesLoaded
+                    ? Padding(
+                        padding: EdgeInsets.symmetric(vertical: 50),
+                        child: Center(
+                            child: SizedBox(
+                                width: 120,
+                                height: 120,
+                                child: CircularProgressIndicator(strokeWidth: 8))),
+                      )
+                    : ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: _con.aisles.length,
+                        separatorBuilder: (context, index) {
+                          Category currAisle = _con.aisles.elementAt(index);
+                          if (_con.aisleToSubaisleMap[currAisle.id] == null) {
+                            return const SizedBox();
+                          } else {
+                            return const SizedBox(height: 20);
+                          }
+                        },
+                        itemBuilder: (context, index) {
+                          Category currAisle = _con.aisles.elementAt(index);
+                          if (_con.aisleToSubaisleMap[currAisle.id] == null) {
+                            return const SizedBox();
+                          } else {
+                            // Define a Aisle dropdown
+                            return AislesItemWidget(
+                                aisle: currAisle,
+                                store: store,
+                                items: _con.subaisleToItemsMap,
+                                subAisles: _con.aisleToSubaisleMap[currAisle.id],
+                                onPressed: (aisleVal) async {
+                                  _con.isExpandedList.forEach((key, value) {
+                                    _con.isExpandedList[key] = false;
+                                  });
+                                  if (!_con.isExpandedList[aisleVal.id])
+                                    _con.isExpandedList[aisleVal.id] = true;
 
-//  List<Food> getFoodsForAisle(String aisleID) {
-//    List<Food> currFood = new List<Food>();
-//    if (_con.foods != null) {
-//      for (int i = 0; i < _con.foods.length; i++) {
-//        if (_con.foods.elementAt(i).category.id == aisleID) {
-//          currFood.add(_con.foods.elementAt(i));
-////          _con.foods.removeAt(i);
-//        }
-//      }
-//    }
-//    return currFood;
-//  }
+                                  if (aisleVal.id.length > 2 &&
+                                      !_con.isAisleLoadedList[aisleVal.id] &&
+                                      _con.isExpandedList[aisleVal.id]) {
+                                    print(aisleVal.name);
+                                    await _con.listenForItemsByCategory(id: aisleVal.id, storeID: store.id);
+                                    _con.isAisleLoadedList[aisleVal.id] = true;
+                                  }
+                                });
+                          }
+
+                        })
+
+                      ],
+                    ),
+                  ),
+                );
+              }
 
 }

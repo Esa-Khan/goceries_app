@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/models/category.dart';
+import 'package:food_delivery_app/src/repository/category_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -11,6 +13,7 @@ import '../repository/food_repository.dart';
 
 class FoodController extends ControllerMVC {
   Food food;
+  Category aisle;
   List<Food> similarItems = new List<Food>();
   double quantity = 1;
   double total = 0;
@@ -24,11 +27,10 @@ class FoodController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void listenForFood({String foodId, String message}) async {
+  void listenForFood({String foodId, bool getAisle, String message}) async {
     final Stream<Food> stream = await getFood(foodId);
     stream.listen((Food _food) {
       setState(() => food = _food);
-
       if (_food.ingredients != "<p>.</p>") {
         var otherItems = _food.ingredients.split('-');
         otherItems.remove(_food.id);
@@ -37,10 +39,11 @@ class FoodController extends ControllerMVC {
           currStream.listen((Food _food) {
             setState(() => similarItems.add(_food));
           });
-
         });
       }
-
+      if (getAisle) {
+        listenForCategory(food.category);
+      }
     }, onError: (a) {
       print(a);
       scaffoldKey.currentState?.showSnackBar(SnackBar(
@@ -54,6 +57,14 @@ class FoodController extends ControllerMVC {
         ));
       }
     });
+  }
+
+  void listenForCategory(int id) async {
+    final Stream<Category> stream = await getCategory(id.toString());
+    stream.listen((Category _aisle) {
+      setState(() => aisle = _aisle);
+    }, onError: (a) {
+    }, onDone: () {});
   }
 
   void listenForFavorite({String foodId}) async {

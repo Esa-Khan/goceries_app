@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/models/address.dart';
+import 'package:food_delivery_app/src/models/restaurant.dart';
+import 'package:food_delivery_app/src/repository/settings_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -17,6 +20,9 @@ class CategoryController extends ControllerMVC {
   Category category;
   bool loadCart = false;
   List<Cart> carts = [];
+  List<Food> searchedItems = <Food>[];
+  bool isLoading = false;
+  Restaurant restaurant;
 
   List<Category> aisles = <Category>[];
   bool hasAislesLoaded = false;
@@ -33,23 +39,23 @@ class CategoryController extends ControllerMVC {
 
   Future<void> listenForCategories() async {
     final Stream<Category> stream = await getCategories();
-    stream.listen((Category _category) {
-      if (_category.id.length > 2) {
-        String mainAisleID = _category.id.substring(_category.id.length - 2, _category.id.length);
+    stream.listen((Category _aisle) {
+      if (_aisle.id.length > 2) {
+        String mainAisleID = _aisle.id.substring(_aisle.id.length - 2, _aisle.id.length);
         mainAisleID = (int.parse(mainAisleID)).toString();
         if (aisleToSubaisleMap[mainAisleID] == null) {
           aisleToSubaisleMap[mainAisleID] = new List<Category>();
-          setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
+          setState(() => aisleToSubaisleMap[mainAisleID].add(_aisle));
         } else {
-          setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
+          setState(() => aisleToSubaisleMap[mainAisleID].add(_aisle));
         }
-        setState(() => subaisleToItemsMap[_category.id] = new List<Food>());
+        setState(() => subaisleToItemsMap[_aisle.id] = new List<Food>());
       } else {
-        setState(() => aisles.add(_category));
+        setState(() => aisles.add(_aisle));
       }
         setState(() {
-          isExpandedList[_category.id] = false;
-          isAisleLoadedList[_category.id] = false;
+          isExpandedList[_aisle.id] = false;
+          isAisleLoadedList[_aisle.id] = false;
         });
 
     }, onError: (a) {
@@ -128,7 +134,6 @@ class CategoryController extends ControllerMVC {
     if (!this.isAisleLoadedList[id]) {
       final Stream<Food> stream = await getFoodsByCategory(id, storeID: storeID);
       stream.listen((Food _food) {
-        print("Loaded: ${_food.name}");
         addItemToAisle(_food, id);
       }, onError: (a) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -241,4 +246,26 @@ class CategoryController extends ControllerMVC {
     listenForFoodsByCategory(message: S.of(context).category_refreshed_successfuly);
     listenForCategory(message: S.of(context).category_refreshed_successfuly);
   }
+
+  Future<void> refreshSearch(search) async {
+    setState(() {
+      searchedItems = <Food>[];
+    });
+    if (search != null && search.toString().replaceAll(" ", "") != "")
+      await listenForSearchedFoods(search: search, idRestaurant: restaurant.id);
+  }
+
+  void listenForSearchedFoods({String idRestaurant, String search}) async {
+    searchedItems.clear();
+    Address _address = deliveryAddress.value;
+    Stream<Food> initialStream = await searchFoods(search, _address, storeID: idRestaurant);
+    initialStream.listen((Food _food) {
+      setState(() => this.searchedItems.add(_food));
+    }, onError: (a) {
+      print(a);
+    }, onDone: () async {
+      print("-------- ${this.searchedItems.length.toString()} Items Searched--------");
+    });
+  }
+
 }

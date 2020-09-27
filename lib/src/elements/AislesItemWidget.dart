@@ -22,7 +22,6 @@ class AislesItemWidget extends StatefulWidget {
   final Restaurant store;
   final List<category.Category> subAisles;
   final HashMap items;
-//  final VoidCallback onPressed;
   final expandAisle onPressed;
 
   AislesItemWidget({Key key, this.aisle, this.store, this.subAisles, this.items, this.onPressed}) : super(key: key);
@@ -32,6 +31,10 @@ class AislesItemWidget extends StatefulWidget {
 class _AislesItemWidgetState extends State<AislesItemWidget> {
   CategoryController _con = new CategoryController();
   double imageOpacity = 1;
+  Image aisle_img = Image.asset('assets/img/loading.gif');
+  HashMap subaisles_imgs = new HashMap<String, Image>();
+  HashMap subaisles_imgs_loaded = new HashMap<String, bool>();
+  bool _image_loaded = false;
 
   @override
   void initState() {
@@ -40,8 +43,34 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
     widget.subAisles.forEach((element) {
       _con.isExpandedList[element.id] = false;
       _con.isAisleLoadedList[element.id] = false;
+      subaisles_imgs[element.id] = Image.asset('assets/img/loading.gif');
+      subaisles_imgs_loaded[element.id] = false;
 //      _con.subaisleToItemsMap[element.id] = new List<Food>();
     });
+
+      getAisleImage();
+  }
+
+  void getAisleImage() async {
+    if (!_image_loaded && _con.category?.aisleImage != null && mounted) {
+      Image getIMG = await Image.network(_con.category.aisleImage);
+//      await Future.delayed(Duration(milliseconds: int.parse(_con.category.id) * 100));
+      setState(() {
+        aisle_img = getIMG;
+        _image_loaded = true;
+      });
+    }
+  }
+
+  void getSubAisleImage(category.Category aisle) async {
+    if (!subaisles_imgs_loaded[aisle.id] && mounted) {
+      Image getIMG = await Image.network(aisle.aisleImage);
+//      await Future.delayed(Duration(milliseconds: int.parse(aisle.id)*10 - 1000));
+      setState(() {
+        subaisles_imgs[aisle.id] = getIMG;
+        subaisles_imgs_loaded[aisle.id] = true;
+      });
+    }
   }
 
   @override
@@ -59,10 +88,12 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                 padding: EdgeInsets.only(top: 40, bottom: 40),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: widget.aisle.aisleImage == null ? Image.asset('assets/img/loading.gif').image : Image.network(widget.aisle.aisleImage).image,
+//                    image: aisle_img.image,//aisle_img.image,
+                    image: aisle_img.image,
                     fit: BoxFit.cover,
                     colorFilter: new ColorFilter.mode(Colors.white.withOpacity(imageOpacity), BlendMode.dstIn),
                     onError: (dynamic, StackTrace) {
+                      aisle_img = Image.asset('assets/img/loading.gif');
                       print("Error Loading Image: ${widget.aisle.aisleImage}");
                     },
                   ),
@@ -79,7 +110,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                   child: ExpansionTile(
                     onExpansionChanged: (value) {
                       if (value) {
-                        setState(() => imageOpacity = 0.4);
+                        setState(() => imageOpacity = 0.1);
                       } else {
                         setState(() => imageOpacity = 1);
                       }
@@ -134,10 +165,8 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                         // ignore: missing_return
                         itemBuilder: (context, index) {
                           category.Category currSubAisle = widget.subAisles.elementAt(index);
-                          bool expanded;
-                          Restaurant store;
                           List<Food> items = widget.items[currSubAisle.id];
-
+                          getSubAisleImage(currSubAisle);
                           // Define a SubAisle dropdown
                           return Stack(
                             children: <Widget>[
@@ -151,12 +180,11 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                       padding: EdgeInsets.only(top: 20, bottom: 5),
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
-                                            image: currSubAisle.aisleImage == null
-                                                      ? Image.asset('assets/img/loading.gif').image
-                                                      : Image.network(currSubAisle.aisleImage).image,
+                                            image: subaisles_imgs[currSubAisle.id].image,
 //                                            image: NetworkImage(currSubAisle.aisleImage),
                                             fit: BoxFit.cover,
                                             onError: (dynamic, StackTrace) {
+                                              setState(() => subaisles_imgs[currSubAisle.id] = Image.asset('assets/img/loading.gif'));
                                               print("Error Loading Image: ${currSubAisle.aisleImage}");
                                             },
                                           ),

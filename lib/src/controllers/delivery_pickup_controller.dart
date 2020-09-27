@@ -176,30 +176,37 @@ class DeliveryPickupController extends CartController {
   Future<void> changeDeliveryAddressToCurrentLocation() async {
     scaffoldKey?.currentState?.showSnackBar(SnackBar(
       content: Text(S.of(context).getting_current_location),
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 1),
     ));
     model.Address _address = await settingRepo.setCurrentLocation();
-    setState(() {
-      bool repeatedAddress = false;
-      for (var currAddress in deliveryAddress) {
-        if (!repeatedAddress && currAddress.address == _address.address) {
-          repeatedAddress = true;
-          break;
+//    if (_address.latitude != null && _address.longitude != null) {
+      setState(() {
+        bool repeatedAddress = false;
+        for (var currAddress in deliveryAddress) {
+          if (!repeatedAddress && currAddress.address == _address.address) {
+            repeatedAddress = true;
+            break;
+          }
         }
-      }
-      if (!repeatedAddress) {
-        addAddress(_address);
-        settingRepo.deliveryAddress.value = _address;
-        currentUser.value.address = _address.address;
-      } else {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).address_is_already_added),
-          duration: Duration(seconds: 1),
-        ));
-      }
+        if (!repeatedAddress) {
+          addAddress(_address);
+          settingRepo.deliveryAddress.value = _address;
+          currentUser.value.address = _address.address;
+        } else {
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text(S.of(context).address_is_already_added),
+            duration: Duration(seconds: 1),
+          ));
+        }
 
-    });
-    settingRepo.deliveryAddress.notifyListeners();
+      });
+      settingRepo.deliveryAddress.notifyListeners();
+//    } else {
+//      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+//        content: Text("Do not have permission. Allow location services in settings.", maxLines: 3),
+//        duration: Duration(seconds: 1),
+//      ));
+//    }
   }
 
 

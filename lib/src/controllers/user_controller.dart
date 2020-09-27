@@ -1,11 +1,17 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as repository;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class UserController extends ControllerMVC {
   User user = new User();
@@ -15,6 +21,9 @@ class UserController extends ControllerMVC {
   GlobalKey<ScaffoldState> scaffoldKey;
   FirebaseMessaging _firebaseMessaging;
   OverlayEntry loader;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  bool fb_isLoggedIn = false;
 
   UserController() {
     loader = Helper.overlayLoader(context);
@@ -50,6 +59,118 @@ class UserController extends ControllerMVC {
         Helper.hideLoader(loader);
       });
     }
+  }
+
+  Future<String> signInWithGoogle() async {
+    try {
+      Overlay.of(context).insert(loader);
+      final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =  await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.getCredential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        final AuthResult authResult = await _auth.signInWithCredential(credential);
+        final FirebaseUser user = authResult.user;
+
+        assert(!user.isAnonymous);
+        assert(await user.getIdToken() != null);
+
+        final FirebaseUser currentUser = await _auth.currentUser();
+        assert(user.uid == currentUser.uid);
+        this.user.email = currentUser.email;
+        this.user.name = currentUser.displayName;
+        this.user.password = currentUser.uid;
+
+        thirdPartyLogin();
+        return 'signInWithGoogle succeeded: $user';
+      }
+
+    } catch (e) {
+      Helper.hideLoader(loader);
+    }
+  }
+
+  void signOutGoogle() async {
+    await googleSignIn.signOut();
+    print("User Sign Out");
+  }
+
+  void initiateFacebookLogin() async {
+    try {
+      Overlay.of(context).insert(loader);
+      var facebookLogin = FacebookLogin();
+      var facebookLoginResult = await facebookLogin.logInWithReadPermissions(['email']);
+      switch (facebookLoginResult.status) {
+        case FacebookLoginStatus.error:
+          print("Error");
+          onLoginStatusChanged(false);
+          break;
+        case FacebookLoginStatus.cancelledByUser:
+          print("CancelledByUser");
+          onLoginStatusChanged(false);
+          break;
+        case FacebookLoginStatus.loggedIn:
+          print("LoggedIn");
+          var graphResponse = await http.get('https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${facebookLoginResult.accessToken.token}');
+          var profile = json.decode(graphResponse.body);
+          print(profile.toString());
+          this.user.email = profile['email'];
+          this.user.name = profile['first_name'] + " " + profile['last_name'];
+          this.user.password = profile['id'];
+          thirdPartyLogin();
+          //        onLoginStatusChanged(true, profileData: profile);
+          break;
+      }
+    } catch (e) {
+      Helper.hideLoader(loader);
+    }
+  }
+
+  void onLoginStatusChanged(bool fb_isLoggedIn) {
+    setState(() => this.fb_isLoggedIn = fb_isLoggedIn);
+  }
+
+  void thirdPartyLogin() async {
+    repository.login(this.user).then((value) {
+      if (value != null && value.apiToken != null) {
+        print("-------------Login Success-------------");
+        Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+      } else {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).wrong_email_or_password),
+        ));
+      }
+    }).catchError((e) {
+      print("-------------Login Failed-------------");
+      if (e.toString() == "Exception: No Account with this Email") {
+        repository.register(this.user).then((value) {
+          if (value != null && value.apiToken != null) {
+            print("-------------Register Success-------------");
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          } else {
+            scaffoldKey?.currentState?.showSnackBar(SnackBar(
+              content: Text(S.of(context).wrong_email_or_password),
+            ));
+          }
+        }).catchError((e) {
+          print("-------------Register Failed-------------");
+          if (e.toString() == "Exception: Account already exits") {
+            scaffoldKey?.currentState?.showSnackBar(SnackBar(
+              content: Text("Wrong password. Try a different login method."),
+            ));
+          }
+          loader?.remove();
+        }).whenComplete(() {
+          Helper.hideLoader(loader);
+        });
+      }
+      }).whenComplete(() {
+        Helper.hideLoader(loader);
+      });
   }
 
   void register() async {

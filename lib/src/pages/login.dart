@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/elements/FacebookSigninButtonWidget.dart';
+import 'package:food_delivery_app/src/elements/GoogleSigninButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -43,7 +45,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             ),
           ),
           Positioned(
-            top: config.App(context).appHeight(37) - 140,
+            top: config.App(context).appHeight(37) - 200,
             child: Container(
               width: config.App(context).appWidth(84),
               height: config.App(context).appHeight(37),
@@ -54,7 +56,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             ),
           ),
           Positioned(
-            top: config.App(context).appHeight(37) - 80,
+            top: config.App(context).appHeight(37) - 150,
             child: Container(
               decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.all(Radius.circular(10)), boxShadow: [
                 BoxShadow(
@@ -74,6 +76,15 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    FacebookSigninButtonWidget(con: _con),
+                    const Divider(height: 15),
+                    GoogleSigninButtonWidget(con: _con),
+                    Padding(
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        child: Text("OR",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.button.apply(color: Theme.of(context).accentColor),
+                        )),
                     TextFormField(
                       keyboardType: TextInputType.emailAddress,
                       onSaved: (input) => _con.user.email = input,
@@ -90,7 +101,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                         enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.2))),
                       ),
                     ),
-                    SizedBox(height: 30),
+                    const Divider(height: 15),
                     TextFormField(
                       keyboardType: TextInputType.text,
                       onSaved: (input) => _con.user.password = input,
@@ -128,7 +139,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                         _con.login();
                       },
                     ),
-                    SizedBox(height: 15),
+//                    SizedBox(height: 15),
                     FlatButton(
                       onPressed: () {
                         Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);

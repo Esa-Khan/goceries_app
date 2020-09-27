@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:438759403240:android:ca64e6ad0b4e471344a35d",
+        "mobilesdk_app_id": "1:438759403240:android:82f42a7c0e928d5c44a35d",
         "android_client_info": {
-          "package_name": "com.ezpz.goceries"
+          "package_name": "com.ezpz.delivery"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "438759403240-bs6tkkhdefd8nrco5qlld87kb7k379uc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezpz.delivery",
+            "certificate_hash": "bd7af602c12fa1533c5b4b14334f609729f4cfae"
+          }
+        },
         {
           "client_id": "438759403240-6d1p3e3v9ci1eg2puc3ne7pbn0et4lgn.apps.googleusercontent.com",
           "client_type": 3
@@ -30,6 +38,73 @@
             {
               "client_id": "438759403240-6d1p3e3v9ci1eg2puc3ne7pbn0et4lgn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "438759403240-khqmnnvvhjnpif28b2um17csp16b5bnq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ezpz.goceries"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438759403240:android:ca64e6ad0b4e471344a35d",
+        "android_client_info": {
+          "package_name": "com.ezpz.goceries"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438759403240-tb0nfco9alkfk4mauilbuo5oeunumoj5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezpz.goceries",
+            "certificate_hash": "1d305eb6e07d9505891b627ca78bbe5d9067ef69"
+          }
+        },
+        {
+          "client_id": "438759403240-c7selspqrip6p4b4tqid3ae97sqft01d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezpz.goceries",
+            "certificate_hash": "0f9ec468b13ee81ad37fd9e7dbdb9424eba4961c"
+          }
+        },
+        {
+          "client_id": "438759403240-fi7nrg4aja4o2h9cfe9n34phs8q5rng1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezpz.goceries",
+            "certificate_hash": "fffc9d5d1ab6978a57503d08fb2a6dd4df3f9f4f"
+          }
+        },
+        {
+          "client_id": "438759403240-6d1p3e3v9ci1eg2puc3ne7pbn0et4lgn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD26ONKSmRdR7z-olGEP2K03ZYNhO9LUhU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438759403240-6d1p3e3v9ci1eg2puc3ne7pbn0et4lgn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "438759403240-khqmnnvvhjnpif28b2um17csp16b5bnq.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ezpz.goceries"
+              }
             }
           ]
         }

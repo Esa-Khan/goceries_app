@@ -1,6 +1,3 @@
-import 'dart:math';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:food_delivery_app/src/models/food.dart';
@@ -9,10 +6,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/restaurant_controller.dart';
-import '../elements/CircularLoadingWidget.dart';
 import '../elements/FoodItemWidget.dart';
 import '../elements/GalleryCarouselWidget.dart';
-import '../elements/ReviewsListWidget.dart';
 import '../elements/ShoppingCartFloatButtonWidget.dart';
 import '../helpers/helper.dart';
 import '../models/route_argument.dart';
@@ -426,7 +421,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                           _con.isLoading = false;
 
                                         if (_con.foods.isNotEmpty) {
-                                          Random random = new Random();
+
                                           return FoodItemWidget(
                                             heroTag: 'store_list',
                                             food: _con.foods.elementAt(index),

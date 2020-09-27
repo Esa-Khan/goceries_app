@@ -24,6 +24,8 @@ Future<User> login(User user) async {
     body: json.encode(user.toMap()),
   );
   if (response.statusCode == 200) {
+    if (response.body.isEmpty)
+      throw new Exception("No Account with this Email");
     setCurrentUser(response.body);
     currentUser.value = User.fromJSON(json.decode(response.body)['data']);
   } else {
@@ -44,9 +46,13 @@ Future<User> register(User user) async {
   if (response.statusCode == 200) {
     setCurrentUser(response.body);
     currentUser.value = User.fromJSON(json.decode(response.body)['data']);
-  } else {
+    } else if(response.statusCode == 401){
+      print("Exception: Account with this email already exits");
+      throw new Exception("Account already exits");
+    } else {
     print(CustomTrace(StackTrace.current, message: response.body).toString());
     throw new Exception(response.body);
+//    throw new Exception(response.body);
   }
   return currentUser.value;
 }

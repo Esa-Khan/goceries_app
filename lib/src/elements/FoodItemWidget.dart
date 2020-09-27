@@ -14,11 +14,6 @@ class FoodItemWidget extends StatelessWidget {
 
   const FoodItemWidget({Key key, this.food, this.heroTag}) : super(key: key);
 
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return InkWell(

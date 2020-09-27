@@ -65,7 +65,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
           valueListenable: settingsRepo.setting,
           builder: (context, value, child) {
             return Text(
-              value.appName ?? S.of(context).home,
+              currentUser.value.name == null ? value.appName : "Welcome " + currentUser.value.name?.split(" ")[0] + "!",
               style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
             );
           },

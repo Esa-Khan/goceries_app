@@ -38,7 +38,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 
   @override
   void initState() {
-    _con.listenForFood(foodId: widget.routeArgument.id);
+    _con.listenForFood(foodId: widget.routeArgument.id, getAisle: true);
     _con.listenForCart();
     _con.listenForFavorite(foodId: widget.routeArgument.id);
     super.initState();
@@ -73,7 +73,6 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
       _timer = new Timer(const Duration(seconds: 3), () {
         if (mounted) {
           setState(() => hasTimedout = true);
-          print("--------------TIMEDOUT------------");
           _timer.cancel();
         }
       });
@@ -158,7 +157,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                           ),
                                           _con.food.discountPrice > 0
                                               ? Helper.getPrice(_con.food.discountPrice, context,
-                                                  style: Theme.of(context).textTheme.bodyText2.merge(TextStyle(decoration: TextDecoration.lineThrough)))
+                                                  style: Theme.of(context).textTheme.bodyText2.merge(TextStyle(color: Colors.black, decoration: TextDecoration.lineThrough, fontSize: 15)))
                                               : SizedBox(height: 0),
                                         ],
                                       ),
@@ -188,88 +187,23 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                         decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
                                         child: Text(
-                                          _con.food.weight + " " + _con.food.unit,
+                                          _con.food.weight,
+//                                          _con.food.weight + " " + _con.food.unit,
                                           style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
                                         )),
                                     SizedBox(width: 5),
-//                                    _con.food.packageItemsCount == '0' || _con.food.packageItemsCount == ''
-//                                        ? SizedBox(height: 0,)
-//                                        : {Container(
-//                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-//                                        decoration: BoxDecoration(color: Theme.of(context).focusColor, borderRadius: BorderRadius.circular(24)),
-//                                        child: Text(
-//                                          _con.food.packageItemsCount + " " + S.of(context).items,
-//                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-//                                        )),
-//                                        Divider(height: 10)},
+                                    _con.aisle == null ? SizedBox(height: 0)
+                                    : Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                                        decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
+                                        child: Text(
+                                          _con.aisle.name + " Category",
+                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                        )),
                                   ],
                                 ),
-//                                Divider(height: 10),
                                 _con.food.description == '' ? SizedBox(height: 0,)
                                 : Helper.applyHtml(context, _con.food.description, style: TextStyle(fontSize: 12)),
-//                                ListTile(
-//                                  dense: true,
-//                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
-//                                  leading: Icon(
-//                                    Icons.add_circle,
-//                                    color: Theme.of(context).hintColor,
-//                                  ),
-//                                  title: Text(
-//                                    S.of(context).extras,
-//                                    style: Theme.of(context).textTheme.subtitle1,
-//                                  ),
-//                                  subtitle: Text(
-//                                    S.of(context).similar_items_recommended_for_you,
-//                                    style: Theme.of(context).textTheme.caption,
-//                                  ),
-//                                ),
-//                                _con.food.extraGroups == null
-//                                    ? CircularLoadingWidget(height: 100)
-//                                    : ListView.separated(
-//                                        padding: EdgeInsets.all(0),
-//                                        itemBuilder: (context, extraGroupIndex) {
-//                                          var extraGroup = _con.food.extraGroups.elementAt(extraGroupIndex);
-//                                          return Wrap(
-//                                            children: <Widget>[
-//                                              ListTile(
-//                                                dense: true,
-//                                                contentPadding: EdgeInsets.symmetric(vertical: 0),
-//                                                leading: Icon(
-//                                                  Icons.add_circle_outline,
-//                                                  color: Theme.of(context).hintColor,
-//                                                ),
-//                                                title: Text(
-//                                                  extraGroup.name,
-//                                                  style: Theme.of(context).textTheme.subtitle1,
-//                                                ),
-//                                              ),
-//                                              ListView.separated(
-//                                                padding: EdgeInsets.all(0),
-//                                                itemBuilder: (context, extraIndex) {
-//                                                  return ExtraItemWidget(
-//                                                    extra: _con.food.extras.where((extra) => extra.extraGroupId == extraGroup.id).elementAt(extraIndex),
-//                                                    onChanged: _con.calculateTotal,
-//                                                  );
-//                                                },
-//                                                separatorBuilder: (context, index) {
-//                                                  return SizedBox(height: 20);
-//                                                },
-//                                                itemCount: _con.food.extras.where((extra) => extra.extraGroupId == extraGroup.id).length,
-//                                                primary: false,
-//                                                shrinkWrap: true,
-//                                              ),
-//                                            ],
-//                                          );
-//                                        },
-//                                        separatorBuilder: (context, index) {
-//                                          return SizedBox(height: 20);
-//                                        },
-//                                        itemCount: _con.food.extraGroups.length,
-//                                        primary: false,
-//                                        shrinkWrap: true,
-//                                      ),
-
-
                                 _con.food.nutritions.isEmpty
                                     ? SizedBox(height: 0)
                                     : ListTile(

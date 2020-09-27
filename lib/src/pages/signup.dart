@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_delivery_app/src/elements/GoogleSigninButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -29,7 +30,10 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async => false,
+      onWillPop: () async {
+        Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+        return false;
+      },
       child: Scaffold(
         key: _con.scaffoldKey,
         resizeToAvoidBottomPadding: false,
@@ -45,8 +49,8 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
               ),
             ),
             Positioned(
-//              top: config.App(context).appHeight(29.5) - 120,
-              top: config.App(context).appHeight(29.5) - 180,
+              top: config.App(context).appHeight(29.5) - 120,
+//              top: 40,
               child: Container(
                 width: config.App(context).appWidth(84),
                 height: config.App(context).appHeight(29.5),
@@ -57,8 +61,8 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
               ),
             ),
             Positioned(
-//              top: config.App(context).appHeight(29.5) - 50,
-              top: config.App(context).appHeight(29.5) - 110,
+              top: config.App(context).appHeight(29.5) - 50,
+//              top: 80,
               child: Container(
                 decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.all(Radius.circular(10)), boxShadow: [
                   BoxShadow(
@@ -69,7 +73,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                 margin: EdgeInsets.symmetric(
                   horizontal: 20,
                 ),
-                padding: EdgeInsets.symmetric(vertical: 50, horizontal: 27),
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 27),
                 width: config.App(context).appWidth(88),
 //              height: config.App(context).appHeight(55),
                 child: Form(
@@ -178,7 +182,6 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           _con.register();
                         },
                       ),
-                      SizedBox(height: 25),
 //                      FlatButton(
 //                        onPressed: () {
 //                          Navigator.of(context).pushNamed('/MobileVerification');
