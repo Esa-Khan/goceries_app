@@ -24,7 +24,7 @@ class HomeController extends ControllerMVC {
   HomeController() {
     listenForClosestStores();
 //    listenForTrendingFoods();
-    listenForCategories();
+    listenForGeneralCategories();
 //    listenForPopularRestaurants();
     listenForRecentReviews();
   }
@@ -33,6 +33,19 @@ class HomeController extends ControllerMVC {
     final Stream<Category> stream = await getCategories();
     stream.listen((Category _category) {
       if (_category.id.length > 2 && _category.name != 'Misc.') {
+        setState(() {
+          categories.add(_category);
+        });
+      }
+    }, onError: (a) {
+      print(a);
+    }, onDone: () {});
+  }
+
+  Future<void> listenForGeneralCategories() async {
+    final Stream<Category> stream = await getCategories();
+    stream.listen((Category _category) {
+      if (_category.id.length > 2 && _category.name != 'Misc.' && _category.isGeneralCat) {
         setState(() {
           categories.add(_category);
         });

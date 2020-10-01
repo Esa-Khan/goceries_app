@@ -35,10 +35,15 @@ class CategoriesCarouselItemWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(15),
                 child: category.image.url.toLowerCase().endsWith('.svg')
-                    ? SvgPicture.network(
-                        category.image.url,
-                        color: Theme.of(context).primaryColor,
-                      )
+                    ? category.image.url != null && category.image.url == 'assets/img/misc.svg'
+                      ? SvgPicture.asset(
+                          category.image.url,
+                          color: Theme.of(context).primaryColor,
+                        )
+                      : SvgPicture.network(
+                          category.image.url,
+                          color: Theme.of(context).primaryColor,
+                        )
                     : CachedNetworkImage(
                         fit: BoxFit.cover,
                         imageUrl: category.image.icon,

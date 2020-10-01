@@ -136,11 +136,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                               ),
                               showTitleActions: true,
                               minTime: DateTime.now(),
-                              maxTime: DateTime(DateTime
-                                  .now()
-                                  .year, DateTime
-                                  .now()
-                                  .month + 1, 31),
+                              maxTime: DateTime(DateTime.now().year, DateTime.now().month + 1, 31),
                               onConfirm: (date) {
                                 _date =
                                 '${date.day}/${date.month}/${date.year}';
@@ -400,6 +396,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
       widget.con.showSnackToSelectBothTimeAndDate();
     } else {
       if (_time != "Set Time") {
+        _time = _time.replaceAll(" ", "");
         var desc = widget.con.carts[0].food?.restaurant?.description;
         var now = int.parse(_time.trim().split(':')[0]) + int.parse(_time.trim().split(':')[1])/100;
 
