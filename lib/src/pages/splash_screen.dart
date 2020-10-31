@@ -34,7 +34,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
       });
       if (progress == 100) {
         try {
-          Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+          Navigator.of(context).pushReplacementNamed('/StoreSelect', arguments: 2);
         } catch (e) {}
       }
     });
