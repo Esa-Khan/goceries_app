@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/generated/l10n.dart';
-import 'package:food_delivery_app/src/elements/AislesItemWidget.dart';
-import 'package:food_delivery_app/src/elements/FoodItemWidget.dart';
-import 'package:food_delivery_app/src/models/food.dart';
-import 'package:food_delivery_app/src/models/restaurant.dart';
-import 'package:food_delivery_app/src/models/category.dart';
+import 'package:saudaghar/generated/l10n.dart';
+import 'package:saudaghar/src/elements/AislesItemWidget.dart';
+import 'package:saudaghar/src/elements/FoodItemWidget.dart';
+import 'package:saudaghar/src/models/food.dart';
+import 'package:saudaghar/src/models/restaurant.dart';
+import 'package:saudaghar/src/models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:async';
 

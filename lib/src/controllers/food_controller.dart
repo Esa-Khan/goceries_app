@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/models/category.dart';
-import 'package:food_delivery_app/src/repository/category_repository.dart';
+import 'package:saudaghar/src/models/category.dart';
+import 'package:saudaghar/src/repository/category_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';

@@ -2,7 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/models/route_argument.dart';
+import 'package:saudaghar/src/models/route_argument.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/checkbox_form_field.dart';

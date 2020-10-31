@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/elements/SocialMediaOrdering.dart';
+import 'package:saudaghar/src/elements/SocialMediaOrdering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';

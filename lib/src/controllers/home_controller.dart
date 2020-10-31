@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:food_delivery_app/src/models/address.dart';
-import 'package:food_delivery_app/src/repository/user_repository.dart';
+import 'package:saudaghar/src/models/address.dart';
+import 'package:saudaghar/src/repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../helpers/helper.dart';

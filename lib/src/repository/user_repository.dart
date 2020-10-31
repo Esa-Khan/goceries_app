@@ -108,6 +108,9 @@ Future<User> getCurrentUser() async {
     currentUser.value.auth = false;
   }
   // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+  while (!currentUser.hasListeners) {
+    Future.delayed(Duration(seconds: 1));
+  }
   currentUser.notifyListeners();
   return currentUser.value;
 }

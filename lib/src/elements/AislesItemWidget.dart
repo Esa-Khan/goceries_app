@@ -2,10 +2,10 @@ import 'dart:collection';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/controllers/controller.dart';
-import 'package:food_delivery_app/src/controllers/category_controller.dart';
-import 'package:food_delivery_app/src/models/food.dart';
-import 'package:food_delivery_app/src/models/restaurant.dart';
+import 'package:saudaghar/src/controllers/controller.dart';
+import 'package:saudaghar/src/controllers/category_controller.dart';
+import 'package:saudaghar/src/models/food.dart';
+import 'package:saudaghar/src/models/restaurant.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
 import '../../generated/l10n.dart';

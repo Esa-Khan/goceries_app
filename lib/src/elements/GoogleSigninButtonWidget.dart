@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/controllers/user_controller.dart';
+import 'package:saudaghar/src/controllers/user_controller.dart';
 
 
 class GoogleSigninButtonWidget extends StatelessWidget {

@@ -1,5 +1,9 @@
-name: food_delivery_app
-description: food_delivery_app
+name: saudaghar
+description: New Saudghar App.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -11,13 +15,11 @@ description: food_delivery_app
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.2.0
-code: 6
+version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
-module:
-  androidX: true
+  sdk: ">=2.7.0 <3.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
@@ -34,8 +36,9 @@ dependencies:
   http: 0.12.1
   html: 0.14.0+3
   shared_preferences: 0.5.7+3
-  flutter_html: 1.0.0
-  flutter_svg: 0.17.4
+  flutter_html: ^1.0.0
+#  flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.0
   location: 3.0.2
   flutter_inappbrowser: 2.0.2
   url_launcher: 5.4.10
@@ -43,11 +46,13 @@ dependencies:
   cached_network_image: 2.2.0+1
   fluttertoast: 4.0.1
   flutter_staggered_grid_view: 0.3.0
-  intl_utils: 1.5.0
+  intl_utils: ^1.5.0
   flutter_datetime_picker: ^1.3.5
   firebase_auth: ^0.15.2
   google_sign_in: ^4.0.4
   flutter_facebook_login: ^1.1.1
+
+
 
 dev_dependencies:
   flutter_test:

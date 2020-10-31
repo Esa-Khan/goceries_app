@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
-import 'package:food_delivery_app/src/elements/DeliveryBottomDetailsWidget.dart';
-import 'package:food_delivery_app/src/repository/settings_repository.dart';
-import 'package:food_delivery_app/src/repository/user_repository.dart';
+import 'package:saudaghar/src/elements/CircularLoadingWidget.dart';
+import 'package:saudaghar/src/elements/DeliveryBottomDetailsWidget.dart';
+import 'package:saudaghar/src/repository/settings_repository.dart';
+import 'package:saudaghar/src/repository/user_repository.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';

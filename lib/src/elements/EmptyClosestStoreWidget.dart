@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/elements/CircularLoadingWidget.dart';
+import 'package:saudaghar/src/elements/CircularLoadingWidget.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/app_config.dart' as config;

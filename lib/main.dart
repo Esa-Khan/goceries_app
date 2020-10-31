@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'generated/l10n.dart';
 import 'route_generator.dart';
@@ -11,6 +12,8 @@ import 'src/repository/settings_repository.dart' as settingRepo;
 import 'src/repository/user_repository.dart' as userRepo;
 
 Future<void> main() async {
+  // ignore: invalid_use_of_visible_for_testing_member
+  SharedPreferences.setMockInitialValues({});
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("configurations");
   print(CustomTrace(StackTrace.current, message: "base_url: ${GlobalConfiguration().getString('base_url')}"));
@@ -28,7 +31,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     settingRepo.initSettings();
     settingRepo.getCurrentLocation();
-    userRepo.getCurrentUser();
+    // userRepo.getCurrentUser();
     super.initState();
   }
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:food_delivery_app/src/repository/user_repository.dart';
+import 'package:saudaghar/src/repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../controllers/splash_screen_controller.dart';
+import '../repository/user_repository.dart' as userRepo;
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -22,6 +23,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
   void initState() {
     super.initState();
     loadData();
+    userRepo.getCurrentUser();
   }
 
   void loadData() {

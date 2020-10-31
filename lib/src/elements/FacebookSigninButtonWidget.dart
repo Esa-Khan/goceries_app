@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:food_delivery_app/generated/l10n.dart';
-import 'package:food_delivery_app/src/controllers/user_controller.dart';
+import 'package:saudaghar/generated/l10n.dart';
+import 'package:saudaghar/src/controllers/user_controller.dart';
 
 
 class FacebookSigninButtonWidget extends StatelessWidget {

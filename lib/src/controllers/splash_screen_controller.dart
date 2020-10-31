@@ -40,6 +40,10 @@ class SplashScreenController extends ControllerMVC {
         progress?.notifyListeners();
       }
     });
+    // if (userRepo.currentUser.value.auth != null) {
+    //   progress.value["User"] = 59;
+    //   progress?.notifyListeners();
+    // }
     Timer(Duration(seconds: 20), () {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),
