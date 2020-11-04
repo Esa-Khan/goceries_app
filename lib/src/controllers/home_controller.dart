@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:saudaghar/src/models/address.dart';
 import 'package:saudaghar/src/repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -13,10 +14,12 @@ import '../repository/food_repository.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/settings_repository.dart';
 import '../repository/user_repository.dart' as userRepo;
+import '../repository/settings_repository.dart' as settingsRepo;
 
 class HomeController extends ControllerMVC {
   List<Category> categories = <Category>[];
   List<Restaurant> closestStores = <Restaurant>[];
+  Restaurant saudaghar;
   List<Restaurant> popularRestaurants = <Restaurant>[];
   List<Review> recentReviews = <Review>[];
   List<Food> trendingFoods = <Food>[];
@@ -56,7 +59,15 @@ class HomeController extends ControllerMVC {
   }
 
   Future<void> listenForClosestStores() async {
-    final Stream<Restaurant> stream = await getNearStores(deliveryAddress.value, deliveryAddress.value);
+    final Stream<Restaurant> stream = await getNearStores(deliveryAddress.value, deliveryAddress.value, isStore: settingsRepo.isStore.value == 2);
+    stream.listen((Restaurant _restaurant) {
+      if (_restaurant.distance < _restaurant.deliveryRange)
+        setState(() => closestStores.add(_restaurant));
+    }, onError: (a) {}, onDone: () {});
+  }
+
+  Future<void> listenForClosestRestaurants() async {
+    final Stream<Restaurant> stream = await getNearStores(deliveryAddress.value, deliveryAddress.value, isStore: false);
     stream.listen((Restaurant _restaurant) {
       if (_restaurant.distance < _restaurant.deliveryRange)
         setState(() => closestStores.add(_restaurant));
@@ -99,6 +110,15 @@ class HomeController extends ControllerMVC {
       loader.remove();
     }).catchError((e) {
       loader.remove();
+    });
+  }
+
+  Future<void> getSaudaghar() async {
+    final Stream<Restaurant> stream = await getRestaurant('0', deliveryAddress.value);
+    stream.listen((Restaurant _restaurant) {
+      setState(() => saudaghar = _restaurant);
+    }, onError: (a) {
+      print(a);
     });
   }
 

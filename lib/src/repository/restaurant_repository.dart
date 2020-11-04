@@ -13,13 +13,16 @@ import '../models/restaurant.dart';
 import '../models/review.dart';
 import '../repository/user_repository.dart';
 
-Future<Stream<Restaurant>> getNearStores(Address myLocation, Address areaLocation) async {
+Future<Stream<Restaurant>> getNearStores(Address myLocation, Address areaLocation, {bool isStore}) async {
   Uri uri = Helper.getUri('api/restaurants');
   Map<String, dynamic> _queryParams = {};
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
 
   _queryParams['limit'] = '6';
+  if (isStore != null)
+    _queryParams['isStore'] = isStore ? '1' : '0';
+
   if (!myLocation.isUnknown() && !areaLocation.isUnknown()) {
     _queryParams['myLon'] = myLocation.longitude.toString();
     _queryParams['myLat'] = myLocation.latitude.toString();

@@ -100,12 +100,11 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
       ),
         key: _con.scaffoldKey,
         floatingActionButton: _con.restaurant == null || _con.restaurant.information == "" || _con.restaurant.information == null ||
-                                  (_con.restaurant?.information != null &&_con.restaurant?.information == 'R') || _searchBarTapped
-        ? const SizedBox(height: 0)
+                                  (_con.restaurant?.information != null && _con.restaurant?.information == 'R') || _searchBarTapped
+        ? const SizedBox()
         : FloatingActionButton.extended(
           onPressed: () {
-            Navigator.of(context).pushNamed('/Menu',
-                arguments: new RouteArgument(id: widget.routeArgument.id, param: _con.restaurant));
+            Navigator.of(context).pushNamed('/Menu', arguments: new RouteArgument(id: widget.routeArgument.id, param: _con.restaurant));
           },
           isExtended: true,
           materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

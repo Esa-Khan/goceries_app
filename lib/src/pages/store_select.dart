@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/controllers/restaurant_controller.dart';
 
-import '../../generated/l10n.dart';
-import '../controllers/map_controller.dart';
-import '../elements/CardsCarouselWidget.dart';
-import '../elements/CircularLoadingWidget.dart';
-import '../models/restaurant.dart';
 import '../models/route_argument.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 
 class StoreSelectWidget extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -16,80 +12,51 @@ class StoreSelectWidget extends StatefulWidget {
   StoreSelectWidget({Key key, this.routeArgument, this.parentScaffoldKey}) : super(key: key);
 
   @override
-  _MapWidgetState createState() => _MapWidgetState();
+  _StoreSelectWidgetState createState() => _StoreSelectWidgetState();
 }
 
-class _MapWidgetState extends StateMVC<StoreSelectWidget> {
-  MapController _con;
+class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
+  RestaurantController _con;
 
-  _MapWidgetState() : super(MapController()) {
+  _StoreSelectWidgetState() : super(RestaurantController()) {
     _con = controller;
   }
 
   @override
   void initState() {
-    _con.currentRestaurant = widget.routeArgument?.param as Restaurant;
-    if (_con.currentRestaurant?.latitude != null) {
-      // user select a restaurant
-      _con.getRestaurantLocation();
-      _con.getDirectionSteps();
-    } else {
-      _con.getCurrentLocation();
-    }
+    _con.listenForRestaurant(id: '0');
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: () async => false,
+      child: Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        // leading: _con.currentRestaurant?.latitude == null
-        //     ? new IconButton(
-        //         icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
-        //         onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
-        //       )
-        //     : IconButton(
-        //         icon: new Icon(Icons.arrow_back, color: Theme.of(context).hintColor),
-        //         onPressed: () => Navigator.of(context).pushNamed('/Pages', arguments: 2),
-        //       ),
+        leading: IconButton(
+                icon: new Icon(Icons.home, color: Theme.of(context).accentColor),
+                onPressed: () {},
+              ),
         title: Text(
           "Where to Shop?",
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
         actions: <Widget>[
-          // IconButton(
-          //   icon: Icon(
-          //     Icons.my_location,
-          //     color: Theme.of(context).hintColor,
-          //   ),
-          //   onPressed: () {
-          //     _con.goCurrentLocation();
-          //   },
-          // ),
           SizedBox(width: 10,)
-//          IconButton(
-//            icon: Icon(
-//              Icons.filter_list,
-//              color: Theme.of(context).hintColor,
-//            ),
-//            onPressed: () {
-//              widget.parentScaffoldKey.currentState.openEndDrawer();
-//            },
-//          ),
         ],
       ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  margin: const EdgeInsets.all(15.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Theme.of(context).accentColor.withOpacity(0.9),
-                        width: 2),
+                        color: Theme.of(context).accentColor.withOpacity(0.9), width: 2),
                     color: Theme.of(context).primaryColor.withOpacity(0.9),
                     boxShadow: [
                       BoxShadow(
@@ -102,19 +69,22 @@ class _MapWidgetState extends StateMVC<StoreSelectWidget> {
                       constraints: BoxConstraints.tightFor(),
                       child: FlatButton(
                           padding: EdgeInsets.all(10.0),
-                          onPressed: () => print("SuadaGhar"),
+                          onPressed: () => nextPage(1),
                           child: Row(
                             children: [
                               Image.asset('assets/img/logo.png', height: 130),
                               Text(
-                                "SaudaGhar Store",
+                                "SaudaGhar",
                                 style: TextStyle(fontSize: 20),
                               )
                             ],
                           )))),
-              const Divider(height: 10),
+              Text(
+                'OR',
+                style: Theme.of(context).textTheme.headline5,
+              ),
               Container(
-              margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               decoration: BoxDecoration(
                 border: Border.all(
                     color: Theme.of(context).primaryColor.withOpacity(0.9),
@@ -131,14 +101,14 @@ class _MapWidgetState extends StateMVC<StoreSelectWidget> {
                   constraints: BoxConstraints.tightFor(),
                   child: FlatButton(
                       padding: EdgeInsets.all(10.0),
-                      onPressed: () => print("SuadaGhar"),
+                      onPressed: () => nextPage(2),
                       child: Row(
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
-                            child: Image.asset('assets/img/other_stores.jpg', height: 110),
+                            child: Image.asset('assets/img/other_stores.jpg', height: 90),
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 20),
                           const Text(
                             "Other Stores",
                             style: TextStyle(fontSize: 20),
@@ -146,7 +116,7 @@ class _MapWidgetState extends StateMVC<StoreSelectWidget> {
                         ],
                       )))),
           Container(
-              margin: const EdgeInsets.symmetric(horizontal: 60, vertical: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
               decoration: BoxDecoration(
                 border: Border.all(
                     color: Theme.of(context).primaryColor.withOpacity(0.9),
@@ -163,21 +133,26 @@ class _MapWidgetState extends StateMVC<StoreSelectWidget> {
                   constraints: BoxConstraints.tightFor(),
                   child: FlatButton(
                       padding: EdgeInsets.all(10.0),
-                      onPressed: () => print("Restaurants"),
+                      onPressed: () => nextPage(3),
                       child: Row(
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8.0),
-                            child: Image.asset('assets/img/restaurants.jpg',
-                                height: 110),
+                            child: Image.asset('assets/img/restaurants.jpg', height: 90),
                           ),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 20),
                           const Text(
-                            "Other Stores",
+                            "Home Cooked",
                             style: TextStyle(fontSize: 20),
                           )
                         ],
                       ))))
-        ]));
+        ])));
   }
+
+  void nextPage(int isStore) {
+    settingsRepo.isStore.value = isStore;
+    Navigator.of(context).pushNamed('/Pages', arguments: new RouteArgument(id: '2'));
+  }
+
 }

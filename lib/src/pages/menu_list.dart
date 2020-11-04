@@ -17,11 +17,12 @@ import '../models/route_argument.dart';
 
 
 class MenuWidget extends StatefulWidget {
-  @override
-  _MenuWidgetState createState() => _MenuWidgetState();
   final RouteArgument routeArgument;
 
   MenuWidget({Key key, this.routeArgument}) : super(key: key);
+
+  @override
+  _MenuWidgetState createState() => _MenuWidgetState();
 }
 
 class _MenuWidgetState extends StateMVC<MenuWidget> {
@@ -37,12 +38,11 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
   @override
   void initState() {
     super.initState();
-    store = widget.routeArgument.param;
-    _con.restaurant = store;
-    while (store.used_cats == null) {
+    _con.restaurant = widget.routeArgument.param;
+    while (_con.restaurant.used_cats == null) {
       Future.delayed(Duration(microseconds: 100));
     }
-    _con.listenForUsedCategories(store.used_cats);
+    _con.listenForUsedCategories(_con.restaurant.id);
   }
 
 
@@ -56,7 +56,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          store == null ? "Store" : store.name,
+          _con.restaurant == null ? "Store" : _con.restaurant.name,
 //          _con.foods.isNotEmpty ? _con.foods[0].restaurant.name : '',
           overflow: TextOverflow.fade,
           softWrap: false,
@@ -190,7 +190,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                             // Define a Aisle dropdown
                             return AislesItemWidget(
                                 aisle: currAisle,
-                                store: store,
+                                store: _con.restaurant,
                                 items: _con.subaisleToItemsMap,
                                 subAisles: _con.aisleToSubaisleMap[currAisle.id],
                                 onPressed: (aisleVal) async {
@@ -204,7 +204,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
                                       !_con.isAisleLoadedList[aisleVal.id] &&
                                       _con.isExpandedList[aisleVal.id]) {
                                     print(aisleVal.name);
-                                    await _con.listenForItemsByCategory(id: aisleVal.id, storeID: store.id);
+                                    await _con.listenForItemsByCategory(id: aisleVal.id, storeID: _con.restaurant.id);
                                     _con.isAisleLoadedList[aisleVal.id] = true;
                                   }
                                 });

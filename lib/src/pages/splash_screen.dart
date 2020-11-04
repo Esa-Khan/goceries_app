@@ -14,7 +14,7 @@ class SplashScreen extends StatefulWidget {
 
 class SplashScreenState extends StateMVC<SplashScreen> {
   SplashScreenController _con;
-
+  bool isNotDone = true;
   SplashScreenState() : super(SplashScreenController()) {
     _con = controller;
   }
@@ -32,9 +32,10 @@ class SplashScreenState extends StateMVC<SplashScreen> {
       _con.progress.value.values.forEach((_progress) {
         progress += _progress;
       });
-      if (progress == 100) {
+      if (progress == 100 && isNotDone) {
         try {
-          Navigator.of(context).pushReplacementNamed('/StoreSelect', arguments: 2);
+          isNotDone = false;
+          Navigator.of(context).pushReplacementNamed('/StoreSelect');
         } catch (e) {}
       }
     });

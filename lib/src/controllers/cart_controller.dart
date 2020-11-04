@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/models/food.dart';
-import 'package:saudaghar/src/models/route_argument.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../repository/cart_repository.dart';
-import '../repository/user_repository.dart';
 import '../repository/settings_repository.dart';
-import '../repository/cart_repository.dart';
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];

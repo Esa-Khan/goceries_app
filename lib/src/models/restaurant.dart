@@ -34,15 +34,14 @@ class Restaurant {
       adminCommission = jsonMap['admin_commission'] != null ? jsonMap['admin_commission'].toDouble() : 0.0;
       deliveryRange = jsonMap['delivery_range'] != null ? jsonMap['delivery_range'].toDouble() : 0.0;
       address = jsonMap['address'];
-      used_cats = jsonMap['used_categories'];
+      used_cats = jsonMap['used_categories'] != null ? jsonMap['used_categories'] : null;
       description = jsonMap['description'];
       phone = jsonMap['phone'];
       mobile = jsonMap['mobile'];
       defaultTax = jsonMap['default_tax'] != null ? jsonMap['default_tax'].toDouble() : 0.0;
-      information = jsonMap['information'];
+      information = jsonMap['information'] != null ? jsonMap['information'] : null;
       latitude = jsonMap['latitude'];
       longitude = jsonMap['longitude'];
-//      closed = jsonMap['closed'] ?? false;
       closed = isClosed(description);
       availableForDelivery = jsonMap['available_for_delivery'] ?? false;
       distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0.0;
@@ -81,7 +80,11 @@ class Restaurant {
   }
 
   bool isClosed(String desc){
-    if (desc == null) return true;
+    if (desc == null) {
+      return true;
+    } else if (desc == "24/7") {
+      return true;
+    }
 
     bool closed = true;
 //    var now = new DateTime.now().hour + new DateTime.now().minute/100;

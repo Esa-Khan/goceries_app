@@ -9,7 +9,6 @@ import 'src/helpers/app_config.dart' as config;
 import 'src/helpers/custom_trace.dart';
 import 'src/models/setting.dart';
 import 'src/repository/settings_repository.dart' as settingRepo;
-import 'src/repository/user_repository.dart' as userRepo;
 
 Future<void> main() async {
   // ignore: invalid_use_of_visible_for_testing_member

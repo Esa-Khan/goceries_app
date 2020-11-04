@@ -87,17 +87,30 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Pages', arguments: 0);
+              Navigator.of(context).pushReplacementNamed('/StoreSelect');
             },
             leading: Icon(
-              Icons.notifications,
+              Icons.list,
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              S.of(context).notifications,
+              "Where to Shop",
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
+          // ListTile(
+          //   onTap: () {
+          //     Navigator.of(context).pushNamed('/Pages', arguments: 0);
+          //   },
+          //   leading: Icon(
+          //     Icons.notifications,
+          //     color: Theme.of(context).focusColor.withOpacity(1),
+          //   ),
+          //   title: Text(
+          //     S.of(context).notifications,
+          //     style: Theme.of(context).textTheme.subtitle1,
+          //   ),
+          // ),
           ListTile(
             onTap: () {
               Navigator.of(context).pushNamed('/Pages', arguments: 3);
