@@ -30,19 +30,24 @@ class GridItemWidget extends StatelessWidget {
               borderRadius: BorderRadius.only(topLeft: Radius.circular(5), topRight: Radius.circular(5)),
               child: Hero(
                 tag: heroTag + restaurant.id,
-                child: CachedNetworkImage(
+                child: Image.network(
+                  restaurant.image.thumb,
                   height: 100,
                   width: double.infinity,
-                  fit: BoxFit.cover,
-                  imageUrl: restaurant.image.thumb,
-                  placeholder: (context, url) => Image.asset(
-                    'assets/img/loading.gif',
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: 82,
-                  ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
+                )
+                // CachedNetworkImage(
+                //   height: 100,
+                //   width: double.infinity,
+                //   fit: BoxFit.cover,
+                //   imageUrl: restaurant.image.thumb,
+                //   placeholder: (context, url) => Image.asset(
+                //     'assets/img/loading.gif',
+                //     fit: BoxFit.cover,
+                //     width: double.infinity,
+                //     height: 82,
+                //   ),
+                //   errorWidget: (context, url, error) => Icon(Icons.error),
+                // ),
               ),
             ),
             Padding(

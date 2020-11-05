@@ -104,15 +104,18 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                             collapseMode: CollapseMode.parallax,
                             background: Hero(
                               tag: widget.routeArgument.heroTag ?? '' + _con.food.id,
-                              child: CachedNetworkImage(
-                                fit: BoxFit.contain,
-                                imageUrl: _con.food.image.url,
-                                placeholder: (context, url) => Image.asset(
-                                  'assets/img/loading.gif',
-                                  fit: BoxFit.contain,
-                                ),
-                                errorWidget: (context, url, error) => Icon(Icons.error),
-                              ),
+                              child: Image.network(
+                                _con.food.image.url,
+                              )
+                              // CachedNetworkImage(
+                              //   fit: BoxFit.contain,
+                              //   imageUrl: _con.food.image.url,
+                              //   placeholder: (context, url) => Image.asset(
+                              //     'assets/img/loading.gif',
+                              //     fit: BoxFit.contain,
+                              //   ),
+                              //   errorWidget: (context, url, error) => Icon(Icons.error),
+                              // ),
                             ),
                           ),
                         ),

@@ -73,6 +73,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                           child: Row(
                             children: [
                               Image.asset('assets/img/logo.png', height: 130),
+                              const SizedBox(width: 20),
                               Text(
                                 "SaudaGhar",
                                 style: TextStyle(fontSize: 20),

@@ -143,7 +143,7 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   primary: false,
-                  itemCount: _con.aisles.length,
+                  itemCount: _con.aisleToSubaisleMap.length,
                   separatorBuilder: (context, index) {
                     Category currAisle = _con.aisles.elementAt(index);
                     if (_con.aisleToSubaisleMap[currAisle.id] == null) {

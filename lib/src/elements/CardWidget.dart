@@ -39,19 +39,24 @@ class CardWidget extends StatelessWidget {
                 tag: this.heroTag + restaurant.id,
                 child: ClipRRect(
                   borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10)),
-                  child: CachedNetworkImage(
-                    imageUrl: restaurant.image.url,
+                  child: Image.network(
+                    restaurant.image.url,
                     height: 150,
                     width: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Image.asset(
-                      'assets/img/loading.gif',
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 150,
-                    ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
-                  ),
+                  )
+                  // CachedNetworkImage(
+                  //   imageUrl: restaurant.image.url,
+                  //   height: 150,
+                  //   width: double.infinity,
+                  //   fit: BoxFit.cover,
+                  //   placeholder: (context, url) => Image.asset(
+                  //     'assets/img/loading.gif',
+                  //     fit: BoxFit.cover,
+                  //     width: double.infinity,
+                  //     height: 150,
+                  //   ),
+                  //   errorWidget: (context, url, error) => Icon(Icons.error),
+                  // ),
                 ),
               ),
               Row(

@@ -37,7 +37,7 @@ Future<Stream<Category>> getCategories() async {
 
 Future<Stream<Category>> getMainCategories() async {
   Uri uri = Helper.getUri('api/categories');
-  Map<String, dynamic> _queryParams = {'getOnlyMain': true};
+  Map<String, dynamic> _queryParams = {'getOnlyMain': 'true'};
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
   filter.delivery = false;

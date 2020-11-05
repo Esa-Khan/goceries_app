@@ -55,15 +55,18 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                     width: double.infinity,
                                     child: Hero(
                                       tag: widget.routeArgument.heroTag + _con.order.foodOrders[0].food.restaurant.id,
-                                      child: CachedNetworkImage(
-                                        fit: BoxFit.cover,
-                                        imageUrl: _con.order.foodOrders[0].food.restaurant.image.url,
-                                        placeholder: (context, url) => Image.asset(
-                                          'assets/img/loading.gif',
-                                          fit: BoxFit.cover,
-                                        ),
-                                        errorWidget: (context, url, error) => Icon(Icons.error),
-                                      ),
+                                      child: Image.network(
+                                        _con.order.foodOrders[0].food.restaurant.image.url,
+                                      )
+                                      // CachedNetworkImage(
+                                      //   fit: BoxFit.cover,
+                                      //   imageUrl: _con.order.foodOrders[0].food.restaurant.image.url,
+                                      //   placeholder: (context, url) => Image.asset(
+                                      //     'assets/img/loading.gif',
+                                      //     fit: BoxFit.cover,
+                                      //   ),
+                                      //   errorWidget: (context, url, error) => Icon(Icons.error),
+                                      // ),
                                     ),
                                   ),
                                 ),
