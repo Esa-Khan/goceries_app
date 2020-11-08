@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:saudaghar/src/elements/FacebookSigninButtonWidget.dart';
 import 'package:saudaghar/src/elements/GoogleSigninButtonWidget.dart';
@@ -45,7 +46,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             ),
           ),
           Positioned(
-            top: config.App(context).appHeight(37) - 200,
+            top: config.App(context).appHeight(37) - 180,
             child: Container(
               width: config.App(context).appWidth(84),
               height: config.App(context).appHeight(37),
@@ -80,7 +81,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                     const Divider(height: 15),
                     GoogleSigninButtonWidget(con: _con),
                     Padding(
-                        padding: EdgeInsets.symmetric(vertical: 15),
+                        padding: EdgeInsets.symmetric(vertical: 5),
                         child: Text("OR",
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.button.apply(color: Theme.of(context).accentColor),
@@ -156,7 +157,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             ),
           ),
           Positioned(
-            bottom: 10,
+            bottom: 5,
             child: Column(
               children: <Widget>[
                 FlatButton(

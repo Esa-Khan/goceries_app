@@ -39,7 +39,9 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
         centerTitle: true,
         leading: IconButton(
                 icon: new Icon(Icons.home, color: Theme.of(context).accentColor),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/Login');
+                },
               ),
         title: Text(
           "Where to Shop?",

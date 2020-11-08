@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/pages/store_select.dart';
+import 'src/pages/store_select.dart';
 
 import 'src/models/route_argument.dart';
 import 'src/pages/cart.dart';

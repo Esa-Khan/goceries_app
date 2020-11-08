@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "540773153377-mmllnjgd4jp7pononvuckdiufloas3c3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ezpz.saudaghar",
+            "certificate_hash": "492f47a96ed2604325f5f481d02fbf4d9759d934"
+          }
+        },
+        {
           "client_id": "540773153377-ebcj4lvfr70uo0mbil95rm846takeg5c.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -61,6 +61,7 @@ class UserController extends ControllerMVC {
     }
   }
 
+  // ignore: missing_return
   Future<String> signInWithGoogle() async {
     try {
       Overlay.of(context).insert(loader);
@@ -90,6 +91,7 @@ class UserController extends ControllerMVC {
       }
 
     } catch (e) {
+      print("ERROR: " + e.toString());
       Helper.hideLoader(loader);
     }
   }
