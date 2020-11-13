@@ -4,16 +4,16 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
-  - Bolts (1.9.1):
-    - Bolts/AppLinks (= 1.9.1)
-    - Bolts/Tasks (= 1.9.1)
-  - Bolts/AppLinks (1.9.1):
-    - Bolts/Tasks
-  - Bolts/Tasks (1.9.1)
-  - FBSDKCoreKit (4.39.1):
-    - Bolts (~> 1.9)
-  - FBSDKLoginKit (4.39.1):
-    - FBSDKCoreKit
+  - FBSDKCoreKit (5.15.1):
+    - FBSDKCoreKit/Basics (= 5.15.1)
+    - FBSDKCoreKit/Core (= 5.15.1)
+  - FBSDKCoreKit/Basics (5.15.1)
+  - FBSDKCoreKit/Core (5.15.1):
+    - FBSDKCoreKit/Basics
+  - FBSDKLoginKit (5.15.1):
+    - FBSDKLoginKit/Login (= 5.15.1)
+  - FBSDKLoginKit/Login (5.15.1):
+    - FBSDKCoreKit (~> 5.0)
   - Firebase/Auth (6.34.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 6.9.2)
@@ -79,7 +79,8 @@ PODS:
     - Protobuf (>= 3.9.2, ~> 3.9)
   - Flutter (1.0.0)
   - flutter_facebook_login (0.0.1):
-    - FBSDKLoginKit (= 4.39.1)
+    - FBSDKCoreKit (~> 5.5)
+    - FBSDKLoginKit (~> 5.5)
     - Flutter
   - flutter_inappbrowser (0.0.1):
     - Flutter
@@ -200,7 +201,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - AppAuth
-    - Bolts
     - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
@@ -271,9 +271,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
-  Bolts: 8c1e8aab2f603387b8b9924f57d1d64f43d3ffdc
-  FBSDKCoreKit: f442aa96179cc9b382bb4abeb7e340a47cca8f91
-  FBSDKLoginKit: c3079d9a4db27c492287b1eed7a4272b28cf8a59
+  FBSDKCoreKit: 1d5acf7c9d7a2f92bb1a242dc60cae5b7adb91df
+  FBSDKLoginKit: f1ea8026a58b52d30c9f2e6a58ca7d813619fb83
   Firebase: c23a36d9e4cdf7877dfcba8dd0c58add66358999
   firebase_auth: 4ee3a54d3f09434c508c284a62f895a741a30637
   firebase_core: 335c02abd48672b7c83c683df833d0488a72e73e
@@ -286,7 +285,7 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: bd3ffc24367f901a43c063b36c640b345a4a5dd1
   FirebaseMessaging: 5eca4ef173de76253352511aafef774caa1cba2a
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  flutter_facebook_login: f1f88c32d5888d6b5f3301fd87cc7de26f02877e
+  flutter_facebook_login: cfb5659f686b1c575ef205c6b6fd20db9679d3c4
   flutter_inappbrowser: cd1fa70c62958a5674ffba8ecc3f3cfae845466d
   fluttertoast: b644586ef3b16f67fae9a1f8754cef6b2d6b634b
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
