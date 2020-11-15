@@ -87,6 +87,7 @@ class UserController extends ControllerMVC {
         this.user.password = currentUser.uid;
 
         thirdPartyLogin();
+        Helper.hideLoader(loader);
         return 'signInWithGoogle succeeded: $user';
       }
 
@@ -103,9 +104,9 @@ class UserController extends ControllerMVC {
 
   void initiateFacebookLogin() async {
     try {
-      Overlay.of(context).insert(loader);
       var facebookLogin = FacebookLogin();
-      var facebookLoginResult = await facebookLogin.logIn(['email']);
+      var facebookLoginResult = await facebookLogin.logInWithReadPermissions(['email']);
+      Overlay.of(context).insert(loader);
       switch (facebookLoginResult.status) {
         case FacebookLoginStatus.error:
           print("Error");
@@ -128,8 +129,10 @@ class UserController extends ControllerMVC {
           break;
       }
     } catch (e) {
+      print("---------ERROR: " + e.toString() + "----------");
       Helper.hideLoader(loader);
     }
+    Helper.hideLoader(loader);
   }
 
   void onLoginStatusChanged(bool fb_isLoggedIn) {
@@ -147,7 +150,7 @@ class UserController extends ControllerMVC {
         ));
       }
     }).catchError((e) {
-      print("-------------Login Failed-------------");
+      print("-------------Login Failed-------------" + e.toString());
       if (e.toString() == "Exception: No Account with this Email") {
         repository.register(this.user).then((value) {
           if (value != null && value.apiToken != null) {
@@ -165,13 +168,8 @@ class UserController extends ControllerMVC {
               content: Text("Wrong password. Try a different login method."),
             ));
           }
-          loader?.remove();
-        }).whenComplete(() {
-          Helper.hideLoader(loader);
         });
       }
-      }).whenComplete(() {
-        Helper.hideLoader(loader);
       });
   }
 
