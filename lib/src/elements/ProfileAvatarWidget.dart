@@ -40,24 +40,19 @@ class ProfileAvatarWidget extends StatelessWidget {
 //              ),
                 ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(300)),
-                  child: Image.network(
-                    user.image?.url,
+                  child: CachedNetworkImage(
                     height: 135,
                     width: 135,
+                    fit: BoxFit.cover,
+                    imageUrl: user.image?.url,
+                    placeholder: (context, url) => Image.asset(
+                      'assets/img/loading.gif',
+                      fit: BoxFit.cover,
+                      height: 135,
+                      width: 135,
+                    ),
+                    errorWidget: (context, url, error) => Icon(Icons.error),
                   ),
-                  // CachedNetworkImage(
-                  //   height: 135,
-                  //   width: 135,
-                  //   fit: BoxFit.cover,
-                  //   imageUrl: user.image?.url,
-                  //   placeholder: (context, url) => Image.asset(
-                  //     'assets/img/loading.gif',
-                  //     fit: BoxFit.cover,
-                  //     height: 135,
-                  //     width: 135,
-                  //   ),
-                  //   errorWidget: (context, url, error) => Icon(Icons.error),
-                  // ),
                 ),
 //              SizedBox(
 //                width: 50,

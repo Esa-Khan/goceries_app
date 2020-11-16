@@ -143,7 +143,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                     decoration:
                                         BoxDecoration(color: (_con.restaurant != null && _con.restaurant?.closed == null && _con.restaurant?.closed)
-                                            ? Colors.black
+                                            ? Colors.red
                                             : Colors.green, borderRadius: BorderRadius.circular(24)),
                                     child: _con.restaurant != null && _con.restaurant.closed
                                         ? Text(

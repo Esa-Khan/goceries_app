@@ -192,26 +192,21 @@ class ImageDialog extends StatelessWidget {
     return Dialog(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(30),
-        child: Image.network(
-          'https://thumbs.dreamstime.com/z/sale-off-offer-storewide-ramadan-background-eid-banner-discount-celebration-fantastic-festival-muslim-shopping-holiday-gift-up-148585574.jpg',
-          height: 60,
-          width: 60,
-        )
-//         CachedNetworkImage(
-//           height: MediaQuery.of(context).size.height / 1.8,
-//           width: MediaQuery.of(context).size.width / 1.3,
-//           fit: BoxFit.cover,
-//           imageUrl:
-//               'https://thumbs.dreamstime.com/z/sale-off-offer-storewide-ramadan-background-eid-banner-discount-celebration-fantastic-festival-muslim-shopping-holiday-gift-up-148585574.jpg',
-// //          imageUrl: 'https://goceries.org/storage/app/public/promotions.png',
-//           placeholder: (context, url) => Image.asset(
-//             'assets/img/loading.gif',
-//             fit: BoxFit.contain,
-//             width: double.infinity,
-//             height: 82,
-//           ),
-//           errorWidget: (context, url, error) => const Icon(Icons.error),
-//         ),
+        child: CachedNetworkImage(
+          height: MediaQuery.of(context).size.height / 1.8,
+          width: MediaQuery.of(context).size.width / 1.3,
+          fit: BoxFit.cover,
+          imageUrl:
+              'https://thumbs.dreamstime.com/z/sale-off-offer-storewide-ramadan-background-eid-banner-discount-celebration-fantastic-festival-muslim-shopping-holiday-gift-up-148585574.jpg',
+//          imageUrl: 'https://goceries.org/storage/app/public/promotions.png',
+          placeholder: (context, url) => Image.asset(
+            'assets/img/loading.gif',
+            fit: BoxFit.contain,
+            width: double.infinity,
+            height: 82,
+          ),
+          errorWidget: (context, url, error) => const Icon(Icons.error),
+        ),
       ),
       elevation: 10,
       shape: const RoundedRectangleBorder(

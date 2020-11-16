@@ -50,24 +50,19 @@ class _CartItemWidgetState extends State<CartItemWidget> {
             children: <Widget>[
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                child: Image.network(
-                  widget.cart.food.image.thumb,
+                child: CachedNetworkImage(
                   height: 90,
                   width: 90,
-                )
-                // CachedNetworkImage(
-                //   height: 90,
-                //   width: 90,
-                //   fit: BoxFit.cover,
-                //   imageUrl: widget.cart.food.image.thumb,
-                //   placeholder: (context, url) => Image.asset(
-                //     'assets/img/loading.gif',
-                //     fit: BoxFit.cover,
-                //     height: 90,
-                //     width: 90,
-                //   ),
-                //   errorWidget: (context, url, error) => Icon(Icons.error),
-                // ),
+                  fit: BoxFit.cover,
+                  imageUrl: widget.cart.food.image.thumb,
+                  placeholder: (context, url) => Image.asset(
+                    'assets/img/loading.gif',
+                    fit: BoxFit.cover,
+                    height: 90,
+                    width: 90,
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
               SizedBox(width: 15),
               Flexible(
