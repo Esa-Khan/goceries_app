@@ -27,9 +27,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This application requires location services to work.</string>
+	<string>This application requires location services to know where to deliver your order.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This application requires location services to work.</string>
+	<string>This application requires location services to know where to deliver your order.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
