@@ -75,94 +75,94 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
       body: settingsRepo.isStore.value == 1
           ? _con.saudaghar == null ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
               : CategoryListWidget(store: _con.saudaghar)
-          : RefreshIndicator(
-            onRefresh: _con.refreshHome,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: SearchBarWidget(
-                      onClickFilter: (event) {
-                        widget.parentScaffoldKey.currentState.openEndDrawer();
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
-                    child: ListTile(
-                      dense: true,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                      leading: Icon(
-                        Icons.stars,
-                        color: Theme.of(context).hintColor,
-                      ),
-                      trailing: IconButton(
-                        onPressed: () {
-                          getLocation();
-                        },
-                        icon: Icon(
-                          Icons.my_location,
-                          color: Theme.of(context).hintColor,
+              : RefreshIndicator(
+                onRefresh: _con.refreshHome,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: SearchBarWidget(
+                          onClickFilter: (event) {
+                            widget.parentScaffoldKey.currentState.openEndDrawer();
+                          },
                         ),
                       ),
-                      title: Text(
-                        settingsRepo.isStore.value == 2 ? 'Closest Stores' : 'Closest Restaurants',
-                        style: Theme.of(context).textTheme.headline4,
+                      Padding(
+                        padding: const EdgeInsets.only(top: 15, left: 20, right: 20),
+                        child: ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 0),
+                          leading: Icon(
+                            Icons.stars,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          trailing: IconButton(
+                            onPressed: () {
+                              getLocation();
+                            },
+                            icon: Icon(
+                              Icons.my_location,
+                              color: Theme.of(context).hintColor,
+                            ),
+                          ),
+                          title: Text(
+                            settingsRepo.isStore.value == 2 ? 'Closest Stores' : 'Closest Restaurants',
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                          subtitle: Text(
+                            settingsRepo.deliveryAddress.value?.address == null
+                                ? "Tap the location icon to start"
+                                : settingsRepo.deliveryAddress.value.address,
+                            style: Theme.of(context).textTheme.caption,
+                          ),
+                        ),
                       ),
-                      subtitle: Text(
-                        settingsRepo.deliveryAddress.value?.address == null
-                            ? "Tap the location icon to start"
-                            : settingsRepo.deliveryAddress.value.address,
-                        style: Theme.of(context).textTheme.caption,
+                      CardsCarouselWidget(restaurantsList: _con.closestStores, heroTag: 'home_top_restaurants'),
+                      SocialMediaOrdering(),
+                      _con.categories.isEmpty ? const SizedBox()
+                      : Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: ListTile(
+                          dense: true,
+                          leading: Icon(
+                            Icons.category,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          title: Text(
+                            S.of(context).aisles,
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                        ),
                       ),
-                    ),
+                      _con.categories.isEmpty ? const SizedBox() : CategoriesCarouselWidget(categories: _con.categories),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: ListTile(
+                          dense: true,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 20),
+                          leading: Icon(
+                            Icons.recent_actors,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          title: Text(
+                            S.of(context).recent_reviews,
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: ReviewsListWidget(reviewsList: _con.recentReviews),
+                      ),
+                    ],
                   ),
-                  CardsCarouselWidget(restaurantsList: _con.closestStores, heroTag: 'home_top_restaurants'),
-                  SocialMediaOrdering(),
-                  _con.categories.isEmpty ? const SizedBox()
-                  : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ListTile(
-                      dense: true,
-                      leading: Icon(
-                        Icons.category,
-                        color: Theme.of(context).hintColor,
-                      ),
-                      title: Text(
-                        S.of(context).aisles,
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                    ),
-                  ),
-                  _con.categories.isEmpty ? const SizedBox() : CategoriesCarouselWidget(categories: _con.categories),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ListTile(
-                      dense: true,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 20),
-                      leading: Icon(
-                        Icons.recent_actors,
-                        color: Theme.of(context).hintColor,
-                      ),
-                      title: Text(
-                        S.of(context).recent_reviews,
-                        style: Theme.of(context).textTheme.headline4,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: ReviewsListWidget(reviewsList: _con.recentReviews),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
     );
   }
 

@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/FacebookSigninButtonWidget.dart';
-import 'package:saudaghar/src/elements/GoogleSigninButtonWidget.dart';
+import '../elements/FacebookSigninButtonWidget.dart';
+import '../elements/GoogleSigninButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:http/http.dart' as http;
@@ -84,49 +84,8 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                     const Divider(height: 15),
                     GoogleSigninButtonWidget(con: _con),
                     const Divider(height: 15),
-
-
                     SignInWithAppleButton(
-                      onPressed: () async {
-                        final credential = await SignInWithApple.getAppleIDCredential(
-                          scopes: [
-                            AppleIDAuthorizationScopes.email,
-                            AppleIDAuthorizationScopes.fullName,
-                          ],
-                          webAuthenticationOptions: WebAuthenticationOptions(
-                            clientId: 'com.ezpz.saudagharservice',
-                            redirectUri: Uri.parse(
-                              'https://mint-pumped-viscose.glitch.me/callbacks/sign_in_with_apple',
-                            ),
-                          ),
-                        );
-
-                        print(credential);
-
-                        // This is the endpoint that will convert an authorization code obtained
-                        // via Sign in with Apple into a session in your system
-                        final signInWithAppleEndpoint = Uri(
-                          scheme: 'https',
-                          host: 'mint-pumped-viscose.glitch.me',
-                          path: '/sign_in_with_apple',
-                          queryParameters: <String, String>{
-                            'code': credential.authorizationCode,
-                            'firstName': credential.givenName,
-                            'lastName': credential.familyName,
-                            'useBundleId':
-                            Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
-                            if (credential.state != null) 'state': credential.state,
-                          },
-                        );
-
-                        final session = await http.Client().post(
-                          signInWithAppleEndpoint,
-                        );
-
-                        // If we got this far, a session based on the Apple ID credential has been created in your system,
-                        // and you can now set this as the app's session
-                        print(session);
-                      },
+                      onPressed: () async => _con.signInWithApple()
                     ),
 
 
