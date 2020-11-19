@@ -18,9 +18,44 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleURLSchemes</key>
+	<key>CFBundleURLTypes</key>
+		<array>
+  		<dict>
+  		<key>CFBundleURLSchemes</key>
+  		<array>
+    			<string>fb889186891605078</string>
+		</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.540773153377-vmd5rtd7jnev99ratt9k86hel98n1bf7</string>
+			</array>
+		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>889186891605078</string>
+	<key>FacebookDisplayName</key>
+	<string>Saudaghar</string>
+	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<string>fb112164917231433</string>
+  		<string>fbapi</string>
+  		<string>fbapi20130214</string>
+  		<string>fbapi20130410</string>
+  		<string>fbapi20130702</string>
+  		<string>fbapi20131010</string>
+  		<string>fbapi20131219</string>
+  		<string>fbapi20140410</string>
+  		<string>fbapi20140116</string>
+  		<string>fbapi20150313</string>
+  		<string>fbapi20150629</string>
+  		<string>fbapi20160328</string>
+  		<string>fbauth</string>
+  		<string>fb-messenger-share-api</string>
+  		<string>fbauth2</string>
+  		<string>fbshareextension</string>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
