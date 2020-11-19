@@ -5,7 +5,6 @@ import '../elements/FacebookSigninButtonWidget.dart';
 import '../elements/GoogleSigninButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:http/http.dart' as http;
 
 import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
@@ -49,7 +48,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             ),
           ),
           Positioned(
-            top: config.App(context).appHeight(37) - 180,
+            top: config.App(context).appHeight(37) - 190,
             child: Container(
               width: config.App(context).appWidth(84),
               height: config.App(context).appHeight(37),
@@ -60,7 +59,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             ),
           ),
           Positioned(
-            top: config.App(context).appHeight(37) - 150,
+            top: config.App(context).appHeight(37) - 160,
             child: Container(
               decoration: BoxDecoration(color: Theme.of(context).primaryColor, borderRadius: BorderRadius.all(Radius.circular(10)), boxShadow: [
                 BoxShadow(
@@ -71,7 +70,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
               margin: EdgeInsets.symmetric(
                 horizontal: 20,
               ),
-              padding: EdgeInsets.only(top: 10, right: 27, left: 27, bottom: 20),
+              padding: EdgeInsets.only(top: 20, right: 27, left: 27, bottom: 20),
               width: config.App(context).appWidth(88),
 //              height: config.App(context).appHeight(55),
               child: Form(
@@ -166,7 +165,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             ),
           ),
           Positioned(
-            bottom: 5,
+            bottom: -10,
             child: Column(
               children: <Widget>[
                 FlatButton(
