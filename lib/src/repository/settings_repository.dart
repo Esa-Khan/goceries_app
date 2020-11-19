@@ -20,6 +20,7 @@ ValueNotifier<Setting> setting = new ValueNotifier(new Setting());
 ValueNotifier<Address> deliveryAddress = new ValueNotifier(new Address());
 ValueNotifier<bool> firstStart = new ValueNotifier(true);
 ValueNotifier<int> isStore = new ValueNotifier(0);
+bool compact_view = false;
 final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<Setting> initSettings() async {
