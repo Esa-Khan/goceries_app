@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:saudaghar/generated/l10n.dart';
 import 'package:saudaghar/src/controllers/user_controller.dart';
+import 'package:saudaghar/src/repository/settings_repository.dart' as settingsRepo;
 
 
 class FacebookSigninButtonWidget extends StatelessWidget {
@@ -63,19 +64,18 @@ class FacebookSigninButtonWidget extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SvgPicture.asset(
               "assets/img/facebook_icon.svg",
               color: Colors.blue,
-              height: 35,
+              height: settingsRepo.compact_view ? 30 : 35,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
                 'Sign in with Facebook',
                 style: TextStyle(
-                  fontSize: 19,
+                  fontSize: settingsRepo.compact_view ? 14 : 19,
                   color: Colors.blue,
                 ),
               ),

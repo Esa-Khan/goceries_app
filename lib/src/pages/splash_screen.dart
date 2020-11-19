@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import 'package:saudaghar/src/repository/settings_repository.dart' as settingRepo;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../controllers/splash_screen_controller.dart';
@@ -43,6 +43,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    settingRepo.compact_view = MediaQuery.of(context).size.width < 350;
     return Scaffold(
       key: _con.scaffoldKey,
       body: Container(
