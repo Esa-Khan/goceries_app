@@ -23,20 +23,15 @@ class GalleryItemWidget extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(5)),
-              child: Image.network(
-                gallery.image.url,
-                height: 60,
-                width: 60,
+              child: CachedNetworkImage(
+                fit: BoxFit.cover,
+                imageUrl: gallery.image.url,
+                placeholder: (context, url) => Image.asset(
+                  'assets/img/loading.gif',
+                  fit: BoxFit.cover,
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              // CachedNetworkImage(
-              //   fit: BoxFit.cover,
-              //   imageUrl: gallery.image.url,
-              //   placeholder: (context, url) => Image.asset(
-              //     'assets/img/loading.gif',
-              //     fit: BoxFit.cover,
-              //   ),
-              //   errorWidget: (context, url, error) => Icon(Icons.error),
-              // ),
             ),
           );
   }

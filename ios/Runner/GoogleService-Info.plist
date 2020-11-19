@@ -3,21 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>438759403240-khqmnnvvhjnpif28b2um17csp16b5bnq.apps.googleusercontent.com</string>
+	<string>540773153377-vmd5rtd7jnev99ratt9k86hel98n1bf7.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.438759403240-khqmnnvvhjnpif28b2um17csp16b5bnq</string>
+	<string>com.googleusercontent.apps.540773153377-vmd5rtd7jnev99ratt9k86hel98n1bf7</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>540773153377-mkpfi5iem8kuohjepeafpm6fkv16lc4m.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyDrZ10xxL_9CRdRK6Is8aA4ACUx3PDTpTE</string>
+	<string>AIzaSyAK0uwi4CHFuiw8MWHPCqOlE_rZNy63TGg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>438759403240</string>
+	<string>540773153377</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.ezpz.saudaghar</string>
 	<key>PROJECT_ID</key>
-	<string>goceries</string>
+	<string>saudaghar-3aa07</string>
 	<key>STORAGE_BUCKET</key>
-	<string>goceries.appspot.com</string>
+	<string>saudaghar-3aa07.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:438759403240:ios:c6f7f07fe912fbcd44a35d</string>
+	<string>1:540773153377:ios:0524ac1da65666e7ce8820</string>
 	<key>DATABASE_URL</key>
-	<string>https://goceries.firebaseio.com</string>
+	<string>https://saudaghar-3aa07.firebaseio.com</string>
 </dict>
 </plist>

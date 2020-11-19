@@ -74,3 +74,5 @@
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 app-release.aab
 assets/cfg/configurations.json
+ios/Flutter/flutter_export_environment.sh
+.flutter-plugins-dependencies

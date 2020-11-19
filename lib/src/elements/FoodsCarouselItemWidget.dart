@@ -34,18 +34,15 @@ class FoodsCarouselItemWidget extends StatelessWidget {
                   height: 130,
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(5)),
-                    child: Image.network(
-                      food.image.thumb,
+                    child: CachedNetworkImage(
+                      fit: BoxFit.cover,
+                      imageUrl: food.image.thumb,
+                      placeholder: (context, url) => Image.asset(
+                        'assets/img/loading.gif',
+                        fit: BoxFit.cover,
+                      ),
+                      errorWidget: (context, url, error) => Icon(Icons.error),
                     ),
-                    // CachedNetworkImage(
-                    //   fit: BoxFit.cover,
-                    //   imageUrl: food.image.thumb,
-                    //   placeholder: (context, url) => Image.asset(
-                    //     'assets/img/loading.gif',
-                    //     fit: BoxFit.cover,
-                    //   ),
-                    //   errorWidget: (context, url, error) => Icon(Icons.error),
-                    // ),
                   ),
                 ),
               ),

@@ -57,7 +57,7 @@ class Food {
       category = jsonMap['category_id'] != null ? jsonMap['category_id'] : 0;
       image_url = jsonMap['image_url'] != null && jsonMap['image_url'] != "NULL" ? jsonMap['image_url'] : null;
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0])
-                                                                                : image_url != null ? Media.fromURL(image_url): new Media();
+                                                                                : image_url != null ? Media.fromURL(image_url): new Media(isCat: true);
 
       extras = jsonMap['extras'] != null && (jsonMap['extras'] as List).length > 0
           ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toSet().toList()

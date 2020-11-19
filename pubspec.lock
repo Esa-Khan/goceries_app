@@ -264,7 +264,7 @@ packages:
       name: flutter_facebook_login
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "2.0.1"
   flutter_html:
     dependency: "direct main"
     description:
@@ -272,13 +272,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
-  flutter_inappbrowser:
+  flutter_inappwebview:
     dependency: "direct main"
     description:
-      name: flutter_inappbrowser
+      name: flutter_inappwebview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.2"
+    version: "4.0.0+4"
   flutter_localizations:
     dependency: "direct main"
     description: flutter
@@ -356,14 +356,14 @@ packages:
       name: google_map_location_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.3.2"
+    version: "3.3.5"
   google_maps_flutter:
     dependency: "direct main"
     description:
       name: google_maps_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.28+1"
+    version: "0.5.33"
   google_maps_flutter_platform_interface:
     dependency: transitive
     description:
@@ -405,7 +405,7 @@ packages:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.12.1"
+    version: "0.12.2"
   http_parser:
     dependency: transitive
     description:
@@ -433,7 +433,7 @@ packages:
       name: intl_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.6.5"
+    version: "1.8.0"
   js:
     dependency: transitive
     description:
@@ -461,7 +461,7 @@ packages:
       name: location_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   location_web:
     dependency: transitive
     description:
@@ -700,6 +700,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2+7"
+  sign_in_with_apple:
+    dependency: "direct main"
+    description:
+      name: sign_in_with_apple
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.5.4"
   sky_engine:
     dependency: transitive
     description: flutter

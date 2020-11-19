@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
@@ -87,6 +90,7 @@ class UserController extends ControllerMVC {
         this.user.password = currentUser.uid;
 
         thirdPartyLogin();
+        Helper.hideLoader(loader);
         return 'signInWithGoogle succeeded: $user';
       }
 
@@ -105,7 +109,7 @@ class UserController extends ControllerMVC {
     try {
       Overlay.of(context).insert(loader);
       var facebookLogin = FacebookLogin();
-      var facebookLoginResult = await facebookLogin.logIn(['email']);
+      var facebookLoginResult = await facebookLogin.logInWithReadPermissions(['email']);
       switch (facebookLoginResult.status) {
         case FacebookLoginStatus.error:
           print("Error");
@@ -128,13 +132,61 @@ class UserController extends ControllerMVC {
           break;
       }
     } catch (e) {
+      print("---------ERROR: " + e.toString() + "----------");
       Helper.hideLoader(loader);
     }
+    Helper.hideLoader(loader);
   }
 
   void onLoginStatusChanged(bool fb_isLoggedIn) {
     setState(() => this.fb_isLoggedIn = fb_isLoggedIn);
   }
+
+
+  void signInWithApple() async {
+    try {
+      Overlay.of(context).insert(loader);
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          clientId: 'com.ezpz.saudagharservice',
+          redirectUri: Uri.parse(
+            'https://mint-pumped-viscose.glitch.me/callbacks/sign_in_with_apple',
+          ),
+        ),
+      );
+      print(credential);
+      // This is the endpoint that will convert an authorization code obtained
+      // via Sign in with Apple into a session in your system
+      final signInWithAppleEndpoint = Uri(
+        scheme: 'https',
+        host: 'mint-pumped-viscose.glitch.me',
+        path: '/sign_in_with_apple',
+        queryParameters: <String, String>{
+          'code': credential.authorizationCode,
+          'firstName': credential.givenName,
+          'lastName': credential.familyName,
+          'useBundleId':
+          Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
+          if (credential.state != null) 'state': credential.state,
+        },
+      );
+      final session = await http.Client().post(
+        signInWithAppleEndpoint,
+      );
+      // If we got this far, a session based on the Apple ID credential has been created in your system,
+      // and you can now set this as the app's session
+      print(session);
+      Helper.hideLoader(loader);
+    } catch (e) {
+      print("ERROR: " + e.toString());
+      Helper.hideLoader(loader);
+    }
+  }
+
 
   void thirdPartyLogin() async {
     repository.login(this.user).then((value) {
@@ -147,7 +199,7 @@ class UserController extends ControllerMVC {
         ));
       }
     }).catchError((e) {
-      print("-------------Login Failed-------------");
+      print("-------------Login Failed-------------" + e.toString());
       if (e.toString() == "Exception: No Account with this Email") {
         repository.register(this.user).then((value) {
           if (value != null && value.apiToken != null) {
@@ -165,13 +217,8 @@ class UserController extends ControllerMVC {
               content: Text("Wrong password. Try a different login method."),
             ));
           }
-          loader?.remove();
-        }).whenComplete(() {
-          Helper.hideLoader(loader);
         });
       }
-      }).whenComplete(() {
-        Helper.hideLoader(loader);
       });
   }
 
