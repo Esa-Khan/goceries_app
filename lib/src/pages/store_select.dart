@@ -79,7 +79,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                Image.asset('assets/img/logo.png', height: settingsRepo.compact_view ? 80 : 130),
                                const SizedBox(width: 20),
                                Text(
-                                 "SaudaGhar",
+                                 "saudaghar",
                                  style: TextStyle(fontSize: 20),
                                )
                              ],

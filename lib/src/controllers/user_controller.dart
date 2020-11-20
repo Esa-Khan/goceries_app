@@ -109,7 +109,7 @@ class UserController extends ControllerMVC {
     try {
       Overlay.of(context).insert(loader);
       var facebookLogin = FacebookLogin();
-      var facebookLoginResult = await facebookLogin.logInWithReadPermissions(['email']);
+      var facebookLoginResult = await facebookLogin.logIn(['email']);
       switch (facebookLoginResult.status) {
         case FacebookLoginStatus.error:
           print("Error");

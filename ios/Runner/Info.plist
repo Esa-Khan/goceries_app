@@ -19,7 +19,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
-		<array>
+	<array>
   		<dict>
   		<key>CFBundleURLSchemes</key>
   		<array>
@@ -38,7 +38,7 @@
 	<key>FacebookAppID</key>
 	<string>889186891605078</string>
 	<key>FacebookDisplayName</key>
-	<string>Saudaghar</string>
+	<string>saudaghar</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
   		<string>fbapi</string>
