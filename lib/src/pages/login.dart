@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:apple_sign_in/apple_sign_in_button.dart';
 import 'package:flutter/material.dart';
 import '../elements/FacebookSigninButtonWidget.dart';
 import '../elements/GoogleSigninButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
@@ -19,7 +20,7 @@ class LoginWidget extends StatefulWidget {
 
 class _LoginWidgetState extends StateMVC<LoginWidget> {
   UserController _con;
-
+  bool supportsAppleSignIn = false;
   _LoginWidgetState() : super(UserController()) {
     _con = controller;
   }
@@ -27,13 +28,23 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
   @override
   void initState() {
     super.initState();
+    checkiOSVersion();
     if (userRepo.currentUser.value.apiToken != null) {
       Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
     }
   }
 
+  Future<void> checkiOSVersion() async {
+    // this bool will be true if apple sign in is enabled
+    if (Platform.isIOS) {
+      setState(() async => supportsAppleSignIn = await AppleSignIn.isAvailable());
+      print("---------${supportsAppleSignIn}");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       key: _con.scaffoldKey,
       resizeToAvoidBottomPadding: false,
@@ -85,7 +96,19 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                 const Divider(height: 15),
                                 GoogleSigninButtonWidget(con: _con),
                                 const Divider(height: 15),
-                                SignInWithAppleButton(onPressed: () async => _con.signInWithApple()),
+                                supportsAppleSignIn
+                                  ? Container(
+                                      // height: screenHeight / 15,
+                                      // width: screenWidth / 1.5,
+                                      child: AppleSignInButton(
+                                        // style: ButtonStyle.black,
+                                        type: ButtonType.continueButton,
+                                        onPressed: () {
+                                          _con.signInWithApple();
+                                        },
+                                      ),
+                                    )
+                                  : const SizedBox(height: 0),
                                 Padding(
                                     padding: EdgeInsets.symmetric(vertical: 15),
                                     child: Text(
