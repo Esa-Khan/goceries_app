@@ -12,6 +12,7 @@ import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
 import '../repository/user_repository.dart' as userRepo;
+import '../helpers/helper.dart';
 
 class LoginWidget extends StatefulWidget {
   @override
@@ -28,17 +29,9 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
   @override
   void initState() {
     super.initState();
-    checkiOSVersion();
+    Helper.checkiOSVersion().then((value) => setState(() => supportsAppleSignIn = value));
     if (userRepo.currentUser.value.apiToken != null) {
       Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
-    }
-  }
-
-  Future<void> checkiOSVersion() async {
-    // this bool will be true if apple sign in is enabled
-    if (Platform.isIOS) {
-      setState(() async => supportsAppleSignIn = await AppleSignIn.isAvailable());
-      print("---------${supportsAppleSignIn}");
     }
   }
 

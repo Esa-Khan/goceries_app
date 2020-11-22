@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:io';
+
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -322,5 +325,16 @@ class Helper {
       default:
         return "";
     }
+  }
+
+
+  static Future<bool> checkiOSVersion() async {
+    // this bool will be true if apple sign in is enabled
+    if (Platform.isIOS) {
+      bool supportsAppleSignIn = await AppleSignIn.isAvailable();
+      print("---------${supportsAppleSignIn}");
+      return supportsAppleSignIn;
+    }
+    return false;
   }
 }
