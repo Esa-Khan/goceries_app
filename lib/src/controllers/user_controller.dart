@@ -98,6 +98,7 @@ class UserController extends ControllerMVC {
       print("ERROR: " + e.toString());
       Helper.hideLoader(loader);
     }
+    Helper.hideLoader(loader);
   }
 
   void signOutGoogle() async {
@@ -144,8 +145,8 @@ class UserController extends ControllerMVC {
 
 
   void signInWithApple() async {
+    Overlay.of(context).insert(loader);
     try {
-
       final AuthorizationResult result = await AppleSignIn.performRequests([
         AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
       ]);
@@ -171,12 +172,12 @@ class UserController extends ControllerMVC {
             FirebaseAuth.instance.currentUser().then((val) async {
               UserUpdateInfo updateUser = UserUpdateInfo();
               updateUser.displayName =
-              "${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}";
+              "${appleIdCredential.fullName.givenName} ${appleIdCredential
+                  .fullName.familyName}";
               updateUser.photoUrl =
               "define an url";
               await val.updateProfile(updateUser);
             });
-
           } catch (e) {
             print("error");
           }
@@ -193,10 +194,10 @@ class UserController extends ControllerMVC {
       }
     } catch (error) {
       print("error with apple sign in");
+      Helper.hideLoader(loader);
     }
-
+    Helper.hideLoader(loader);
   }
-
 
   void thirdPartyLogin() async {
     repository.login(this.user).then((value) {

@@ -190,7 +190,6 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
 
   void nextPage(int isStore) {
     settingsRepo.isStore.value = isStore;
-    Navigator.of(context)
-        .pushNamed('/Pages', arguments: new RouteArgument(id: '2'));
+    Navigator.of(context).pushNamed('/Pages', arguments: new RouteArgument(id: '2'));
   }
 }

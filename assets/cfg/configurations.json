@@ -1,5 +1,5 @@
 {
-  "base_url": "https://goceries.org/",
-  "api_base_url": "https://goceries.org/api/",
-  "debug": "false"
+  "base_url": "https://2ce186191777.ngrok.io/",
+  "api_base_url": "https://2ce186191777.ngrok.io/api/",
+  "debug": "true"
 }

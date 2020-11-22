@@ -8,8 +8,8 @@ import 'package:saudaghar/src/repository/settings_repository.dart' as settingsRe
 
 class FacebookSigninButtonWidget extends StatelessWidget {
   final UserController con;
-
-  FacebookSigninButtonWidget({Key key, this.con}) : super(key: key);
+  final bool isLogin;
+  FacebookSigninButtonWidget({Key key, this.con, this.isLogin = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +73,11 @@ class FacebookSigninButtonWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Sign in with Facebook',
+                isLogin ? 'Sign in with Facebook' : 'Sign up with Facebook',
                 style: TextStyle(
                   fontSize: settingsRepo.compact_view ? 14 : 19,
                   color: Colors.blue,
+                  letterSpacing: -0.2,
                 ),
               ),
             )

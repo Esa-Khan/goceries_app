@@ -6,8 +6,9 @@ import 'package:saudaghar/src/repository/settings_repository.dart' as settingsRe
 
 class GoogleSigninButtonWidget extends StatelessWidget {
   final UserController con;
+  final bool isLogin;
 
-  GoogleSigninButtonWidget({Key key, this.con}) : super(key: key);
+  GoogleSigninButtonWidget({Key key, this.con, this.isLogin = true}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +38,9 @@ class GoogleSigninButtonWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                'Sign in with Google',
+                isLogin ? 'Sign in with Google' : 'Sign up with Google',
                 style: TextStyle(
-                  fontSize: settingsRepo.compact_view ? 15 : 20,
+                  fontSize: settingsRepo.compact_view ? 14 : 19,
                   color: Colors.grey,
                 ),
               ),

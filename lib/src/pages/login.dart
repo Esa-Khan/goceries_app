@@ -46,26 +46,25 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
         children: <Widget>[
           Container(
             width: config.App(context).appWidth(100),
-            height: config.App(context).appHeight(30),
+            height: config.App(context).appHeight(29.5),
             decoration: BoxDecoration(color: Theme.of(context).accentColor),
           ),
-          Center(
-          child: ListView(
+          ListView(
             shrinkWrap: true,
             children: [
               Padding(
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: EdgeInsets.only(top: 45, bottom: 10),
                   child: Column(
                       children: [
                         Container(
                           width: config.App(context).appWidth(84),
+                          padding: EdgeInsets.only(bottom: 10),
                           child: Text(
                             S.of(context).lets_start_with_login,
                             style: Theme.of(context).textTheme.headline2.merge(
                                 TextStyle(color: Theme.of(context).primaryColor)),
                           ),
                         ),
-                        const SizedBox(height: 10),
                         Container(
                           decoration: BoxDecoration(
                               color: Theme.of(context).primaryColor,
@@ -210,46 +209,35 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                 ),
                                 FlatButton(
                                   onPressed: () {
-                                    Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                                    Navigator.of(context).pushNamed('/SignUp');
                                   },
-                                  shape: StadiumBorder(),
                                   textColor: Theme.of(context).hintColor,
-                                  child: Text(S.of(context).skip),
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 19),
+                                  child: Text(S.of(context).dont_have_an_account, textAlign: TextAlign.center),
+                                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 19),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: FlatButton(
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pushReplacementNamed('/ForgetPassword');
-                                        },
-                                        textColor: Theme.of(context).hintColor,
-                                        child: Text(S.of(context).forgot_password, textAlign: TextAlign.center),
-                                      )
-                                    ),
-                                    Expanded(
-                                        child: FlatButton(
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pushReplacementNamed('/SignUp');
-                                          },
-                                          textColor: Theme.of(context).hintColor,
-                                          child: Text(S.of(context).dont_have_an_account, textAlign: TextAlign.center),
-                                        )
-                                    )
-                                  ],
+                                FlatButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed('/ForgetPassword');
+                                  },
+                                  textColor: Theme.of(context).hintColor,
+                                  child: Text(S.of(context).forgot_password, textAlign: TextAlign.center),
                                 )
                               ],
                             ),
                           ),
                         )
                       ])),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                        },
+                        shape: StadiumBorder(),
+                        textColor: Theme.of(context).hintColor,
+                        child: Text(S.of(context).skip)
+                      ),
+              const SizedBox(height: 50)
             ]
-          )),
+          ),
         ],
       ),
     );

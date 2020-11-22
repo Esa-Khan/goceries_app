@@ -72,10 +72,14 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
           new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
         ],
       ),
-      body: settingsRepo.isStore.value == 1
-          ? _con.saudaghar == null ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
-              : CategoryListWidget(store: _con.saudaghar)
-              : RefreshIndicator(
+      body: settingsRepo.isStore.value == 0
+          ? _con.saudaghar == null
+            ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
+            : RefreshIndicator(
+                onRefresh: _con.refreshHome,
+                  child: CategoryListWidget(store: _con.saudaghar)
+              )
+          : RefreshIndicator(
                 onRefresh: _con.refreshHome,
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
