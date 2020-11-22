@@ -49,7 +49,8 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             height: config.App(context).appHeight(30),
             decoration: BoxDecoration(color: Theme.of(context).accentColor),
           ),
-          ListView(
+          Center(
+          child: ListView(
             shrinkWrap: true,
             children: [
               Padding(
@@ -209,30 +210,38 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                 ),
                                 FlatButton(
                                   onPressed: () {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('/Pages', arguments: 2);
+                                    Navigator.of(context).pushReplacementNamed('/StoreSelect');
                                   },
                                   shape: StadiumBorder(),
                                   textColor: Theme.of(context).hintColor,
                                   child: Text(S.of(context).skip),
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 14),
+                                      horizontal: 30, vertical: 19),
                                 ),
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('/ForgetPassword');
-                                  },
-                                  textColor: Theme.of(context).hintColor,
-                                  child: Text(S.of(context).forgot_password),
-                                ),
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('/SignUp');
-                                  },
-                                  textColor: Theme.of(context).hintColor,
-                                  child: Text(S.of(context).dont_have_an_account),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: FlatButton(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushReplacementNamed('/ForgetPassword');
+                                        },
+                                        textColor: Theme.of(context).hintColor,
+                                        child: Text(S.of(context).forgot_password, textAlign: TextAlign.center),
+                                      )
+                                    ),
+                                    Expanded(
+                                        child: FlatButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pushReplacementNamed('/SignUp');
+                                          },
+                                          textColor: Theme.of(context).hintColor,
+                                          child: Text(S.of(context).dont_have_an_account, textAlign: TextAlign.center),
+                                        )
+                                    )
+                                  ],
                                 )
                               ],
                             ),
@@ -240,7 +249,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                         )
                       ])),
             ]
-          ),
+          )),
         ],
       ),
     );
