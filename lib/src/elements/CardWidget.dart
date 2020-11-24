@@ -59,7 +59,7 @@ class CardWidget extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                    decoration: BoxDecoration(color: restaurant.closed ? Colors.black : Colors.green, borderRadius: BorderRadius.circular(24)),
+                    decoration: BoxDecoration(color: restaurant.closed ? Colors.red : Colors.green, borderRadius: BorderRadius.circular(24)),
                     child: restaurant.closed
                         ? Text(
                             S.of(context).closed,

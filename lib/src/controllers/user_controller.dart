@@ -136,7 +136,6 @@ class UserController extends ControllerMVC {
       print("---------ERROR: " + e.toString() + "----------");
       Helper.hideLoader(loader);
     }
-    Helper.hideLoader(loader);
   }
 
   void onLoginStatusChanged(bool fb_isLoggedIn) {
@@ -184,10 +183,8 @@ class UserController extends ControllerMVC {
           break;
         case AuthorizationStatus.error:
           print("-------------Apple Signin Failed-------------");
-
           // do something
           break;
-
         case AuthorizationStatus.cancelled:
           print('User cancelled');
           break;
@@ -203,6 +200,7 @@ class UserController extends ControllerMVC {
     repository.login(this.user).then((value) {
       if (value != null && value.apiToken != null) {
         print("-------------Login Success-------------");
+        Helper.hideLoader(loader);
         Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
       } else {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -215,6 +213,7 @@ class UserController extends ControllerMVC {
         repository.register(this.user).then((value) {
           if (value != null && value.apiToken != null) {
             print("-------------Register Success-------------");
+            Helper.hideLoader(loader);
             Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
           } else {
             scaffoldKey?.currentState?.showSnackBar(SnackBar(

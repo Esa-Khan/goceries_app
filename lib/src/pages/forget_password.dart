@@ -24,9 +24,7 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
+    return Scaffold(
         key: _con.scaffoldKey,
         resizeToAvoidBottomPadding: false,
         body: Stack(
@@ -127,7 +125,6 @@ class _ForgetPasswordWidgetState extends StateMVC<ForgetPasswordWidget> {
             )
           ],
         ),
-      ),
     );
   }
 }

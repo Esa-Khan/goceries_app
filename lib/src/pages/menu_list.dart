@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/generated/l10n.dart';
-import 'package:saudaghar/src/elements/AislesItemWidget.dart';
-import 'package:saudaghar/src/elements/FoodItemWidget.dart';
-import 'package:saudaghar/src/models/food.dart';
-import 'package:saudaghar/src/models/restaurant.dart';
-import 'package:saudaghar/src/models/category.dart';
+import 'package:saudaghar/src/elements/CategoryListWidget.dart';
+import '../../generated/l10n.dart';
+import '../elements/AislesItemWidget.dart';
+import '../elements/FoodItemWidget.dart';
+import '../models/restaurant.dart';
+import '../models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:async';
 
-import '../controllers/restaurant_controller.dart';
 import '../controllers/category_controller.dart';
-import '../elements/CircularLoadingWidget.dart';
 import '../elements/DrawerWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../models/route_argument.dart';
@@ -70,152 +68,9 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 10, bottom: 50),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 1, 12, 30),
-              child: TextField(
-                onSubmitted: (text) async {
-                  setState(() => _isSearching = true);
-                  await _con.refreshSearch(text);
-                  setState(() {
-                    _searchBarTapped = false;
-                    _isSearching = false;
-                    _isSearched = true;
-                  });
-                },
-                onChanged: (val) async {
-                  if (val == "") {
-                    setState(() => _isSearched = false);
-                    _searchBarController.clear();
-                    await _con.refreshSearch("");
-                  }
-                },
-                onTap: () {
-                  setState(() => _searchBarTapped = true);
-                },
-                controller: _searchBarController,
-                decoration: InputDecoration(
-                  hintText: S.of(context).search_for_items_in_this_store,
-                  hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
-                  contentPadding: EdgeInsets.only(right: 12),
-                  prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
-                  suffixIcon: IconButton(
-                    onPressed: () async {
-                      FocusScopeNode currentFocus = FocusScope.of(context);
-                      if (!currentFocus.hasPrimaryFocus) {
-                        currentFocus.unfocus();
-                      }
-                      setState(() => _isSearched = false);
-                      _searchBarController.clear();
-                      await _con.refreshSearch("");
-                    },
-                    color: Theme.of(context).focusColor,
-                    icon: Icon(Icons.clear, size: 30),
-                  ),
-                  border: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.3))),
-                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.7))),
-                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Theme.of(context).focusColor.withOpacity(0.3))),
+      body: CategoryListWidget(store: _con.restaurant)
+    );
 
-                ),
-              ),
-            ),
-            _isSearching
-                ? Column(
-              children: <Widget>[
-                SizedBox(height: 50),
-                Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
-              ],
-            )
-                : _isSearched && _con.searchedItems.isEmpty
-                  ? SizedBox(height: 300)
-                  : _con.searchedItems.isNotEmpty
-                ? ListView.separated(
-              padding: EdgeInsets.only(bottom: 40),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              primary: false,
-              itemCount: _con.searchedItems.length,
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 10);
-              },
-              itemBuilder: (context, index) {
-                if (index == _con.searchedItems.length - 1)
-                  _con.isLoading = false;
-
-                if (_con.searchedItems.isNotEmpty) {
-                  return FoodItemWidget(
-                    heroTag: 'store_search_list',
-                    food: _con.searchedItems.elementAt(index),
-                  );
-                } else {
-                  return SizedBox(height: 0);
-                }
-              },
-            )
-
-                : !_con.hasAislesLoaded
-                    ? Padding(
-                        padding: EdgeInsets.symmetric(vertical: 50),
-                        child: Center(
-                            child: SizedBox(
-                                width: 120,
-                                height: 120,
-                                child: CircularProgressIndicator(strokeWidth: 8))),
-                      )
-                    : ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: _con.aisles.length,
-                        separatorBuilder: (context, index) {
-                          Category currAisle = _con.aisles.elementAt(index);
-                          if (_con.aisleToSubaisleMap[currAisle.id] == null) {
-                            return const SizedBox();
-                          } else {
-                            return const SizedBox(height: 20);
-                          }
-                        },
-                        itemBuilder: (context, index) {
-                          Category currAisle = _con.aisles.elementAt(index);
-                          if (_con.aisleToSubaisleMap[currAisle.id] == null) {
-                            return const SizedBox();
-                          } else {
-                            // Define a Aisle dropdown
-                            return AislesItemWidget(
-                                aisle: currAisle,
-                                store: _con.restaurant,
-                                items: _con.subaisleToItemsMap,
-                                subAisles: _con.aisleToSubaisleMap[currAisle.id],
-                                onPressed: (aisleVal) async {
-                                  _con.isExpandedList.forEach((key, value) {
-                                    _con.isExpandedList[key] = false;
-                                  });
-                                  if (!_con.isExpandedList[aisleVal.id])
-                                    _con.isExpandedList[aisleVal.id] = true;
-
-                                  if (aisleVal.id.length > 2 &&
-                                      !_con.isAisleLoadedList[aisleVal.id] &&
-                                      _con.isExpandedList[aisleVal.id]) {
-                                    print(aisleVal.name);
-                                    await _con.listenForItemsByCategory(id: aisleVal.id, storeID: _con.restaurant.id);
-                                    _con.isAisleLoadedList[aisleVal.id] = true;
-                                  }
-                                });
-                          }
-
-                        })
-
-                      ],
-                    ),
-                  ),
-                );
-              }
+  }
 
 }

@@ -29,6 +29,7 @@ class Setting {
   String appVersion;
   bool enableVersion = true;
   double deliveryFeeLimit;
+  Map<String, double> promo;
 
   ValueNotifier<Brightness> brightness = new ValueNotifier(Brightness.light);
 
@@ -61,6 +62,7 @@ class Setting {
       facebook_url = jsonMap['facebook_url'];
       instagram_url = jsonMap['instagram_url'];
       phone_number = jsonMap['phone_number'];
+      promo = jsonMap['promo'] == null ? null : getPromos(jsonMap['promo']);
       try {
         deliveryFeeLimit = double.parse(jsonMap['delivery_fee_limit']);
       } catch (e) {
@@ -83,5 +85,16 @@ class Setting {
     map["enable_razorpay"] = razorPayEnabled;
     map["mobile_language"] = mobileLanguage.value.languageCode;
     return map;
+  }
+
+
+
+  Map<String, double> getPromos(String val) {
+    List<String> promos_str = val.split('-');
+    Map<String, double> promos = new Map<String, double>();
+    promos_str.forEach((element) {
+      promos[element.split('_')[0]] = double.parse(element.split('_')[1]);
+    });
+    return promos;
   }
 }

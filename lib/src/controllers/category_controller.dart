@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/models/address.dart';
-import 'package:saudaghar/src/models/restaurant.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart';
+import '../models/address.dart';
+import '../models/restaurant.dart';
+import '../repository/settings_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -57,7 +57,6 @@ class CategoryController extends ControllerMVC {
           isExpandedList[_aisle.id] = false;
           isAisleLoadedList[_aisle.id] = false;
         });
-
     }, onError: (a) {
       print(a);
     }, onDone: () {
@@ -115,7 +114,7 @@ class CategoryController extends ControllerMVC {
       });
   }
 
-  void listenForItemsByCategory({String id, String storeID, String message}) async {
+  void listenForItemsByCategory(String id, {String storeID, String message}) async {
     if (!this.isAisleLoadedList[id]) {
       final Stream<Food> stream = await getFoodsByCategory(id, storeID: storeID);
       stream.listen((Food _food) {

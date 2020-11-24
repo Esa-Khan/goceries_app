@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:saudaghar/src/controllers/restaurant_controller.dart';
+import 'package:saudaghar/src/elements/LogoLoadingWidget.dart';
 
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
@@ -17,16 +18,7 @@ class StoreSelectWidget extends StatefulWidget {
 }
 
 class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
-  RestaurantController _con;
-
   _StoreSelectWidgetState() : super(RestaurantController()) {
-    _con = controller;
-  }
-
-  @override
-  void initState() {
-    _con.listenForRestaurant(id: '0');
-    super.initState();
   }
 
   @override
@@ -38,31 +30,28 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               centerTitle: true,
-              leading: IconButton(
-                icon:
-                    new Icon(Icons.home, color: Theme.of(context).accentColor),
-                onPressed: () {
-                  Navigator.of(context).pushNamed('/Login');
-                },
-              ),
+              leading: const SizedBox(height: 0),
               title: Text(
                 "Where to Shop?",
-                style: Theme.of(context)
-                    .textTheme
-                    .headline6
-                    .merge(TextStyle(letterSpacing: 1.3)),
+                style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.5)),
               ),
               actions: <Widget>[
-                SizedBox(
-                  width: 10,
+                IconButton(
+                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                  icon: Icon(Icons.login, color: Theme.of(context).accentColor),
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/Login');
+                  },
                 )
               ],
             ),
             body: Center(
-                child: ListView(shrinkWrap: true, children: [
+                child: ListView(shrinkWrap: true,
+                    children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // LogoLoadingWidget(),
                   Container(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 15, vertical: 20),
@@ -84,12 +73,11 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                           constraints: BoxConstraints.tightFor(),
                           child: FlatButton(
                               padding: EdgeInsets.all(10.0),
-                              onPressed: () => nextPage(1),
+                              onPressed: () => nextPage(0),
                               child: Row(
                                 children: [
                                   Image.asset('assets/img/logo.png',
-                                      height:
-                                          settingsRepo.compact_view ? 80 : 130),
+                                      height: settingsRepo.compact_view ? 80 : 130),
                                   const SizedBox(width: 20),
                                   Text(
                                     "saudaghar",
@@ -97,8 +85,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                   )
                                 ],
                               )))),
-                  Text(
-                    'OR',
+                  Text('OR',
                     style: Theme.of(context).textTheme.headline5,
                   ),
                   Container(
@@ -122,7 +109,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                           constraints: BoxConstraints.tightFor(),
                           child: FlatButton(
                               padding: EdgeInsets.all(10.0),
-                              onPressed: () => nextPage(2),
+                              onPressed: () => nextPage(1),
                               child: Row(
                                 children: [
                                   ClipRRect(
@@ -163,7 +150,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                           constraints: BoxConstraints.tightFor(),
                           child: FlatButton(
                               padding: EdgeInsets.all(10.0),
-                              onPressed: () => nextPage(3),
+                              onPressed: () => nextPage(2),
                               child: Row(
                                 children: [
                                   ClipRRect(
@@ -180,16 +167,14 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                     style: settingsRepo.compact_view
                                         ? TextStyle(fontSize: 16)
                                         : TextStyle(fontSize: 20),
-                                  )
-                                ],
-                              ))))
-                ],
-              ),
+                              )
+                            ]))))
+              ])
             ]))));
   }
 
   void nextPage(int isStore) {
     settingsRepo.isStore.value = isStore;
-    Navigator.of(context).pushNamed('/Pages', arguments: new RouteArgument(id: '2'));
+    Navigator.of(context).pushNamed('/Pages', arguments: 2);
   }
 }

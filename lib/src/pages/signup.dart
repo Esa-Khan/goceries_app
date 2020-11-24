@@ -29,12 +29,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
   }
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
-        return false;
-      },
-      child: Scaffold(
+    return Scaffold(
         key: _con.scaffoldKey,
         resizeToAvoidBottomPadding: false,
           body: Stack(alignment: AlignmentDirectional.topCenter, children: <
@@ -200,7 +195,6 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 30, vertical: 19),
                                   ),
-
                                 ],
                               ),
                             ),
@@ -214,10 +208,9 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           child: Text(S.of(context).skip),
                           padding: EdgeInsets.symmetric(
                               horizontal: 30, vertical: 19),
-                        ),
-                ],
-        ),
-      ),
-    ])])));
+                        )
+                ]))
+          ])
+        ]));
   }
 }

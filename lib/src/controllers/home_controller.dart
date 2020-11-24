@@ -59,7 +59,7 @@ class HomeController extends ControllerMVC {
   }
 
   Future<void> listenForClosestStores() async {
-    final Stream<Restaurant> stream = await getNearStores(deliveryAddress.value, deliveryAddress.value, isStore: settingsRepo.isStore.value == 2);
+    final Stream<Restaurant> stream = await getNearStores(deliveryAddress.value, deliveryAddress.value, isStore: settingsRepo.isStore.value == 1);
     stream.listen((Restaurant _restaurant) {
       if (_restaurant.distance < _restaurant.deliveryRange)
         setState(() => closestStores.add(_restaurant));

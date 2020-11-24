@@ -30,10 +30,9 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
   Widget build(BuildContext context) {
     if (!hasTimedout)
       Future.delayed(const Duration(milliseconds: 10000), () {
-        if (mounted) {
-          print("-------------HAS TIMED OUT-------------");
+        if (mounted)
           setState(() => hasTimedout = true);
-      }});
+      });
 
     return widget.restaurantsList.isEmpty
           ? hasTimedout && widget.heroTag == 'home_top_restaurants'

@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:saudaghar/src/controllers/controller.dart';
@@ -23,54 +24,43 @@ class AislesItemWidget extends StatefulWidget {
   final List<category.Category> subAisles;
   final HashMap items;
   final expandAisle onPressed;
+  final int timeout;
 
-  AislesItemWidget({Key key, this.aisle, this.store, this.subAisles, this.items, this.onPressed}) : super(key: key);
+  AislesItemWidget({Key key, this.aisle, this.store, this.subAisles, this.items, this.onPressed, this.timeout}) : super(key: key);
 
  }
 
 class _AislesItemWidgetState extends State<AislesItemWidget> {
   CategoryController _con = new CategoryController();
-  double imageOpacity = 1;
-  Image aisle_img = Image.asset('assets/img/loading.gif');
-  HashMap subaisles_imgs = new HashMap<String, Image>();
-  HashMap subaisles_imgs_loaded = new HashMap<String, bool>();
-  bool _image_loaded = false;
+  double aisle_img_opacity = 1;
+  bool first_load = true, timed_out = false;
 
   @override
   void initState() {
     super.initState();
-    _con.category = widget.aisle;
-    widget.subAisles.forEach((element) {
-      _con.isExpandedList[element.id] = false;
-      _con.isAisleLoadedList[element.id] = false;
-      subaisles_imgs[element.id] = Image.asset('assets/img/loading.gif');
-      subaisles_imgs_loaded[element.id] = false;
-//      _con.subaisleToItemsMap[element.id] = new List<Food>();
+    if (first_load) {
+      if (mounted) setState(() => first_load = false);
+      _con.category = widget.aisle;
+      img_timeout();
+      widget.subAisles.forEach((element) {
+        _con.isExpandedList[element.id] = false;
+        _con.isAisleLoadedList[element.id] = false;
+      });
+    }
+  }
+
+  Future<void> img_timeout() async {
+      Future.delayed(Duration(milliseconds: ((widget.timeout/2)*1000).ceil())).whenComplete(() {
+        print("---------TIMEDOUT AFTER ${widget.timeout} SECONDS----------");
+        setState(() => timed_out = true);
+      });
+  }
+
+  Future<bool> subimg_timeout(int time) async {
+    Future.delayed(Duration(milliseconds: ((time/2)*1000).ceil())).whenComplete(() {
+      print("---------SUB-TIMEDOUT AFTER ${time} SECONDS----------");
+      return true;
     });
-
-      getAisleImage();
-  }
-
-  void getAisleImage() async {
-    if (!_image_loaded && _con.category?.aisleImage != null && mounted) {
-      Image getIMG = await Image.network(_con.category.aisleImage);
-//      await Future.delayed(Duration(milliseconds: int.parse(_con.category.id) * 100));
-      setState(() {
-        aisle_img = getIMG;
-        _image_loaded = true;
-      });
-    }
-  }
-
-  void getSubAisleImage(category.Category aisle) async {
-    if (!subaisles_imgs_loaded[aisle.id] && mounted) {
-      Image getIMG = await Image.network(aisle.aisleImage);
-//      await Future.delayed(Duration(milliseconds: int.parse(aisle.id)*10 - 1000));
-      setState(() {
-        subaisles_imgs[aisle.id] = getIMG;
-        subaisles_imgs_loaded[aisle.id] = true;
-      });
-    }
   }
 
   @override
@@ -84,16 +74,15 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(top: 14),
-                padding: EdgeInsets.only(top: 40, bottom: 40),
+                margin: EdgeInsets.only(bottom: 10),
+                padding: EdgeInsets.only(top: 10, bottom: 10),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-//                    image: aisle_img.image,//aisle_img.image,
-                    image: aisle_img.image,
+                    image: timed_out ? Image.network(widget.aisle.aisleImage).image : Image.asset('assets/img/loading.gif').image,
                     fit: BoxFit.cover,
-                    colorFilter: new ColorFilter.mode(Colors.white.withOpacity(imageOpacity), BlendMode.dstIn),
+                    colorFilter: new ColorFilter.mode(Colors.white.withOpacity(aisle_img_opacity), BlendMode.dstIn),
                     onError: (dynamic, StackTrace) {
-                      aisle_img = Image.asset('assets/img/loading.gif');
+                      widget.aisle.aisleImage = 'assets/img/loading.gif';
                       print("Error Loading Image: ${widget.aisle.aisleImage}");
                     },
                   ),
@@ -108,11 +97,12 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                 child: Theme(
                   data: theme,
                   child: ExpansionTile(
+                    trailing: Icon(Icons.arrow_drop_down_circle_outlined, color: Colors.white),
                     onExpansionChanged: (value) {
                       if (value) {
-                        setState(() => imageOpacity = 0.1);
+                        setState(() => aisle_img_opacity = 0.1);
                       } else {
-                        setState(() => imageOpacity = 1);
+                        setState(() => aisle_img_opacity = 1);
                       }
                       widget.onPressed(_con.category);
                     },
@@ -153,7 +143,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                     children: <Widget>[
                       const SizedBox(height: 10),
 
-                      widget.subAisles != null && widget.subAisles?.isNotEmpty
+                      widget.subAisles != null && widget.subAisles.isNotEmpty
                       ? ListView.separated(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
@@ -164,9 +154,10 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                         },
                         // ignore: missing_return
                         itemBuilder: (context, index) {
+                          // bool sub_timed_out = false;
+                          // subimg_timeout(index).then((value) => setState(() => sub_timed_out = value));
                           category.Category currSubAisle = widget.subAisles.elementAt(index);
                           List<Food> items = widget.items[currSubAisle.id];
-                          getSubAisleImage(currSubAisle);
                           // Define a SubAisle dropdown
                           return Stack(
                             children: <Widget>[
@@ -180,11 +171,10 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                       padding: EdgeInsets.only(top: 20, bottom: 5),
                                       decoration: BoxDecoration(
                                           image: DecorationImage(
-                                            image: subaisles_imgs[currSubAisle.id].image,
-//                                            image: NetworkImage(currSubAisle.aisleImage),
+                                            // image: Image.network(widget.subAisles[int.parse(currSubAisle.id)].aisleImage).image,
+                                           image: currSubAisle.aisleImage != null ? Image.network(currSubAisle.aisleImage).image : Image.asset('assets/img/loading.gif').image,
                                             fit: BoxFit.cover,
                                             onError: (dynamic, StackTrace) {
-                                              setState(() => subaisles_imgs[currSubAisle.id] = Image.asset('assets/img/loading.gif'));
                                               print("Error Loading Image: ${currSubAisle.aisleImage}");
                                             },
                                           ),
@@ -193,7 +183,8 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                             BoxShadow(
                                                 color: Theme.of(context).focusColor.withOpacity(0.5),
                                                 blurRadius: 5,
-                                                offset: Offset(0, 2)),
+                                                offset: Offset(0, 2)
+                                            ),
                                           ],
                                           borderRadius: new BorderRadius.only(
                                             topLeft: const Radius.circular(20.0),
@@ -205,6 +196,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                       child: Theme(
                                         data: theme,
                                         child: ExpansionTile(
+                                          trailing: Icon(Icons.arrow_drop_down_circle_outlined, color: Colors.white),
                                           onExpansionChanged: (value) {
                                           widget.onPressed(currSubAisle);
                                           },
@@ -244,9 +236,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                             const SizedBox(height: 10),
                                             items == null || items.isEmpty
                                             ? Center(heightFactor: 2, child: SizedBox(width: 60, height: 60,
-                                                    child: CircularProgressIndicator(
-                                                      strokeWidth: 5,
-                                                    )))
+                                                      child: CircularProgressIndicator(strokeWidth: 5)))
                                             : ListView.separated(
                                               scrollDirection: Axis.vertical,
                                               shrinkWrap: true,
@@ -273,8 +263,6 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                               ),
                             ],
                           );
-
-
                         },
                       )
                           : Center(

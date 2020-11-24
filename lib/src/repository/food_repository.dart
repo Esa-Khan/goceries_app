@@ -128,17 +128,16 @@ Future<Stream<Food>> searchFoods(String search, Address address, {String storeID
 
 Future<Stream<Food>> getFoodsByCategory(categoryId, {storeID}) async {
   Uri uri = Helper.getUri('api/foods');
-  Map<String, dynamic> _queryParams = {};
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
-  _queryParams['with'] = 'restaurant';
+  Map<String, String> _queryParams = {};
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  // Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
   if (storeID != null)
     _queryParams['restaurant_id'] = storeID;
+  _queryParams['category_id'] = categoryId;
+  _queryParams['short'] = 'true';
 
-  _queryParams['search'] = 'category_id:$categoryId';
-  _queryParams['searchFields'] = 'category_id:=';
-
-  _queryParams = filter.toQuery(oldQuery: _queryParams);
+  // _queryParams = filter.toQuery(oldQuery: _queryParams);
+  // uri = uri.replace(queryParameters: _queryParams);
   uri = uri.replace(queryParameters: _queryParams);
   try {
     final client = new http.Client();

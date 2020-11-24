@@ -37,7 +37,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
   @override
   void initState() {
     super.initState();
-    _con.getSaudaghar();
   }
 
 //void showPopup() async {
@@ -72,14 +71,10 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
           new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
         ],
       ),
-      body: settingsRepo.isStore.value == 0
-          ? _con.saudaghar == null
-            ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
-            : RefreshIndicator(
-                onRefresh: _con.refreshHome,
-                  child: CategoryListWidget(store: _con.saudaghar)
-              )
-          : RefreshIndicator(
+
+
+
+      body: RefreshIndicator(
                 onRefresh: _con.refreshHome,
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
@@ -115,7 +110,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                             ),
                           ),
                           title: Text(
-                            settingsRepo.isStore.value == 2 ? 'Closest Stores' : 'Closest Restaurants',
+                            settingsRepo.isStore.value == 1 ? 'Closest Stores' : 'Closest Restaurants',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           subtitle: Text(

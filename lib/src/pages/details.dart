@@ -497,6 +497,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
                     ),
                   ],
                 ),
-        ));
+        )
+    );
   }
 }

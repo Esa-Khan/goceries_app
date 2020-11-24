@@ -3,7 +3,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/profile_controller.dart';
-import '../repository/settings_repository.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -75,7 +75,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Pages', arguments: 2);
+              settingsRepo.isStore.value = 0;
+              Navigator.of(context).pushNamed('/Pages',arguments: 2);
             },
             leading: Icon(
               Icons.home,
@@ -95,7 +96,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
-              "Where to Shop",
+              "Where to Shop?",
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
@@ -195,13 +196,13 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ListTile(
             onTap: () {
               if (Theme.of(context).brightness == Brightness.dark) {
-                setBrightness(Brightness.light);
-                setting.value.brightness.value = Brightness.light;
+                settingsRepo.setBrightness(Brightness.light);
+                settingsRepo.setting.value.brightness.value = Brightness.light;
               } else {
-                setting.value.brightness.value = Brightness.dark;
-                setBrightness(Brightness.dark);
+                settingsRepo.setting.value.brightness.value = Brightness.dark;
+                settingsRepo.setBrightness(Brightness.dark);
               }
-              setting.notifyListeners();
+              settingsRepo.setting.notifyListeners();
             },
             leading: Icon(
               Icons.brightness_6,
@@ -246,11 +247,11 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   ),
                 )
               : SizedBox(height: 0),
-          setting.value.enableVersion
+          settingsRepo.setting.value.enableVersion
               ? ListTile(
                   dense: true,
                   title: Text(
-                    S.of(context).version + " " + setting.value.appVersion,
+                    S.of(context).version + " " + settingsRepo.setting.value.appVersion,
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   trailing: Icon(

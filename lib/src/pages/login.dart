@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:apple_sign_in/apple_sign_in_button.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../elements/FacebookSigninButtonWidget.dart';
 import '../elements/GoogleSigninButtonWidget.dart';
@@ -37,7 +38,6 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _con.scaffoldKey,
       resizeToAvoidBottomPadding: false,
@@ -78,7 +78,6 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                           margin: EdgeInsets.symmetric(horizontal: 20),
                           padding: EdgeInsets.only(top: 20, right: 27, left: 27, bottom: 20),
                           width: config.App(context).appWidth(88),
-//              height: config.App(context).appHeight(55),
                           child: Form(
                             key: _con.loginFormKey,
                             child: Column(
@@ -207,21 +206,37 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                     _con.login();
                                   },
                                 ),
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pushNamed('/SignUp');
-                                  },
-                                  textColor: Theme.of(context).hintColor,
-                                  child: Text(S.of(context).dont_have_an_account, textAlign: TextAlign.center),
-                                  padding: EdgeInsets.symmetric(horizontal: 30, vertical: 19),
+                                const SizedBox(height: 20),
+                                RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                      text: S.of(context).dont_have_an_account,
+                                      style: Theme.of(context).textTheme.bodyText1,
+                                      recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushNamed('/SignUp')),
                                 ),
-                                FlatButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pushNamed('/ForgetPassword');
-                                  },
-                                  textColor: Theme.of(context).hintColor,
-                                  child: Text(S.of(context).forgot_password, textAlign: TextAlign.center),
-                                )
+                                const SizedBox(height: 10),
+                                RichText(
+                                  textAlign: TextAlign.center,
+                                  text: TextSpan(
+                                      text: S.of(context).forgot_password,
+                                      style: Theme.of(context).textTheme.bodyText1,
+                                      recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushNamed('/ForgetPassword')),
+                                ),
+
+                                // FlatButton(
+                                //   onPressed: () {
+                                //     Navigator.of(context).pushNamed('/SignUp');
+                                //   },
+                                //   textColor: Theme.of(context).hintColor,
+                                //   child: Text(S.of(context).dont_have_an_account, textAlign: TextAlign.center),
+                                // ),
+                                // FlatButton(
+                                //   onPressed: () {
+                                //     Navigator.of(context).pushNamed('/ForgetPassword');
+                                //   },
+                                //   textColor: Theme.of(context).hintColor,
+                                //   child: Text(S.of(context).forgot_password, textAlign: TextAlign.center),
+                                // )
                               ],
                             ),
                           ),

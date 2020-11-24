@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/pages/sg_home.dart';
+import 'package:saudaghar/src/repository/settings_repository.dart';
 
 import '../elements/DrawerWidget.dart';
 import '../elements/FilterWidget.dart';
@@ -8,6 +10,7 @@ import '../pages/home.dart';
 import '../pages/map.dart';
 import '../pages/notifications.dart';
 import '../pages/orders.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 
 // ignore: must_be_immutable
 class PagesWidget extends StatefulWidget {
@@ -59,7 +62,11 @@ class _PagesWidgetState extends State<PagesWidget> {
           widget.currentPage = MapWidget(parentScaffoldKey: widget.scaffoldKey, routeArgument: widget.routeArgument);
           break;
         case 2:
-          widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey);
+          if (settingsRepo.isStore.value == 0) {
+            widget.currentPage = SGHomeWidget(parentScaffoldKey: widget.scaffoldKey);
+          } else {
+            widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey);
+          }
           break;
         case 3:
           widget.currentPage = OrdersWidget(parentScaffoldKey: widget.scaffoldKey);
