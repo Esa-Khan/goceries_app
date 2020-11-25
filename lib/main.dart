@@ -15,8 +15,8 @@ Future<void> main() async {
   SharedPreferences.setMockInitialValues({});
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("configurations");
-  print(CustomTrace(StackTrace.current, message: "base_url: ${GlobalConfiguration().getString('base_url')}"));
-  print(CustomTrace(StackTrace.current, message: "api_base_url: ${GlobalConfiguration().getString('api_base_url')}"));
+  // print(CustomTrace(StackTrace.current, message: "base_url: ${GlobalConfiguration().getString('base_url')}"));
+  // print(CustomTrace(StackTrace.current, message: "api_base_url: ${GlobalConfiguration().getString('api_base_url')}"));
   runApp(MyApp());
 }
 
@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
     return ValueListenableBuilder(
         valueListenable: settingRepo.setting,
         builder: (context, Setting _setting, _) {
-          print(CustomTrace(StackTrace.current, message: _setting.toMap().toString()));
+          // print(CustomTrace(StackTrace.current, message: _setting.toMap().toString()));
           return MaterialApp(
               navigatorKey: settingRepo.navigatorKey,
               title: _setting.appName,

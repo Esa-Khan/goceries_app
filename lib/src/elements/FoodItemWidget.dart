@@ -11,7 +11,6 @@ class FoodItemWidget extends StatelessWidget {
   final String heroTag;
   final Food food;
 
-
   const FoodItemWidget({Key key, this.food, this.heroTag}) : super(key: key);
 
   @override

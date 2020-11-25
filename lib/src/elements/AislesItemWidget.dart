@@ -39,7 +39,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
   void initState() {
     super.initState();
     if (first_load) {
-      if (mounted) setState(() => first_load = false);
+      first_load = false;
       _con.category = widget.aisle;
       img_timeout();
       widget.subAisles.forEach((element) {
@@ -50,7 +50,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
   }
 
   Future<void> img_timeout() async {
-      Future.delayed(Duration(milliseconds: ((widget.timeout/2)*1000).ceil())).whenComplete(() {
+      Future.delayed(Duration(milliseconds: ((widget.timeout/2)*1800).ceil())).whenComplete(() {
         print("---------TIMEDOUT AFTER ${widget.timeout} SECONDS----------");
         setState(() => timed_out = true);
       });

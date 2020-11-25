@@ -111,7 +111,10 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   'assets/img/loading.gif',
                                   fit: BoxFit.contain,
                                 ),
-                                errorWidget: (context, url, error) => Icon(Icons.error),
+                                errorWidget: (context, url, error) => Image.asset(
+                                  'assets/img/image_default.png',
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
                           ),
