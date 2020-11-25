@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:saudaghar/src/controllers/restaurant_controller.dart';
 import 'package:saudaghar/src/elements/LogoLoadingWidget.dart';
+import 'package:saudaghar/src/repository/user_repository.dart';
 
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
@@ -37,12 +38,14 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
               ),
               actions: <Widget>[
                 IconButton(
-                  padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                  icon: Icon(Icons.login, color: Theme.of(context).accentColor),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/Login');
-                  },
-                )
+                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    icon: currentUser.value.id == null
+                        ? Icon(Icons.login_sharp, color: Theme.of(context).accentColor)
+                        : Icon(Icons.home, color: Theme.of(context).accentColor),
+                    onPressed: () {
+                      if (currentUser.value.id == null)
+                        Navigator.of(context).pushNamed('/Login');
+                    })
               ],
             ),
             body: Center(

@@ -1,3 +1,5 @@
+import 'package:global_configuration/global_configuration.dart';
+
 import '../helpers/custom_trace.dart';
 import '../models/media.dart';
 
@@ -42,7 +44,7 @@ class Restaurant {
       information = jsonMap['information'] != null ? jsonMap['information'] : null;
       latitude = jsonMap['latitude'];
       longitude = jsonMap['longitude'];
-      closed = isClosed(description);
+      closed = GlobalConfiguration().getString('debug') == 'true' ? false : isClosed(description);
       availableForDelivery = jsonMap['available_for_delivery'] ?? false;
       distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0.0;
     } catch (e) {
@@ -87,7 +89,7 @@ class Restaurant {
     }
 
     bool closed = true;
-   var now = new DateTime.now().hour + new DateTime.now().minute/100;
+    var now = new DateTime.now().hour + new DateTime.now().minute/100;
     var times = desc.toString().replaceAll(" ", "").replaceAll("m", "").replaceAll("<p>", "").replaceAll("</p>", "").split('-');
     var openTime_hour = -1, closeTime_hour = -1, openTime_min = 0, closeTime_min = 0;
 

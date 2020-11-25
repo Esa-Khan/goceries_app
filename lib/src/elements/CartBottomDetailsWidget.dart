@@ -169,13 +169,15 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                             height: 50.0,
                             child: Text(
                               currentCart_note.value == ""
-                              ? "Couldn't find an item or have special instructions? Let us know!"
+                              ? "Couldn't find an item? Have special instructions? Let us know!"
                               : currentCart_note.value.length < 80
                                 ? currentCart_note.value
                                 : currentCart_note.value.toString().substring(0, 80) + "...",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Theme.of(context).accentColor),
+                                color: Theme.of(context).accentColor,
+                                fontSize: 15
+                              ),
                             )
                         ),
                       ),

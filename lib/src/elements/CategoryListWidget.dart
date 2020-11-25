@@ -21,7 +21,8 @@ class CategoryListWidget extends StatefulWidget {
 class _CategoryListState extends StateMVC<CategoryListWidget> {
   CategoryController _con;
   var _searchBarController = TextEditingController();
-  bool first_load = true, _isSearching = false, _isSearched = false, _searchBarTapped = false;
+  bool first_load = true, _isSearching = false, _isSearched = false;
+  //, _searchBarTapped = false;
 
   _CategoryListState() : super(CategoryController()) {
     _con = controller;
@@ -55,7 +56,7 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                 setState(() => _isSearching = true);
                 await _con.refreshSearch(text);
                 setState(() {
-                  _searchBarTapped = false;
+                  // _searchBarTapped = false;
                   _isSearching = false;
                   _isSearched = true;
                 });
@@ -68,7 +69,7 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                 }
               },
               onTap: () {
-                setState(() => _searchBarTapped = true);
+                // setState(() => _searchBarTapped = true);
               },
               controller: _searchBarController,
               decoration: InputDecoration(
@@ -131,6 +132,8 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                     )
 
 
+
+
                 : !_con.hasAislesLoaded
                   ? Padding(
                       padding: EdgeInsets.symmetric(vertical: 50),
@@ -160,26 +163,25 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                         } else {
                           // Define a Aisle dropdown
                           return AislesItemWidget(
-                              aisle: currAisle,
-                              store: _con.restaurant,
-                              items: _con.subaisleToItemsMap,
-                              subAisles: _con.aisleToSubaisleMap[currAisle.id],
-                              timeout: index,
-                              onPressed: (aisleVal) async {
-                                _con.isExpandedList.forEach((key, value) {
-                                  setState(() => _con.isExpandedList[key] = false);
-                                });
-                                if (!_con.isExpandedList[aisleVal.id])
-                                  _con.isExpandedList[aisleVal.id] = true;
-
-                                if (aisleVal.id.length > 2 &&
-                                    !_con.isAisleLoadedList[aisleVal.id] &&
-                                    _con.isExpandedList[aisleVal.id]) {
-                                  print(aisleVal.name);
-                                  await _con.listenForItemsByCategory(aisleVal.id, storeID: _con.restaurant.id);
-                                  _con.isAisleLoadedList[aisleVal.id] = true;
-                                }
+                            aisle: currAisle,
+                            items: _con.subaisleToItemsMap,
+                            subAisles: _con.aisleToSubaisleMap[currAisle.id],
+                            timeout: index,
+                            onPressed: (aisleVal) async {
+                              _con.isExpandedList.forEach((key, value) {
+                                setState(() => _con.isExpandedList[key] = false);
                               });
+                              if (!_con.isExpandedList[aisleVal.id])
+                                _con.isExpandedList[aisleVal.id] = true;
+
+                              if (aisleVal.id.length > 2 &&
+                                  !_con.isAisleLoadedList[aisleVal.id] &&
+                                  _con.isExpandedList[aisleVal.id]) {
+                                print(aisleVal.name);
+                                await _con.listenForItemsByCategory(aisleVal.id, storeID: _con.restaurant.id);
+                                _con.isAisleLoadedList[aisleVal.id] = true;
+                              }
+                            });
                         }
 
                   })

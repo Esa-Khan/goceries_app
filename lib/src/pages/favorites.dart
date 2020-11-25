@@ -6,6 +6,7 @@ import '../controllers/favorite_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/FavoriteGridItemWidget.dart';
 import '../elements/FavoriteListItemWidget.dart';
+import '../elements/EmptyFavouritesWidget.dart';
 import '../elements/PermissionDeniedWidget.dart';
 import '../elements/SearchBarWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
@@ -111,11 +112,11 @@ class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
                         ),
                       ),
                     ),
-                    _con.favorites.isEmpty
-                        ? CircularLoadingWidget(height: 500)
-                        : Offstage(
+                        Offstage(
                             offstage: this.layout != 'list',
-                            child: ListView.separated(
+                            child: _con.favorites.isEmpty
+                                ? EmptyFavouritesWidget()
+                                : ListView.separated(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               primary: false,
@@ -131,11 +132,11 @@ class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
                               },
                             ),
                           ),
-                    _con.favorites.isEmpty
-                        ? CircularLoadingWidget(height: 500)
-                        : Offstage(
+                    Offstage(
                             offstage: this.layout != 'grid',
-                            child: GridView.count(
+                            child: _con.favorites.isEmpty
+                                ? EmptyFavouritesWidget()
+                                : GridView.count(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               primary: false,
