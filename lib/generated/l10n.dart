@@ -305,10 +305,10 @@ class S {
     );
   }
 
-  /// `Favorite Foods`
+  /// `Favorites`
   String get favorite_foods {
     return Intl.message(
-      'Favorite Foods',
+      'Favorites',
       name: 'favorite_foods',
       desc: '',
       args: [],

@@ -85,13 +85,13 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
                           inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly,
+                            FilteringTextInputFormatter.digitsOnly,
                             new LengthLimitingTextInputFormatter(19),
                             new CardNumberInputFormatter()
                           ],
 //                          controller: creditNumberCon,
                           decoration: getInputDecoration(hintText: '4242 4242 4242 4242', labelText: S.of(context).number),
-                          initialValue: widget.creditCard.number != null && widget.creditCard.number.isNotEmpty ? widget.creditCard.number : 'Test',
+                          initialValue: widget.creditCard.number != null && widget.creditCard.number.isNotEmpty ? widget.creditCard.number : '',
 //                          validator: (input) => input.trim().length != 16 ? S.of(context).not_a_valid_number : null,
                           validator: (input) => validateCardNumWithLuhnAlgorithm(input),
                           onSaved: (input) => widget.creditCard.number = input,

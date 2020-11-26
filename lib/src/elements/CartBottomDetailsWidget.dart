@@ -57,9 +57,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
             height: 190,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
-          color: Theme
-              .of(context)
-              .primaryColor,
+          color: Theme.of(context).primaryColor,
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(20),
               topLeft: Radius.circular(20)),
@@ -122,20 +120,19 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                 Expanded(
                   child: Text(
                     S.of(context).subtotal,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 18)),
                   ),
                 ),
                 Helper.getPrice(widget.con.subTotal, context,
                     style: Theme.of(context).textTheme.subtitle1)
               ],
             ),
-            SizedBox(height: 5),
             Row(
               children: <Widget>[
                 Expanded(
                   child: Text(
                     S.of(context).delivery_fee,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13)),
                   ),
                 ),
                 if (Helper.canDelivery(widget.con.carts[0].food.restaurant,

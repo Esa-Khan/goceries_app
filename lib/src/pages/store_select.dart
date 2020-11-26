@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/controllers/restaurant_controller.dart';
-import 'package:saudaghar/src/elements/LogoLoadingWidget.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import 'package:saudaghar/src/elements/StoreSelectShoppingCartButtonWidget.dart';
+import '../controllers/restaurant_controller.dart';
+import '../controllers/cart_controller.dart';
+import '../elements/ShoppingCartButtonWidget.dart';
+import '../repository/user_repository.dart';
 
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
@@ -19,7 +21,14 @@ class StoreSelectWidget extends StatefulWidget {
 }
 
 class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
+  CartController _con = new CartController();
   _StoreSelectWidgetState() : super(RestaurantController()) {
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _con.listenForCartsCount();
   }
 
   @override
@@ -37,15 +46,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                 style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.5)),
               ),
               actions: <Widget>[
-                IconButton(
-                    padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
-                    icon: currentUser.value.id == null
-                        ? Icon(Icons.login_sharp, color: Theme.of(context).accentColor)
-                        : Icon(Icons.home, color: Theme.of(context).accentColor),
-                    onPressed: () {
-                      if (currentUser.value.id == null)
-                        Navigator.of(context).pushNamed('/Login');
-                    })
+                new StoreSelectShoppingCartButtonWidget()
               ],
             ),
             body: Center(

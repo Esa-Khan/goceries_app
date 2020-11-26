@@ -109,7 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "extras" : MessageLookupByLibrary.simpleMessage("Extras"),
     "faq" : MessageLookupByLibrary.simpleMessage("FAQ"),
     "faqsRefreshedSuccessfuly" : MessageLookupByLibrary.simpleMessage("FAQs refreshed"),
-    "favorite_foods" : MessageLookupByLibrary.simpleMessage("Favorite Foods"),
+    "favorite_foods" : MessageLookupByLibrary.simpleMessage("Favorites"),
     "favorites" : MessageLookupByLibrary.simpleMessage("Favorites"),
     "favorites_refreshed_successfuly" : MessageLookupByLibrary.simpleMessage("Favorites refreshed successfuly"),
     "fields" : MessageLookupByLibrary.simpleMessage("Fields"),

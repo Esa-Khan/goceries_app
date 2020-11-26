@@ -299,7 +299,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                 Expanded(
                   child: Text(
                     S.of(context).subtotal,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 18)),
                   ),
                 ),
                 Helper.getPrice(widget.con.subTotal, context,
@@ -312,7 +312,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                 Expanded(
                   child: Text(
                     S.of(context).delivery_fee,
-                    style: Theme.of(context).textTheme.bodyText1,
+                    style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13)),
                   ),
                 ),
                 if (Helper.canDelivery(widget.con.carts[0].food.restaurant,
