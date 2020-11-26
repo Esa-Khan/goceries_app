@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -12,14 +13,9 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends StateMVC<DrawerWidget> {
-  //ProfileController _con;
 
   _DrawerWidgetState() : super(ProfileController()) {
-    //_con = controller;
-  }
-  @override
-  void dispose() {
-    super.dispose();
+
   }
 
   @override
@@ -46,8 +42,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Theme.of(context).accentColor,
-                      backgroundImage: currentUser.value.image.thumb == 'https://goceries.org/images/image_default.png'
-                                        || currentUser.value.image.thumb == 'https://goceries.org/images/profile_picture.jpg'
+                      backgroundImage: currentUser.value.image.thumb == '${GlobalConfiguration().getString('base_url')}images/image_default.png'
+                                        || currentUser.value.image.thumb == '${GlobalConfiguration().getString('base_url')}images/profile_picture.jpg'
                           ? AssetImage('assets/img/profile_picture.jpg')
                           : NetworkImage(currentUser.value.image.thumb),
                     ),
@@ -180,19 +176,19 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).pushNamed('/Languages');
-            },
-            leading: Icon(
-              Icons.translate,
-              color: Theme.of(context).focusColor.withOpacity(1),
-            ),
-            title: Text(
-              S.of(context).languages,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-          ),
+          // ListTile(
+          //   onTap: () {
+          //     Navigator.of(context).pushNamed('/Languages');
+          //   },
+          //   leading: Icon(
+          //     Icons.translate,
+          //     color: Theme.of(context).focusColor.withOpacity(1),
+          //   ),
+          //   title: Text(
+          //     S.of(context).languages,
+          //     style: Theme.of(context).textTheme.subtitle1,
+          //   ),
+          // ),
           ListTile(
             onTap: () {
               if (Theme.of(context).brightness == Brightness.dark) {

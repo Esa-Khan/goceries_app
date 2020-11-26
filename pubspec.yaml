@@ -35,7 +35,7 @@ dependencies:
   global_configuration: 1.5.0
   http: ^0.12.1
   html: 0.14.0+3
-  shared_preferences: 0.5.7+3
+  shared_preferences: ^0.5.12+4
   flutter_html: ^1.0.0
   flutter_svg: ^0.18.0
   location: 3.0.2

@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:saudaghar/generated/l10n.dart';
 import 'package:saudaghar/src/controllers/user_controller.dart';
 import 'package:saudaghar/src/repository/settings_repository.dart' as settingsRepo;
 

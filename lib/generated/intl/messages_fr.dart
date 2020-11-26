@@ -169,7 +169,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "unknown" : MessageLookupByLibrary.simpleMessage("Unknown"),
     "verify" : MessageLookupByLibrary.simpleMessage("Vérifier"),
     "verify_your_internet_connection" : MessageLookupByLibrary.simpleMessage("Vérifiez votre connexion internet"),
-    "verify_your_quantity_and_click_checkout" : MessageLookupByLibrary.simpleMessage("Vérifiez votre quantité et cliquez sur Valider"),
     "version" : MessageLookupByLibrary.simpleMessage("Version"),
     "welcome" : MessageLookupByLibrary.simpleMessage("Bienvenue"),
     "what_they_say" : MessageLookupByLibrary.simpleMessage("Ce qu\'ils disent ?"),

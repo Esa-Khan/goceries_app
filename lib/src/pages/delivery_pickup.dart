@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/CircularLoadingWidget.dart';
-import 'package:saudaghar/src/elements/DeliveryBottomDetailsWidget.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import 'package:saudaghar/src/elements/EmptyDeliveryAddressWidget.dart';
+import '../elements/CircularLoadingWidget.dart';
+import '../elements/DeliveryBottomDetailsWidget.dart';
+import '../repository/settings_repository.dart';
+import '../repository/user_repository.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
-import '../elements/CartBottomDetailsWidget.dart';
 import '../elements/DeliveryAddressDialog.dart';
 import '../elements/DeliveryAddressesItemWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
@@ -60,7 +60,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         elevation: 0,
         centerTitle: true,
         title: Text(
-          S.of(context).delivery,
+          'Delivery Address',
           style: Theme.of(context).textTheme.headline6
               .merge(TextStyle(letterSpacing: 1.3)),
         ),
@@ -71,7 +71,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.only(bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -111,21 +111,13 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
             Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(
-                      top: 20, bottom: 10, left: 20, right: 10),
+                  padding: const EdgeInsets.only(bottom: 10, left: 20, right: 10),
                   child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(vertical: 0),
                     leading: Icon(
                       Icons.map,
                       color: Theme.of(context).hintColor,
                     ),
-                    title: Text(
-                      S.of(context).delivery,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                    subtitle: _con.carts.isNotEmpty &&
+                    title: _con.carts.isNotEmpty &&
                         Helper.canDelivery(_con.carts[0].food.restaurant,
                             carts: _con.carts)
                         ? Text(
@@ -134,97 +126,60 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption,
                     )
-                        : Text(S.of(context).deliveryMethodNotAllowed,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption,
+                        : Text(S.of(context).click_to_confirm_your_address_and_pay_or_long_press,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.bodyText1,
                     ),
                   ),
                 ),
-                _con.carts.isNotEmpty &&
-                    Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
-//                ? ListView.separated(
-//                    padding: EdgeInsets.symmetric(vertical: 15),
-//                    scrollDirection: Axis.vertical,
-//                    shrinkWrap: true,
-//                    primary: false,
-//                    itemCount: _conDeliveryAdresses.addresses.length,
-//                    separatorBuilder: (context, index) {
-//                      return SizedBox(height: 15);
-//                    },
-//                    itemBuilder: (context, index) {
-//                      return DeliveryAddressesItemWidget(
-//                        address: _conDeliveryAdresses.addresses.elementAt(index),
-//                        onPressed: (Address _address) {
-//                          DeliveryAddressDialog(
-//                            context: context,
-//                            address: _address,
-//                            onChanged: (Address _address) {
-//                              _con.updateAddress(_address);
-//                            },
-//                          );
-//                        },
-//                        onLongPress: (Address _address) {
-//                          DeliveryAddressDialog(
-//                            context: context,
-//                            address: _address,
-//                            onChanged: (Address _address) {
-//                              _con.updateAddress(_address);
-//                            },
-//                          );
-//                        },
-//                        onDismissed: (Address _address) {
-//                          _conDeliveryAdresses.removeDeliveryAddress(_address);
-//                        },
-//                      );
-//                    },
-//                )
-                    ? ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: _con.deliveryAddress.length,
-                  shrinkWrap: true,
-                  primary: false,
-//                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  itemBuilder: (context, index) {
-                    if (_con.deliveryAddress.elementAt(index).address != null && _con.deliveryAddress.elementAt(index).id != null) {
-                      return DeliveryAddressesItemWidget(
-                        paymentMethod: _con.getDeliveryMethod(),
-                        address: _con.deliveryAddress.elementAt(index),
-                        onPressed: (Address _address) {
-                          if (_address.id == null || _address.id == 'null' || currentUser.value.phone == null || currentUser.value.phone == "") {
-                            DeliveryAddressDialog(
-                              context: context,
-                              address: _address,
-                              onChanged: (Address _address) {
-                                _con.toggleDelivery(currAddress: _address);
-//                              _con.addAddress(_address);
+                _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
+                    ? _con.deliveryAddress.isEmpty
+                      ? EmptyDeliveryAddressWidget()
+                      : ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: _con.deliveryAddress.length,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemBuilder: (context, index) {
+                          if (_con.deliveryAddress.elementAt(index).address != null && _con.deliveryAddress.elementAt(index).id != null) {
+                            return DeliveryAddressesItemWidget(
+                              paymentMethod: _con.getDeliveryMethod(),
+                              address: _con.deliveryAddress.elementAt(index),
+                              onPressed: (Address _address) {
+                                if (_address.id == null || _address.id == 'null' || currentUser.value.phone == null || currentUser.value.phone == "") {
+                                  DeliveryAddressDialog(
+                                    context: context,
+                                    address: _address,
+                                    onChanged: (Address _address) {
+                                      _con.toggleDelivery(currAddress: _address);
+      //                              _con.addAddress(_address);
+                                    },
+                                  );
+                                } else {
+                                  _con.toggleDelivery(currAddress: _address);
+                                }
+                              },
+                              onLongPress: (Address _address) {
+                                DeliveryAddressDialog(
+                                  context: context,
+                                  address: _address,
+                                  onChanged: (Address _address) {
+                                    _con.updateAddress(_address);
+                                  },
+                                );
+                              },
+                              onDismissed: (Address _address) {
+                                _con.removeDeliveryAddress(_address);
                               },
                             );
-
                           } else {
-                            _con.toggleDelivery(currAddress: _address);
+                            return SizedBox(height: 0);
                           }
                         },
-                        onLongPress: (Address _address) {
-                          DeliveryAddressDialog(
-                            context: context,
-                            address: _address,
-                            onChanged: (Address _address) {
-                              _con.updateAddress(_address);
-                            },
-                          );
-                        },
-                        onDismissed: (Address _address) {
-                          _con.removeDeliveryAddress(_address);
-                        },
-                      );
-                    } else {
-                      return SizedBox(height: 0);
-                    }
-
-                  },
                 )
-          : CircularLoadingWidget(height: 150),
+                : CircularLoadingWidget(height: 150),
+
 
                 SizedBox(height: 30),
                 InkWell(

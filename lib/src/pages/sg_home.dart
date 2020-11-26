@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:saudaghar/src/elements/CategoryListWidget.dart';
 import 'package:saudaghar/src/elements/SocialMediaOrdering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -94,9 +95,7 @@ class ImageDialog extends StatelessWidget {
           height: MediaQuery.of(context).size.height / 1.8,
           width: MediaQuery.of(context).size.width / 1.3,
           fit: BoxFit.cover,
-          imageUrl:
-              'https://thumbs.dreamstime.com/z/sale-off-offer-storewide-ramadan-background-eid-banner-discount-celebration-fantastic-festival-muslim-shopping-holiday-gift-up-148585574.jpg',
-//          imageUrl: 'https://goceries.org/storage/app/public/promotions.png',
+          imageUrl: "${GlobalConfiguration().getString('base_url')}storage/app/public/promotions.png",
           placeholder: (context, url) => Image.asset(
             'assets/img/loading.gif',
             fit: BoxFit.contain,

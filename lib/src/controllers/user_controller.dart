@@ -90,7 +90,6 @@ class UserController extends ControllerMVC {
         this.user.password = currentUser.uid;
 
         thirdPartyLogin();
-        Helper.hideLoader(loader);
         return 'signInWithGoogle succeeded: $user';
       }
 
@@ -98,7 +97,6 @@ class UserController extends ControllerMVC {
       print("ERROR: " + e.toString());
       Helper.hideLoader(loader);
     }
-    Helper.hideLoader(loader);
   }
 
   void signOutGoogle() async {
@@ -231,6 +229,7 @@ class UserController extends ControllerMVC {
               content: Text("Wrong password. Try a different login method."),
             ));
           }
+          Helper.hideLoader(loader);
         });
       }
       });

@@ -305,10 +305,10 @@ class S {
     );
   }
 
-  /// `Favorite Foods`
+  /// `Favorites`
   String get favorite_foods {
     return Intl.message(
-      'Favorite Foods',
+      'Favorites',
       name: 'favorite_foods',
       desc: '',
       args: [],
@@ -900,16 +900,6 @@ class S {
     return Intl.message(
       'Shopping Cart',
       name: 'shopping_cart',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Verify your quantity and click checkout`
-  String get verify_your_quantity_and_click_checkout {
-    return Intl.message(
-      'Verify your quantity and click checkout',
-      name: 'verify_your_quantity_and_click_checkout',
       desc: '',
       args: [],
     );

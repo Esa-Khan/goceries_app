@@ -169,7 +169,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "unknown" : MessageLookupByLibrary.simpleMessage("Unknown"),
     "verify" : MessageLookupByLibrary.simpleMessage("확인"),
     "verify_your_internet_connection" : MessageLookupByLibrary.simpleMessage("인터넷 연결상태 확인"),
-    "verify_your_quantity_and_click_checkout" : MessageLookupByLibrary.simpleMessage("수량 확인 및 결제 확인"),
     "version" : MessageLookupByLibrary.simpleMessage("버젼"),
     "welcome" : MessageLookupByLibrary.simpleMessage("환영합니다"),
     "what_they_say" : MessageLookupByLibrary.simpleMessage("What They Say ?"),

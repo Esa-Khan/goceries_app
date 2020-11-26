@@ -6,8 +6,6 @@ import '../controllers/settings_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/PaymentSettingsDialog.dart';
 import '../elements/ProfileSettingsDialog.dart';
-import '../elements/SearchBarWidget.dart';
-import '../helpers/helper.dart';
 import '../repository/user_repository.dart';
 
 class SettingsWidget extends StatefulWidget {
@@ -74,7 +72,9 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                   Navigator.of(context).pushNamed('/Profile');
                                 },
                                 child: CircleAvatar(
-                                  backgroundImage: NetworkImage(currentUser.value.image.thumb),
+                                  backgroundImage: currentUser.value.image.thumb == 'https://acb73d648852.ngrok.io/images/profile_picture.jpg'
+                                        ? Image.asset('assets/img/profile_picture.jpg').image
+                                        : NetworkImage(currentUser.value.image.thumb),
                                 ),
                               )),
                         ],

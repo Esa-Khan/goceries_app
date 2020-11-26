@@ -46,6 +46,8 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                 Navigator.of(context).pushReplacementNamed('/Food', arguments: RouteArgument(id: widget.routeArgument.id));
               } else if(widget.routeArgument.param == '/Details') {
                 Navigator.pop(context);
+              } else if(widget.routeArgument.param == '/StoreSelect') {
+                Navigator.of(context).pushReplacementNamed('/StoreSelect');
               } else {
                 Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
               }
@@ -84,11 +86,14 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.headline4,
                           ),
-                          subtitle: Text(
-                            S.of(context).verify_your_quantity_and_click_checkout,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.caption,
+                          subtitle: Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 70, 0),
+                            child: Text(
+                              'Verify your quantity or add any extra notes and click checkout',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.caption,
+                            ),
                           ),
                         ),
                       ),
