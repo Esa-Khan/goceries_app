@@ -153,32 +153,36 @@ class UserController extends ControllerMVC {
       switch (result.status) {
         case AuthorizationStatus.authorized:
           try {
-            print("successfull sign in");
+            print("Successfull sign in");
             final AppleIdCredential appleIdCredential = result.credential;
+            print("1: ${appleIdCredential}");
 
-            OAuthProvider oAuthProvider =
-            new OAuthProvider(providerId: "apple.com");
+            OAuthProvider oAuthProvider = new OAuthProvider(providerId: "apple.com");
+            print("2: ${oAuthProvider}");
+
             final AuthCredential credential = oAuthProvider.getCredential(
               idToken:
               String.fromCharCodes(appleIdCredential.identityToken),
               accessToken:
               String.fromCharCodes(appleIdCredential.authorizationCode),
             );
+            final AuthResult _res = await FirebaseAuth.instance.signInWithCredential(credential);
+            print("3: ${_res}");
 
-            final AuthResult _res = await FirebaseAuth.instance
-                .signInWithCredential(credential);
 
             FirebaseAuth.instance.currentUser().then((val) async {
               UserUpdateInfo updateUser = UserUpdateInfo();
-              updateUser.displayName =
-              "${appleIdCredential.fullName.givenName} ${appleIdCredential
-                  .fullName.familyName}";
-              updateUser.photoUrl =
-              "define an url";
+              print("4: ${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName} ${appleIdCredential.email} ${appleIdCredential.identityToken.hashCode}");
+              this.user.email = appleIdCredential.email;
+              this.user.name = "${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}";
+              this.user.password = appleIdCredential.identityToken.hashCode.toString();
+              thirdPartyLogin();
+              updateUser.displayName = "${appleIdCredential.fullName.givenName} ${appleIdCredential.fullName.familyName}";
+              updateUser.photoUrl = "define an url";
               await val.updateProfile(updateUser);
             });
           } catch (e) {
-            print("error");
+            print("ERROR: ${e}");
           }
           break;
         case AuthorizationStatus.error:
