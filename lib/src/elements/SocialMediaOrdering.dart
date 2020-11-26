@@ -98,9 +98,7 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
               ),
             ),
           ),
-          Offstage(
-              offstage: false,
-                child: GridView.count(
+                GridView.count(
 //              scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   primary: true,
@@ -114,7 +112,6 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
                       MediaQuery.of(context).orientation == Orientation.portrait
                           ? 2
                           : 4,
-                  // Generate 100 widgets that display their index in the List.
                   children: List.generate(logo_color.length, (index) {
                     return GestureDetector(
                       onTap: () {
@@ -134,28 +131,29 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
                         }
 
                       },
+
                         child: Container(
-                      padding: EdgeInsets.all(30),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                              color:
-                                  Theme.of(context).focusColor.withOpacity(0.1),
-                              blurRadius: 15,
-                              offset: Offset(0, 5)),
-                        ],
-                      ),
-                      child: SvgPicture.asset(
-                        logo_img.elementAt(index),
-                        color: logo_color.elementAt(index),
-                        height: MediaQuery.of(context).size.width / 2 - 50,
-                        fit: BoxFit.contain,
-                      ),
-                    ));
+                        padding: EdgeInsets.all(30),
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          boxShadow: [
+                            BoxShadow(
+                                color:
+                                    Theme.of(context).focusColor.withOpacity(0.1),
+                                blurRadius: 15,
+                                offset: Offset(0, 5)),
+                          ],
+                        ),
+                        child: SvgPicture.asset(
+                          logo_img.elementAt(index),
+                          color: logo_color.elementAt(index),
+                          height: MediaQuery.of(context).size.width / 2 - 50,
+                          fit: BoxFit.contain,
+                        ),
+                        ));
                   }),
-              )),
+              ),
           Divider(height: 30),
         ],
       ),

@@ -40,9 +40,9 @@ class _CartItemWidgetState extends State<CartItemWidget> {
 //          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
           padding: EdgeInsets.symmetric(horizontal: 20),
           decoration: BoxDecoration(
-            color: Theme.of(context).primaryColor.withOpacity(0.9),
+            color: Theme.of(context).primaryColor.withOpacity(1),
             boxShadow: [
-              BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2)),
+              BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.6), blurRadius: 5, offset: Offset(0, 2)),
             ],
           ),
           child: Row(

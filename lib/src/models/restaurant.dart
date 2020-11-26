@@ -44,7 +44,7 @@ class Restaurant {
       information = jsonMap['information'] != null ? jsonMap['information'] : null;
       latitude = jsonMap['latitude'];
       longitude = jsonMap['longitude'];
-      closed = GlobalConfiguration().getString('debug') == 'true' ? false : isClosed(description);
+      closed = GlobalConfiguration().getString('debug') == 'true' || id == 0 ? false : isClosed(description);
       availableForDelivery = jsonMap['available_for_delivery'] ?? false;
       distance = jsonMap['distance'] != null ? double.parse(jsonMap['distance'].toString()) : 0.0;
     } catch (e) {

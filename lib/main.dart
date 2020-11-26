@@ -11,8 +11,6 @@ import 'src/models/setting.dart';
 import 'src/repository/settings_repository.dart' as settingRepo;
 
 Future<void> main() async {
-  // ignore: invalid_use_of_visible_for_testing_member
-  SharedPreferences.setMockInitialValues({});
   WidgetsFlutterBinding.ensureInitialized();
   await GlobalConfiguration().loadFromAsset("configurations");
   // print(CustomTrace(StackTrace.current, message: "base_url: ${GlobalConfiguration().getString('base_url')}"));

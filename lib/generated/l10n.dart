@@ -905,16 +905,6 @@ class S {
     );
   }
 
-  /// `Verify your quantity and click checkout`
-  String get verify_your_quantity_and_click_checkout {
-    return Intl.message(
-      'Verify your quantity and click checkout',
-      name: 'verify_your_quantity_and_click_checkout',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `Let's start by logging in!`
   String get lets_start_with_login {
     return Intl.message(

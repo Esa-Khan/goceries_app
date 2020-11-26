@@ -84,11 +84,14 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.headline4,
                           ),
-                          subtitle: Text(
-                            S.of(context).verify_your_quantity_and_click_checkout,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.caption,
+                          subtitle: Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 70, 0),
+                            child: Text(
+                              'Verify your quantity or add any extra notes and click checkout',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.caption,
+                            ),
                           ),
                         ),
                       ),

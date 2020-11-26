@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/CircularLoadingWidget.dart';
-import 'package:saudaghar/src/elements/DeliveryBottomDetailsWidget.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import '../elements/CircularLoadingWidget.dart';
+import '../elements/DeliveryBottomDetailsWidget.dart';
+import '../repository/settings_repository.dart';
+import '../repository/user_repository.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
-import '../elements/CartBottomDetailsWidget.dart';
 import '../elements/DeliveryAddressDialog.dart';
 import '../elements/DeliveryAddressesItemWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
@@ -71,7 +70,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.only(bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -111,10 +110,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
             Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(
-                      top: 20, bottom: 10, left: 20, right: 10),
+                  padding: const EdgeInsets.only(bottom: 10, left: 20, right: 10),
                   child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(vertical: 0),
                     leading: Icon(
                       Icons.map,
                       color: Theme.of(context).hintColor,
