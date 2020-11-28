@@ -253,7 +253,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                   size: 22,
                                   color: Theme.of(context).focusColor,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(
                                   S.of(context).languages,
                                   style: Theme.of(context).textTheme.bodyText2,
@@ -277,7 +277,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                   size: 22,
                                   color: Theme.of(context).focusColor,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(
                                   S.of(context).delivery_addresses,
                                   style: Theme.of(context).textTheme.bodyText2,
@@ -297,7 +297,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                   size: 22,
                                   color: Theme.of(context).focusColor,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(
                                   S.of(context).help_supports,
                                   style: Theme.of(context).textTheme.bodyText2,

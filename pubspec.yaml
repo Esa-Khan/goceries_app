@@ -52,6 +52,7 @@ dependencies:
   flutter_facebook_login: ^3.0.0
   apple_sign_in: ^0.1.0
   device_info: ^0.4.1+4
+  bubble_showcase: ^0.2.0+4
 
 
 dev_dependencies:
@@ -73,6 +74,7 @@ flutter:
   assets:
     - assets/cfg/
     - assets/img/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -106,6 +108,7 @@ flutter:
         weight: 800
       - asset: assets/fonts/Poppins-Black.ttf
         weight: 900
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: assets/fonts/TrajanPro.ttf

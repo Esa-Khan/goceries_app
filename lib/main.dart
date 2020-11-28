@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:global_configuration/global_configuration.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'generated/l10n.dart';
 import 'route_generator.dart';

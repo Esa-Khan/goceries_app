@@ -229,7 +229,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                           children: <Widget>[
                                             const SizedBox(height: 10),
                                             items == null || items.isEmpty
-                                              ? Center(heightFactor: 2, child: SizedBox(width: 60, height: 60,
+                                              ? Center(heightFactor: 2, child: const SizedBox(width: 60, height: 60,
                                                         child: CircularProgressIndicator(strokeWidth: 5)))
                                               : ListView.separated(
                                                   scrollDirection: Axis.vertical,

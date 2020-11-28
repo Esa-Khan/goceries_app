@@ -47,8 +47,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
           onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         centerTitle: true,
         title: ValueListenableBuilder(
           valueListenable: settingsRepo.setting,

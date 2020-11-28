@@ -178,7 +178,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "you_must_signin_to_access_to_this_section" : MessageLookupByLibrary.simpleMessage("يجب تسجيل الدخول لمشاهدة هذه الصفحة"),
     "your_address" : MessageLookupByLibrary.simpleMessage("عنوانك"),
     "your_biography" : MessageLookupByLibrary.simpleMessage("نبذة عنك"),
-    "your_order_has_been_successfully_submitted" : MessageLookupByLibrary.simpleMessage("تم تقديم طلبك بنجاح!"),
     "your_reset_link_has_been_sent_to_your_email" : MessageLookupByLibrary.simpleMessage("تم ارسال رابط استعادة كلمة المرور الى البريد الالكتروني الخاص بك")
   };
 }

@@ -46,8 +46,8 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
       });
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        // backgroundColor: Colors.transparent,
+        // elevation: 0,
         centerTitle: true,
         title: Text(
           S.of(context).payment_mode,
@@ -58,38 +58,28 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SearchBarWidget(),
-            ),
-            SizedBox(height: 15),
             list.paymentsList.length > 0
                 ? Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(vertical: 0),
                       leading: Icon(
                         Icons.payment,
                         color: Theme.of(context).hintColor,
                       ),
                       title: Text(
-                        S.of(context).payment_options,
-                        maxLines: 1,
+                        S.of(context).select_your_preferred_payment_mode,
+                        maxLines: 5,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.headline4,
+                        style: Theme.of(context).textTheme.bodyText1,
                       ),
-                      subtitle: Text(S.of(context).select_your_preferred_payment_mode),
                     ),
                   )
-                : SizedBox(
-                    height: 0,
-                  ),
+                : const SizedBox(),
             SizedBox(height: 10),
             ListView.separated(
               scrollDirection: Axis.vertical,
@@ -125,18 +115,18 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
 //                    height: 0,
 //                  ),
           SizedBox(height: 10),
-      ListView.separated(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              primary: false,
-              itemCount: list.cashList.length,
-              separatorBuilder: (context, index) {
-                return SizedBox(height: 10);
-              },
-              itemBuilder: (context, index) {
-                return PaymentMethodListItemWidget(paymentMethod: list.cashList.elementAt(index));
-              },
-            ),
+          ListView.separated(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            primary: false,
+            itemCount: list.cashList.length,
+            separatorBuilder: (context, index) {
+              return SizedBox(height: 10);
+            },
+            itemBuilder: (context, index) {
+              return PaymentMethodListItemWidget(paymentMethod: list.cashList.elementAt(index));
+            },
+          ),
           ],
         ),
       ),

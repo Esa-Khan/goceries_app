@@ -53,11 +53,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       key: _con.scaffoldKey,
       bottomNavigationBar: DeliveryBottomDetailsWidget(con: _con),
       appBar: AppBar(
-        leading: BackButton(
-          color: Theme.of(context).accentColor,
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        leading: BackButton(),
         centerTitle: true,
         title: Text(
           'Delivery Address',
@@ -117,21 +113,13 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       Icons.map,
                       color: Theme.of(context).hintColor,
                     ),
-                    title: _con.carts.isNotEmpty &&
-                        Helper.canDelivery(_con.carts[0].food.restaurant,
-                            carts: _con.carts)
-                        ? Text(
+                    title: Text(
                       S.of(context).click_to_confirm_your_address_and_pay_or_long_press,
-                      maxLines: 3,
+                      maxLines: 5,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodyText1,
                     )
-                        : Text(S.of(context).click_to_confirm_your_address_and_pay_or_long_press,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyText1,
-                    ),
-                  ),
+                  )
                 ),
                 _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
                     ? _con.deliveryAddress.isEmpty
@@ -340,41 +328,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   ),
                 ),
 
-                SizedBox(height: 90),
-
-
-
-
-
-//                DeliveryAddressesItemWidget(
-//                        paymentMethod: _con.getDeliveryMethod(),
-//                        address: _con.deliveryAddress.first,
-//                        onPressed: (Address _address) {
-//                          if (_con.deliveryAddress.first.id == null ||
-//                              _con.deliveryAddress.first.id == 'null' ||
-//                              currentUser.value.phone == null) {
-//                            DeliveryAddressDialog(
-//                              context: context,
-//                              address: _address,
-//                              onChanged: (Address _address) {
-//                                _con.addAddress(_address);
-//                              },
-//                            );
-//                          } else {
-//                            _con.toggleDelivery();
-//                          }
-//                        },
-//                        onLongPress: (Address _address) {
-//                          DeliveryAddressDialog(
-//                            context: context,
-//                            address: _address,
-//                            onChanged: (Address _address) {
-//                              _con.updateAddress(_address);
-//                            },
-//                          );
-//                        },
-//                      )
-//                    : NotDeliverableAddressesItemWidget()
+                SizedBox(height: 40),
               ],
             )
           ],

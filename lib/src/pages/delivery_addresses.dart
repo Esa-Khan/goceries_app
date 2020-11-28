@@ -87,7 +87,6 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
                 child: ListTile(
-                  contentPadding: EdgeInsets.symmetric(vertical: 0),
                   leading: Icon(
                     Icons.map,
                     color: Theme.of(context).hintColor,
