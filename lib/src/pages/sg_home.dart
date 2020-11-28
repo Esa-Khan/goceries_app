@@ -67,7 +67,7 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
         ],
       ),
       body: _con.saudaghar == null
-            ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
+            ? const Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
             : CategoryListWidget(store: _con.saudaghar)
     );
   }
@@ -96,7 +96,7 @@ class ImageDialog extends StatelessWidget {
       ),
       elevation: 10,
       shape: const RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(30.0))),
+          borderRadius: BorderRadius.all(Radius.circular(30.0))),
     );
   }
 }

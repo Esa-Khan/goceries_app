@@ -52,7 +52,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
   @override
   Widget build(BuildContext context) {
     return widget.con.carts.isEmpty
-        ? SizedBox(height: 0)
+        ? const SizedBox()
         : Container(
             height: 182,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -122,9 +122,9 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                             alignment: AlignmentDirectional.bottomEnd,
                             children: <Widget>[
                                 Text(
-                                  'Promo-code',
+                                  'Promo\nCode',
                                   textAlign: TextAlign.center,
-                                  textScaleFactor: 0.8,
+                                  textScaleFactor: 0.7,
                                   style: TextStyle(color: Theme.of(context).primaryColor),
                                 )
                               // Icon(

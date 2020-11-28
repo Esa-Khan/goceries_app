@@ -70,7 +70,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                     padding: EdgeInsets.only(bottom: 10),
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 10),
+                        padding: const EdgeInsets.only(left: 20, right: 10, top: 10),
                         child: ListTile(
                           leading: Icon(
                             Icons.shopping_cart,

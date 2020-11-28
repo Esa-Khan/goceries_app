@@ -85,9 +85,9 @@ class _PagesWidgetState extends State<PagesWidget> {
       child: Scaffold(
         key: widget.scaffoldKey,
         drawer: DrawerWidget(),
-        endDrawer: FilterWidget(onFilter: (filter) {
-          Navigator.of(context).pushReplacementNamed('/Pages', arguments: widget.currentTab);
-        }),
+        // endDrawer: FilterWidget(onFilter: (filter) {
+        //   Navigator.of(context).pushReplacementNamed('/Pages', arguments: widget.currentTab);
+        // }),
         body: widget.currentPage,
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
