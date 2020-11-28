@@ -57,6 +57,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.1"
+  bubble_showcase:
+    dependency: "direct main"
+    description:
+      name: bubble_showcase
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0+4"
   cached_network_image:
     dependency: "direct main"
     description:

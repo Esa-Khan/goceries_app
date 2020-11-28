@@ -99,7 +99,6 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                           backgroundColor: Theme.of(context).primaryColor.withOpacity(0.9),
                           expandedHeight: 300,
                           elevation: 0,
-                          iconTheme: IconThemeData(color: Theme.of(context).accentColor),
                           flexibleSpace: FlexibleSpaceBar(
                             collapseMode: CollapseMode.parallax,
                             background: Hero(

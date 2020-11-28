@@ -201,9 +201,9 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               color: Theme.of(context).accentColor,
                               shape: const StadiumBorder(),
                               child: Text(
-                                S.of(context).confirm_payment,
+                                'Next',
                                 textAlign: TextAlign.start,
-                                style: TextStyle(color: Theme.of(context).primaryColor),
+                                style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20),
                               ),
                             ),
                           ),

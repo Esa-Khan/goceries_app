@@ -10,12 +10,12 @@ import 'package:saudaghar/src/repository/settings_repository.dart';
 import 'OrderNotesWidget.dart';
 
 
-class CartBottomDetailsWidget extends StatefulWidget{
+class CheckoutBottomDetailsWidget extends StatefulWidget{
   final con;
 
-  const CartBottomDetailsWidget ({ Key key, this.con }): super(key: key);
+  const CheckoutBottomDetailsWidget ({ Key key, this.con }): super(key: key);
 
-  _CartBottomDetailsWidget createState()=> _CartBottomDetailsWidget();
+  _CheckoutBottomDetailsWidget createState()=> _CheckoutBottomDetailsWidget();
 }
 
 class DateTimePicker extends StatefulWidget {
@@ -28,13 +28,13 @@ class _DateTimePickerState extends State<DateTimePicker> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CartBottomDetailsWidget(),
+      home: CheckoutBottomDetailsWidget(),
     );
   }
 }
 
 
-class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
+class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
   bool _isVisible = false;
   TextEditingController textCont = new TextEditingController();
 
@@ -54,20 +54,21 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
     return widget.con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
-            height: 180,
+            height: 182,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.only(
               topRight: Radius.circular(20),
               topLeft: Radius.circular(20)),
-          boxShadow: [
+            boxShadow: [
             BoxShadow(
                 color: Theme.of(context).focusColor.withOpacity(0.55),
                 offset: Offset(0, -4),
                 blurRadius: 5.0)
           ]),
       child: SizedBox(
+        width: MediaQuery.of(context).size.width - 40,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
@@ -114,27 +115,23 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                               builder: (context) => getDialog()
                             )
                           },
-                          disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                           padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),
-                          color: !widget.con.carts[0].food.restaurant.closed
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).focusColor.withOpacity(0.5),
+                          color: Colors.green,
                           shape: StadiumBorder(),
                           child: Stack(
                             alignment: AlignmentDirectional.bottomEnd,
                             children: <Widget>[
-                              Icon(
-                                Icons.note_add_outlined,
-                                color: Theme.of(context).primaryColor,
-                                size: 28,
-                              ),
-                              currentCart_note.value.trim().length == 0
-                                ? const SizedBox()
-                                : Container(
-                                child: Icon(Icons.check, size: 10, color: Theme.of(context).primaryColor),
-                                decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                                constraints: BoxConstraints(minWidth: 15, maxWidth: 15, minHeight: 15, maxHeight: 15),
-                              ),
+                                Text(
+                                  'Promo-code',
+                                  textAlign: TextAlign.center,
+                                  textScaleFactor: 0.8,
+                                  style: TextStyle(color: Theme.of(context).primaryColor),
+                                )
+                              // Icon(
+                              //   Icons.add_sharp,
+                              //   color: Theme.of(context).primaryColor,
+                              //   size: 28,
+                              // ),
                             ],
                           ),
                       )
@@ -148,17 +145,15 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                       children: <Widget>[
                         FlatButton(
                               height: 60,
-                              onPressed: () => widget.con.goCheckout(context),
+                              onPressed: () => submitOrder(),
                               disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                               padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
-                              color: !widget.con.carts[0].food.restaurant.closed
-                                  ? Theme.of(context).accentColor
-                                  : Theme.of(context).focusColor.withOpacity(0.5),
+                              color: Colors.green,
                               shape: StadiumBorder(),
                               child: Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Next',
+                                  S.of(context).checkout,
                                   style: Theme.of(context).textTheme.bodyText1.merge(
                                       TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
                                 ),
@@ -198,17 +193,17 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
       title: Row(
         children: <Widget>[
           Icon(
-            Icons.speaker_notes,
+            Icons.account_balance_wallet,
             color: Theme.of(context).hintColor,
           ),
           SizedBox(width: 15),
           Expanded(
             child: Text(
-              "If you need a specific item or want to let our team know something about this order:",
+              "Enter a valid promo-code:",
               style: Theme.of(context).textTheme.bodyText1,
 //                                      textAlign: TextAlign.center,
               overflow: TextOverflow.fade,
-              maxLines: 5,
+              maxLines: 1,
             ),
           ),
         ],
@@ -218,9 +213,8 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
         TextField(
           keyboardType: TextInputType.multiline,
           controller: textCont,
-          minLines: 1,
-          //Normal textInputField will be displayed
-          maxLines: 20, // when user presses enter it will adapt to it
+          maxLength: 10,maxLengthEnforced: true,
+          maxLines: 1, // when user presses enter it will adapt to it
         ),
         SizedBox(height: 10),
         Row(
@@ -249,6 +243,11 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
         ),
       ],
     );
+  }
+
+
+  void submitOrder() {
+    widget.con.onLoadingCartDone();
   }
 
 }

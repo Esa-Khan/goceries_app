@@ -55,7 +55,6 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
             Navigator.pop(context);
           },
           icon: Icon(Icons.arrow_back),
-          color: Theme.of(context).accentColor,
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,

@@ -22,7 +22,8 @@ class CheckoutController extends CartController {
   double subTotal = 0.0;
   double total = 0.0;
   CreditCard creditCard = new CreditCard();
-  bool loading = true;
+  bool loading = false;
+  bool order_submitted = false;
   String hint = "";
   String time = "";
   GlobalKey<ScaffoldState> scaffoldKey;
@@ -39,8 +40,11 @@ class CheckoutController extends CartController {
 
   @override
   void onLoadingCartDone({String hint}) {
-    if (payment != null) addOrder(carts, hint);
     super.onLoadingCartDone();
+    if (payment != null) {
+      setState(() => loading = true);
+      addOrder(carts, hint);
+    }
   }
 
   void addOrder(List<Cart> carts, String hint) async {
@@ -48,7 +52,7 @@ class CheckoutController extends CartController {
     _order.foodOrders = new List<FoodOrder>();
     _order.tax = 0;//carts[0].food.restaurant.defaultTax;
     _order.hint = currentCart_note.value;
-    _order.scheduled_time = currentCart_time.value.replaceAll(" ", "");
+    _order.scheduled_time = currentCart_time.value.toString();
     OrderStatus _orderStatus = new OrderStatus();
     _orderStatus.id = '1';
     _order.orderStatus = _orderStatus;
@@ -68,11 +72,13 @@ class CheckoutController extends CartController {
       _order.deliveryFee = 0;
     };
     orderRepo.addOrder(_order, this.payment).then((value) {
-      currentCart_note.value = "";
-      currentCart_time.value = "";
+      currentCart_time.value = null;
+      currentCart_note.value = '';
+
       if (value is Order) {
         setState(() {
           loading = false;
+          order_submitted = true;
         });
       }
     });

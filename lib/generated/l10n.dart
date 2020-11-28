@@ -495,16 +495,6 @@ class S {
     );
   }
 
-  /// `Your order has been successfully submitted!`
-  String get your_order_has_been_successfully_submitted {
-    return Intl.message(
-      'Your order has been successfully submitted!',
-      name: 'your_order_has_been_successfully_submitted',
-      desc: '',
-      args: [],
-    );
-  }
-
   /// `TAX`
   String get tax {
     return Intl.message(
@@ -2055,10 +2045,10 @@ class S {
     );
   }
 
-  /// `Select you address, Swipe to delete, Long press to edit address`
+  /// `Select you address, swipe to delete or long press to edit address`
   String get click_to_confirm_your_address_and_pay_or_long_press {
     return Intl.message(
-      'Select you address, Swipe to delete, Long press to edit address',
+      'Select you address, swipe to delete or long press to edit address',
       name: 'click_to_confirm_your_address_and_pay_or_long_press',
       desc: '',
       args: [],

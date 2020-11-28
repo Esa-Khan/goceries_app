@@ -178,7 +178,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "you_must_signin_to_access_to_this_section" : MessageLookupByLibrary.simpleMessage("You must sign-in to access to this section"),
     "your_address" : MessageLookupByLibrary.simpleMessage("귀하의 주소는"),
     "your_biography" : MessageLookupByLibrary.simpleMessage("당신의 전기는"),
-    "your_order_has_been_successfully_submitted" : MessageLookupByLibrary.simpleMessage("성공적으로 주문되었습니다!"),
     "your_reset_link_has_been_sent_to_your_email" : MessageLookupByLibrary.simpleMessage("Your reset link has been sent to your email")
   };
 }

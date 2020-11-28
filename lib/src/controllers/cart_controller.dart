@@ -33,9 +33,7 @@ class CartController extends ControllerMVC {
 //        }
 //      }
 //      if (!repeatingFood) {
-        setState(() {
-          carts.add(_cart);
-        });
+        setState(() => carts.add(_cart));
 //      }
     }, onError: (a) {
       print(a);
@@ -51,7 +49,7 @@ class CartController extends ControllerMVC {
           content: Text(message),
         ));
       }
-      onLoadingCartDone();
+      // onLoadingCartDone();
     });
   }
 
