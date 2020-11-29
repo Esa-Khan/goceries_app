@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:saudaghar/src/elements/EmptyDeliveryAddressWidget.dart';
 import '../elements/CircularLoadingWidget.dart';
@@ -36,10 +38,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     _con = controller;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +48,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 //      widget.pickup = widget.list.pickupList.elementAt(0);
 //      widget.delivery = widget.list.pickupList.elementAt(1);
     }
+
+
     return Scaffold(
       key: _con.scaffoldKey,
       bottomNavigationBar: DeliveryBottomDetailsWidget(con: _con),
@@ -73,41 +74,18 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-//            Padding(
-//              padding: const EdgeInsets.only(left: 20, right: 10),
-//              child: ListTile(
-//                contentPadding: EdgeInsets.symmetric(vertical: 0),
-//                leading: Icon(
-//                  Icons.domain,
-//                  color: Theme.of(context).hintColor,
-//                ),
-//                title: Text(
-//                  S.of(context).pickup,
-//                  maxLines: 1,
-//                  overflow: TextOverflow.ellipsis,
-//                  style: Theme.of(context).textTheme.headline4,
-//                ),
-//                subtitle: Text(
-//                  S.of(context).select_to_pickup_your_food_from_the_store,
-//                  maxLines: 1,
-//                  overflow: TextOverflow.ellipsis,
-//                  style: Theme.of(context).textTheme.caption,
-//                ),
-//              ),
-//            ),
-//            PickUpMethodItem(
-//                paymentMethod: _con.getPickUpMethod(),
-//                onPressed: (paymentMethod) {
-//                  showDialog(context: context, builder: (BuildContext context) {return ConfirmationDialogBox(); });
-//                  if (_con.togglePickUp())
-//                    ConfirmationDialogBox(
-//                      context: context,
-//                    );
-//                }),
             Column(
               children: <Widget>[
+                _con.carts.isEmpty || _con.loading
+                  ? SizedBox(
+                      height: 3,
+                      child: LinearProgressIndicator(
+                        backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
+                      ),
+                    )
+                  : SizedBox(),
                 Padding(
-                  padding: const EdgeInsets.only(bottom: 10, left: 20, right: 10),
+                  padding: const EdgeInsets.only(bottom: 10, left: 20, right: 10, top: 10),
                   child: ListTile(
                     leading: Icon(
                       Icons.map,
@@ -121,52 +99,17 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                     )
                   )
                 ),
-                _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
-                    ? _con.deliveryAddress.isEmpty
-                      ? EmptyDeliveryAddressWidget()
-                      : ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: _con.deliveryAddress.length,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemBuilder: (context, index) {
-                          if (_con.deliveryAddress.elementAt(index).address != null && _con.deliveryAddress.elementAt(index).id != null) {
-                            return DeliveryAddressesItemWidget(
-                              paymentMethod: _con.getDeliveryMethod(),
-                              address: _con.deliveryAddress.elementAt(index),
-                              onPressed: (Address _address) {
-                                if (_address.id == null || _address.id == 'null' || currentUser.value.phone == null || currentUser.value.phone == "") {
-                                  DeliveryAddressDialog(
-                                    context: context,
-                                    address: _address,
-                                    onChanged: (Address _address) {
-                                      _con.toggleDelivery(currAddress: _address);
-      //                              _con.addAddress(_address);
-                                    },
-                                  );
-                                } else {
-                                  _con.toggleDelivery(currAddress: _address);
-                                }
-                              },
-                              onLongPress: (Address _address) {
-                                DeliveryAddressDialog(
-                                  context: context,
-                                  address: _address,
-                                  onChanged: (Address _address) {
-                                    _con.updateAddress(_address);
-                                  },
-                                );
-                              },
-                              onDismissed: (Address _address) {
-                                _con.removeDeliveryAddress(_address);
-                              },
-                            );
-                          } else {
-                            return SizedBox(height: 0);
-                          }
-                        },
-                )
-                : CircularLoadingWidget(height: 150),
+                _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts) && _con.deliveryAddress.isNotEmpty
+                    ? ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: _con.deliveryAddress.length,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) => getAddressItem(index),
+                    )
+                  : EmptyDeliveryAddressWidget(),
+
+                // : CircularLoadingWidget(height: 150),
 
 
                 SizedBox(height: 30),
@@ -175,6 +118,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   focusColor: Theme.of(context).accentColor,
                   highlightColor: Theme.of(context).primaryColor,
                   onTap: () async {
+                    setState(()=> _con.loading = true);
                     LocationResult result = await showLocationPicker(
                       context,
                       setting.value.googleMapsKey,
@@ -190,6 +134,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       'longitude': result.latLng.longitude,
                     }));
                     print("result = $result");
+                    setState(()=> _con.loading = false);
                     // Navigator.of(widget.scaffoldKey.currentContext).pop();
                   },
                   child: Container(
@@ -204,51 +149,27 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       ],
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Stack(
-                          alignment: AlignmentDirectional.center,
-                          children: <Widget>[
-                            Container(
-                              height: 20,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                                  color: Theme.of(context).primaryColor),
-                              child: Icon(
-                                Icons.add_circle_outline,
-                                color: Theme.of(context).accentColor,
-                                size: 30,
-                              ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.add_circle_outline,
+                              color: Theme.of(context).accentColor,
+                              size: 30,
+                            ),
+                            const SizedBox(width: 20),
+                            Text(
+                              S.of(context).add_new_delivery_address,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ],
                         ),
-                        SizedBox(width: 15),
-                        Flexible(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      S.of(context).add_new_delivery_address,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                                color: Theme.of(context).focusColor,
-                              ),
-                            ],
-                          ),
-                        )
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Theme.of(context).focusColor,
+                        ),
                       ],
                     ),
                   ),
@@ -276,64 +197,79 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       ],
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Stack(
-                          alignment: AlignmentDirectional.center,
-                          children: <Widget>[
-                            Container(
-                              height: 20,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                                  color: Theme.of(context).primaryColor),
-                              child: Icon(
-                                Icons.my_location,
-                                color: Theme.of(context).accentColor,
-                                size: 30,
-                              ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.my_location,
+                              color: Theme.of(context).accentColor,
+                              size: 30,
+                            ),
+                            const SizedBox(width: 20),
+                            Text(
+                              S.of(context).current_location,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ],
                         ),
-                        SizedBox(width: 15),
-                        Flexible(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      S.of(context).current_location,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                                color: Theme.of(context).focusColor,
-                              ),
-                            ],
-                          ),
-                        )
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Theme.of(context).focusColor,
+                        ),
                       ],
                     ),
                   ),
                 ),
-
-                SizedBox(height: 40),
+                SizedBox(height: 30),
               ],
             )
           ],
         ),
       ),
     );
+  }
+
+  Widget getAddressItem(int index) {
+    if (_con.deliveryAddress.elementAt(index).address != null
+        && _con.deliveryAddress.elementAt(index).id != null) {
+      return DeliveryAddressesItemWidget(
+        paymentMethod: _con.getDeliveryMethod(),
+        address: _con.deliveryAddress.elementAt(index),
+        onPressed: (Address _address) {
+          if (_address.id == null ||
+                _address.id == 'null' ||
+                currentUser.value.phone == null ||
+                currentUser.value.phone == "") {
+            DeliveryAddressDialog(
+              context: context,
+              address: _address,
+              onChanged: (Address _address) {
+                _con.toggleDelivery(currAddress: _address);
+                //                              _con.addAddress(_address);
+              },
+            );
+          } else {
+            _con.toggleDelivery(currAddress: _address);
+          }
+        },
+        onLongPress: (Address _address) {
+          DeliveryAddressDialog(
+            context: context,
+            address: _address,
+            onChanged: (Address _address) {
+              _con.updateAddress(_address);
+            },
+          );
+        },
+        onDismissed: (Address _address) {
+          _con.removeDeliveryAddress(_address);
+        },
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }

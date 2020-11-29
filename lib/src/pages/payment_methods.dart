@@ -65,7 +65,7 @@ class _PaymentMethodsWidgetState extends State<PaymentMethodsWidget> {
           children: <Widget>[
             list.paymentsList.length > 0
                 ? Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
                     child: ListTile(
                       leading: Icon(
                         Icons.payment,

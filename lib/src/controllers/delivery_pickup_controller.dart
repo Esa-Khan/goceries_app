@@ -14,11 +14,12 @@ class DeliveryPickupController extends CartController {
   GlobalKey<ScaffoldState> scaffoldKey;
   List<model.Address> deliveryAddress = new List<model.Address>();
   PaymentMethodList list;
+  bool loading = false;
 
   DeliveryPickupController() {
-    this.scaffoldKey = new GlobalKey<ScaffoldState>();
     super.listenForCarts();
 //    listenForDeliveryAddress();
+    this.scaffoldKey = new GlobalKey<ScaffoldState>();
     listenForAddresses();
   }
 
@@ -174,12 +175,14 @@ class DeliveryPickupController extends CartController {
   }
 
   Future<void> changeDeliveryAddressToCurrentLocation() async {
-    scaffoldKey?.currentState?.showSnackBar(SnackBar(
-      content: Text(S.of(context).getting_current_location),
-      duration: Duration(seconds: 1),
-    ));
+    setState(() => loading = true);
+    scaffoldKey?.currentState?.showSnackBar(
+      SnackBar(
+        content: Text(S.of(context).getting_current_location),
+        duration: Duration(seconds: 1),
+      ));
     model.Address _address = await settingRepo.setCurrentLocation();
-//    if (_address.latitude != null && _address.longitude != null) {
+   if (_address.latitude != null && _address.longitude != null) {
       setState(() {
         bool repeatedAddress = false;
         for (var currAddress in deliveryAddress) {
@@ -192,21 +195,22 @@ class DeliveryPickupController extends CartController {
           addAddress(_address);
           settingRepo.deliveryAddress.value = _address;
           currentUser.value.address = _address.address;
+          // deliveryAddress.add(_address);
         } else {
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).address_is_already_added),
             duration: Duration(seconds: 1),
           ));
         }
-
       });
       settingRepo.deliveryAddress.notifyListeners();
-//    } else {
-//      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//        content: Text("Do not have permission. Allow location services in settings.", maxLines: 3),
-//        duration: Duration(seconds: 1),
-//      ));
-//    }
+      setState(() => loading = false);
+   } else {
+     scaffoldKey?.currentState?.showSnackBar(SnackBar(
+       content: Text("Do not have permission. Allow location services in settings.", maxLines: 3),
+       duration: Duration(seconds: 1),
+     ));
+   }
   }
 
 

@@ -236,7 +236,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
             ),
             MaterialButton(
               onPressed: () {
-                currentCart_note.value = textCont.value.text;
+                setState(() => currentCart_note.value = textCont.value.text);
                 Navigator.pop(context);
               },
               child: Text(

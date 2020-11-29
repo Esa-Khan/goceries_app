@@ -100,7 +100,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                             style: TextStyle(color: Theme.of(context).hintColor),
                             keyboardType: TextInputType.datetime,
                             inputFormatters: [
-                              WhitelistingTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.digitsOnly,
                               new LengthLimitingTextInputFormatter(4),
                               new CardMonthInputFormatter()
                             ],
@@ -116,7 +116,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.number,
                           inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly,
+                            FilteringTextInputFormatter.digitsOnly,
                             new LengthLimitingTextInputFormatter(3),
                           ],
                           decoration: getInputDecoration(hintText: '253', labelText: S.of(context).cvc),

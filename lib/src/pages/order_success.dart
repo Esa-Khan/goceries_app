@@ -61,7 +61,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                   // mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
-                    SizedBox(height: 10),
+                    SizedBox(height: 20),
                     Row(
                       children: [
                         SizedBox(width: 20),
@@ -78,7 +78,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                       colors: _con.order_submitted
                                           ? [Colors.green.withOpacity(1), Colors.green.withOpacity(0.2)]
                                           : _con.loading
-                                            ? [Colors.yellow.withOpacity(1), Colors.yellow.withOpacity(0.2)]
+                                            ? [Colors.orange.withOpacity(1), Colors.yellow.withOpacity(0.2)]
                                             : [Colors.red.withOpacity(1), Colors.red.withOpacity(0.2)]
                                   )),
                               child: _con.order_submitted
@@ -89,7 +89,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                     )
                                   : _con.loading
                                     ? Padding(
-                                        padding: EdgeInsets.all(55),
+                                        padding: EdgeInsets.all(30),
                                         child: CircularProgressIndicator(
                                           valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).scaffoldBackgroundColor),
                                         ),
@@ -133,17 +133,17 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         SizedBox(width: 25),
                         Opacity(
                           opacity: 0.7,
-                          child: _con.order_submitted
-                            ? Text(
-                                'Order Submitted!',
-                                maxLines: 3,
-                                style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
-                              )
-                            : Text(
-                                'Ready to Checkout?',
-                                maxLines: 3,
-                                style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
-                              ),
+                          child:  _con.order_submitted
+                              ? Text(
+                                  'Order  Submitted!',
+                                  maxLines: 3,
+                                  style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
+                                )
+                              : Text(
+                                    'Ready to Checkout?',
+                                    maxLines: 3,
+                                    style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+                                  ),
                         ),
                         const SizedBox(width: 20),
                       ],

@@ -38,7 +38,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
     super.initState();
     _con.restaurant = widget.routeArgument.param;
     while (_con.restaurant.used_cats == null) {
-      Future.delayed(Duration(microseconds: 100));
+      Timer(Duration(microseconds: 100), () {});
     }
     _con.listenForUsedCategories(_con.restaurant.id);
   }

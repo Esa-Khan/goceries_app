@@ -15,35 +15,14 @@ class EmptyDeliveryAddressWidget extends StatefulWidget {
 }
 
 class _EmptyDeliveryAddressWidgetState extends State<EmptyDeliveryAddressWidget> {
-  bool loading = true;
-
-  @override
-  void initState() {
-    Timer(Duration(seconds: 5), () {
-      if (mounted) {
-        setState(() {
-          loading = false;
-        });
-      }
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        loading
-            ? SizedBox(
-                height: 3,
-                child: LinearProgressIndicator(
-                  backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
-                ),
-              )
-            : SizedBox(),
         Container(
           alignment: AlignmentDirectional.center,
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 40),
+          padding: EdgeInsets.only(left: 30, right: 30, top: 30),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -100,21 +79,6 @@ class _EmptyDeliveryAddressWidgetState extends State<EmptyDeliveryAddressWidget>
                   style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),
               ),
-              // SizedBox(height: 50),
-              // !loading
-              //     ? FlatButton(
-              //         onPressed: () {
-              //           Navigator.of(context).pushNamed('/Pages', arguments: 2);
-              //         },
-              //         padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
-              //         color: Theme.of(context).accentColor.withOpacity(1),
-              //         shape: StadiumBorder(),
-              //         child: Text(
-              //           S.of(context).start_exploring,
-              //           style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Theme.of(context).scaffoldBackgroundColor)),
-              //         ),
-              //       )
-              //     : SizedBox(),
             ],
           ),
         ),
