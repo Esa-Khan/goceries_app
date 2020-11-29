@@ -28,7 +28,9 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
   @override
   void initState() {
     super.initState();
-    _con.listenForCartsCount();
+    if (currentUser.value.apiToken != null) {
+      _con.listenForCartsCount();
+    }
   }
 
   @override

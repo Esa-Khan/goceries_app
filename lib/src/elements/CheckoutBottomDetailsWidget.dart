@@ -48,7 +48,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
     return _con.carts.isEmpty
         ? const SizedBox()
         : Container(
-            height: _con.promotion == 0 ? 182 : 200,
+            height: _con.promotion == '' ? 182 : 200,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
@@ -96,7 +96,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                   Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
               ],
             ),
-            _con.promotion == 0
+            _con.promotion == ""
               ? const SizedBox()
               : Row(
               children: <Widget>[
@@ -111,7 +111,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                   overflow: TextOverflow.fade,
                   maxLines: 1,
                   text: TextSpan(
-                          text: _con.promotion.toString(),
+                          text: settingsRepo.setting.value.promo[_con.promotion].toString(),
                           style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent)),
                         ),
                 )
@@ -158,7 +158,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                         ? null
                                         : PromocodeDialog(
                                             context: this.context,
-                                            onChanged: (double val) => _con.applePromotion(val),
+                                            con: _con
                                           )
                                   },
                                   padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),

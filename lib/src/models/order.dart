@@ -10,6 +10,7 @@ class Order {
   List<FoodOrder> foodOrders;
   OrderStatus orderStatus;
   double discount;
+  String promotion;
   double deliveryFee;
   String hint;
   String scheduled_time;
@@ -56,6 +57,7 @@ class Order {
     map["user_id"] = user?.id;
     map["order_status_id"] = orderStatus?.id;
     map["tax"] = discount;
+    map["code_used"] = promotion;
     map['hint'] = hint;
     map['scheduled_time'] = scheduled_time;
     map["delivery_fee"] = deliveryFee;

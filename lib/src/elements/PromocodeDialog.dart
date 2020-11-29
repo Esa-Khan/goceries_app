@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:saudaghar/src/controllers/checkout_controller.dart';
 import 'package:saudaghar/src/repository/settings_repository.dart' as settingsRepo;
 import 'package:saudaghar/src/repository/user_repository.dart';
 
@@ -11,20 +12,17 @@ import '../controllers/user_controller.dart';
 // ignore: must_be_immutable
 class PromocodeDialog {
   BuildContext context;
-  ValueChanged<double> onChanged;
+  CheckoutController con;
   GlobalKey<FormState> form_key = new GlobalKey<FormState>();
-  TextEditingController phoneTextCon = new TextEditingController(text: currentUser.value.phone);
+  TextEditingController code_con = new TextEditingController();
 
-  PromocodeDialog({this.context, this.onChanged}) {
-    phoneTextCon.text = currentUser.value.phone;
+  PromocodeDialog({this.context, this.con}) {
 
-    String valdiatePromocode(String input){
+    String valdiatePromocode(String input) {
       if(settingsRepo.setting.value.promo.containsKey(input)){
         return null;
-
-      } else {
-        return "Invalid code";
       }
+      return "Invalid code";
     }
 
     showDialog(
@@ -55,6 +53,7 @@ class PromocodeDialog {
                       child: new TextFormField(
                         style: TextStyle(color: Theme.of(context).hintColor),
                         decoration: getInputDecoration(labelText: 'Code'),
+                        controller: code_con,
                         validator: (input) => valdiatePromocode(input),
 //                        onSaved: (input) => currentUser.value.phone = input,
                       ),
@@ -103,9 +102,9 @@ class PromocodeDialog {
     );
   }
 
-  void _submit() {
+  void _submit() async {
     if (form_key.currentState.validate()) {
-      onChanged(100);
+      con.applePromotion(code_con.text);
       Navigator.of(context).pop();
     }
   }
