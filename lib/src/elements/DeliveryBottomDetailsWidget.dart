@@ -49,7 +49,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
     return widget.con.carts.isEmpty
         ? const SizedBox()
         : Container(
-            height: 250,
+            height: 260,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
