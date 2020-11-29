@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import '../repository/cart_repository.dart';
-import '../repository/settings_repository.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
@@ -99,7 +99,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                       if (Helper.canDelivery(
                               widget.con.carts[0].food.restaurant,
                               carts: widget.con.carts) &&
-                          widget.con.subTotal < setting.value.deliveryFeeLimit)
+                          widget.con.subTotal < settingsRepo.setting.value.deliveryFeeLimit)
                         Helper.getPrice(
                             widget.con.carts[0].food.restaurant.deliveryFee,
                             context,
@@ -110,13 +110,14 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                     ],
                   ),
                   SizedBox(height: 20),
+
                   Stack(
                     fit: StackFit.loose,
                     alignment: AlignmentDirectional.centerEnd,
                     children: <Widget>[
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 40,
-                        height: 60,
+                        height: settingsRepo.compact_view ? 50 : 60,
                         child: FlatButton(
                             onPressed: () => checkout(),
                             disabledColor:

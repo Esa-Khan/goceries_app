@@ -9,15 +9,13 @@ import '../models/address.dart';
 import '../controllers/user_controller.dart';
 
 // ignore: must_be_immutable
-class DeliveryAddressDialog {
+class PromocodeDialog {
   BuildContext context;
-  Address address;
-  String phone;
   ValueChanged<Address> onChanged;
   GlobalKey<FormState> _deliveryAddressFormKey = new GlobalKey<FormState>();
   TextEditingController phoneTextCon = new TextEditingController(text: currentUser.value.phone);
 
-  DeliveryAddressDialog({this.context, this.address, this.onChanged}) {
+  PromocodeDialog(this.context, this.onChanged) {
     phoneTextCon.text = currentUser.value.phone;
 
     String validatePhone(String input){
@@ -69,9 +67,9 @@ class DeliveryAddressDialog {
                         style: TextStyle(color: Theme.of(context).hintColor),
                         keyboardType: TextInputType.text,
                         decoration: getInputDecoration(hintText: S.of(context).hint_full_address, labelText: S.of(context).full_address),
-                        initialValue: address.address?.isNotEmpty ?? false ? address.address : null,
+                        initialValue: null,
                         validator: (input) => input.trim().length == 0 ? 'Not valid address' : null,
-                        onSaved: (input) => address.address = input,
+                        onSaved: (input) => input,
                       ),
                     ),
                     Padding(
@@ -90,15 +88,6 @@ class DeliveryAddressDialog {
 //                        onSaved: (input) => currentUser.value.phone = input,
                       ),
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CheckboxFormField(
-                        context: context,
-                        initialValue: address.isDefault ?? false,
-                        onSaved: (input) => address.isDefault = input,
-                        title: Text('Make it default'),
-                      ),
-                    )
                   ],
                 ),
               ),
@@ -134,25 +123,18 @@ class DeliveryAddressDialog {
       hintText: hintText,
       labelText: labelText,
       hintStyle: Theme.of(context).textTheme.bodyText2.merge(
-            TextStyle(color: Theme.of(context).focusColor),
-          ),
+        TextStyle(color: Theme.of(context).focusColor),
+      ),
       enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor.withOpacity(0.2))),
       focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor)),
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelStyle: Theme.of(context).textTheme.bodyText2.merge(
-            TextStyle(color: Theme.of(context).hintColor),
-          ),
+        TextStyle(color: Theme.of(context).hintColor),
+      ),
     );
   }
 
   void _submit() {
-    if (_deliveryAddressFormKey.currentState.validate()) {
-      _deliveryAddressFormKey.currentState.save();
-      onChanged(address);
-      currentUser.value.phone = phoneTextCon.value.text;
-      update(currentUser.value);
-      Navigator.pop(context);
-    }
   }
 
 

@@ -38,8 +38,6 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
     return Scaffold(
       key: _con.scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         centerTitle: true,
         title: Text(
           S.of(context).delivery_addresses,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_map_location_picker/generated/l10n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../repository/cart_repository.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 import '../elements/CheckoutBottomDetailsWidget.dart';
 import '../elements/CheckoutItemListWidget.dart';
 import '../controllers/checkout_controller.dart';
@@ -68,8 +69,8 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         Stack(
                           children: <Widget>[
                             Container(
-                              width: 100,
-                              height: 100,
+                              width: settingsRepo.compact_view ? 70 : 100,
+                              height: settingsRepo.compact_view ? 70 : 100,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   gradient: LinearGradient(
@@ -85,11 +86,11 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                   ? Icon(
                                       Icons.check,
                                       color: Theme.of(context).scaffoldBackgroundColor,
-                                      size: 55,
+                                      size: settingsRepo.compact_view ? 40 : 55,
                                     )
                                   : _con.loading
                                     ? Padding(
-                                        padding: EdgeInsets.all(30),
+                                        padding: EdgeInsets.all(settingsRepo.compact_view ? 20 : 30),
                                         child: CircularProgressIndicator(
                                           valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).scaffoldBackgroundColor),
                                         ),
@@ -97,7 +98,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                     : Icon(
                                         Icons.local_grocery_store_outlined,
                                         color: Theme.of(context).scaffoldBackgroundColor,
-                                        size: 55,
+                                        size: settingsRepo.compact_view ? 40 : 55,
                                       ),
                             ),
                             Positioned(
@@ -133,17 +134,40 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         SizedBox(width: 25),
                         Opacity(
                           opacity: 0.7,
-                          child:  _con.order_submitted
+                          child: _con.order_submitted
                               ? Text(
-                                  'Order  Submitted!',
-                                  maxLines: 3,
-                                  style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
+                            'Order  Submitted!',
+                            style: Theme.of(context).textTheme.headline2.merge(
+                                TextStyle(fontWeight: FontWeight.bold, color: Colors.green,
+                                    fontSize: settingsRepo.compact_view ? 18 : 20
                                 )
+                            ),
+                          )
                               : Text(
-                                    'Ready to Checkout?',
-                                    maxLines: 3,
-                                    style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
-                                  ),
+                            'Ready to Checkout?',
+                            style: Theme.of(context).textTheme.headline2.merge(
+                                TextStyle(fontWeight: FontWeight.bold, color: Colors.red,
+                                    fontSize: settingsRepo.compact_view ? 18 : 20
+                                )
+                            ),
+                          ),
+                          // _con.order_submitted
+                          //     ? Text(
+                          //         'Order  Submitted!',
+                          //         style: Theme.of(context).textTheme.headline2.merge(
+                          //             TextStyle(fontWeight: FontWeight.bold, color: Colors.green,
+                          //                 fontSize: settingsRepo.compact_view ? 18 : 20
+                          //             )
+                          //         ),
+                          //       )
+                          //     : Text(
+                          //           'Ready to Checkout?',
+                          //           style: Theme.of(context).textTheme.headline2.merge(
+                          //               TextStyle(fontWeight: FontWeight.bold, color: Colors.red,
+                          //                 fontSize: settingsRepo.compact_view ? 18 : 20
+                          //               )
+                          //           ),
+                          //         ),
                         ),
                         const SizedBox(width: 20),
                       ],
@@ -175,23 +199,23 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                             'Payment by ' + _con.payment.method,
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
-                            style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black26)),
+                            style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black54)),
                           ),
                           currentCart_time.value == null
                               ? const SizedBox()
                               : Text(
                                   'Scheduled Delivery:  ' + currentCart_time.value.toString().substring(0, 16),
                                   overflow: TextOverflow.ellipsis,
-                                  maxLines: 100,
-                                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black26, fontSize: 13)),
+                                  maxLines: 2,
+                                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black54, fontSize: 13)),
                                 ),
                           currentCart_note.value.isEmpty
                               ? const SizedBox()
                               : Text(
                                   'Note:  ' + currentCart_note.value,
                                   overflow: TextOverflow.ellipsis,
-                                  maxLines: 100,
-                                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black26, fontSize: 13)),
+                                  maxLines: 4,
+                                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black54, fontSize: 13)),
                                 ),
                         ],
                       )
