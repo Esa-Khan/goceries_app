@@ -133,17 +133,17 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         SizedBox(width: 25),
                         Opacity(
                           opacity: 0.7,
-                          child: _con.order_submitted
-                            ? Text(
-                                'Order Submitted!',
-                                maxLines: 3,
-                                style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
-                              )
-                            : Text(
-                                'Ready to Checkout?',
-                                maxLines: 3,
-                                style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
-                              ),
+                          child:  _con.order_submitted
+                              ? Text(
+                                  'Order  Submitted!',
+                                  maxLines: 3,
+                                  style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
+                                )
+                              : Text(
+                                    'Ready to Checkout?',
+                                    maxLines: 3,
+                                    style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+                                  ),
                         ),
                         const SizedBox(width: 20),
                       ],

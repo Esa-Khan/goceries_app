@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import 'package:saudaghar/src/controllers/delivery_pickup_controller.dart';
 import 'package:saudaghar/src/repository/cart_repository.dart';
+import 'package:saudaghar/src/repository/settings_repository.dart';
 
 import '../../generated/l10n.dart';
-import '../controllers/cart_controller.dart';
 import '../helpers/helper.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart';
-import 'OrderNotesWidget.dart';
 
 
 class CheckoutBottomDetailsWidget extends StatefulWidget{
@@ -103,75 +99,107 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
               ],
             ),
             SizedBox(height: 20),
-            Row(
-              children: [
-                Flexible(
-                    flex: 1,
-                    child: FlatButton(
-                          height: 60,
-                          onPressed: () => {
-                            showDialog(
-                              context: context,
-                              builder: (context) => getDialog()
-                            )
-                          },
-                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),
-                          color: Colors.green,
-                          shape: StadiumBorder(),
-                          child: Stack(
-                            alignment: AlignmentDirectional.bottomEnd,
-                            children: <Widget>[
-                                Text(
-                                  'Promo\nCode',
-                                  textAlign: TextAlign.center,
-                                  textScaleFactor: 0.7,
-                                  style: TextStyle(color: Theme.of(context).primaryColor),
+            widget.con.order_submitted
+              ? Row(
+                  children: [
+                    Flexible(
+                      child: Stack(
+                          fit: StackFit.loose,
+                          alignment: AlignmentDirectional.centerEnd,
+                          children: <Widget>[
+                            FlatButton(
+                                height: 60,
+                                onPressed: () => gotoOrders(),
+                                padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
+                                color: Theme.of(context).accentColor,
+                                shape: StadiumBorder(),
+                                child: Align(
+                                  child: Text(
+                                    'Track Order',
+                                    style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(
+                                            color: Theme.of(context).primaryColor,
+                                            fontSize: 20)),
+                                  ),
+                                )),
+                          ]))
+                        ])
+
+
+
+
+                      : Row(
+                          children: [
+                            Flexible(
+                                flex: 1,
+                                child: FlatButton(
+                                  height: 60,
+                                  disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
+                                  onPressed: () => {
+                                    widget.con.loading || widget.con.order_submitted
+                                        ? null
+                                        : showDialog(
+                                            context: context,
+                                            builder: (context) => getDialog()
+                                          )
+                                  },
+                                  padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),
+                                  color: Colors.green,
+                                  shape: StadiumBorder(),
+                                  child: Stack(
+                                    alignment: AlignmentDirectional.bottomEnd,
+                                    children: <Widget>[
+                                      Text(
+                                        'Promo\nCode',
+                                        textAlign: TextAlign.center,
+                                        textScaleFactor: 0.7,
+                                        style: TextStyle(color: Theme.of(context).primaryColor),
+                                      )
+                                      // Icon(
+                                      //   Icons.add_sharp,
+                                      //   color: Theme.of(context).primaryColor,
+                                      //   size: 28,
+                                      // ),
+                                    ],
+                                  ),
                                 )
-                              // Icon(
-                              //   Icons.add_sharp,
-                              //   color: Theme.of(context).primaryColor,
-                              //   size: 28,
-                              // ),
-                            ],
-                          ),
-                      )
-                ),
-                SizedBox(width: 10),
-                Flexible(
-                  flex: 5,
-                  child: Stack(
-                      fit: StackFit.loose,
-                      alignment: AlignmentDirectional.centerEnd,
-                      children: <Widget>[
-                        FlatButton(
-                              height: 60,
-                              onPressed: () => submitOrder(),
-                              disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
-                              padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
-                              color: Colors.green,
-                              shape: StadiumBorder(),
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  S.of(context).checkout,
-                                  style: Theme.of(context).textTheme.bodyText1.merge(
-                                      TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
-                                ),
-                              )
-                          ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Helper.getPrice(
-                            widget.con.total,
-                            context,
-                            style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                          ),
-                        ),
-                      ]
-                  )
-                )
-              ]
+                            ),
+                            SizedBox(width: 10),
+                            Flexible(
+                                flex: 5,
+                                child: Stack(
+                                    fit: StackFit.loose,
+                                    alignment: AlignmentDirectional.centerEnd,
+                                    children: <Widget>[
+                                      FlatButton(
+                                          height: 60,
+                                          onPressed: () => widget.con.loading || widget.con.order_submitted ? null : submitOrder(),
+                                          disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
+                                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
+                                          color: Colors.green,
+                                          shape: StadiumBorder(),
+                                          child: Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              S.of(context).checkout,
+                                              style: Theme.of(context).textTheme.bodyText1.merge(
+                                                  TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
+                                            ),
+                                          )
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                                        child: Helper.getPrice(
+                                          widget.con.total,
+                                          context,
+                                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                        ),
+                                      ),
+                                    ]
+                                )
+                            )
+                          ]
             ),
+
             SizedBox(height: 5),
             Text(
               "Free delivery for orders over Rs. " + setting.value.deliveryFeeLimit.toString(),
@@ -248,6 +276,10 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
 
   void submitOrder() {
     widget.con.onLoadingCartDone();
+  }
+
+  void gotoOrders() {
+    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
   }
 
 }
