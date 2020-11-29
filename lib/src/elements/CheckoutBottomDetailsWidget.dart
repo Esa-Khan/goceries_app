@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/repository/cart_repository.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart';
+import '../repository/cart_repository.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
-
+import '../elements/PromocodeDialog.dart';
 
 class CheckoutBottomDetailsWidget extends StatefulWidget{
   final con;
@@ -91,7 +91,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                 ),
                 if (Helper.canDelivery(widget.con.carts[0].food.restaurant,
                     carts: widget.con.carts) &&
-                    widget.con.subTotal < setting.value.deliveryFeeLimit)
+                    widget.con.subTotal < settingsRepo.setting.value.deliveryFeeLimit)
                   Helper.getPrice(widget.con.carts[0].food.restaurant.deliveryFee, context,
                       style: Theme.of(context).textTheme.subtitle1)
                 else
@@ -135,12 +135,9 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                   height: 60,
                                   disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                                   onPressed: () => {
-                                    widget.con.loading || widget.con.order_submitted
-                                        ? null
-                                        : showDialog(
-                                            context: context,
-                                            builder: (context) => getDialog()
-                                          )
+                                    // widget.con.loading || widget.con.order_submitted
+                                    //     ? null
+                                    //     : PromocodeDialog(this.context)
                                   },
                                   padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),
                                   color: Colors.green,
@@ -182,7 +179,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                             child: Text(
                                               S.of(context).checkout,
                                               style: Theme.of(context).textTheme.bodyText1.merge(
-                                                  TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
+                                                  TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 15 : 20)),
                                             ),
                                           )
                                       ),
@@ -191,7 +188,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                         child: Helper.getPrice(
                                           widget.con.total,
                                           context,
-                                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 15 : 20)),
                                         ),
                                       ),
                                     ]
@@ -202,7 +199,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
 
             SizedBox(height: 5),
             Text(
-              "Free delivery for orders over Rs. " + setting.value.deliveryFeeLimit.toString(),
+              "Free delivery for orders over Rs. " + settingsRepo.setting.value.deliveryFeeLimit.toString(),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 13)),
             ),
@@ -241,7 +238,8 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
         TextField(
           keyboardType: TextInputType.multiline,
           controller: textCont,
-          maxLength: 10,maxLengthEnforced: true,
+          maxLength: 10,
+          maxLengthEnforced: true,
           maxLines: 1, // when user presses enter it will adapt to it
         ),
         SizedBox(height: 10),
@@ -273,6 +271,14 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
     );
   }
 
+  String validatePromo(String input) {
+    if (settingsRepo.setting.value.promo.containsKey(input)){
+      return null;
+    } else if (input.length == 0){
+      return "Invalid: Cannot leave empty";
+    }
+
+  }
 
   void submitOrder() {
     widget.con.onLoadingCartDone();

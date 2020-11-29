@@ -1,10 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/EmptyDeliveryAddressWidget.dart';
-import '../elements/CircularLoadingWidget.dart';
+import '../elements/EmptyDeliveryAddressWidget.dart';
 import '../elements/DeliveryBottomDetailsWidget.dart';
-import '../repository/settings_repository.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -58,8 +57,12 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         centerTitle: true,
         title: Text(
           'Delivery Address',
-          style: Theme.of(context).textTheme.headline6
-              .merge(TextStyle(letterSpacing: 1.3)),
+          style: Theme.of(context).textTheme.headline6.merge(
+              TextStyle(
+                 letterSpacing: settingsRepo.compact_view ? 0.5 : 1.3,
+                 fontSize: settingsRepo.compact_view ? 15 : 17
+              )
+          ),
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(
@@ -121,8 +124,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                     setState(()=> _con.loading = true);
                     LocationResult result = await showLocationPicker(
                       context,
-                      setting.value.googleMapsKey,
-                      initialCenter: LatLng(deliveryAddress.value?.latitude ?? 0, deliveryAddress.value?.longitude ?? 0),
+                      settingsRepo.setting.value.googleMapsKey,
+                      initialCenter: LatLng(settingsRepo.deliveryAddress.value?.latitude ?? 0, settingsRepo.deliveryAddress.value?.longitude ?? 0),
                       //automaticallyAnimateToCurrentLocation: true,
                       //mapStylePath: 'assets/mapStyle.json',
                       myLocationButtonEnabled: true,

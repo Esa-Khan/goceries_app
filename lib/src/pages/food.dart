@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/FoodItemWidget.dart';
 import 'package:saudaghar/src/elements/SimilarItemListWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:async';
@@ -9,11 +8,11 @@ import 'dart:async';
 import '../../generated/l10n.dart';
 import '../controllers/food_controller.dart';
 import '../elements/AddToCartAlertDialog.dart';
-import '../elements/CircularLoadingWidget.dart';
 import '../elements/ShoppingCartFloatButtonWidget.dart';
 import '../helpers/helper.dart';
 import '../models/route_argument.dart';
 import '../repository/user_repository.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 
 // ignore: must_be_immutable
 class FoodWidget extends StatefulWidget {
@@ -390,7 +389,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                           onPressed: () {
                                             _con.removeFromFavorite(_con.favorite);
                                           },
-                                          padding: EdgeInsets.symmetric(vertical: 20),
+                                          padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view ? 12 : 20),
                                           color: Theme.of(context).primaryColor,
                                           shape: StadiumBorder(),
                                           borderSide: BorderSide(color: Theme.of(context).accentColor),
@@ -406,7 +405,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                               _con.addToFavorite(_con.food);
                                             }
                                           },
-                                          padding: EdgeInsets.symmetric(vertical: 20),
+                                          padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view ? 12 : 20),
                                           color: Theme.of(context).accentColor,
                                           shape: StadiumBorder(),
                                           child: Icon(
@@ -435,7 +434,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                           child: Text(
                                             S.of(context).add_to_cart,
                                             textAlign: TextAlign.start,
-                                            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20),
+                                            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 15 : 20),
                                           ),
                                         ),
                                       ),
@@ -445,7 +444,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       child: Helper.getPrice(
                                         _con.total,
                                         context,
-                                        style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                        style: Theme.of(context).textTheme.headline4.merge(
+                                            TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 15 : 20)),
                                       ),
                                     )
                                   ],
