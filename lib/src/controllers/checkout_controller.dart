@@ -9,7 +9,7 @@ import '../models/order.dart';
 import '../models/order_status.dart';
 import '../models/payment.dart';
 import '../repository/order_repository.dart' as orderRepo;
-import '../repository/settings_repository.dart' as settingRepo;
+import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart' as userRepo;
 import 'cart_controller.dart';
 import '../helpers/helper.dart';
@@ -50,13 +50,13 @@ class CheckoutController extends CartController {
   void addOrder(List<Cart> carts, String hint) async {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
-    _order.tax = 0;//carts[0].food.restaurant.defaultTax;
+    _order.discount = settingsRepo.setting.value.promo[promotion];
     _order.hint = currentCart_note.value;
     _order.scheduled_time = currentCart_time.value.toString();
     OrderStatus _orderStatus = new OrderStatus();
     _orderStatus.id = '1';
     _order.orderStatus = _orderStatus;
-    _order.deliveryAddress = settingRepo.deliveryAddress.value;
+    _order.deliveryAddress = settingsRepo.deliveryAddress.value;
     _order.deliveryFee = carts[0].food.restaurant.deliveryFee;
     carts.forEach((_cart) {
       FoodOrder _foodOrder = new FoodOrder();
@@ -66,7 +66,7 @@ class CheckoutController extends CartController {
       _foodOrder.extras = _cart.extras;
       _order.foodOrders.add(_foodOrder);
     });
-    if (Helper.getTotalOrdersPrice(_order) < settingRepo.setting.value.deliveryFeeLimit){
+    if (Helper.getTotalOrdersPrice(_order) < settingsRepo.setting.value.deliveryFeeLimit){
       _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].food.restaurant.deliveryFee;
     } else {
       _order.deliveryFee = 0;
@@ -86,10 +86,32 @@ class CheckoutController extends CartController {
 
   void updateCreditCard(CreditCard creditCard) {
     userRepo.setCreditCard(creditCard).then((value) {
-      setState(() {});
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).payment_card_updated_successfully),
       ));
     });
+  }
+
+  Future<bool> applePromotion(String code) async {
+    bool isUsed = false;
+    // await orderRepo.checkCode(code).then((value) => ;
+    await orderRepo.checkCode(code).then((value) => isUsed = value);
+    if (isUsed) {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Code already used'),
+        duration: Duration(seconds: 1),
+      ));
+    } else {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Discount added'),
+        duration: Duration(seconds: 1),
+      ));
+      promotion = code;
+      if (total - settingsRepo.setting.value.promo[promotion] > 0) {
+        setState(() => total -= settingsRepo.setting.value.promo[promotion]);
+      }
+      setState(() {promotion; total;});
+    }
+
   }
 }

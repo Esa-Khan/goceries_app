@@ -132,3 +132,25 @@ Future<Order> cancelOrder(Order order) async {
     throw new Exception(response.body);
   }
 }
+
+Future<bool> checkCode(String code) async {
+  User _user = userRepo.currentUser.value;
+  final String url = '${GlobalConfiguration().getString('api_base_url')}checkpromo';
+  var map = new Map<String, dynamic>();
+  map['api_token'] = _user.apiToken;
+  map['user_id'] = _user.id;
+  map['code'] = code;
+
+  final client = new http.Client();
+  final response = await client.post(
+    url,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    body: json.encode(map),
+  );
+  if (response.statusCode == 200) {
+    print(json.decode(response.body)['data']['isUsed']);
+    return json.decode(response.body)['data']['isUsed'] == 'true' ? true : false;
+  } else {
+    throw new Exception(response.body);
+  }
+}

@@ -5,13 +5,14 @@ import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
 import '../models/cart.dart';
 import '../repository/cart_repository.dart';
-import '../repository/settings_repository.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
   double taxAmount = 0.0;
   double deliveryFee = 0.0;
   int cartCount = 0;
+  String promotion = '';
   double subTotal = 0.0;
   double total = 0.0;
   bool notifyFreeDelivery = false;
@@ -60,7 +61,6 @@ class CartController extends ControllerMVC {
     stream.listen((int _count) {
       setState(() => this.cartCount = _count);
     }, onError: (a) {
-      print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),
       ));
@@ -99,7 +99,7 @@ class CartController extends ControllerMVC {
       deliveryFee = carts[0].food.restaurant.deliveryFee;
     }
     taxAmount = (subTotal + deliveryFee) * carts[0].food.restaurant.defaultTax / 100;
-    if (subTotal < setting.value.deliveryFeeLimit) {
+    if (subTotal < settingsRepo.setting.value.deliveryFeeLimit) {
       total = subTotal + deliveryFee;
       notifyFreeDelivery = true;
     } else {
@@ -110,7 +110,7 @@ class CartController extends ControllerMVC {
         ));
       }
       notifyFreeDelivery = false;
-      total = subTotal;
+      total = subTotal - settingsRepo.setting.value.promo[promotion];
     }
     setState(() {});
   }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:saudaghar/src/controllers/checkout_controller.dart';
 import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 
@@ -31,26 +33,22 @@ class _DateTimePickerState extends State<DateTimePicker> {
 
 
 class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
-  bool _isVisible = false;
-  TextEditingController textCont = new TextEditingController();
+  CheckoutController _con;
 
 
-  void showScheduler() {
-    setState(() => _isVisible = !_isVisible);
-  }
 
   @override
   void initState() {
     super.initState();
-    textCont = TextEditingController(text: currentCart_note.value);
+    _con = widget.con;
   }
 
   @override
   Widget build(BuildContext context) {
-    return widget.con.carts.isEmpty
+    return _con.carts.isEmpty
         ? const SizedBox()
         : Container(
-            height: 182,
+            height: _con.promotion == '' ? 182 : 200,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
@@ -62,7 +60,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                 color: Theme.of(context).focusColor.withOpacity(0.55),
                 offset: Offset(0, -4),
                 blurRadius: 5.0)
-          ]),
+            ]),
       child: SizedBox(
         width: MediaQuery.of(context).size.width - 40,
         child: Column(
@@ -77,7 +75,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                     style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 18)),
                   ),
                 ),
-                Helper.getPrice(widget.con.subTotal, context,
+                Helper.getPrice(_con.subTotal, context,
                     style: Theme.of(context).textTheme.subtitle1)
               ],
             ),
@@ -89,17 +87,38 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                     style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13)),
                   ),
                 ),
-                if (Helper.canDelivery(widget.con.carts[0].food.restaurant,
-                    carts: widget.con.carts) &&
-                    widget.con.subTotal < settingsRepo.setting.value.deliveryFeeLimit)
-                  Helper.getPrice(widget.con.carts[0].food.restaurant.deliveryFee, context,
+                if (Helper.canDelivery(_con.carts[0].food.restaurant,
+                    carts: _con.carts) &&
+                    _con.subTotal < settingsRepo.setting.value.deliveryFeeLimit)
+                  Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context,
                       style: Theme.of(context).textTheme.subtitle1)
                 else
                   Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
               ],
             ),
+            _con.promotion == ""
+              ? const SizedBox()
+              : Row(
+              children: <Widget>[
+                Expanded(
+                  child: Text(
+                    'Promotion Discount',
+                    style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13, color: Colors.greenAccent)),
+                  ),
+                ),
+                RichText(
+                  softWrap: false,
+                  overflow: TextOverflow.fade,
+                  maxLines: 1,
+                  text: TextSpan(
+                          text: settingsRepo.setting.value.promo[_con.promotion].toString(),
+                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent)),
+                        ),
+                )
+              ],
+            ),
             SizedBox(height: 20),
-            widget.con.order_submitted
+            _con.order_submitted
               ? Row(
                   children: [
                     Flexible(
@@ -135,9 +154,12 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                   height: 60,
                                   disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                                   onPressed: () => {
-                                    // widget.con.loading || widget.con.order_submitted
-                                    //     ? null
-                                    //     : PromocodeDialog(this.context)
+                                    _con.loading || _con.order_submitted
+                                        ? null
+                                        : PromocodeDialog(
+                                            context: this.context,
+                                            con: _con
+                                          )
                                   },
                                   padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),
                                   color: Colors.green,
@@ -151,11 +173,6 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                         textScaleFactor: 0.7,
                                         style: TextStyle(color: Theme.of(context).primaryColor),
                                       )
-                                      // Icon(
-                                      //   Icons.add_sharp,
-                                      //   color: Theme.of(context).primaryColor,
-                                      //   size: 28,
-                                      // ),
                                     ],
                                   ),
                                 )
@@ -169,7 +186,9 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                     children: <Widget>[
                                       FlatButton(
                                           height: 60,
-                                          onPressed: () => widget.con.loading || widget.con.order_submitted ? null : submitOrder(),
+                                          onPressed: () => _con.loading || _con.order_submitted
+                                              ? null
+                                              : submitOrder(),
                                           disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                                           padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
                                           color: Colors.green,
@@ -186,7 +205,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                       Padding(
                                         padding: const EdgeInsets.symmetric(horizontal: 20),
                                         child: Helper.getPrice(
-                                          widget.con.total,
+                                          _con.total,
                                           context,
                                           style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 15 : 20)),
                                         ),
@@ -211,77 +230,9 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
 
 
 
-  Widget getDialog() {
-    textCont.text = currentCart_note.value;
-    return SimpleDialog(
-      titlePadding: EdgeInsets.fromLTRB(16, 25, 16, 0),
-      title: Row(
-        children: <Widget>[
-          Icon(
-            Icons.account_balance_wallet,
-            color: Theme.of(context).hintColor,
-          ),
-          SizedBox(width: 15),
-          Expanded(
-            child: Text(
-              "Enter a valid promo-code:",
-              style: Theme.of(context).textTheme.bodyText1,
-//                                      textAlign: TextAlign.center,
-              overflow: TextOverflow.fade,
-              maxLines: 1,
-            ),
-          ),
-        ],
-      ),
-      contentPadding: EdgeInsets.fromLTRB(20, 10, 16, 0),
-      children: <Widget>[
-        TextField(
-          keyboardType: TextInputType.multiline,
-          controller: textCont,
-          maxLength: 10,
-          maxLengthEnforced: true,
-          maxLines: 1, // when user presses enter it will adapt to it
-        ),
-        SizedBox(height: 10),
-        Row(
-          children: <Widget>[
-            MaterialButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text(
-                S.of(context).cancel,
-                style: TextStyle(color: Theme.of(context).hintColor),
-              ),
-            ),
-            MaterialButton(
-              onPressed: () {
-                currentCart_note.value = textCont.value.text;
-                Navigator.pop(context);
-              },
-              child: Text(
-                S.of(context).okay,
-                style: TextStyle(color: Theme.of(context).accentColor),
-              ),
-            ),
-          ],
-          mainAxisAlignment: MainAxisAlignment.end,
-        ),
-      ],
-    );
-  }
-
-  String validatePromo(String input) {
-    if (settingsRepo.setting.value.promo.containsKey(input)){
-      return null;
-    } else if (input.length == 0){
-      return "Invalid: Cannot leave empty";
-    }
-
-  }
 
   void submitOrder() {
-    widget.con.onLoadingCartDone();
+    _con.onLoadingCartDone();
   }
 
   void gotoOrders() {
