@@ -9,7 +9,7 @@ class Order {
   String id;
   List<FoodOrder> foodOrders;
   OrderStatus orderStatus;
-  double tax;
+  double discount;
   double deliveryFee;
   String hint;
   String scheduled_time;
@@ -24,7 +24,7 @@ class Order {
   Order.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'].toString();
-      tax = jsonMap['tax'] != null ? jsonMap['tax'].toDouble() : 0.0;
+      discount = jsonMap['tax'] != null ? jsonMap['tax'].toDouble() : 0.0;
       deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
       hint = jsonMap['hint'] != null ? jsonMap['hint'].toString() : '';
       active = jsonMap['active'] ?? false;
@@ -36,7 +36,7 @@ class Order {
       foodOrders = jsonMap['food_orders'] != null ? List.from(jsonMap['food_orders']).map((element) => FoodOrder.fromJSON(element)).toList() : [];
     } catch (e) {
       id = '';
-      tax = 0.0;
+      discount = 0.0;
       deliveryFee = 0.0;
       hint = '';
       active = false;
@@ -55,7 +55,7 @@ class Order {
     map["id"] = id;
     map["user_id"] = user?.id;
     map["order_status_id"] = orderStatus?.id;
-    map["tax"] = tax;
+    map["tax"] = discount;
     map['hint'] = hint;
     map['scheduled_time'] = scheduled_time;
     map["delivery_fee"] = deliveryFee;

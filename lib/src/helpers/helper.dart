@@ -180,7 +180,7 @@ class Helper {
     order.foodOrders.forEach((foodOrder) {
       total += getTotalOrderPrice(foodOrder);
     });
-    return order.tax * total / 100;
+    return order.discount * total / 100;
   }
 
   static double getTotalOrdersPrice(Order order) {
@@ -191,7 +191,7 @@ class Helper {
     if (total < settingsRepo.setting.value.deliveryFeeLimit){
       total += order.deliveryFee;
     }
-//    total += order.tax * total / 100;
+    total -= order.discount;
     return total;
   }
 

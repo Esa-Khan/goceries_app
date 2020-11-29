@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:saudaghar/src/controllers/settings_controller.dart';
+import 'package:saudaghar/src/repository/settings_repository.dart' as settingsRepo;
 import 'package:saudaghar/src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
@@ -11,28 +11,19 @@ import '../controllers/user_controller.dart';
 // ignore: must_be_immutable
 class PromocodeDialog {
   BuildContext context;
-  ValueChanged<Address> onChanged;
-  GlobalKey<FormState> _deliveryAddressFormKey = new GlobalKey<FormState>();
+  ValueChanged<double> onChanged;
+  GlobalKey<FormState> form_key = new GlobalKey<FormState>();
   TextEditingController phoneTextCon = new TextEditingController(text: currentUser.value.phone);
 
-  PromocodeDialog(this.context, this.onChanged) {
+  PromocodeDialog({this.context, this.onChanged}) {
     phoneTextCon.text = currentUser.value.phone;
 
-    String validatePhone(String input){
-      if (input.length == 0) {
-        return "Invalid: Cannot leave empty";
-
-      } else if (input.length < 11){
-        return "Invalid: Number must be 11 digits";
-
-      } else if (input.substring(0, 2) != '03'){
-        return "Invalid: Number must start with '03'";
-
-      } else if(int.tryParse(input) == null){
-        return "Invalid: Only numbers allowed";
+    String valdiatePromocode(String input){
+      if(settingsRepo.setting.value.promo.containsKey(input)){
+        return null;
 
       } else {
-        return null;
+        return "Invalid code";
       }
     }
 
@@ -45,12 +36,12 @@ class PromocodeDialog {
             title: Row(
               children: <Widget>[
                 Icon(
-                  Icons.place,
+                  Icons.account_balance_wallet,
                   color: Theme.of(context).hintColor,
                 ),
-                SizedBox(width: 10),
+                SizedBox(width: 15),
                 Text(
-                  "Confirm address and number",
+                  "Enter a valid promo-code:",
 //                  S.of(context).add_delivery_address,
                   style: Theme.of(context).textTheme.bodyText1,
                 )
@@ -58,38 +49,16 @@ class PromocodeDialog {
             ),
             children: <Widget>[
               Form(
-                key: _deliveryAddressFormKey,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
+                key: form_key,
+                child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: new TextFormField(
                         style: TextStyle(color: Theme.of(context).hintColor),
-                        keyboardType: TextInputType.text,
-                        decoration: getInputDecoration(hintText: S.of(context).hint_full_address, labelText: S.of(context).full_address),
-                        initialValue: null,
-                        validator: (input) => input.trim().length == 0 ? 'Not valid address' : null,
-                        onSaved: (input) => input,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: new TextFormField(
-                        style: TextStyle(color: Theme.of(context).hintColor),
-                        keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
-                        controller: phoneTextCon,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          new LengthLimitingTextInputFormatter(11),
-                        ],
-                        decoration: getInputDecoration(hintText: "03001234567", labelText: S.of(context).phone_number),
-                        // initialValue: currentUser.value.phone,
-                        validator: (input) => validatePhone(input),
+                        decoration: getInputDecoration(labelText: 'Code'),
+                        validator: (input) => valdiatePromocode(input),
 //                        onSaved: (input) => currentUser.value.phone = input,
                       ),
                     ),
-                  ],
-                ),
               ),
               Row(
                 children: <Widget>[
@@ -135,6 +104,10 @@ class PromocodeDialog {
   }
 
   void _submit() {
+    if (form_key.currentState.validate()) {
+      onChanged(100);
+      Navigator.of(context).pop();
+    }
   }
 
 

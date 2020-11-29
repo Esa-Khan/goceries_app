@@ -50,7 +50,7 @@ class CheckoutController extends CartController {
   void addOrder(List<Cart> carts, String hint) async {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
-    _order.tax = 0;//carts[0].food.restaurant.defaultTax;
+    _order.discount = promotion;
     _order.hint = currentCart_note.value;
     _order.scheduled_time = currentCart_time.value.toString();
     OrderStatus _orderStatus = new OrderStatus();
@@ -86,10 +86,22 @@ class CheckoutController extends CartController {
 
   void updateCreditCard(CreditCard creditCard) {
     userRepo.setCreditCard(creditCard).then((value) {
-      setState(() {});
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).payment_card_updated_successfully),
       ));
     });
+  }
+
+  void applePromotion(double discount) {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Promotion Added'),
+        duration: Duration(seconds: 1),
+      ));
+      promotion = discount;
+      if (total - discount > 0) {
+          setState(() => total -= discount);
+      }
+    setState(() {promotion; total;});
+
   }
 }

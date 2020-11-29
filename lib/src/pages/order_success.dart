@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_map_location_picker/generated/l10n.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
@@ -223,8 +222,8 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       child: Container(
-                        height: 3.0,
-                        width: 300.0,
+                        height: 1.0,
+                        width: MediaQuery.of(context).size.width - 100,
                         color: Colors.black26
                       )),
                     ListView.separated(

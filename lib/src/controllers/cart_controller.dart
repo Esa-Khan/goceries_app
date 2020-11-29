@@ -12,6 +12,7 @@ class CartController extends ControllerMVC {
   double taxAmount = 0.0;
   double deliveryFee = 0.0;
   int cartCount = 0;
+  double promotion = 0;
   double subTotal = 0.0;
   double total = 0.0;
   bool notifyFreeDelivery = false;
@@ -110,7 +111,7 @@ class CartController extends ControllerMVC {
         ));
       }
       notifyFreeDelivery = false;
-      total = subTotal;
+      total = subTotal - promotion;
     }
     setState(() {});
   }

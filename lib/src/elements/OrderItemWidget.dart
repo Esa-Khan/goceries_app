@@ -91,17 +91,20 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                     : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
                               ],
                             ),
-//                            Row(
-//                              children: <Widget>[
-//                                Expanded(
-//                                  child: Text(
-//                                    '${S.of(context).tax} (${widget.order.tax}%)',
-//                                    style: Theme.of(context).textTheme.bodyText1,
-//                                  ),
-//                                ),
-//                                Helper.getPrice(Helper.getTaxOrder(widget.order), context, style: Theme.of(context).textTheme.subtitle1)
-//                              ],
-//                            ),
+                           Row(
+                             children: <Widget>[
+                               Expanded(
+                                 child: Text(
+                                   'Discount:',
+                                   style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.greenAccent)),
+                                 ),
+                               ),
+                               Helper.getPrice(
+                                   widget.order.discount,
+                                   context,
+                                   style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent)))
+                             ],
+                           ),
                             Row(
                               children: <Widget>[
                                 Expanded(
