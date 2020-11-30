@@ -100,7 +100,6 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
               ? Column(
             children: <Widget>[
               SizedBox(height: 50),
-
               // Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
             ],
           )
