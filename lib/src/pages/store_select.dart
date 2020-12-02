@@ -42,7 +42,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               centerTitle: true,
-              leading: const SizedBox(height: 0),
+              leading: const SizedBox(),
               title: Text(
                 "Where to Shop?",
                 style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.5)),
@@ -59,15 +59,18 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           // LogoLoadingWidget(),
-                          FlatButton(
-                              onPressed: () => nextPage(0),
-                              child: Image.asset(
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: FlatButton(
+                                onPressed: () => nextPage(0),
+                                child: Image.asset(
                                   'assets/img/saudaghar.png',
-                              )
+                                )
+                            ),
                           ),
                           Text(
                             "saudaghar",
-                            style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: 30)),
+                            style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: 25)),
                           ),
                           Text(
                             "Delivered in under 60 minutes",
@@ -87,32 +90,34 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Column(
-                                children: [
-                                  Material(
-                                    elevation: 14.0,
-                                    shape: CircleBorder(),
-                                    clipBehavior: Clip.hardEdge,
-                                    color: Colors.transparent,
-                                    child: Ink.image(
-                                      image: AssetImage('assets/img/others.jpg'),
-                                      fit: BoxFit.cover,
-                                      width: 120.0,
-                                      height: 120.0,
-                                      child: InkWell(
-                                        onTap: () => nextPage(1),
+                              Expanded(
+                                child: Column(
+                                  children: [
+                                    Material(
+                                      elevation: 14.0,
+                                      shape: CircleBorder(),
+                                      clipBehavior: Clip.hardEdge,
+                                      color: Colors.transparent,
+                                      child: Ink.image(
+                                        image: AssetImage('assets/img/others.jpg'),
+                                        fit: BoxFit.cover,
+                                        width: 120.0,
+                                        height: 120.0,
+                                        child: InkWell(
+                                          onTap: () => nextPage(1),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    'Other Stores',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                ],
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Other Stores',
+                                      style: Theme.of(context).textTheme.headline5,
+                                    ),
+                                  ],
+                                ),
                               ),
-                              const SizedBox(width: 30),
-                              Column(
+                              Expanded(
+                                child: Column(
                                 children: [
                                   Material(
                                     elevation: 14.0,
@@ -129,105 +134,18 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                       ),
                                     ),
                                   ),
-                                  const SizedBox(height: 5),
+                                  const SizedBox(height: 10),
                                   Text(
                                     'Home Cooked',
-                                    style: TextStyle(fontSize: 16),
+                                    style: Theme.of(context).textTheme.headline5,
                                   ),
-                                ],
+                                ]),
                               ),
                             ],
                           ),
-
-                          // FlatButton(
-                          //     onPressed: () => nextPage(0),
-                          //     child: Image.asset(
-                          //       'assets/img/resto.jpg',
-                          //     )
-                          // ),
-                          // Container(
-                          //     margin: const EdgeInsets.symmetric(
-                          //         horizontal: 40, vertical: 10),
-                          //     decoration: BoxDecoration(
-                          //       border: Border.all(
-                          //           color:
-                          //               Theme.of(context).primaryColor.withOpacity(0.9),
-                          //           width: 2),
-                          //       color: Theme.of(context).primaryColor.withOpacity(0.9),
-                          //       boxShadow: [
-                          //         BoxShadow(
-                          //             color:
-                          //                 Theme.of(context).focusColor.withOpacity(1),
-                          //             blurRadius: 5,
-                          //             offset: Offset(0, 2)),
-                          //       ],
-                          //     ),
-                          //     child: ConstrainedBox(
-                          //         constraints: BoxConstraints.tightFor(),
-                          //         child: FlatButton(
-                          //             padding: EdgeInsets.all(10.0),
-                          //             onPressed: () => nextPage(1),
-                          //             child: Row(
-                          //               children: [
-                          //                 ClipRRect(
-                          //                   borderRadius: BorderRadius.circular(8.0),
-                          //                   child: Image.asset(
-                          //                       'assets/img/other_stores.jpg',
-                          //                       height: settingsRepo.compact_view
-                          //                           ? 70
-                          //                           : 90),
-                          //                 ),
-                          //                 const SizedBox(width: 20),
-                          //                 Text(
-                          //                   "Other Stores",
-                          //                   style: settingsRepo.compact_view
-                          //                       ? TextStyle(fontSize: 16)
-                          //                       : TextStyle(fontSize: 20),
-                          //                 )
-                          //               ],
-                          //             )))),
-                          // Container(
-                          //     margin: const EdgeInsets.symmetric(
-                          //         horizontal: 40, vertical: 5),
-                          //     decoration: BoxDecoration(
-                          //       border: Border.all(
-                          //           color:
-                          //               Theme.of(context).primaryColor.withOpacity(0.9),
-                          //           width: 2),
-                          //       color: Theme.of(context).primaryColor.withOpacity(0.9),
-                          //       boxShadow: [
-                          //         BoxShadow(
-                          //             color:
-                          //                 Theme.of(context).focusColor.withOpacity(1),
-                          //             blurRadius: 5,
-                          //             offset: Offset(0, 2)),
-                          //       ],
-                          //     ),
-                          //     child: ConstrainedBox(
-                          //         constraints: BoxConstraints.tightFor(),
-                          //         child: FlatButton(
-                          //             padding: EdgeInsets.all(10.0),
-                          //             onPressed: () => nextPage(2),
-                          //             child: Row(
-                          //               children: [
-                          //                 ClipRRect(
-                          //                   borderRadius: BorderRadius.circular(8.0),
-                          //                   child: Image.asset(
-                          //                       'assets/img/restaurants.jpg',
-                          //                       height: settingsRepo.compact_view
-                          //                           ? 70
-                          //                           : 90),
-                          //                 ),
-                          //                 const SizedBox(width: 20),
-                          //                 Text(
-                          //                   "Home Cooked",
-                          //                   style: settingsRepo.compact_view
-                          //                       ? TextStyle(fontSize: 16)
-                          //                       : TextStyle(fontSize: 20),
-                          //             )
-                          //           ]))))
-              ])
-            ]))));
+                          const SizedBox(height: 50)
+              ]),
+                    ]))));
   }
 
   void nextPage(int isStore) {
