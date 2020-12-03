@@ -1,6 +1,5 @@
 import '../elements/NotWorkingWidget.dart';
 import '../elements/OrderItemWidget.dart';
-import '../repository/user_repository.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +21,7 @@ class OrdersWidget extends StatefulWidget {
 
 class _OrdersWidgetState extends StateMVC<OrdersWidget> {
   OrderController _con;
+  bool firstLoad = true;
 
   _OrdersWidgetState() : super(OrderController()) {
     _con = controller;
@@ -29,8 +29,11 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
 
   @override
   void initState() {
-    _con.listenForOrders();
     super.initState();
+    if (firstLoad) {
+      firstLoad = false;
+      _con.listenForOrders();
+    }
   }
 
   @override

@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
-import '../helpers/helper.dart';
-import '../models/notification.dart';
-import '../models/user.dart';
-import '../repository/user_repository.dart' as userRepo;
+import '../../helpers/helper.dart';
+import '../../models/notification.dart';
+import '../../models/user.dart';
+import '../../repository/user_repository.dart' as userRepo;
 
 Future<Stream<Notification>> getNotifications() async {
   User _user = userRepo.currentUser.value;

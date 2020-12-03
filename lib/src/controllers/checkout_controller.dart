@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/repository/cart_repository.dart';
+import '../../src/repository/cart_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../models/cart.dart';
@@ -50,7 +50,7 @@ class CheckoutController extends CartController {
   void addOrder(List<Cart> carts, String hint) async {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
-    _order.discount = settingsRepo.setting.value.promo[promotion];
+    _order.discount = settingsRepo.setting.value.promo[promotion] ?? 0;
     _order.hint = currentCart_note.value;
     _order.scheduled_time = currentCart_time.value.toString();
     OrderStatus _orderStatus = new OrderStatus();
@@ -92,7 +92,7 @@ class CheckoutController extends CartController {
     });
   }
 
-  Future<bool> applePromotion(String code) async {
+  Future<void> applePromotion(String code) async {
     bool isUsed = false;
     // await orderRepo.checkCode(code).then((value) => ;
     await orderRepo.checkCode(code).then((value) => isUsed = value);

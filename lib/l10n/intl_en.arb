@@ -264,17 +264,15 @@
   "dismiss": "Dismiss",
   "confirm": "Confirm",
   "update": "Update",
-  "order_details": "Update",
-  "ordered_foods": "Update",
-  "customer": "Update",
-  "fullName": "Update",
-  "deliveryAddress": "Update",
-  "address_not_provided_please_call_the_client": "Update",
-  "phoneNumber": "Update",
-  "orders_history": "Update",
-  "tapBackAgainToLeave": "Update",
-  "help_support": "Update",
-  "lets_start_with_register": "Update",
-  "help_support": "Update"
+  "order_details": "Order Details",
+  "ordered_foods": "Ordered Items",
+  "customer": "Customer",
+  "fullName": "Full Name",
+  "deliveryAddress": "Delivery Address",
+  "address_not_provided_please_call_the_client": "Address not provided, please call customer.",
+  "phoneNumber": "Phone Number",
+  "orders_history": "Order History",
+  "tapBackAgainToLeave": "Tap again to leave",
+  "help_support": "Help & Support"
 
 }

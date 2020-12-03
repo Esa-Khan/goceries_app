@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart' show DateFormat;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
 import '../controllers/map_controller.dart';
-import '../elements/CircularLoadingWidget.dart';
-import '../helpers/helper.dart';
-import '../models/order.dart';
-import '../models/route_argument.dart';
+import '../../helpers/helper.dart';
+import '../../models/order.dart';
+import '../../models/route_argument.dart';
 
 class MapWidget extends StatefulWidget {
   final RouteArgument routeArgument;

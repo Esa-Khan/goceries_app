@@ -10,9 +10,9 @@ import 'package:http/io_client.dart';
 import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../helpers/custom_trace.dart';
-import '../models/address.dart';
-import '../models/setting.dart';
+import '../../helpers/custom_trace.dart';
+import '../../models/address.dart';
+import '../../models/setting.dart';
 
 ValueNotifier<Setting> setting = new ValueNotifier(new Setting());
 ValueNotifier<Address> myAddress = new ValueNotifier(new Address());

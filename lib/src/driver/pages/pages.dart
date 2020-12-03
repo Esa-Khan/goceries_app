@@ -4,11 +4,11 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../../generated/l10n.dart';
 import '../elements/DrawerWidget.dart';
-import '../models/route_argument.dart';
+import '../../models/route_argument.dart';
 import '../pages/map.dart';
 import '../pages/orders.dart';
 import '../pages/orders_history.dart';
-import '../pages/profile.dart';
+import '../../pages/profile.dart';
 
 // ignore: must_be_immutable
 class PagesTestWidget extends StatefulWidget {

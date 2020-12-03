@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:saudaghar/src/controllers/checkout_controller.dart';
+import '../../src/controllers/checkout_controller.dart';
 import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 
@@ -103,7 +103,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                 Expanded(
                   child: Text(
                     'Promotion Discount',
-                    style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13, color: Colors.greenAccent)),
+                    style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13, color: Theme.of(context).accentColor)),
                   ),
                 ),
                 RichText(
@@ -112,7 +112,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                   maxLines: 1,
                   text: TextSpan(
                           text: settingsRepo.setting.value.promo[_con.promotion].toString(),
-                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent)),
+                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Theme.of(context).accentColor)),
                         ),
                 )
               ],
@@ -162,7 +162,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                           )
                                   },
                                   padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),
-                                  color: Colors.green,
+                                  color: Theme.of(context).accentColor,
                                   shape: StadiumBorder(),
                                   child: Stack(
                                     alignment: AlignmentDirectional.bottomEnd,
@@ -191,7 +191,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                               : submitOrder(),
                                           disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                                           padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
-                                          color: Colors.green,
+                                          color: Theme.of(context).accentColor,
                                           shape: StadiumBorder(),
                                           child: Align(
                                             alignment: Alignment.centerLeft,

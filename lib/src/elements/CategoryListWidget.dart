@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/controllers/category_controller.dart';
+import '../../src/controllers/category_controller.dart';
 
 import '../models/category.dart';
 import '../models/restaurant.dart';

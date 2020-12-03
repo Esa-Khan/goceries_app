@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../controllers/notification_controller.dart';
+import '../../controllers/notification_controller.dart';
 
 class ShoppingCartButtonWidget extends StatefulWidget {
   const ShoppingCartButtonWidget({

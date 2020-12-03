@@ -2685,111 +2685,101 @@ class S {
     );
   }
 
-  /// `Update`
+  /// `Order Details`
   String get order_details {
     return Intl.message(
-      'Update',
+      'Order Details',
       name: 'order_details',
       desc: '',
       args: [],
     );
   }
 
-  /// `Update`
+  /// `Ordered Items`
   String get ordered_foods {
     return Intl.message(
-      'Update',
+      'Ordered Items',
       name: 'ordered_foods',
       desc: '',
       args: [],
     );
   }
 
-  /// `Update`
+  /// `Customer`
   String get customer {
     return Intl.message(
-      'Update',
+      'Customer',
       name: 'customer',
       desc: '',
       args: [],
     );
   }
 
-  /// `Update`
+  /// `Full Name`
   String get fullName {
     return Intl.message(
-      'Update',
+      'Full Name',
       name: 'fullName',
       desc: '',
       args: [],
     );
   }
 
-  /// `Update`
+  /// `Delivery Address`
   String get deliveryAddress {
     return Intl.message(
-      'Update',
+      'Delivery Address',
       name: 'deliveryAddress',
       desc: '',
       args: [],
     );
   }
 
-  /// `Update`
+  /// `Address not provided, please call customer.`
   String get address_not_provided_please_call_the_client {
     return Intl.message(
-      'Update',
+      'Address not provided, please call customer.',
       name: 'address_not_provided_please_call_the_client',
       desc: '',
       args: [],
     );
   }
 
-  /// `Update`
+  /// `Phone Number`
   String get phoneNumber {
     return Intl.message(
-      'Update',
+      'Phone Number',
       name: 'phoneNumber',
       desc: '',
       args: [],
     );
   }
 
-  /// `Update`
+  /// `Order History`
   String get orders_history {
     return Intl.message(
-      'Update',
+      'Order History',
       name: 'orders_history',
       desc: '',
       args: [],
     );
   }
 
-  /// `Update`
+  /// `Tap again to leave`
   String get tapBackAgainToLeave {
     return Intl.message(
-      'Update',
+      'Tap again to leave',
       name: 'tapBackAgainToLeave',
       desc: '',
       args: [],
     );
   }
 
-  /// `Update`
+  /// `Help & Support`
   String get help_support {
     return Intl.message(
-      'Update',
+      'Help & Support',
       name: 'help_support',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Update`
-  String get lets_start_with_register {
-    return Intl.message(
-      'Update',
-      name: 'lets_start_with_register',
       desc: '',
       args: [],
     );

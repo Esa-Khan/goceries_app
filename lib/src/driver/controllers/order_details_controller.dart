@@ -1,9 +1,9 @@
-import '../repository/user_repository.dart';
+import '../../repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
-import '../models/order.dart';
+import '../../models/order.dart';
 import '../repository/order_repository.dart';
 
 class OrderDetailsController extends ControllerMVC {
@@ -47,7 +47,7 @@ class OrderDetailsController extends ControllerMVC {
     });
   }
 
-  Future<Order> updateOrder(Order _order) async {
+  Future<void> updateOrder(Order _order) async {
     if (_order.orderStatus.id == '1' && _order.driver_id == 1) {
       _order.driver_id = int.parse(currentUser.value.id);
     }

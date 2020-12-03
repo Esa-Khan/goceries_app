@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
-import '../helpers/helper.dart';
-import '../helpers/swipe_widget.dart';
-import '../models/notification.dart' as model;
+import '../../helpers/helper.dart';
+import '../../helpers/swipe_widget.dart';
+import '../../models/notification.dart' as model;
 
 class NotificationItemWidget extends StatelessWidget {
   final model.Notification notification;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/models/route_argument.dart';
+import '../../src/models/route_argument.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/payment_method.dart';

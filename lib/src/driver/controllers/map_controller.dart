@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import '../../helpers/helper.dart';
+import '../../helpers/maps_util.dart';
+import '../../models/address.dart';
+import '../../models/order.dart';
 
-import '../helpers/app_config.dart' as config;
-import '../helpers/helper.dart';
-import '../helpers/maps_util.dart';
-import '../models/address.dart';
-import '../models/order.dart';
+import '../../helpers/app_config.dart' as config;
 import '../repository/order_repository.dart';
-import '../repository/settings_repository.dart' as sett;
+import '../repository/settings_repository.dart' as settingsRepo;
 
 class MapController extends ControllerMVC {
   Order currentOrder;
@@ -51,7 +51,7 @@ class MapController extends ControllerMVC {
 
   void getCurrentLocation() async {
     try {
-      currentAddress = sett.myAddress.value;
+      currentAddress = settingsRepo.myAddress.value;
       setState(() {
         if (currentAddress.isUnknown()) {
           cameraPosition = CameraPosition(
@@ -81,7 +81,7 @@ class MapController extends ControllerMVC {
 
   void getOrderLocation() async {
     try {
-      currentAddress = sett.myAddress.value;
+      currentAddress = settingsRepo.myAddress.value;
       setState(() {
         cameraPosition = CameraPosition(
           target: LatLng(currentOrder.deliveryAddress.latitude, currentOrder.deliveryAddress.longitude),
@@ -105,9 +105,9 @@ class MapController extends ControllerMVC {
   Future<void> goCurrentLocation() async {
     final GoogleMapController controller = await mapController.future;
 
-    sett.setCurrentLocation().then((_currentAddress) {
+    settingsRepo.setCurrentLocation().then((_currentAddress) {
       setState(() {
-        sett.myAddress.value = _currentAddress;
+        settingsRepo.myAddress.value = _currentAddress;
         currentAddress = _currentAddress;
       });
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -139,7 +139,7 @@ class MapController extends ControllerMVC {
   }
 
   void getDirectionSteps() async {
-    currentAddress = sett.myAddress.value;
+    currentAddress = settingsRepo.myAddress.value;
     mapsUtil
         .get("origin=" +
             currentAddress.latitude.toString() +
@@ -149,7 +149,7 @@ class MapController extends ControllerMVC {
             currentOrder.deliveryAddress.longitude.toString() +
             "," +
             currentOrder.deliveryAddress.longitude.toString() +
-            "&key=${sett.setting.value?.googleMapsKey}")
+            "&key=${settingsRepo.setting.value?.googleMapsKey}")
         .then((dynamic res) {
       if (res != null) {
         List<LatLng> _latLng = res as List<LatLng>;
@@ -168,12 +168,11 @@ class MapController extends ControllerMVC {
     currentOrder.foodOrders?.forEach((food) {
       subTotal += food.quantity * food.price;
     });
-    deliveryFee = currentOrder.foodOrders?.elementAt(0)?.food?.restaurant?.deliveryFee ?? 0;
-    taxAmount = (subTotal + deliveryFee) * currentOrder.tax / 100;
-    total = subTotal + taxAmount + deliveryFee;
-
-    taxAmount = subTotal * currentOrder.tax / 100;
-    total = subTotal + taxAmount;
+    deliveryFee = subTotal >= settingsRepo.setting.value.deliveryFeeLimit
+        ? 0
+        : currentOrder.foodOrders?.elementAt(0)?.food?.restaurant?.deliveryFee;
+    // taxAmount = subTotal * currentOrder.discount / 100;
+    total = subTotal + deliveryFee - taxAmount;
     setState(() {});
   }
 

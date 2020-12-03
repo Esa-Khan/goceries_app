@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
-import '../controllers/profile_controller.dart';
+import '../../controllers/profile_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
-import '../repository/settings_repository.dart';
-import '../repository/user_repository.dart';
+import '../../repository/settings_repository.dart';
+import '../../repository/user_repository.dart';
 
 class DrawerWidget extends StatefulWidget {
   @override

@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -163,8 +162,7 @@ class UserController extends ControllerMVC {
               String.fromCharCodes(appleIdCredential.authorizationCode),
             );
 
-            final AuthResult _res = await FirebaseAuth.instance
-                .signInWithCredential(credential);
+            final AuthResult _res = await FirebaseAuth.instance.signInWithCredential(credential);
 
             FirebaseAuth.instance.currentUser().then((val) async {
               UserUpdateInfo updateUser = UserUpdateInfo();

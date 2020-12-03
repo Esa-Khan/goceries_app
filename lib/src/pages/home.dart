@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../elements/SocialMediaOrdering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import '../models/route_argument.dart';
-
 import '../../generated/l10n.dart';
 import '../controllers/home_controller.dart';
 import '../elements/CardsCarouselWidget.dart';

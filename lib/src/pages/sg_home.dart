@@ -2,8 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/elements/CategoryListWidget.dart';
-import 'package:saudaghar/src/models/route_argument.dart';
+import '../../src/elements/CategoryListWidget.dart';
+import '../../src/models/route_argument.dart';
 
 import '../controllers/home_controller.dart';
 import '../elements/ShoppingCartButtonWidget.dart';

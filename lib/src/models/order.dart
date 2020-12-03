@@ -9,7 +9,7 @@ class Order {
   String id;
   List<FoodOrder> foodOrders;
   OrderStatus orderStatus;
-  double discount;
+  double discount = 0;
   String promotion;
   double deliveryFee;
   String hint;
@@ -19,6 +19,7 @@ class Order {
   User user;
   Payment payment;
   Address deliveryAddress;
+  int driver_id;
 
   Order();
 
@@ -31,10 +32,11 @@ class Order {
       active = jsonMap['active'] ?? false;
       orderStatus = jsonMap['order_status'] != null ? OrderStatus.fromJSON(jsonMap['order_status']) : OrderStatus.fromJSON({});
       dateTime = DateTime.parse(jsonMap['updated_at']);
-      user = jsonMap['user'] != null ? User.fromJSON(jsonMap['user']) : User.fromJSON({});
+      user = jsonMap['user'] != null ? User.fromJSON(jsonMap['user']) : new User();
       deliveryAddress = jsonMap['delivery_address'] != null ? Address.fromJSON(jsonMap['delivery_address']) : Address.fromJSON({});
       payment = jsonMap['payment'] != null ? Payment.fromJSON(jsonMap['payment']) : Payment.fromJSON({});
       foodOrders = jsonMap['food_orders'] != null ? List.from(jsonMap['food_orders']).map((element) => FoodOrder.fromJSON(element)).toList() : [];
+      driver_id = jsonMap['driver_id'];
     } catch (e) {
       id = '';
       discount = 0.0;
@@ -47,6 +49,7 @@ class Order {
       payment = Payment.fromJSON({});
       deliveryAddress = Address.fromJSON({});
       foodOrders = [];
+
       print(CustomTrace(StackTrace.current, message: e));
     }
   }
@@ -78,5 +81,15 @@ class Order {
 
   bool canCancelOrder() {
     return this.active == true && this.orderStatus.id == '1'; // 1 for order received status
+  }
+
+  Map deliveredMap() {
+    var map = new Map<String, dynamic>();
+    map["id"] = id;
+    map["order_status_id"] = int.parse(this.orderStatus.id) + 1;
+    if (this.orderStatus.id == '1'){
+      map["driver_id"] = this.driver_id;
+    }
+    return map;
   }
 }

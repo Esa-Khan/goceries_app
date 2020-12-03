@@ -1,6 +1,6 @@
-import 'package:saudaghar/src/controllers/food_controller.dart';
-import 'package:saudaghar/src/models/address.dart';
-import 'package:saudaghar/src/repository/restaurant_repository.dart';
+import '../../src/controllers/food_controller.dart';
+import '../../src/models/address.dart';
+import '../../src/repository/restaurant_repository.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/category.dart';

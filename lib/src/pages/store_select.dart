@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/elements/StoreSelectShoppingCartButtonWidget.dart';
+import '../../src/elements/StoreSelectShoppingCartButtonWidget.dart';
 import '../controllers/restaurant_controller.dart';
 import '../controllers/cart_controller.dart';
 import '../elements/ShoppingCartButtonWidget.dart';

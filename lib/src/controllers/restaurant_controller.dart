@@ -14,7 +14,6 @@ import '../repository/food_repository.dart';
 import '../repository/gallery_repository.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/settings_repository.dart';
-import '../models/category.dart';
 import '../repository/category_repository.dart';
 
 

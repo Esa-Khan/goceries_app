@@ -13,6 +13,9 @@ class User {
   String address;
   String bio;
   Media image;
+  bool isDriver;
+  String work_hours;
+
 
   // used for indicate if client logged in or not
   bool auth;
@@ -45,6 +48,9 @@ class User {
         bio = "";
       }
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media(isCat: false);
+      isDriver = jsonMap['isDriver'] == 0 ? false : true;
+      if (isDriver)
+        work_hours = jsonMap['work_hours'][0]['work_hours'];
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }

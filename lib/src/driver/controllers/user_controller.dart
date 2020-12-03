@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
-import '../helpers/helper.dart';
-import '../models/user.dart';
-import '../repository/user_repository.dart' as repository;
+import '../../helpers/helper.dart';
+import '../../models/user.dart';
+import '../../repository/user_repository.dart' as repository;
 
 class UserController extends ControllerMVC {
   User user = new User();

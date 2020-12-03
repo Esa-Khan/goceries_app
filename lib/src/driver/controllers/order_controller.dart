@@ -1,10 +1,10 @@
-import '../helpers/helper.dart';
-import '../repository/user_repository.dart';
+import '../../helpers/helper.dart';
+import '../../repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
-import '../models/order.dart';
+import '../../models/order.dart';
 import '../repository/order_repository.dart';
 
 class OrderController extends ControllerMVC {

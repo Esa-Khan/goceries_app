@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import '../repository/user_repository.dart';
+import '../../repository/user_repository.dart';
 import 'package:flutter/material.dart';
 
-import '../../../generated/l10n.dart';
-import '../helpers/app_config.dart' as config;
+import '../../helpers/app_config.dart' as config;
 
 class NotWorkingWidget extends StatefulWidget {
   NotWorkingWidget({
@@ -97,7 +96,7 @@ class _NotWorkingWidgetWidgetState extends State<NotWorkingWidget> {
               Opacity(
                 opacity: 0.4,
                 child: Text(
-                  "Not Working Yet. Start at: " + currentUser.value.work_hours.split("|")[0],
+                  "Not Working Yet. Start at: ",// + currentUser.value.work_hours.split("|")[0],
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),

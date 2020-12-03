@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart' as settingRepo;
+import '../../src/repository/settings_repository.dart' as settingRepo;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../controllers/splash_screen_controller.dart';
@@ -35,7 +35,11 @@ class SplashScreenState extends StateMVC<SplashScreen> {
       if (progress == 100 && isNotDone) {
         try {
           isNotDone = false;
-          Navigator.of(context).pushReplacementNamed('/StoreSelect');
+          if (userRepo.currentUser.value.isDriver != null && userRepo.currentUser.value.isDriver) {
+            Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
+          } else {
+            Navigator.of(context).pushReplacementNamed('/StoreSelect');
+          }
         } catch (e) {}
       }
     });

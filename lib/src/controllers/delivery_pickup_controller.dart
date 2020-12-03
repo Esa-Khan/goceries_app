@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/helpers/helper.dart';
-import 'package:saudaghar/src/models/route_argument.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import '../../src/helpers/helper.dart';
+import '../../src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../models/address.dart' as model;

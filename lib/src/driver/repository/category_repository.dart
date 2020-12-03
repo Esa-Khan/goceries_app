@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 
-import '../helpers/helper.dart';
-import '../models/category.dart';
+import '../../helpers/helper.dart';
+import '../../models/category.dart';
 
 Future<Stream<Category>> getCategories() async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}categories';

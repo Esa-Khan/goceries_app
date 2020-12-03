@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:saudaghar/src/elements/CartBottomDetailsWidget.dart';
+import '../../src/elements/CartBottomDetailsWidget.dart';
 
 import '../../generated/l10n.dart';
 import '../models/credit_card.dart';

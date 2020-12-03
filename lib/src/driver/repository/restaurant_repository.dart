@@ -5,13 +5,13 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../helpers/custom_trace.dart';
-import '../helpers/helper.dart';
-import '../models/address.dart';
-import '../models/filter.dart';
-import '../models/restaurant.dart';
-import '../models/review.dart';
-import '../repository/user_repository.dart';
+import '../../helpers/custom_trace.dart';
+import '../../helpers/helper.dart';
+import '../../models/address.dart';
+import '../../models/filter.dart';
+import '../../models/restaurant.dart';
+import '../../models/review.dart';
+import '../../repository/user_repository.dart';
 
 Future<Stream<Restaurant>> getNearRestaurants(Address myLocation, Address areaLocation) async {
   Uri uri = Helper.getUri('api/restaurants');

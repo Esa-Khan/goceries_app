@@ -5,7 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:io' show Platform;
-import 'package:saudaghar/src/elements/EmptyOrdersWidget.dart';
+import '../../src/elements/EmptyOrdersWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../elements/CardsCarouselLoaderWidget.dart';

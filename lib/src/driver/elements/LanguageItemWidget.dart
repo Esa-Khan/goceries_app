@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/language.dart';
-import '../repository/settings_repository.dart' as settingRepo;
+import '../../models/language.dart';
+import '../../repository/settings_repository.dart' as settingRepo;
 
 class LanguageItemWidget extends StatefulWidget {
   final Language language;
