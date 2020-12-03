@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/controllers/category_controller.dart';
+import '../../src/controllers/category_controller.dart';
 
 import '../models/category.dart';
 import '../models/restaurant.dart';
@@ -100,7 +100,6 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
               ? Column(
             children: <Widget>[
               SizedBox(height: 50),
-
               // Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
             ],
           )

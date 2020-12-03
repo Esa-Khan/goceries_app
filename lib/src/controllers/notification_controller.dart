@@ -8,6 +8,7 @@ import '../repository/notification_repository.dart';
 class NotificationController extends ControllerMVC {
   List<model.Notification> notifications = <model.Notification>[];
   GlobalKey<ScaffoldState> scaffoldKey;
+  int unReadNotificationsCount = 0;
 
   NotificationController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -26,6 +27,11 @@ class NotificationController extends ControllerMVC {
         content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
+      if (notifications.isNotEmpty) {
+        unReadNotificationsCount = notifications.where((model.Notification _n) => !_n.read ?? false).toList().length;
+      } else {
+        unReadNotificationsCount = 0;
+      }
       if (message != null) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(message),
@@ -37,5 +43,43 @@ class NotificationController extends ControllerMVC {
   Future<void> refreshNotifications() async {
     notifications.clear();
     listenForNotifications(message: S.of(context).notifications_refreshed_successfuly);
+  }
+
+  void doMarkAsReadNotifications(model.Notification _notification) async {
+    markAsReadNotifications(_notification).then((value) {
+      setState(() {
+        --unReadNotificationsCount;
+        _notification.read = !_notification.read;
+      });
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('This notification has marked as read'),
+      ));
+    });
+  }
+
+  void doMarkAsUnReadNotifications(model.Notification _notification) {
+    markAsReadNotifications(_notification).then((value) {
+      setState(() {
+        ++unReadNotificationsCount;
+        _notification.read = !_notification.read;
+      });
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('This notification has marked as un read'),
+      ));
+    });
+  }
+
+  void doRemoveNotification(model.Notification _notification) async {
+    removeNotification(_notification).then((value) {
+      setState(() {
+        if (!_notification.read) {
+          --unReadNotificationsCount;
+        }
+        this.notifications.remove(_notification);
+      });
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Notification was removed'),
+      ));
+    });
   }
 }

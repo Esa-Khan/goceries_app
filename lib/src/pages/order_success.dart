@@ -75,11 +75,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                   gradient: LinearGradient(
                                       begin: Alignment.bottomLeft,
                                       end: Alignment.topRight,
-                                      colors: _con.order_submitted
-                                          ? [Colors.green.withOpacity(1), Colors.green.withOpacity(0.2)]
-                                          : _con.loading
-                                            ? [Colors.orange.withOpacity(1), Colors.yellow.withOpacity(0.2)]
-                                            : [Colors.red.withOpacity(1), Colors.red.withOpacity(0.2)]
+                                      colors: [Theme.of(context).accentColor.withOpacity(0.2), Theme.of(context).accentColor.withOpacity(1)]
                                   )),
                               child: _con.order_submitted
                                   ? Icon(
@@ -133,23 +129,16 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         SizedBox(width: 25),
                         Opacity(
                           opacity: 0.7,
-                          child: _con.order_submitted
-                              ? Text(
-                            'Order  Submitted!',
+                          child: Text(
+                            _con.order_submitted
+                              ? 'Order  Submitted!'
+                              : 'Ready to Checkout?',
                             style: Theme.of(context).textTheme.headline2.merge(
-                                TextStyle(fontWeight: FontWeight.bold, color: Colors.green,
+                                TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).accentColor,
                                     fontSize: settingsRepo.compact_view ? 18 : 20
                                 )
                             ),
                           )
-                              : Text(
-                            'Ready to Checkout?',
-                            style: Theme.of(context).textTheme.headline2.merge(
-                                TextStyle(fontWeight: FontWeight.bold, color: Colors.red,
-                                    fontSize: settingsRepo.compact_view ? 18 : 20
-                                )
-                            ),
-                          ),
                           // _con.order_submitted
                           //     ? Text(
                           //         'Order  Submitted!',

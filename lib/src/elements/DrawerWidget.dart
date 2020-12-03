@@ -71,6 +71,19 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
+              Navigator.of(context).pushReplacementNamed('/StoreSelect');
+            },
+            leading: Icon(
+              Icons.list,
+              color: Theme.of(context).focusColor.withOpacity(1),
+            ),
+            title: Text(
+              "Where to Shop?",
+              style: Theme.of(context).textTheme.subtitle1,
+            ),
+          ),
+          ListTile(
+            onTap: () {
               settingsRepo.isStore.value = 0;
               Navigator.of(context).pushNamed('/Pages',arguments: 2);
             },
@@ -80,19 +93,6 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).home,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed('/StoreSelect');
-            },
-            leading: Icon(
-              Icons.list,
-              color: Theme.of(context).focusColor.withOpacity(1),
-            ),
-            title: Text(
-              "Where to Shop?",
               style: Theme.of(context).textTheme.subtitle1,
             ),
           ),
@@ -213,7 +213,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             onTap: () {
               if (currentUser.value.apiToken != null) {
                 logout().then((value) {
-                  Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
+                  // Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
+                  Navigator.of(context).pushNamedAndRemoveUntil('/StoreSelect', (Route<dynamic> route) => false);
                 });
               } else {
                 Navigator.of(context).pushNamed('/Login');

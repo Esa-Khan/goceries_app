@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart';
+import '../../src/repository/settings_repository.dart';
 
 import '../models/user.dart';
 

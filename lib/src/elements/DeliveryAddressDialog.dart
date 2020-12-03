@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:saudaghar/src/controllers/settings_controller.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import '../../src/controllers/settings_controller.dart';
+import '../../src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/checkbox_form_field.dart';

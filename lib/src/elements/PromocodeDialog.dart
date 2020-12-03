@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:saudaghar/src/controllers/checkout_controller.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart' as settingsRepo;
-import 'package:saudaghar/src/repository/user_repository.dart';
+import '../../src/controllers/checkout_controller.dart';
+import '../../src/repository/settings_repository.dart' as settingsRepo;
+import '../../src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/checkbox_form_field.dart';

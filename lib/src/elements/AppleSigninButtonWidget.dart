@@ -1,7 +1,7 @@
 import 'package:apple_sign_in/apple_sign_in_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/controllers/user_controller.dart';
+import '../../src/controllers/user_controller.dart';
 
 
 class AppleSigninButtonWidget extends StatelessWidget {

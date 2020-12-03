@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/controllers/user_controller.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart' as settingsRepo;
+import '../../src/controllers/user_controller.dart';
+import '../../src/repository/settings_repository.dart' as settingsRepo;
 
 
 class GoogleSigninButtonWidget extends StatelessWidget {
