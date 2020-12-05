@@ -17,9 +17,9 @@ class Media {
       thumb = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
       icon = "${GlobalConfiguration().getString('base_url')}images/image_default.png";
     } else if(!isCat) {
-      url = "${GlobalConfiguration().getString('base_url')}images/profile_picture.jpg";
-      thumb = "${GlobalConfiguration().getString('base_url')}images/profile_picture.jpg";
-      icon = "${GlobalConfiguration().getString('base_url')}images/profile_picture.jpg";
+      url = "${GlobalConfiguration().getString('base_url')}images/avatar_default.png";
+      thumb = "${GlobalConfiguration().getString('base_url')}images/avatar_default.png";
+      icon = "${GlobalConfiguration().getString('base_url')}images/avatar_default.png";
     } else {
       url = 'assets/img/misc.svg';
       thumb = 'assets/img/misc.svg';

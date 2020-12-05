@@ -46,7 +46,11 @@ class UserController extends ControllerMVC {
       Overlay.of(context).insert(loader);
       repository.login(user).then((value) {
         if (value != null && value.apiToken != null) {
-          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          if (value.isDriver) {
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+          } else {
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          }
         } else {
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).wrong_email_or_password),
@@ -197,7 +201,11 @@ class UserController extends ControllerMVC {
       if (value != null && value.apiToken != null) {
         print("-------------Login Success-------------");
         Helper.hideLoader(loader);
-        Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+        if (value.isDriver) {
+          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+        } else {
+          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+        }
       } else {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).wrong_email_or_password),
@@ -210,7 +218,11 @@ class UserController extends ControllerMVC {
           if (value != null && value.apiToken != null) {
             print("-------------Register Success-------------");
             Helper.hideLoader(loader);
-            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+            if (value.isDriver) {
+              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+            } else {
+              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+            }
           } else {
             scaffoldKey?.currentState?.showSnackBar(SnackBar(
               content: Text(S.of(context).wrong_email_or_password),
@@ -236,7 +248,11 @@ class UserController extends ControllerMVC {
       Overlay.of(context).insert(loader);
       repository.register(user).then((value) {
         if (value != null && value.apiToken != null) {
-          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          if (value.isDriver) {
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+          } else {
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          }
         } else {
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).wrong_email_or_password),

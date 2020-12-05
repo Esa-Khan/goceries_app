@@ -47,9 +47,10 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
     super.initState();
   }
 
+  @override
   void dispose() {
-    _tabController.dispose();
     super.dispose();
+    _tabController.dispose();
   }
 
   _handleTabSelection() {
