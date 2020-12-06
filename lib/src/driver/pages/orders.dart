@@ -21,7 +21,6 @@ class OrdersWidget extends StatefulWidget {
 
 class _OrdersWidgetState extends StateMVC<OrdersWidget> {
   OrderController _con;
-  bool firstLoad = true;
 
   _OrdersWidgetState() : super(OrderController()) {
     _con = controller;
@@ -30,10 +29,7 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
   @override
   void initState() {
     super.initState();
-    if (firstLoad) {
-      firstLoad = false;
-      _con.listenForOrders();
-    }
+    _con.listenForOrders();
   }
 
   @override
@@ -62,23 +58,24 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
-            _con.orders_loaded && !_con.isWorking && _con.orders.isEmpty ? NotWorkingWidget()
-            :_con.orders.isEmpty
-                ? EmptyOrdersWidget()
-                : ListView.separated(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemCount: _con.orders.length,
-                    itemBuilder: (context, index) {
-                      var _order = _con.orders.elementAt(index);
-//                      return OrderItemWidget(expanded: index == 0 ? true : false, order: _order);
-                      return OrderItemWidget(expanded: false, order: _order);
-                    },
-                    separatorBuilder: (context, index) {
-                      return SizedBox(height: 20);
-                    },
-                  ),
+            _con.orders_loaded && !_con.isWorking && _con.orders.isEmpty
+                ? NotWorkingWidget()
+                :_con.orders.isEmpty
+                    ? EmptyOrdersWidget()
+                    : ListView.separated(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemCount: _con.orders.length,
+                        itemBuilder: (context, index) {
+                          var _order = _con.orders.elementAt(index);
+    //                      return OrderItemWidget(expanded: index == 0 ? true : false, order: _order);
+                          return OrderItemWidget(expanded: false, order: _order);
+                        },
+                        separatorBuilder: (context, index) {
+                          return SizedBox(height: 20);
+                        },
+                      ),
           ],
         ),
       ),

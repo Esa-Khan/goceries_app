@@ -110,7 +110,9 @@ class CartController extends ControllerMVC {
         ));
       }
       notifyFreeDelivery = false;
-      total = subTotal - settingsRepo.setting.value.promo[promotion];
+      promotion == ""
+        ? total = subTotal
+        : total = subTotal - settingsRepo.setting.value.promo[promotion];
     }
     setState(() {});
   }
