@@ -51,7 +51,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                         DateFormat('dd/MM/yyyy | HH:mm').format(widget.order.dateTime),
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      widget.order.hint != "null" ? Text("Check Hint", style: Theme.of(context).textTheme.caption.apply(color: Theme.of(context).accentColor)) : const SizedBox(),
+                      widget.order.hint != null ? Text("Check Hint", style: Theme.of(context).textTheme.caption.apply(color: Theme.of(context).accentColor)) : const SizedBox(),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -145,7 +145,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
               padding: EdgeInsets.symmetric(horizontal: 10),
               height: 28,
               width: 180,
-              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: Theme.of(context).accentColor),
+              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.orderStatus.status_color),
               alignment: AlignmentDirectional.center,
               child: Text(
                 '${widget.order.orderStatus.status}',
@@ -155,20 +155,20 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
             ),
             const Expanded(child: SizedBox()),
             widget.order.scheduled_time == null || widget.order.scheduled_time == "null"
-            ? const SizedBox()
-            : Container(
-              margin: EdgeInsetsDirectional.only(end: 20),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              height: 28,
-//              width: 180,
-              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: Colors.blue),
-              alignment: AlignmentDirectional.center,
-              child: Text(
-                '${widget.order.scheduled_time}',
-                maxLines: 1,
-                style: Theme.of(context).textTheme.caption.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor)),
+              ? const SizedBox()
+              : Container(
+                margin: EdgeInsetsDirectional.only(end: 20),
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                height: 28,
+  //              width: 180,
+                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: Colors.blue),
+                alignment: AlignmentDirectional.center,
+                child: Text(
+                  '${widget.order.scheduled_time}',
+                  maxLines: 1,
+                  style: Theme.of(context).textTheme.caption.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor)),
+                ),
               ),
-            ),
           ],
         ),
       ],

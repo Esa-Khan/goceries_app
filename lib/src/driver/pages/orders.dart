@@ -58,20 +58,16 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
-            _con.orders_loaded && !_con.isWorking && _con.orders.isEmpty
+            !_con.isWorking
                 ? NotWorkingWidget()
-                :_con.orders.isEmpty
+                : !_con.orders_loaded || _con.orders.isEmpty
                     ? EmptyOrdersWidget()
                     : ListView.separated(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         primary: false,
                         itemCount: _con.orders.length,
-                        itemBuilder: (context, index) {
-                          var _order = _con.orders.elementAt(index);
-    //                      return OrderItemWidget(expanded: index == 0 ? true : false, order: _order);
-                          return OrderItemWidget(expanded: false, order: _order);
-                        },
+                        itemBuilder: (context, index) => OrderItemWidget(expanded: false, order: _con.orders.elementAt(index)),
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 20);
                         },

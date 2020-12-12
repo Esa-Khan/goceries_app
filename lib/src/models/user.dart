@@ -15,6 +15,7 @@ class User {
   Media image;
   bool isDriver;
   String work_hours;
+  String store_ids;
 
 
   // used for indicate if client logged in or not
@@ -49,8 +50,10 @@ class User {
       }
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media(isCat: false);
       isDriver = jsonMap['isDriver'] == 0 ? false : true;
-      if (isDriver)
-        work_hours = jsonMap['work_hours'][0]['work_hours'];
+      if (isDriver) {
+        work_hours = jsonMap['work_hours'];
+        store_ids = jsonMap['store_ids'];
+      }
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }

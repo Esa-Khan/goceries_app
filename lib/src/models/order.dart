@@ -20,6 +20,7 @@ class Order {
   Payment payment;
   Address deliveryAddress;
   int driver_id;
+  int store_id;
 
   Order();
 
@@ -28,7 +29,7 @@ class Order {
       id = jsonMap['id'].toString();
       discount = jsonMap['tax'] != null ? jsonMap['tax'].toDouble() : 0.0;
       deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
-      hint = jsonMap['hint'] != null ? jsonMap['hint'].toString() : '';
+      hint = jsonMap['hint'] != null ? jsonMap['hint'].toString() : null;
       active = jsonMap['active'] ?? false;
       orderStatus = jsonMap['order_status'] != null ? OrderStatus.fromJSON(jsonMap['order_status']) : OrderStatus.fromJSON({});
       dateTime = DateTime.parse(jsonMap['updated_at']);
@@ -37,6 +38,7 @@ class Order {
       payment = jsonMap['payment'] != null ? Payment.fromJSON(jsonMap['payment']) : Payment.fromJSON({});
       foodOrders = jsonMap['food_orders'] != null ? List.from(jsonMap['food_orders']).map((element) => FoodOrder.fromJSON(element)).toList() : [];
       driver_id = jsonMap['driver_id'];
+      store_id = jsonMap['store_id'];
     } catch (e) {
       id = '';
       discount = 0.0;
@@ -69,6 +71,7 @@ class Order {
     if (!deliveryAddress.isUnknown()) {
       map["delivery_address_id"] = deliveryAddress?.id;
     }
+    map['store_id'] = foodOrders.first.food.restaurant.id;
     return map;
   }
 
@@ -86,6 +89,7 @@ class Order {
   Map deliveredMap() {
     var map = new Map<String, dynamic>();
     map["id"] = id;
+    map["user_id"] = user?.id;
     map["order_status_id"] = int.parse(this.orderStatus.id) + 1;
     if (this.orderStatus.id == '1'){
       map["driver_id"] = this.driver_id;

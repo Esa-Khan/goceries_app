@@ -133,6 +133,14 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
 
 
 
+
+
+
+
+
+
+
+
                 : !_con.hasAislesLoaded
                   ? Padding(
                       padding: EdgeInsets.symmetric(vertical: 50),
@@ -167,9 +175,7 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                             subAisles: _con.aisleToSubaisleMap[currAisle.id],
                             timeout: index,
                             onPressed: (aisleVal) async {
-                              _con.isExpandedList.forEach((key, value) {
-                                setState(() => _con.isExpandedList[key] = false);
-                              });
+                              _con.isExpandedList.updateAll((key, value) => value = false);
                               if (!_con.isExpandedList[aisleVal.id])
                                 _con.isExpandedList[aisleVal.id] = true;
 

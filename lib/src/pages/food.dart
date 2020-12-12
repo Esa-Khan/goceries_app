@@ -198,7 +198,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                         decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
                                         child: Text(
-                                          _con.aisle.name + " Category",
+                                          _con.aisle.name,
                                           style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
                                         )),
                                   ],

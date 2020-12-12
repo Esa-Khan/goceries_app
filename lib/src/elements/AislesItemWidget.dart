@@ -64,7 +64,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 
   Future<void> img_timeout() async {
     if (mounted && !timed_out) {
-      Future.delayed(Duration(milliseconds: ((widget.timeout/2)*1500).ceil())).whenComplete(() {
+      Future.delayed(Duration(milliseconds: ((widget.timeout/2)*2000).ceil())).whenComplete(() {
         if (mounted) {
           // print("---------TIMEDOUT AFTER ${widget.timeout} SECONDS----------");
           setState(() => timed_out = true);
@@ -75,7 +75,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 
   Future<void> subimg_timeout(int index) async {
     if (mounted && !sub_timed_out[index]) {
-      Future.delayed(Duration(milliseconds: ((index/2)*1500).ceil())).whenComplete(() {
+      Future.delayed(Duration(milliseconds: ((index/2)*2000).ceil())).whenComplete(() {
         if (mounted) {
           // print("---------SUB-TIMEDOUT AFTER ${index} SECONDS----------");
           setState(() => sub_timed_out[index] = true);
@@ -103,8 +103,8 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                     fit: BoxFit.cover,
                     colorFilter: new ColorFilter.mode(Colors.white.withOpacity(aisle_img_opacity), BlendMode.dstIn),
                     onError: (dynamic, StackTrace) {
-                      widget.aisle.aisleImage = 'assets/img/loading.gif';
                       print("Error Loading Image: ${widget.aisle.aisleImage}");
+                      widget.aisle.aisleImage = 'assets/img/loading.gif';
                     },
                   ),
                   color: Theme.of(context).primaryColor.withOpacity(0.9),
@@ -135,7 +135,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                           style: TextStyle(
                               inherit: true,
                               fontSize: Theme.of(context).textTheme.headline2.fontSize,
-                              color: Theme.of(context).primaryColor,
+                              color: Colors.white,
                               shadows: [
                                 Shadow( // bottomLeft
                                     offset: Offset(-1.0, -1.0),
