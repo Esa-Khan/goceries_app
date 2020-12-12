@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
+import 'package:saudaghar/src/repository/user_repository.dart';
 
 import '../../helpers/custom_trace.dart';
 import '../../helpers/helper.dart';
@@ -12,7 +14,8 @@ import '../../models/order_status.dart';
 import '../../models/user.dart';
 import '../../repository/user_repository.dart' as userRepo;
 
-Future<Stream<Order>> getOrders({int driver_id}) async {
+
+Future<Stream<Order>> getOrders() async {
   Uri uri = Helper.getUri('api/orders');
   Map<String, dynamic> _queryParams = {};
   final String orderStatusId = "5"; // for delivered status
@@ -21,11 +24,11 @@ Future<Stream<Order>> getOrders({int driver_id}) async {
   _queryParams['api_token'] = _user.apiToken;
   _queryParams['with'] = 'driver;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress;payment';
 //  _queryParams['search'] = 'driver.id:${_user.id};order_status_id:$orderStatusId;delivery_address_id:null';
-  _queryParams['search'] = 'driver.id:${driver_id};order_status_id:$orderStatusId;delivery_address_id:null';
-  _queryParams['searchFields'] = 'driver.id:=;order_status_id:<>;delivery_address_id:<>';
-  _queryParams['searchJoin'] = 'and';
-  _queryParams['orderBy'] = 'id';
-  _queryParams['sortedBy'] = 'asc';
+//   _queryParams['search'] = 'driver.id:${_user.id};order_status_id:$orderStatusId;delivery_address_id:null';
+//   _queryParams['searchFields'] = 'driver.id:=;order_status_id:<>;delivery_address_id:<>';
+  _queryParams['store_ids'] = _user.store_ids;
+  _queryParams['driver_id'] = _user.id;
+  _queryParams['active'] = _user.id;
   uri = uri.replace(queryParameters: _queryParams);
   try {
     final client = new http.Client();
@@ -38,6 +41,8 @@ Future<Stream<Order>> getOrders({int driver_id}) async {
     return new Stream.value(new Order.fromJSON({}));
   }
 }
+
+
 
 Future<Stream<Order>> getNearOrders(Address myAddress, Address areaAddress) async {
   Uri uri = Helper.getUri('api/orders');

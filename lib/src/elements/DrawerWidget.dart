@@ -79,7 +79,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               "Where to Shop?",
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           ListTile(
@@ -93,7 +93,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).home,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           // ListTile(
@@ -119,7 +119,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).my_orders,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           ListTile(
@@ -132,7 +132,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).favorite_foods,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           ListTile(
@@ -156,7 +156,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).help__support,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           ListTile(
@@ -173,7 +173,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).settings,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           // ListTile(
@@ -206,7 +206,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               Theme.of(context).brightness == Brightness.dark ? S.of(context).light_mode : S.of(context).dark_mode,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           ListTile(
@@ -226,7 +226,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               currentUser.value.apiToken != null ? S.of(context).log_out : S.of(context).login,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           currentUser.value.apiToken == null

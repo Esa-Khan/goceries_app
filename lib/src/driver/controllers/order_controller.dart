@@ -19,45 +19,46 @@ class OrderController extends ControllerMVC {
   }
 
   void listenForOrders({String message}) async {
-    var driver_ids = [1, int.parse(currentUser.value.id)];
-    driver_ids.forEach((element) async {
-      final Stream<Order> stream = await getOrders(driver_id: element);
-      stream.listen((Order _order) {
-        if (currentUser.value.work_hours == '24/7') {
-          orders.add(_order);
+    final Stream<Order> stream = await getOrders();
+    stream.listen((Order _order) {
+      if (currentUser.value.work_hours == '24/7') {
+        if (_order.orderStatus.id == '1' || orders.isEmpty) {
+          setState(() => orders.add(_order));
         } else {
-          if ((!orders.contains(_order) && isWorking) || (!orders.contains(_order) && !isWorking && _order.orderStatus.status != "Pending Approval")) {
-            if (_order.orderStatus.id == '1' || orders.isEmpty) {
-              setState(() {
-                orders.add(_order);
-              });
-            } else {
-              for (int i = 0; i < orders.length; i++) {
-                if (int.parse(orders.elementAt(i).orderStatus.id) <
-                    int.parse(_order.orderStatus.id)) {
-                  setState(() {
-                    orders.insert(i, _order);
-                  });
-                }
+          for (int i = 0; i < orders.length; i++) {
+            if (int.parse(orders.elementAt(i).orderStatus.id) < int.parse(_order.orderStatus.id)) {
+              setState(() => orders.insert(i, _order));
+              break;
+            }
+          }
+        }
+      } else {
+        if ((!orders.contains(_order) && isWorking) || (!orders.contains(_order) && !isWorking && _order.orderStatus.status != "Pending Approval")) {
+          if (_order.orderStatus.id == '1' || orders.isEmpty) {
+            setState(() => orders.add(_order));
+          } else {
+            for (int i = 0; i < orders.length; i++) {
+              if (int.parse(orders.elementAt(i).orderStatus.id) < int.parse(_order.orderStatus.id)) {
+                setState(() => orders.insert(i, _order));
+                break;
               }
             }
           }
         }
-
-      }, onError: (a) {
-        print(a);
+      }
+    }, onError: (a) {
+      print(a);
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text(S.of(context).verify_your_internet_connection),
+      ));
+    }, onDone: () {
+      setState(() => orders_loaded = true);
+      if (message != null) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).verify_your_internet_connection),
+          content: Text(message),
+          duration: Duration(seconds: 1),
         ));
-      }, onDone: () {
-        setState(() => orders_loaded = true);
-        if (message != null) {
-          scaffoldKey?.currentState?.showSnackBar(SnackBar(
-            content: Text(message),
-            duration: Duration(seconds: 1),
-          ));
-        }
-      });
+      }
     });
 
   }

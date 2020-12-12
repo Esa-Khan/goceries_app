@@ -68,7 +68,9 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: CategoryListWidget(store: _con.restaurant)
+      body: _con.restaurant == null
+          ? const Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
+          : CategoryListWidget(store: _con.restaurant)
     );
 
   }

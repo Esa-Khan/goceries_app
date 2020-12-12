@@ -1,12 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../generated/l10n.dart';
+import 'package:http/http.dart' as http;
 
 import '../helpers/helper.dart';
 import '../models/food.dart';
 import '../models/route_argument.dart';
-import 'package:http/http.dart' as http;
-
+import '../repository/settings_repository.dart' as settingsRepo;
 class FoodItemWidget extends StatelessWidget {
   final String heroTag;
   final Food food;
@@ -37,11 +37,6 @@ class FoodItemWidget extends StatelessWidget {
               tag: heroTag + food.id,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                // child: Image.network(
-                //   food.image.thumb,
-                //   height: 60,
-                //   width: 60,
-                // )
              child: CachedNetworkImage(
                   height: 60,
                   width: 60,
@@ -62,7 +57,7 @@ class FoodItemWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: 15),
+            SizedBox(width: settingsRepo.compact_view ? 5 : 15),
             Flexible(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -75,7 +70,7 @@ class FoodItemWidget extends StatelessWidget {
                           food.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.subtitle1,
+                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: settingsRepo.compact_view ? 13 : 15)),
                         ),
                         SizedBox(height: 5),
 
@@ -86,7 +81,7 @@ class FoodItemWidget extends StatelessWidget {
                           BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
                           child: Text(
                             food.weight,
-                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 13 : 15)),
                           ),
                         )
                         : SizedBox(height: 0),
@@ -95,7 +90,7 @@ class FoodItemWidget extends StatelessWidget {
                           food.restaurant.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.caption,
+                          style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: settingsRepo.compact_view ? 13 : 15)),
                         )
                             : SizedBox(height: 0),
                       ],
@@ -104,7 +99,8 @@ class FoodItemWidget extends StatelessWidget {
                   SizedBox(width: 8),
                   Column(
                     children: <Widget>[
-                      Helper.getPrice(food.price, context, style: Theme.of(context).textTheme.headline4),
+                      Helper.getPrice(food.price, context,
+                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: settingsRepo.compact_view ? 13 : 15))),
                       food.ingredients != "<p>.</p>" && food.ingredients.isNotEmpty && food.ingredients != "0"
                       ? Container(
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
