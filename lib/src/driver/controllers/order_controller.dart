@@ -21,31 +21,7 @@ class OrderController extends ControllerMVC {
   void listenForOrders({String message}) async {
     final Stream<Order> stream = await getOrders();
     stream.listen((Order _order) {
-      if (currentUser.value.work_hours == '24/7') {
-        if (_order.orderStatus.id == '1' || orders.isEmpty) {
-          setState(() => orders.add(_order));
-        } else {
-          for (int i = 0; i < orders.length; i++) {
-            if (int.parse(orders.elementAt(i).orderStatus.id) < int.parse(_order.orderStatus.id)) {
-              setState(() => orders.insert(i, _order));
-              break;
-            }
-          }
-        }
-      } else {
-        if ((!orders.contains(_order) && isWorking) || (!orders.contains(_order) && !isWorking && _order.orderStatus.status != "Pending Approval")) {
-          if (_order.orderStatus.id == '1' || orders.isEmpty) {
-            setState(() => orders.add(_order));
-          } else {
-            for (int i = 0; i < orders.length; i++) {
-              if (int.parse(orders.elementAt(i).orderStatus.id) < int.parse(_order.orderStatus.id)) {
-                setState(() => orders.insert(i, _order));
-                break;
-              }
-            }
-          }
-        }
-      }
+      setState(() => orders.add(_order));
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(

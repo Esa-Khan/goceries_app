@@ -90,8 +90,6 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                   new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
                 ],
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                expandedHeight: 230,
-                elevation: 0,
                 flexibleSpace: FlexibleSpaceBar(
                   background: Container(
                     margin: EdgeInsets.only(top: 95, bottom: 65),
@@ -511,15 +509,16 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                           style: Theme.of(context).textTheme.headline6)
                     ],
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: _con.order.orderStatus.id == '5' ? 0 : 20),
                   _con.order.orderStatus.id == '5'
                       ? SizedBox(height: 0)
                       : Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 15.0, vertical: 0),
+                            Expanded(
+                              flex: 10,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 15.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25.0),
                                   border: Border.all(
@@ -529,78 +528,39 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                                 ),
                                 child: DropdownButton<String>(
                                   isDense: true,
+                                  isExpanded: true,
                                   icon: Icon(
                                     Icons.arrow_drop_down,
                                     color: Theme.of(context).accentColor,
                                   ),
                                   iconSize: 40,
                                   elevation: 16,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline6
-                                      .apply(
-                                          color: Theme.of(context).accentColor),
+                                  style: Theme.of(context).textTheme.headline6.apply(
+                                  color: Theme.of(context).accentColor),
                                   onChanged: (String changedValue) {
-//                                newValue;
-//                                print(newValue);
-//                              });
-//                                dropdownValues.add(newValue);
                                   },
                                   value: orderStatuses.elementAt(dropDownValue),
-                                  items: orderStatuses
-                                      .map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                    return DropdownMenuItem<String>(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
+                                  items: orderStatuses.map<DropdownMenuItem<String>>(
+                                    (String value) {
+                                      return DropdownMenuItem<String>(
+                                        value: value,
+                                        child: Text(value),
+                                      );
+                                    }).toList(),
                                 ),
                               ),
-                              SizedBox(width: 20),
-                              FlatButton(
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: SizedBox()
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: FlatButton(
                                 onPressed: () {
                                   showDialog(
                                       context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: Text(S
-                                              .of(context)
-                                              .delivery_confirmation),
-                                          content: Text(S
-                                              .of(context)
-                                              .are_you_sure_you_want_to_update_the_order),
-                                          actions: <Widget>[
-                                            // usually buttons at the bottom of the dialog
-                                            FlatButton(
-                                              child: new Text(
-                                                  S.of(context).dismiss),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            FlatButton(
-                                              child: new Text(
-                                                  S.of(context).confirm),
-                                              onPressed: () {
-                                                _con
-                                                    .updateOrder(_con.order)
-                                                    .whenComplete(() {
-                                                  _con
-                                                      .refreshOrder()
-                                                      .whenComplete(() {
-                                                    setState(
-                                                        () => dropDownValue++);
-                                                    // Not to re-initialize dropdown menu display
-                                                    setStatus = false;
-                                                    Navigator.of(context).pop();
-                                                  });
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      });
+                                      builder: (context) => updateOrderDialog());
                                 },
                                 padding: EdgeInsets.symmetric(vertical: 14),
                                 color: Theme.of(context).accentColor,
@@ -611,13 +571,45 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                                   style: TextStyle(
                                       color: Theme.of(context).primaryColor),
                                 ),
-                              ),
-                            ]),
-                  SizedBox(height: 10),
+                              )
+                            )
+                          ]),
+                  SizedBox(height: _con.order.orderStatus.id == '5' ? 0 : 10),
                 ],
               ),
             ),
           );
+  }
+
+  Widget updateOrderDialog() {
+    return AlertDialog(
+      title: Text(S.of(context).delivery_confirmation),
+      content: Text(S.of(context).are_you_sure_you_want_to_update_the_order),
+      actions: <Widget>[
+        // usually buttons at the bottom of the dialog
+        FlatButton(
+          child: new Text(
+              S.of(context).dismiss),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        FlatButton(
+          child: new Text(
+              S.of(context).confirm),
+          onPressed: () {
+            _con.updateOrder(_con.order).whenComplete(() {
+              _con.refreshOrder().whenComplete(() {
+                setState(() => dropDownValue++);
+                // Not to re-initialize dropdown menu display
+                setStatus = false;
+                Navigator.of(context).pop();
+              });
+            });
+          },
+        ),
+      ],
+    );
   }
 
 }

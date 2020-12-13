@@ -19,7 +19,6 @@ import '../models/setting.dart';
 ValueNotifier<Setting> setting = new ValueNotifier(new Setting());
 ValueNotifier<bool> isDebug = new ValueNotifier(false);
 ValueNotifier<Address> deliveryAddress = new ValueNotifier(new Address());
-ValueNotifier<bool> firstStart = new ValueNotifier(true);
 ValueNotifier<int> isStore = new ValueNotifier(0);
 bool compact_view = false;
 final navigatorKey = GlobalKey<NavigatorState>();
