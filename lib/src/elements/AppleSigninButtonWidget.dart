@@ -14,23 +14,13 @@ class AppleSigninButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlineButton(
       splashColor: Colors.grey,
-      onPressed: () {
-//        signInWithGoogle().whenComplete(() {
-//          Navigator.of(context).push(
-//            MaterialPageRoute(
-//              builder: (context) {
-//                return FirstScreen();
-//              },
-//            ),
-//          );
-//        });
-      },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.grey),
       child: AppleSignInButton(
         // style: ButtonStyle.black,
         type: ButtonType.continueButton,
+        onPressed: con.signInWithApple,
       ),
     );
   }
