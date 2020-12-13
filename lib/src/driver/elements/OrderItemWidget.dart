@@ -150,7 +150,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
               child: Text(
                 '${widget.order.orderStatus.status}',
                 maxLines: 1,
-                style: Theme.of(context).textTheme.caption.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor)),
+                style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
               ),
             ),
             const Expanded(child: SizedBox()),

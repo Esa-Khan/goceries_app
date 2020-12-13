@@ -212,7 +212,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                                 style: TextStyle(
                                                     inherit: true,
                                                     fontSize: Theme.of(context).textTheme.headline2.fontSize,
-                                                    color: Theme.of(context).primaryColor,
+                                                    color: Colors.white,
                                                     shadows: [
                                                       Shadow( // bottomLeft
                                                           offset: Offset(-1.0, -1.0),

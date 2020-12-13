@@ -14,6 +14,7 @@ class User {
   String bio;
   Media image;
   bool isDriver;
+  bool isManager;
   String work_hours;
   String store_ids;
 
@@ -50,6 +51,8 @@ class User {
       }
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media(isCat: false);
       isDriver = jsonMap['isDriver'] == 0 ? false : true;
+      isManager = jsonMap['isManager'] == 0 ? false : true;
+      isDriver = isDriver || isManager;
       if (isDriver) {
         work_hours = jsonMap['work_hours'];
         store_ids = jsonMap['store_ids'];
@@ -74,6 +77,8 @@ class User {
     map["address"] = address;
     map["bio"] = bio;
     map["media"] = image?.toMap();
+    map["isDriver"] = isDriver;
+    map["isManager"] = isManager;
     return map;
   }
 

@@ -86,12 +86,12 @@ class _MyAppState extends State<MyApp> {
                             color: config.Colors().secondColor(1),
                             height: 1.5),
                         subtitle1: TextStyle(
-                            fontSize: settingRepo.compact_view ? 12.0 :  15.0,
+                            fontSize: settingRepo.compact_view ? 14.0 :  15.0,
                             fontWeight: FontWeight.w500,
                             color: config.Colors().secondColor(1),
                             height: 1.35),
                         headline6: TextStyle(
-                            fontSize: settingRepo.compact_view ? 13.0 : 16.0,
+                            fontSize: settingRepo.compact_view ? 15.0 : 16.0,
                             fontWeight: FontWeight.w600,
                             color: config.Colors().mainColor(1),
                             height: 1.35),
@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> {
                             color: config.Colors().secondColor(1),
                             height: 1.35),
                         caption: TextStyle(
-                            fontSize: settingRepo.compact_view ? 9.0 : 12.0,
+                            fontSize: 12.0,
                             color: config.Colors().accentColor(1),
                             height: 1.35),
                       ),
@@ -144,12 +144,12 @@ class _MyAppState extends State<MyApp> {
                             color: config.Colors().secondDarkColor(1),
                             height: 1.5),
                         subtitle1: TextStyle(
-                            fontSize: settingRepo.compact_view ? 12.0 : 15.0,
+                            fontSize: settingRepo.compact_view ? 14.0 : 15.0,
                             fontWeight: FontWeight.w500,
                             color: config.Colors().secondDarkColor(1),
                             height: 1.35),
                         headline6: TextStyle(
-                            fontSize: settingRepo.compact_view ? 13.0 : 16.0,
+                            fontSize: settingRepo.compact_view ? 15.0 : 16.0,
                             fontWeight: FontWeight.w600,
                             color: config.Colors().mainDarkColor(1),
                             height: 1.35),
@@ -162,7 +162,7 @@ class _MyAppState extends State<MyApp> {
                             color: config.Colors().secondDarkColor(1),
                             height: 1.35),
                         caption: TextStyle(
-                            fontSize: settingRepo.compact_view ? 9.0 : 12.0,
+                            fontSize: 12.0,
                             color: config.Colors().secondDarkColor(0.6),
                             height: 1.35),
                       ),
