@@ -13,8 +13,8 @@ class User {
   String address;
   String bio;
   Media image;
-  bool isDriver;
-  bool isManager;
+  bool isDriver = false;
+  bool isManager = false;
   String work_hours;
   String store_ids;
 
@@ -50,8 +50,8 @@ class User {
         bio = "";
       }
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media(isCat: false);
-      isDriver = jsonMap['isDriver'] == 0 ? false : true;
-      isManager = jsonMap['isManager'] == 0 ? false : true;
+      isDriver = jsonMap['isDriver'] == 0 || jsonMap['isDriver'] == null ? false : true;
+      isManager = jsonMap['isManager'] == 0 || jsonMap['isManager'] == null ? false : true;
       isDriver = isDriver || isManager;
       if (isDriver) {
         work_hours = jsonMap['work_hours'];

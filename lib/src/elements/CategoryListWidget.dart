@@ -182,9 +182,9 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                               if (aisleVal.id.length > 2 &&
                                   !_con.isAisleLoadedList[aisleVal.id] &&
                                   _con.isExpandedList[aisleVal.id]) {
-                                print(aisleVal.name);
-                                await _con.listenForItemsByCategory(aisleVal.id, storeID: _con.restaurant.id);
-                                _con.isAisleLoadedList[aisleVal.id] = true;
+                                  print(aisleVal.name);
+                                  await _con.listenForItemsByCategory(aisleVal.id, storeID: _con.restaurant.id);
+                                  _con.isAisleLoadedList[aisleVal.id] = true;
                               }
                             });
                         }

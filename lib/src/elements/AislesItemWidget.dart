@@ -53,15 +53,6 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
     }
   }
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   timed_out = true;
-  //   for (int i = 0; i < widget.subAisles.length; i++) {
-  //     sub_timed_out[i] = true;
-  //   }
-  // }
-
   Future<void> img_timeout() async {
     if (mounted && !timed_out) {
       Future.delayed(Duration(milliseconds: ((widget.timeout/2)*2000).ceil())).whenComplete(() {
@@ -167,100 +158,19 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                           List<Food> items = widget.items[currSubAisle.id];
                           subimg_timeout(index);
                           // Define a SubAisle dropdown
-                          return Stack(
-                            children: <Widget>[
-                              Opacity(
-                                opacity: 1,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    Container(
-                                      margin: EdgeInsets.only(top: 14, left: 10, right: 10),
-                                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                                      decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            // image: Image.network(widget.subAisles[int.parse(currSubAisle.id)].aisleImage).image,
-                                           image: sub_timed_out[index] && currSubAisle.aisleImage != null
-                                               ? Image.network(currSubAisle.aisleImage).image
-                                               : Image.asset('assets/img/loading.gif').image,
-                                            fit: BoxFit.cover,
-                                            onError: (dynamic, StackTrace) {
-                                              print("Error Loading Image: ${currSubAisle.aisleImage}");
-                                            },
-                                          ),
-                                          color: Theme.of(context).primaryColor.withOpacity(0.9),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Theme.of(context).focusColor.withOpacity(0.5),
-                                                blurRadius: 5,
-                                                offset: Offset(0, 2)
-                                            ),
-                                          ],
-                                          borderRadius: new BorderRadius.all(const Radius.circular(5.0))
-                                      ),
-                                      child: Theme(
-                                        data: theme,
-                                        child: ExpansionTile(
-                                          trailing: Icon(Icons.arrow_drop_down_circle_outlined, color: Colors.white),
-                                          onExpansionChanged: (value) {
-                                            widget.onPressed(currSubAisle);
-                                          },
-                                          title: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                currSubAisle.name,
-                                                style: TextStyle(
-                                                    inherit: true,
-                                                    fontSize: Theme.of(context).textTheme.headline2.fontSize,
-                                                    color: Colors.white,
-                                                    shadows: [
-                                                      Shadow( // bottomLeft
-                                                          offset: Offset(-1.0, -1.0),
-                                                          color: Colors.black,
-                                                          blurRadius: 5
-                                                      ),
-                                                    ]
-                                                ),
-                                                maxLines: 1,
-                                                textScaleFactor: 1.3,
-                                              ),
-                                            ],
-                                          ),
-                                          children: <Widget>[
-                                            const SizedBox(height: 10),
-                                            items == null || items.isEmpty
-                                              ? Center(heightFactor: 2, child: const SizedBox(width: 60, height: 60,
-                                                        child: CircularProgressIndicator(strokeWidth: 5)))
-                                              : ListView.separated(
-                                                  scrollDirection: Axis.vertical,
-                                                  shrinkWrap: true,
-                                                  primary: false,
-                                                  itemCount: items.length,
-                                                  separatorBuilder: (context, index) {
-                                                    return SizedBox(height: 10);
-                                                  },
-                                                  // ignore: missing_return
-                                                  itemBuilder: (context, index) {
-                                                    return FoodItemWidget(
-                                                      heroTag: 'menu_list',
-                                                      food: items.elementAt(index),
-                                                    );
-                                                  },
-                                              ),
-                                            SizedBox(height: 20),
-                                                        ])))
-                                          ]))
-                                ]);
+                          return SubCategoryItemWidget(
+                            index: index,
+                            currSubAisle: currSubAisle,
+                            items: items,
+                            theme: theme
+                          );
                               },
-                      )
-                          : Center(
-                              heightFactor: 2,
+                        )
+                          : Center(heightFactor: 2,
                               child: SizedBox(
-                                  width: 60,
-                                  height: 60,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 5,
-                                  ))),
+                              width: 60,
+                              height: 60,
+                              child: CircularProgressIndicator(strokeWidth: 5))),
                       SizedBox(height: 20),
                     ],
                   ),
@@ -271,6 +181,97 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
         ),
       ],
     );
+  }
+
+
+
+
+  Widget SubCategoryItemWidget({int index, category.Category currSubAisle,
+                                  ThemeData theme, List<Food> items}) {
+    return Stack(
+        children: <Widget>[
+          Opacity(
+              opacity: 1,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                        margin: EdgeInsets.only(top: 14, left: 10, right: 10),
+                        padding: EdgeInsets.only(top: 10, bottom: 10),
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                              // image: Image.network(widget.subAisles[int.parse(currSubAisle.id)].aisleImage).image,
+                              image: sub_timed_out[index] && currSubAisle.aisleImage != null
+                                  ? Image.network(currSubAisle.aisleImage).image
+                                  : Image.asset('assets/img/loading.gif').image,
+                              fit: BoxFit.cover,
+                              onError: (dynamic, StackTrace) {
+                                print("Error Loading Image: ${currSubAisle.aisleImage}");
+                              },
+                            ),
+                            color: Theme.of(context).primaryColor.withOpacity(0.9),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Theme.of(context).focusColor.withOpacity(0.5),
+                                  blurRadius: 5,
+                                  offset: Offset(0, 2)
+                              ),
+                            ],
+                            borderRadius: new BorderRadius.all(const Radius.circular(5.0))
+                        ),
+                        child: Theme(
+                            data: theme,
+                            child: ExpansionTile(
+                                trailing: Icon(Icons.arrow_drop_down_circle_outlined, color: Colors.white),
+                                onExpansionChanged: (value) {
+                                  widget.onPressed(currSubAisle);
+                                },
+                                title: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      currSubAisle.name,
+                                      style: TextStyle(
+                                          inherit: true,
+                                          fontSize: Theme.of(context).textTheme.headline2.fontSize,
+                                          color: Colors.white,
+                                          shadows: [
+                                            Shadow( // bottomLeft
+                                                offset: Offset(-1.0, -1.0),
+                                                color: Colors.black,
+                                                blurRadius: 5
+                                            ),
+                                          ]
+                                      ),
+                                      maxLines: 1,
+                                      textScaleFactor: 1.3,
+                                    ),
+                                  ],
+                                ),
+                                children: <Widget>[
+                                  const SizedBox(height: 10),
+                                  items == null || items.isEmpty
+                                      ? Center(heightFactor: 2, child: const SizedBox(width: 60, height: 60,
+                                      child: CircularProgressIndicator(strokeWidth: 5)))
+                                      : ListView.separated(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: items.length,
+                                    separatorBuilder: (context, index) {
+                                      return SizedBox(height: 10);
+                                    },
+                                    // ignore: missing_return
+                                    itemBuilder: (context, index) {
+                                      return FoodItemWidget(
+                                        heroTag: 'menu_list',
+                                        food: items.elementAt(index),
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 20),
+                                ])))
+                  ]))
+        ]);
   }
 
 

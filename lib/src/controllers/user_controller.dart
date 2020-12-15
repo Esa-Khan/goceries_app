@@ -59,7 +59,7 @@ class UserController extends ControllerMVC {
       }).catchError((e) {
         loader.remove();
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_account_not_exist),
+          content: Text(e.message, textAlign: TextAlign.center,),
         ));
       }).whenComplete(() {
         Helper.hideLoader(loader);

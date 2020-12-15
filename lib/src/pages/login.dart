@@ -37,7 +37,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _con.scaffoldKey,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       body: Stack(
         alignment: AlignmentDirectional.topCenter,
         children: <Widget>[
