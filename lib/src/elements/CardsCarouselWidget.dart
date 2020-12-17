@@ -28,7 +28,7 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (!hasTimedout)
+    if (!hasTimedout && widget.heroTag == 'home_top_restaurants')
       Future.delayed(const Duration(milliseconds: 10000), () {
         if (mounted)
           setState(() => hasTimedout = true);

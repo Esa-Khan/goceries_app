@@ -243,10 +243,10 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                                 child: FlatButton(
                                   padding: EdgeInsets.all(0),
                                   disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
-                                  //onPressed: () {
-//                                    Navigator.of(context).pushNamed('/Profile',
-//                                        arguments: new RouteArgument(param: _con.order.deliveryAddress));
-                                  //},
+                                  onPressed: () {
+                                   // Navigator.of(context).pushNamed('/Profile',
+                                   //     arguments: new RouteArgument(param: _con.order.deliveryAddress));
+                                  },
                                   child: Icon(
                                     Icons.person,
                                     color: Theme.of(context).primaryColor,
