@@ -30,6 +30,7 @@ class CategoryController extends ControllerMVC {
   HashMap subaisleToItemsMap = new HashMap<String, List<Food>>();
   HashMap isExpandedList = new HashMap<String, bool>();
   HashMap isAisleLoadedList = new HashMap<String, bool>();
+  List<String> loadedSubaisles = <String>[];
 
   CategoryController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();

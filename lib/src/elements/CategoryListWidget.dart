@@ -185,6 +185,13 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                                   print(aisleVal.name);
                                   await _con.listenForItemsByCategory(aisleVal.id, storeID: _con.restaurant.id);
                                   _con.isAisleLoadedList[aisleVal.id] = true;
+                                  if (_con.loadedSubaisles.length == 5) {
+                                    String aisleitems_to_delete = _con.loadedSubaisles.first;
+                                    _con.subaisleToItemsMap[aisleitems_to_delete] = null;
+                                    _con.loadedSubaisles.remove(aisleitems_to_delete);
+                                    _con.isAisleLoadedList[aisleitems_to_delete] = false;
+                                  }
+                                  _con.loadedSubaisles.add(aisleVal.id);
                               }
                             });
                         }
