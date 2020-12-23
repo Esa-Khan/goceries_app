@@ -57,7 +57,7 @@ class FoodItemWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(width: settingsRepo.compact_view ? 5 : 15),
+            SizedBox(width: settingsRepo.compact_view_horizontal ? 5 : 15),
             Flexible(
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,7 +70,7 @@ class FoodItemWidget extends StatelessWidget {
                           food.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: settingsRepo.compact_view ? 13 : 15)),
+                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: settingsRepo.compact_view_horizontal ? 13 : 15)),
                         ),
                         SizedBox(height: 5),
 
@@ -81,7 +81,7 @@ class FoodItemWidget extends StatelessWidget {
                           BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
                           child: Text(
                             food.weight,
-                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 13 : 15)),
+                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 13 : 15)),
                           ),
                         )
                         : SizedBox(height: 0),
@@ -90,7 +90,7 @@ class FoodItemWidget extends StatelessWidget {
                           food.restaurant.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: settingsRepo.compact_view ? 13 : 15)),
+                          style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: settingsRepo.compact_view_horizontal ? 13 : 15)),
                         )
                             : SizedBox(height: 0),
                       ],
@@ -100,7 +100,7 @@ class FoodItemWidget extends StatelessWidget {
                   Column(
                     children: <Widget>[
                       Helper.getPrice(food.price, context,
-                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: settingsRepo.compact_view ? 13 : 15))),
+                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: settingsRepo.compact_view_horizontal ? 13 : 15))),
                       food.ingredients != "<p>.</p>" && food.ingredients.isNotEmpty && food.ingredients != "0"
                       ? Container(
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),

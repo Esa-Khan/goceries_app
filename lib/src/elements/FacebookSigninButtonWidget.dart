@@ -26,14 +26,14 @@ class FacebookSigninButtonWidget extends StatelessWidget {
             SvgPicture.asset(
               "assets/img/facebook_icon.svg",
               color: Colors.blue,
-              height: settingsRepo.compact_view ? 30 : 35,
+              height: settingsRepo.compact_view_horizontal ? 30 : 35,
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
                 isLogin ? 'Sign in with Facebook' : 'Sign up with Facebook',
                 style: TextStyle(
-                  fontSize: settingsRepo.compact_view ? 14 : 19,
+                  fontSize: settingsRepo.compact_view_horizontal ? 14 : 19,
                   color: Colors.blue,
                   letterSpacing: -0.2,
                 ),

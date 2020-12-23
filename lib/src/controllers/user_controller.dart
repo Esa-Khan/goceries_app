@@ -94,6 +94,8 @@ class UserController extends ControllerMVC {
 
         thirdPartyLogin();
         return 'signInWithGoogle succeeded: $user';
+      } else {
+        Helper.hideLoader(loader);
       }
 
     } catch (e) {
@@ -120,6 +122,7 @@ class UserController extends ControllerMVC {
         case FacebookLoginStatus.cancelledByUser:
           print("CancelledByUser");
           onLoginStatusChanged(false);
+          Helper.hideLoader(loader);
           break;
         case FacebookLoginStatus.loggedIn:
           print("LoggedIn");
@@ -212,8 +215,8 @@ class UserController extends ControllerMVC {
         ));
       }
     }).catchError((e) {
-      print("-------------Login Failed-------------" + e.toString());
-      if (e.toString() == "Exception: No Account with this Email") {
+      print("-------------Login Failed-------------\n" + e.toString());
+      if (e.message == "No account with this email") {
         repository.register(this.user).then((value) {
           if (value != null && value.apiToken != null) {
             print("-------------Register Success-------------");
@@ -235,10 +238,10 @@ class UserController extends ControllerMVC {
               content: Text("Wrong password. Try a different login method."),
             ));
           }
-          Helper.hideLoader(loader);
         });
       }
       });
+    Helper.hideLoader(loader);
   }
 
   void register() async {

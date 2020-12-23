@@ -240,7 +240,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   ),
                   title: Text(
                     S.of(context).register,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
                   ),
                 )
               : SizedBox(height: 0),

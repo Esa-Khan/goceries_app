@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/repository/user_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../generated/l10n.dart';
@@ -13,6 +14,7 @@ import '../elements/CircularLoadingWidget.dart';
 import '../elements/DrawerWidget.dart';
 import '../elements/FoodOrderItemWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
+import '../repository/order_repository.dart' as orderRepo;
 
 class OrderWidget extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -83,7 +85,7 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                 ),
                 centerTitle: true,
                 title: Text(
-                  S.of(context).order_details,
+                  'Order #${_con.order.id} Details',
                   style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
                 ),
                 actions: <Widget>[
@@ -213,9 +215,9 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                   Offstage(
                     offstage: 1 != _tabIndex,
                     child: Column(
-                      children: <Widget>[
-                        SizedBox(height: 20),
-                        Container(
+                    children: <Widget>[
+                      SizedBox(height: 20),
+                      Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -243,16 +245,12 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                                 child: FlatButton(
                                   padding: EdgeInsets.all(0),
                                   disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
-                                  onPressed: () {
-                                   // Navigator.of(context).pushNamed('/Profile',
-                                   //     arguments: new RouteArgument(param: _con.order.deliveryAddress));
-                                  },
                                   child: Icon(
                                     Icons.person,
                                     color: Theme.of(context).primaryColor,
                                     size: 24,
                                   ),
-                                  color: Theme.of(context).accentColor.withOpacity(0.9),
+                                  color: Theme.of(context).primaryColor.withOpacity(0.9),
                                   shape: StadiumBorder(),
                                 ),
                               ),
@@ -314,7 +312,7 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      S.of(context).phoneNumber,
+                                      'Customer Number',
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context).textTheme.caption,
                                     ),
@@ -433,14 +431,105 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                        currentUser.value.isManager
+                            ? Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            "Assigned Driver",
+                                            overflow: TextOverflow.ellipsis,
+                                            style: Theme.of(context).textTheme.caption,
+                                          ),
+                                          Text(
+                                            _con.order.driver_name.toString() == 'Esa Khan'
+                                                ? 'No Driver Assigned'
+                                                : _con.order.driver_name.toString(),
+                                            style: Theme.of(context).textTheme.bodyText1,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(width: 10),
+                                    SizedBox(
+                                      width: 42,
+                                      height: 42,
+                                      child: FlatButton(
+                                          padding: EdgeInsets.all(0),
+                                          disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
+                                          child: Icon(
+                                            Icons.directions_bike_sharp,
+                                            color: Theme.of(context).primaryColor,
+                                            size: 24,
+                                          ),
+                                          color: Theme.of(context).accentColor.withOpacity(0.9),
+                                          shape: StadiumBorder()
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                        : const SizedBox(),
+                        currentUser.value.isManager && _con.order.driver_number != null
+                        ? Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Driver Number",
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context).textTheme.caption,
+                                    ),
+                                    Text(
+                                      _con.order.driver_number.toString(),
+                                      style: Theme.of(context).textTheme.bodyText1,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              SizedBox(width: 10),
+                              SizedBox(
+                                width: 42,
+                                height: 42,
+                                child: FlatButton(
+                                  padding: EdgeInsets.all(0),
+                                  onPressed: () {
+                                    launch("tel:${_con.order.driver_number}");
+                                  },
+                                  child: Icon(
+                                    Icons.call,
+                                    color: Theme.of(context).primaryColor,
+                                    size: 24,
+                                  ),
+                                  color: Theme.of(context).accentColor.withOpacity(0.9),
+                                  shape: StadiumBorder(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : const SizedBox(),
+                      SizedBox(height: 20),
+                    ],
+                    )
                   ),
                 ]),
               )
             ]),
     );
   }
+
+
 
   Widget OrderUpdateBottomNav() {
     return _con.order == null
@@ -581,6 +670,7 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
           );
   }
 
+
   Widget updateOrderDialog() {
     return AlertDialog(
       title: Text(S.of(context).delivery_confirmation),
@@ -600,6 +690,7 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
           onPressed: () {
             _con.updateOrder(_con.order).whenComplete(() {
               _con.refreshOrder().whenComplete(() {
+                orderRepo.con.value.refreshOrders();
                 setState(() => dropDownValue++);
                 // Not to re-initialize dropdown menu display
                 setStatus = false;

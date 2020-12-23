@@ -10,6 +10,7 @@ import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
 import '../repository/user_repository.dart' as userRepo;
+import '../repository/settings_repository.dart' as settingsRepo;
 import '../helpers/helper.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -50,7 +51,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             shrinkWrap: true,
             children: [
               Padding(
-                  padding: EdgeInsets.only(top: 45, bottom: 10),
+                  padding: EdgeInsets.only(top: settingsRepo.compact_view_vertical ? 10 : 45, bottom: 10),
                   child: Column(
                       children: [
                         Container(
@@ -89,7 +90,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                   ? AppleSigninButtonWidget(con: _con)
                                   : const SizedBox(),
                                 Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_vertical ? 5 : 15),
                                     child: Text(
                                       "OR",
                                       textAlign: TextAlign.center,

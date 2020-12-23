@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:http/http.dart' as http;
+import 'package:saudaghar/src/driver/controllers/order_controller.dart';
 import 'package:saudaghar/src/repository/user_repository.dart';
 
 import '../../helpers/custom_trace.dart';
@@ -14,6 +15,7 @@ import '../../models/order_status.dart';
 import '../../models/user.dart';
 import '../../repository/user_repository.dart' as userRepo;
 
+ValueNotifier<OrderController> con = new ValueNotifier(new OrderController());
 
 Future<Stream<Order>> getOrders() async {
   Uri uri = Helper.getUri('api/orders');
@@ -107,7 +109,7 @@ Future<Stream<Order>> getOrder(orderId) async {
   }
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url =
-      '${GlobalConfiguration().getString('api_base_url')}orders/$orderId?${_apiToken}with=user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress;payment';
+      '${GlobalConfiguration().getString('api_base_url')}orders/$orderId?${_apiToken}isDriverOrder=true&with=user;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress;payment';
   final client = new http.Client();
   final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 
@@ -166,7 +168,7 @@ Future<Order> deliveredOrder(Order order) async {
     return new Order();
   }
   final String _apiToken = 'api_token=${_user.apiToken}';
-  final String url = '${GlobalConfiguration().getString('api_base_url')}orders/${order.id}?$_apiToken';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}orders/${order.id}?$_apiToken&check_approval=true';
   final client = new http.Client();
   final response = await client.put(
     url,
@@ -174,4 +176,5 @@ Future<Order> deliveredOrder(Order order) async {
     body: json.encode(order.deliveredMap()),
   );
   return Order.fromJSON(json.decode(response.body)['data']);
+
 }

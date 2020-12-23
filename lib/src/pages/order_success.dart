@@ -68,8 +68,8 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         Stack(
                           children: <Widget>[
                             Container(
-                              width: settingsRepo.compact_view ? 70 : 100,
-                              height: settingsRepo.compact_view ? 70 : 100,
+                              width: settingsRepo.compact_view_horizontal ? 70 : 100,
+                              height: settingsRepo.compact_view_horizontal ? 70 : 100,
                               decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   gradient: LinearGradient(
@@ -81,11 +81,11 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                   ? Icon(
                                       Icons.check,
                                       color: Theme.of(context).scaffoldBackgroundColor,
-                                      size: settingsRepo.compact_view ? 40 : 55,
+                                      size: settingsRepo.compact_view_horizontal ? 40 : 55,
                                     )
                                   : _con.loading
                                     ? Padding(
-                                        padding: EdgeInsets.all(settingsRepo.compact_view ? 20 : 30),
+                                        padding: EdgeInsets.all(settingsRepo.compact_view_horizontal ? 20 : 30),
                                         child: CircularProgressIndicator(
                                           valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).scaffoldBackgroundColor),
                                         ),
@@ -93,7 +93,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                     : Icon(
                                         Icons.local_grocery_store_outlined,
                                         color: Theme.of(context).scaffoldBackgroundColor,
-                                        size: settingsRepo.compact_view ? 40 : 55,
+                                        size: settingsRepo.compact_view_horizontal ? 40 : 55,
                                       ),
                             ),
                             Positioned(
@@ -135,7 +135,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                               : 'Ready to Checkout?',
                             style: Theme.of(context).textTheme.headline2.merge(
                                 TextStyle(fontWeight: FontWeight.bold, color: Theme.of(context).accentColor,
-                                    fontSize: settingsRepo.compact_view ? 18 : 20
+                                    fontSize: settingsRepo.compact_view_horizontal ? 18 : 20
                                 )
                             ),
                           )
@@ -144,7 +144,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                           //         'Order  Submitted!',
                           //         style: Theme.of(context).textTheme.headline2.merge(
                           //             TextStyle(fontWeight: FontWeight.bold, color: Colors.green,
-                          //                 fontSize: settingsRepo.compact_view ? 18 : 20
+                          //                 fontSize: settingsRepo.compact_view_horizontal ? 18 : 20
                           //             )
                           //         ),
                           //       )
@@ -152,7 +152,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                           //           'Ready to Checkout?',
                           //           style: Theme.of(context).textTheme.headline2.merge(
                           //               TextStyle(fontWeight: FontWeight.bold, color: Colors.red,
-                          //                 fontSize: settingsRepo.compact_view ? 18 : 20
+                          //                 fontSize: settingsRepo.compact_view_horizontal ? 18 : 20
                           //               )
                           //           ),
                           //         ),

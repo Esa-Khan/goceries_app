@@ -1,5 +1,6 @@
 import '../elements/NotWorkingWidget.dart';
 import '../elements/OrderItemWidget.dart';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
 import '../controllers/order_controller.dart';
+import '../repository/order_repository.dart' as orderRepo;
 import '../elements/EmptyOrdersWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 
@@ -20,22 +22,36 @@ class OrdersWidget extends StatefulWidget {
 }
 
 class _OrdersWidgetState extends StateMVC<OrdersWidget> {
-  OrderController _con;
-
+  var timer;
   _OrdersWidgetState() : super(OrderController()) {
-    _con = controller;
+    orderRepo.con.value = controller;
   }
 
   @override
   void initState() {
     super.initState();
-    _con.listenForOrders();
+    orderRepo.con.value.listenForOrders();
+    // autoOrderRefresh();
+    timer = Timer.periodic(Duration(seconds: 30), (Timer t) => autoOrderRefresh());
+  }
+
+  void autoOrderRefresh() {
+    if (mounted && context != null) {
+      print('---Refreshed---');
+      orderRepo.con.value.refreshOrders();
+    }
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _con.scaffoldKey,
+      key: orderRepo.con.value.scaffoldKey,
       appBar: AppBar(
         leading: new IconButton(
           icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
@@ -54,20 +70,20 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: _con.refreshOrders,
+        onRefresh: orderRepo.con.value.refreshOrders,
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
-            !_con.isWorking
+            !orderRepo.con.value.isWorking
                 ? NotWorkingWidget()
-                : !_con.orders_loaded || _con.orders.isEmpty
+                : !orderRepo.con.value.orders_loaded || orderRepo.con.value.orders.isEmpty
                     ? EmptyOrdersWidget()
                     : ListView.separated(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: _con.orders.length,
-                        itemBuilder: (context, index) => OrderItemWidget(expanded: false, order: _con.orders.elementAt(index)),
+                        itemCount: orderRepo.con.value.orders.length,
+                        itemBuilder: (context, index) => OrderItemWidget(expanded: false, order: orderRepo.con.value.orders.elementAt(index)),
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 20);
                         },
