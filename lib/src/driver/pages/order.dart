@@ -287,7 +287,8 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                                   padding: EdgeInsets.all(0),
                                   disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
                                   onPressed: () {
-                                    Navigator.of(context).pushNamed('/Pages', arguments: new RouteArgument(id: '3', param: _con.order));
+                                    _con.openMap(_con.order.deliveryAddress);
+                                    // Navigator.of(context).pushNamed('/Pages', arguments: new RouteArgument(id: '3', param: _con.order));
                                   },
                                   child: Icon(
                                     Icons.directions,

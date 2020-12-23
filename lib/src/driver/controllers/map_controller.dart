@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../helpers/helper.dart';
 import '../../helpers/maps_util.dart';
 import '../../models/address.dart';
@@ -10,7 +11,7 @@ import '../../models/order.dart';
 
 import '../../helpers/app_config.dart' as config;
 import '../repository/order_repository.dart';
-import '../repository/settings_repository.dart' as settingsRepo;
+import '../../repository/settings_repository.dart' as settingsRepo;
 
 class MapController extends ControllerMVC {
   Order currentOrder;
@@ -139,6 +140,7 @@ class MapController extends ControllerMVC {
   }
 
   void getDirectionSteps() async {
+    await settingsRepo.getCurrentLocation();
     currentAddress = settingsRepo.myAddress.value;
     mapsUtil
         .get("origin=" +
@@ -146,7 +148,7 @@ class MapController extends ControllerMVC {
             "," +
             currentAddress.longitude.toString() +
             "&destination=" +
-            currentOrder.deliveryAddress.longitude.toString() +
+            currentOrder.deliveryAddress.latitude.toString() +
             "," +
             currentOrder.deliveryAddress.longitude.toString() +
             "&key=${settingsRepo.setting.value?.googleMapsKey}")
@@ -161,6 +163,8 @@ class MapController extends ControllerMVC {
       }
     });
   }
+
+
 
 
   void calculateSubtotal() async {
