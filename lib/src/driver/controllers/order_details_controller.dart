@@ -1,3 +1,6 @@
+import 'package:saudaghar/src/models/address.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import '../../repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -5,6 +8,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../../generated/l10n.dart';
 import '../../models/order.dart';
 import '../repository/order_repository.dart';
+import '../../repository/settings_repository.dart';
 
 class OrderDetailsController extends ControllerMVC {
   Order order;
@@ -59,6 +63,17 @@ class OrderDetailsController extends ControllerMVC {
         content: Text('Order Status Updated'),
       ));
     });
+  }
+
+
+  Future<void> openMap(Address order_address) async {
+    await getCurrentLocation();
+    String googleUrl = 'https://www.google.com/maps/search/?api=1&query=${order_address.latitude},${order_address.longitude}';
+    if (await canLaunch(googleUrl)) {
+      await launch(googleUrl);
+    } else {
+      throw 'Could not open the map.';
+    }
   }
 
 }

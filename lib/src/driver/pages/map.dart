@@ -95,94 +95,94 @@ class _MapWidgetState extends StateMVC<MapWidget> {
                   },
                   polylines: _con.polylines,
                 ),
-          InkWell(
-            onTap: () {
-              _con.goOrderLocation();
-            },
-            child:          Container(
-              height: 95,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              margin: EdgeInsets.only(bottom: 20),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(1),
-                boxShadow: [
-                  BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2)),
-                ],
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  _con.currentOrder?.orderStatus?.id == '5'
-                      ? Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green.withOpacity(0.2)),
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.green,
-                      size: 32,
-                    ),
-                  )
-                      : Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).hintColor.withOpacity(0.1)),
-                    child: Icon(
-                      Icons.update,
-                      color: Theme.of(context).hintColor.withOpacity(0.8),
-                      size: 30,
-                    ),
-                  ),
-                  SizedBox(width: 15),
-                  Flexible(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        SizedBox(width: 10),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Text(
-                                S.of(context).order_id + " #${_con.currentOrder.id}",
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: Theme.of(context).textTheme.subtitle1,
-                              ),
-                              Text(
-                                _con.currentOrder.payment?.method ?? S.of(context).cash_on_delivery,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: Theme.of(context).textTheme.caption,
-                              ),
-                              Text(
-                                _con.currentOrder.deliveryAddress.address.toString(),
-                                style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 10)),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Helper.getPrice(Helper.getTotalOrdersPrice(_con.currentOrder), context, style: Theme.of(context).textTheme.headline4),
-                            Text(
-                              S.of(context).items + ': ' + _con.currentOrder.foodOrders?.length?.toString() ?? 0,
-                              style: Theme.of(context).textTheme.caption,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
+          // InkWell(
+          //   onTap: () {
+          //     _con.goOrderLocation();
+          //   },
+          //   child:          Container(
+          //     height: 95,
+          //     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+          //     margin: EdgeInsets.only(bottom: 20),
+          //     decoration: BoxDecoration(
+          //       color: Theme.of(context).primaryColor.withOpacity(1),
+          //       boxShadow: [
+          //         BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.1), blurRadius: 5, offset: Offset(0, 2)),
+          //       ],
+          //     ),
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.start,
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       children: <Widget>[
+          //         _con.currentOrder?.orderStatus?.id == '5'
+          //             ? Container(
+          //           width: 60,
+          //           height: 60,
+          //           decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green.withOpacity(0.2)),
+          //           child: Icon(
+          //             Icons.check,
+          //             color: Colors.green,
+          //             size: 32,
+          //           ),
+          //         )
+          //             : Container(
+          //           width: 60,
+          //           height: 60,
+          //           decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).hintColor.withOpacity(0.1)),
+          //           child: Icon(
+          //             Icons.update,
+          //             color: Theme.of(context).hintColor.withOpacity(0.8),
+          //             size: 30,
+          //           ),
+          //         ),
+          //         SizedBox(width: 15),
+          //         Flexible(
+          //           child: Row(
+          //             crossAxisAlignment: CrossAxisAlignment.center,
+          //             children: <Widget>[
+          //               SizedBox(width: 10),
+          //               Expanded(
+          //                 child: Column(
+          //                   crossAxisAlignment: CrossAxisAlignment.start,
+          //                   mainAxisAlignment: MainAxisAlignment.center,
+          //                   children: <Widget>[
+          //                     Text(
+          //                       S.of(context).order_id + " #${_con.currentOrder.id}",
+          //                       overflow: TextOverflow.ellipsis,
+          //                       maxLines: 2,
+          //                       style: Theme.of(context).textTheme.subtitle1,
+          //                     ),
+          //                     Text(
+          //                       _con.currentOrder.payment?.method ?? S.of(context).cash_on_delivery,
+          //                       overflow: TextOverflow.ellipsis,
+          //                       maxLines: 2,
+          //                       style: Theme.of(context).textTheme.caption,
+          //                     ),
+          //                     Text(
+          //                       _con.currentOrder.deliveryAddress.address.toString(),
+          //                       style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 10)),
+          //                     ),
+          //                   ],
+          //                 ),
+          //               ),
+          //               SizedBox(width: 8),
+          //               Column(
+          //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //                 crossAxisAlignment: CrossAxisAlignment.end,
+          //                 children: <Widget>[
+          //                   Helper.getPrice(Helper.getTotalOrdersPrice(_con.currentOrder), context, style: Theme.of(context).textTheme.headline4),
+          //                   Text(
+          //                     S.of(context).items + ': ' + _con.currentOrder.foodOrders?.length?.toString() ?? 0,
+          //                     style: Theme.of(context).textTheme.caption,
+          //                   ),
+          //                 ],
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

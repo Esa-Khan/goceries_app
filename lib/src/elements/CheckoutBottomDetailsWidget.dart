@@ -198,7 +198,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                             child: Text(
                                               S.of(context).checkout,
                                               style: Theme.of(context).textTheme.bodyText1.merge(
-                                                  TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 15 : 20)),
+                                                  TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 15 : 20)),
                                             ),
                                           )
                                       ),
@@ -207,7 +207,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                         child: Helper.getPrice(
                                           _con.total,
                                           context,
-                                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 15 : 20)),
+                                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 15 : 20)),
                                         ),
                                       ),
                                     ]

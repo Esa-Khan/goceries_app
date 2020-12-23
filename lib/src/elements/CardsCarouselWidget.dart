@@ -54,7 +54,7 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
                     },
                     child: widget.restaurantsList.elementAt(index).availableForDelivery
                       ? CardWidget(restaurant: widget.restaurantsList.elementAt(index), heroTag: widget.heroTag)
-                        : SizedBox(height: 0),
+                      : const SizedBox(),
                   );
                 },
               ),

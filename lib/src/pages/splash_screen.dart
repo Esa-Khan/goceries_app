@@ -47,7 +47,8 @@ class SplashScreenState extends StateMVC<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    settingRepo.compact_view = MediaQuery.of(context).size.width < 380;
+    settingRepo.compact_view_horizontal = MediaQuery.of(context).size.width < 380;
+    settingRepo.compact_view_vertical = MediaQuery.of(context).size.height < 580;
     return Scaffold(
       key: _con.scaffoldKey,
       body: Container(

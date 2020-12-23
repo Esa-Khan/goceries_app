@@ -59,8 +59,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           'Delivery Address',
           style: Theme.of(context).textTheme.headline6.merge(
               TextStyle(
-                 letterSpacing: settingsRepo.compact_view ? 0.5 : 1.3,
-                 fontSize: settingsRepo.compact_view ? 15 : 17
+                 letterSpacing: settingsRepo.compact_view_horizontal ? 0.5 : 1.3,
+                 fontSize: settingsRepo.compact_view_horizontal ? 15 : 17
               )
           ),
         ),

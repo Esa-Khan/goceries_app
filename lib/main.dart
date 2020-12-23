@@ -62,45 +62,45 @@ class _MyAppState extends State<MyApp> {
                       hintColor: config.Colors().secondColor(1),
                       textTheme: TextTheme(
                         headline5: TextStyle(
-                            fontSize: settingRepo.compact_view ? 17.0 : 20.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 17.0 : 20.0,
                             color: config.Colors().secondColor(1),
                             height: 1.35),
                         headline4: TextStyle(
-                            fontSize: settingRepo.compact_view ? 15.0 : 18.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 15.0 : 18.0,
                             fontWeight: FontWeight.w600,
                             color: config.Colors().secondColor(1),
                             height: 1.35),
                         headline3: TextStyle(
-                            fontSize: settingRepo.compact_view ? 17.0 : 20.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 17.0 : 20.0,
                             fontWeight: FontWeight.w600,
                             color: config.Colors().secondColor(1),
                             height: 1.35),
                         headline2: TextStyle(
-                            fontSize: settingRepo.compact_view ? 19.0 : 22.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 19.0 : 22.0,
                             fontWeight: FontWeight.w700,
                             color: config.Colors().mainColor(1),
                             height: 1.35),
                         headline1: TextStyle(
-                            fontSize: settingRepo.compact_view ? 19.0 : 22.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 19.0 : 22.0,
                             fontWeight: FontWeight.w300,
                             color: config.Colors().secondColor(1),
                             height: 1.5),
                         subtitle1: TextStyle(
-                            fontSize: settingRepo.compact_view ? 14.0 :  15.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 14.0 :  15.0,
                             fontWeight: FontWeight.w500,
                             color: config.Colors().secondColor(1),
                             height: 1.35),
                         headline6: TextStyle(
-                            fontSize: settingRepo.compact_view ? 15.0 : 16.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 15.0 : 16.0,
                             fontWeight: FontWeight.w600,
                             color: config.Colors().mainColor(1),
                             height: 1.35),
                         bodyText2: TextStyle(
-                            fontSize: settingRepo.compact_view ? 9.0 : 12.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 9.0 : 12.0,
                             color: config.Colors().secondColor(1),
                             height: 1.35),
                         bodyText1: TextStyle(
-                            fontSize: settingRepo.compact_view ? 11.0 : 14.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 11.0 : 14.0,
                             color: config.Colors().secondColor(1),
                             height: 1.35),
                         caption: TextStyle(
@@ -120,45 +120,45 @@ class _MyAppState extends State<MyApp> {
                       focusColor: config.Colors().accentDarkColor(1),
                       textTheme: TextTheme(
                         headline5: TextStyle(
-                            fontSize: settingRepo.compact_view ? 17.0 : 20.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 17.0 : 20.0,
                             color: config.Colors().secondDarkColor(1),
                             height: 1.35),
                         headline4: TextStyle(
-                            fontSize: settingRepo.compact_view ? 15.0 : 18.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 15.0 : 18.0,
                             fontWeight: FontWeight.w600,
                             color: config.Colors().secondDarkColor(1),
                             height: 1.35),
                         headline3: TextStyle(
-                            fontSize: settingRepo.compact_view ? 17.0 : 20.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 17.0 : 20.0,
                             fontWeight: FontWeight.w600,
                             color: config.Colors().secondDarkColor(1),
                             height: 1.35),
                         headline2: TextStyle(
-                            fontSize: settingRepo.compact_view ? 19.0 : 22.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 19.0 : 22.0,
                             fontWeight: FontWeight.w700,
                             color: config.Colors().mainDarkColor(1),
                             height: 1.35),
                         headline1: TextStyle(
-                            fontSize: settingRepo.compact_view ? 19.0 : 22.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 19.0 : 22.0,
                             fontWeight: FontWeight.w300,
                             color: config.Colors().secondDarkColor(1),
                             height: 1.5),
                         subtitle1: TextStyle(
-                            fontSize: settingRepo.compact_view ? 14.0 : 15.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 14.0 : 15.0,
                             fontWeight: FontWeight.w500,
                             color: config.Colors().secondDarkColor(1),
                             height: 1.35),
                         headline6: TextStyle(
-                            fontSize: settingRepo.compact_view ? 15.0 : 16.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 15.0 : 16.0,
                             fontWeight: FontWeight.w600,
                             color: config.Colors().mainDarkColor(1),
                             height: 1.35),
                         bodyText2: TextStyle(
-                            fontSize: settingRepo.compact_view ? 9.0 : 12.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 9.0 : 12.0,
                             color: config.Colors().secondDarkColor(1),
                             height: 1.35),
                         bodyText1: TextStyle(
-                            fontSize: settingRepo.compact_view ? 11.0 : 14.0,
+                            fontSize: settingRepo.compact_view_horizontal ? 11.0 : 14.0,
                             color: config.Colors().secondDarkColor(1),
                             height: 1.35),
                         caption: TextStyle(

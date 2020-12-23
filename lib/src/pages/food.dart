@@ -389,7 +389,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                           onPressed: () {
                                             _con.removeFromFavorite(_con.favorite);
                                           },
-                                          padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view ? 12 : 20),
+                                          padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
                                           color: Theme.of(context).primaryColor,
                                           shape: StadiumBorder(),
                                           borderSide: BorderSide(color: Theme.of(context).accentColor),
@@ -405,7 +405,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                               _con.addToFavorite(_con.food);
                                             }
                                           },
-                                          padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view ? 12 : 20),
+                                          padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
                                           color: Theme.of(context).accentColor,
                                           shape: StadiumBorder(),
                                           child: Icon(
@@ -434,7 +434,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                           child: Text(
                                             S.of(context).add_to_cart,
                                             textAlign: TextAlign.start,
-                                            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 15 : 20),
+                                            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 15 : 20),
                                           ),
                                         ),
                                       ),
@@ -445,7 +445,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         _con.total,
                                         context,
                                         style: Theme.of(context).textTheme.headline4.merge(
-                                            TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view ? 15 : 20)),
+                                            TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 15 : 20)),
                                       ),
                                     )
                                   ],

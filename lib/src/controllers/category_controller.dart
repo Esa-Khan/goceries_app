@@ -91,6 +91,7 @@ class CategoryController extends ControllerMVC {
         });
     }, onError: (a) {
       print(a);
+      setState(() => hasAislesLoaded = false);
     }, onDone: () {
       setState(() => hasAislesLoaded = true);
     });

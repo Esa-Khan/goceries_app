@@ -1,3 +1,5 @@
+import 'package:saudaghar/src/repository/user_repository.dart';
+
 import '../helpers/custom_trace.dart';
 import '../models/address.dart';
 import '../models/food_order.dart';
@@ -22,6 +24,9 @@ class Order {
   int driver_id;
   int store_id;
 
+  String driver_name;
+  String driver_number;
+
   Order();
 
   Order.fromJSON(Map<String, dynamic> jsonMap) {
@@ -39,6 +44,12 @@ class Order {
       foodOrders = jsonMap['food_orders'] != null ? List.from(jsonMap['food_orders']).map((element) => FoodOrder.fromJSON(element)).toList() : [];
       driver_id = jsonMap['driver_id'];
       store_id = jsonMap['store_id'];
+
+      if (jsonMap['driver'] != null) {
+        driver_name = jsonMap['driver']['name'];
+        driver_number = jsonMap['driver']['number'];
+      }
+
     } catch (e) {
       id = '';
       discount = 0.0;
@@ -94,6 +105,7 @@ class Order {
     if (this.orderStatus.id == '1'){
       map["driver_id"] = this.driver_id;
     }
+    map["current_driver"] = currentUser.value.id;
     return map;
   }
 }

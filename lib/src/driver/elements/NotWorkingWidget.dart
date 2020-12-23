@@ -96,7 +96,9 @@ class _NotWorkingWidgetWidgetState extends State<NotWorkingWidget> {
               Opacity(
                 opacity: 0.4,
                 child: Text(
-                  "Not Working Yet. Start at: ",// + currentUser.value.work_hours.split("|")[0],
+                  currentUser.value.work_hours?.split("|")[0] == null
+                    ? "Not Working Yet."
+                    : "Not Working Yet. Start at: " + currentUser.value.work_hours.split("|")[0],
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),
