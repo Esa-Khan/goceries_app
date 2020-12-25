@@ -247,6 +247,8 @@ class Helper {
     return _can;
   }
 
+
+
   static String skipHtml(String htmlString) {
     try {
       var document = parse(htmlString);
@@ -295,7 +297,8 @@ class Helper {
         left: 0,
         child: Material(
           color: Theme.of(context).primaryColor.withOpacity(0.85),
-          child: CircularLoadingWidget(height: 200),
+          // child: CircularLoadingWidget(height: 200),
+          child: Center(heightFactor: 3.5, child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
         ),
       );
     });
@@ -350,6 +353,8 @@ class Helper {
         return S.of(context).km;
       case "mi":
         return S.of(context).mi;
+      case "App\\Notifications\\AssignedOrder":
+        return 'Order assigned';
       default:
         return "";
     }

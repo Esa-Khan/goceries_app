@@ -21,7 +21,12 @@ class OrderController extends ControllerMVC {
   void listenForOrders({String message}) async {
     final Stream<Order> stream = await getOrders();
     stream.listen((Order _order) {
-      setState(() => orders.add(_order));
+      bool repeated_order = false;
+      for (int i = 0; i < orders.length; i ++) {
+        repeated_order = _order.id == orders[i].id;
+        if (repeated_order) break;
+      }
+      if (!repeated_order) setState(() => orders.add(_order));
     }, onError: (a) {
       print(a);
       scaffoldKey?.currentState?.showSnackBar(SnackBar(

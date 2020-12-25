@@ -40,14 +40,13 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
         bottomNavigationBar: CheckoutBottomDetailsWidget(con: _con),
         appBar: AppBar(
           automaticallyImplyLeading: false,
-//          leading: IconButton(
-//            onPressed: () {
-//              Navigator.of(context).pop();
-//            },
-//            icon: Icon(Icons.arrow_back),
-//            color: Theme.of(context).hintColor,
-//          ),
-//           backgroundColor: Colors.transparent,
+         leading: IconButton(
+           onPressed: () {
+             Navigator.of(context).pop();
+           },
+           icon: Icon(Icons.arrow_back),
+           color: Theme.of(context).hintColor,
+         ),
           centerTitle: true,
           title: Text(
             'Finalize Order',
@@ -55,7 +54,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
           ),
         ),
         body: _con.carts.isEmpty
-            ? CircularLoadingWidget(height: 500)
+            ? Center(heightFactor: 3.5, child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
             : SingleChildScrollView(
                 child: Column(
                   // mainAxisAlignment: MainAxisAlignment.start,

@@ -11,7 +11,10 @@ class Address {
   bool isDefault;
   String userId;
 
-  Address();
+  Address({double long, double lat}){
+    longitude = long;
+    latitude = lat;
+  }
 
   Address.fromJSON(Map<String, dynamic> jsonMap) {
     try {

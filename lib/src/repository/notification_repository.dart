@@ -17,8 +17,7 @@ Future<Stream<Notification>> getNotifications() async {
     return new Stream.value(new Notification());
   }
   final String _apiToken = 'api_token=${_user.apiToken}&';
-  final String url =
-      '${GlobalConfiguration().getString('api_base_url')}notifications?${_apiToken}search=notifiable_id:${_user.id}&searchFields=notifiable_id:=&orderBy=created_at&sortedBy=desc&limit=10';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}notifications?${_apiToken}search=notifiable_id:${_user.id}&searchFields=notifiable_id:=&orderBy=created_at&sortedBy=desc&limit=10';
 
   final client = new http.Client();
   try {

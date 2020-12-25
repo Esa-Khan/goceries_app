@@ -207,13 +207,15 @@ class UserController extends ControllerMVC {
         if (value.isDriver) {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
         } else {
-          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
+          // Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
         }
       } else {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).wrong_email_or_password),
         ));
       }
+      Helper.hideLoader(loader);
     }).catchError((e) {
       print("-------------Login Failed-------------\n" + e.toString());
       if (e.message == "No account with this email") {
@@ -224,13 +226,14 @@ class UserController extends ControllerMVC {
             if (value.isDriver) {
               Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
             } else {
-              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
             }
           } else {
             scaffoldKey?.currentState?.showSnackBar(SnackBar(
               content: Text(S.of(context).wrong_email_or_password),
             ));
           }
+          Helper.hideLoader(loader);
         }).catchError((e) {
           print("-------------Register Failed-------------");
           if (e.toString() == "Exception: Account already exits") {
@@ -238,10 +241,11 @@ class UserController extends ControllerMVC {
               content: Text("Wrong password. Try a different login method."),
             ));
           }
+          Helper.hideLoader(loader);
+
         });
       }
       });
-    Helper.hideLoader(loader);
   }
 
   void register() async {

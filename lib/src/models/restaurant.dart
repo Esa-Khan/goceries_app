@@ -2,6 +2,7 @@ import 'package:global_configuration/global_configuration.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/media.dart';
+import '../models/address.dart';
 
 class Restaurant {
   String id;

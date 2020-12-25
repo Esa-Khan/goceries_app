@@ -59,17 +59,32 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           // LogoLoadingWidget(),
-                          Padding(
+                          Container(
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             child: FlatButton(
-                                onPressed: () => nextPage(0),
-                                child: Image.asset(
-                                  'assets/img/saudaghar.png',
-                                )
+                              onPressed: () => nextPage(0),
+                              child: Image.asset(
+                                'assets/img/saudaghar.png',
+                              ),
                             ),
+                            // decoration: BoxDecoration(
+                            //   borderRadius: BorderRadius.only(
+                            //       topLeft: Radius.circular(10),
+                            //       topRight: Radius.circular(10),
+                            //       bottomLeft: Radius.circular(10),
+                            //       bottomRight: Radius.circular(10)
+                            //   ),
+                            //   boxShadow: [
+                            //     BoxShadow(
+                            //       spreadRadius: 5,
+                            //       blurRadius: 7,
+                            //       offset: Offset(0, 3), // changes position of shadow
+                            //     ),
+                            //   ],
+                            // ),
                           ),
                           Text(
-                            "saudaghar",
+                            "Shop at saudaghar",
                             style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: 25)),
                           ),
                           Text(

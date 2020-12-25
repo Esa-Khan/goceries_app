@@ -193,14 +193,15 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                           style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
                                         )),
                                     SizedBox(width: 5),
-                                    _con.aisle == null ? SizedBox(height: 0)
-                                    : Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                        decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
-                                        child: Text(
-                                          _con.aisle.name,
-                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                        )),
+                                    _con.aisle == null
+                                      ? SizedBox(height: 0)
+                                      : Container(
+                                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                                          decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
+                                          child: Text(
+                                            _con.aisle.name,
+                                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                          )),
                                   ],
                                 ),
                                 _con.food.description == '' ? SizedBox(height: 0,)

@@ -50,7 +50,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
         ),
       ),
       body: _con.carts.isEmpty
-          ? CircularLoadingWidget(height: 400)
+          ? Center(heightFactor: 3.5, child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
           : Stack(
               fit: StackFit.expand,
               children: <Widget>[

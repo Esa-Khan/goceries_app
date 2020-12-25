@@ -31,7 +31,6 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
   void initState() {
     super.initState();
     orderRepo.con.value.listenForOrders();
-    // autoOrderRefresh();
     timer = Timer.periodic(Duration(seconds: 100), (Timer t) => autoOrderRefresh());
   }
 
