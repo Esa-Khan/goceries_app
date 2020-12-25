@@ -96,7 +96,11 @@ class CreditCardsWidget extends StatelessWidget {
                 ),
                 Text(
 //                  Helper.getCreditCardNumber(creditCard.number),
-                  creditCard.number,
+                  creditCard.number.length == 0
+                      ? ''
+                      : creditCard.number.length < 18
+                        ? '**** **** ****'
+                        : '**** **** **** ' + creditCard.number.substring(18),
                   style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                 ),
                 SizedBox(height: 15),
@@ -121,7 +125,8 @@ class CreditCardsWidget extends StatelessWidget {
                       style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                     ),
                     Text(
-                      creditCard.cvc,
+                      // creditCard.cvc,
+                      creditCard.cvc.length == 0 ? '' : '***',
                       style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(letterSpacing: 1.4)),
                     ),
                   ],

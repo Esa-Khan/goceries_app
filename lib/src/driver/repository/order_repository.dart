@@ -75,18 +75,15 @@ Future<Stream<Order>> getNearOrders(Address myAddress, Address areaAddress) asyn
 }
 
 Future<Stream<Order>> getOrdersHistory() async {
-  Uri uri = Helper.getUri('api/orders');
+  Uri uri = Helper.getUri('api/orderhistory');
   Map<String, dynamic> _queryParams = {};
   final String orderStatusId = "5"; // for delivered status
   User _user = userRepo.currentUser.value;
 
   _queryParams['api_token'] = _user.apiToken;
+  _queryParams['driver_id'] = _user.id;
   _queryParams['with'] = 'driver;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress;payment';
-  _queryParams['search'] = 'driver.id:${_user.id};order_status_id:$orderStatusId;delivery_address_id:null';
-  _queryParams['searchFields'] = 'driver.id:=;order_status_id:=;delivery_address_id:<>';
-  _queryParams['searchJoin'] = 'and';
-  _queryParams['orderBy'] = 'id';
-  _queryParams['sortedBy'] = 'desc';
+
   uri = uri.replace(queryParameters: _queryParams);
 
   //final String url = '${GlobalConfiguration().getString('api_base_url')}orders?${_apiToken}with=driver;foodOrders;foodOrders.food;foodOrders.extras;orderStatus;deliveryAddress&search=driver.id:${_user.id};order_status_id:$orderStatusId&searchFields=driver.id:=;order_status_id:=&searchJoin=and&orderBy=id&sortedBy=desc';

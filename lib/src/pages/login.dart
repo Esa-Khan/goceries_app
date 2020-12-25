@@ -200,7 +200,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                   text: TextSpan(
                                       text: S.of(context).dont_have_an_account,
                                       style: Theme.of(context).textTheme.bodyText1,
-                                      recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushNamed('/SignUp')),
+                                      recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).popAndPushNamed('/SignUp')),
                                 ),
                                 const SizedBox(height: 10),
                                 RichText(
@@ -232,7 +232,8 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                       ])),
                       FlatButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                          // Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                          Navigator.pop(context);
                         },
                         shape: StadiumBorder(),
                         textColor: Theme.of(context).hintColor,

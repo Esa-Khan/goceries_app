@@ -15,6 +15,7 @@ import '../elements/DeliveryAddressDialog.dart';
 import '../elements/DeliveryAddressesItemWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../helpers/helper.dart';
+import '../helpers/maps_util.dart';
 import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
@@ -79,7 +80,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
           children: <Widget>[
             Column(
               children: <Widget>[
-                _con.carts.isEmpty || _con.loading
+                _con.loading
                   ? SizedBox(
                       height: 3,
                       child: LinearProgressIndicator(
@@ -131,14 +132,26 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       myLocationButtonEnabled: true,
                       //resultCardAlignment: Alignment.bottomCenter,
                     );
-                    _con.addAddress(new Address.fromJSON({
-                      'address': result.address,
-                      'latitude': result.latLng.latitude,
-                      'longitude': result.latLng.longitude,
-                    }));
-                    print("result = $result");
-                    setState(()=> _con.loading = false);
-                    // Navigator.of(widget.scaffoldKey.currentContext).pop();
+                    Address store_address = new Address(long: double.tryParse(_con.carts[0].food.restaurant.longitude),
+                                                        lat: double.tryParse(_con.carts[0].food.restaurant.latitude));
+                    Address curr_address = new Address(long: result.latLng.longitude,
+                                                        lat: result.latLng.latitude);
+                    bool within_range = await MapsUtil.withinRange(curr_address, store_address, _con.carts[0].food.restaurant.deliveryRange);
+                    if (within_range) {
+                      _con.addAddress(new Address.fromJSON({
+                        'address': result.address,
+                        'latitude': result.latLng.latitude,
+                        'longitude': result.latLng.longitude,
+                      }));
+                      setState(()=> _con.loading = false);
+                      // Navigator.of(widget.scaffoldKey.currentContext).pop();
+                    } else {
+                      // _con.showOutOfRangeSnack();
+                      showDialog(
+                          context: context,
+                          builder: (context) => updateOrderDialog()
+                      );
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -184,8 +197,30 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   splashColor: Theme.of(context).accentColor,
                   focusColor: Theme.of(context).accentColor,
                   highlightColor: Theme.of(context).primaryColor,
-                  onTap: () {
-                    _con.changeDeliveryAddressToCurrentLocation();
+                  onTap: () async {
+                    // _con.changeDeliveryAddressToCurrentLocation();
+                    setState(()=> _con.loading = true);
+
+                    Address store_address = new Address(long: double.tryParse(_con.carts[0].food.restaurant.longitude),
+                                                        lat: double.tryParse(_con.carts[0].food.restaurant.latitude));
+                    Address curr_address = await MapsUtil.getCurrentLocation();
+                    bool within_range = await MapsUtil.withinRange(curr_address, store_address, _con.carts[0].food.restaurant.deliveryRange);
+                    if (within_range) {
+                      _con.addAddress(new Address.fromJSON({
+                        'address': curr_address.address,
+                        'latitude': curr_address.latitude,
+                        'longitude': curr_address.longitude,
+                      }));
+                      setState(()=> _con.loading = false);
+                      // Navigator.of(widget.scaffoldKey.currentContext).pop();
+                    } else {
+                      // _con.showOutOfRangeSnack();
+                      showDialog(
+                          context: context,
+                          builder: (context) => updateOrderDialog()
+                      );
+                    }
+                    setState(()=> _con.loading = false);
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -235,6 +270,12 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     );
   }
 
+
+
+
+
+
+
   Widget getAddressItem(int index) {
     if (_con.deliveryAddress.elementAt(index).address != null
         && _con.deliveryAddress.elementAt(index).id != null) {
@@ -275,4 +316,32 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       return const SizedBox();
     }
   }
+
+
+  Widget updateOrderDialog() {
+    return AlertDialog(
+      title:  Wrap(
+        spacing: 10,
+        children: <Widget>[
+          Icon(Icons.report, color: Colors.orange),
+          Text(
+            'Store too far',
+            style: TextStyle(color: Colors.orange, fontSize: 20),
+          ),
+        ],
+      ),
+      content: Text('Unfortunately ${_con.carts.first.food.restaurant.name} does not deliver to this address, feel free to  contact our support team for more information.'),
+      actions: <Widget>[
+        FlatButton(
+          child: new Text(
+              S.of(context).dismiss),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+
+
 }

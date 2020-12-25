@@ -7,6 +7,7 @@ import '../../src/controllers/category_controller.dart';
 import '../models/category.dart';
 import '../models/restaurant.dart';
 import 'AislesItemWidget.dart';
+import 'EmptyItemSearchWidget.dart';
 import 'FoodItemWidget.dart';
 
 class CategoryListWidget extends StatefulWidget {
@@ -53,13 +54,19 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
             padding: const EdgeInsets.fromLTRB(12, 1, 12, 30),
             child: TextField(
               onSubmitted: (text) async {
-                setState(() => _isSearching = true);
-                await _con.refreshSearch(text);
-                setState(() {
-                  // _searchBarTapped = false;
-                  _isSearching = false;
-                  _isSearched = true;
-                });
+                if (text == "") {
+                  setState(() => _isSearched = false);
+                  _searchBarController.clear();
+                  await _con.refreshSearch("");
+                } else {
+                  setState(() => _isSearching = true);
+                  await _con.refreshSearch(text);
+                  setState(() {
+                    // _searchBarTapped = false;
+                    _isSearching = false;
+                    _isSearched = true;
+                  });
+                }
               },
               onChanged: (val) async {
                 if (val == "") {
@@ -98,13 +105,13 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
           ),
           _isSearching
               ? Column(
-            children: <Widget>[
-              SizedBox(height: 50),
-              // Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
-            ],
-          )
+                  children: <Widget>[
+                    SizedBox(height: 50),
+                    Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
+                  ],
+                )
               : _isSearched && _con.searchedItems.isEmpty
-                ? SizedBox(height: 300)
+                ? EmptyItemSearchWidget(search_str: _searchBarController.text)
                 : _con.searchedItems.isNotEmpty
                   ? ListView.separated(
                       padding: EdgeInsets.only(bottom: 40),

@@ -49,7 +49,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
               } else if(widget.routeArgument.param == '/StoreSelect') {
                 Navigator.of(context).pushReplacementNamed('/StoreSelect');
               } else {
-                Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+                Navigator.of(context).pushNamed('/Pages', arguments: 2);
               }
             },
             icon: Icon(Icons.arrow_back),

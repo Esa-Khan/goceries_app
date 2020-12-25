@@ -35,7 +35,11 @@ class Order {
       discount = jsonMap['tax'] != null ? jsonMap['tax'].toDouble() : 0.0;
       deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
       hint = jsonMap['hint'] != null ? jsonMap['hint'].toString() : null;
-      active = jsonMap['active'] ?? false;
+      active = jsonMap['active'] != null
+          ? jsonMap['active'] == 1
+            ? true
+            : false
+          : false;
       orderStatus = jsonMap['order_status'] != null ? OrderStatus.fromJSON(jsonMap['order_status']) : OrderStatus.fromJSON({});
       dateTime = DateTime.parse(jsonMap['updated_at']);
       user = jsonMap['user'] != null ? User.fromJSON(jsonMap['user']) : new User();
