@@ -201,7 +201,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
 //          width: 140,
           width: 190,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.active ? Theme.of(context).accentColor : Colors.redAccent),
+              borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.active ? widget.order.orderStatus.status_color : Colors.redAccent),
           alignment: AlignmentDirectional.center,
           child: Text(
             widget.order.active ? '${widget.order.orderStatus.status}' : S.of(context).canceled,

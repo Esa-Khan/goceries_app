@@ -61,7 +61,6 @@ Future<Stream<Food>> getFood(String foodId) async {
 }
 
 
-
 Future<Stream<Food>> getStoreItems(String storeID, {String limit, String id}) async {
   Uri uri = Helper.getUri('api/foods');
   Map<String, dynamic> _queryParams = {};
@@ -72,6 +71,33 @@ Future<Stream<Food>> getStoreItems(String storeID, {String limit, String id}) as
 
   _queryParams['restaurant_id'] = storeID;
   _queryParams['short'] = 'yes';
+
+  uri = uri.replace(queryParameters: _queryParams);
+  try {
+    final client = new http.Client();
+    final streamedRest = await client.send(http.Request('get', uri));
+
+    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+      return Food.fromJSON(data);
+    });
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+    return new Stream.value(new Food.fromJSON({}));
+  }
+}
+
+
+Future<Stream<Food>> getSimilarItems(String item_id) async {
+  Uri uri = Helper.getUri('api/similaritems');
+  Map<String, dynamic> _queryParams = {};
+  _queryParams['id'] = item_id;
+  final String _apiToken = userRepo.currentUser.value.apiToken;
+
+  if (_apiToken == null) {
+    return Stream.value(null);
+  } else {
+    _queryParams['api_token'] = _apiToken;
+  }
 
   uri = uri.replace(queryParameters: _queryParams);
   try {

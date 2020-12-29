@@ -25,15 +25,17 @@ class MapController extends ControllerMVC {
   void listenForNearRestaurants(Address myLocation, Address areaLocation) async {
     final Stream<Restaurant> stream = await getNearStores(myLocation, areaLocation);
     stream.listen((Restaurant _restaurant) {
-      setState(() {
-        if (_restaurant.distance < _restaurant.deliveryRange)
-          closestStores.add(_restaurant);
-      });
-      Helper.getMarker(_restaurant.toMap()).then((marker) {
+      if (_restaurant.id != '0') {
         setState(() {
-          allMarkers.add(marker);
+          if (_restaurant.distance < _restaurant.deliveryRange)
+            closestStores.add(_restaurant);
         });
-      });
+        Helper.getMarker(_restaurant.toMap()).then((marker) {
+          setState(() {
+            allMarkers.add(marker);
+          });
+        });
+      }
     }, onError: (a) {}, onDone: () {});
   }
 
