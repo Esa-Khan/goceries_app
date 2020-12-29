@@ -12,6 +12,9 @@ import '../models/payment.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
+
+
+
 Future<Stream<Order>> getOrders() async {
   User _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
@@ -112,7 +115,11 @@ Future<Order> addOrder(Order order, Payment payment) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(params),
   );
-  return Order.fromJSON(json.decode(response.body)['data']);
+  if (response.body == 'Error: Card Declined') {
+    throw new Exception(response.body);
+  } else {
+    return Order.fromJSON(json.decode(response.body)['data']);
+  }
 }
 
 Future<Order> cancelOrder(Order order) async {

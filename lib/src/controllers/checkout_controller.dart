@@ -24,6 +24,7 @@ class CheckoutController extends CartController {
   CreditCard creditCard = new CreditCard();
   bool loading = false;
   bool order_submitted = false;
+  bool card_declined = false;
   String hint = "";
   String time = "";
   GlobalKey<ScaffoldState> scaffoldKey;
@@ -71,17 +72,52 @@ class CheckoutController extends CartController {
     } else {
       _order.deliveryFee = 0;
     };
-    orderRepo.addOrder(_order, this.payment).then((value) {
-      currentCart_time.value = null;
-      currentCart_note.value = '';
+      orderRepo.addOrder(_order, this.payment).then((value) {
+        currentCart_time.value = null;
+        currentCart_note.value = '';
 
-      if (value is Order) {
+        if (value is Order) {
+          setState(() {
+            loading = false;
+            order_submitted = true;
+          });
+        }
+      }).catchError((Object obj, StackTrace stackTrace) {
+        showDialog(
+          context: context,
+          builder: (context) => cardDeclinedDialog()
+        );
         setState(() {
+          order_submitted = false;
           loading = false;
-          order_submitted = true;
+          card_declined = true;
         });
-      }
-    });
+      });
+  }
+
+  Widget cardDeclinedDialog() {
+    return AlertDialog(
+      title:  Wrap(
+        spacing: 10,
+        children: <Widget>[
+          Icon(Icons.report, color: Colors.orange),
+          Text(
+            'Credit-card declined',
+            style: TextStyle(color: Colors.orange, fontSize: 20),
+          ),
+        ],
+      ),
+      content: Text("Unfortunately your card ending with '${creditCard.number.substring(18)}' was declined, try checking your information or try a new credit-card."),
+      actions: <Widget>[
+        FlatButton(
+          child: new Text(
+              S.of(context).dismiss),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 
   void updateCreditCard(CreditCard creditCard) {

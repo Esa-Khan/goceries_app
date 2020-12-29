@@ -117,7 +117,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                     children: <Widget>[
                       SizedBox(
                         width: MediaQuery.of(context).size.width - 40,
-                        height: settingsRepo.compact_view_horizontal ? 50 : 60,
+                        height: 60,
                         child: FlatButton(
                             onPressed: () => checkout(),
                             disabledColor:

@@ -27,9 +27,9 @@ class FoodController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void listenForFood({String foodId, bool getAisle, String message}) async {
+  void listenForFood({String foodId, bool getAisle = false, String message}) async {
     final Stream<Food> stream = await getFood(foodId);
-    stream.listen((Food _food) {
+    stream.listen((Food _food) async {
       setState(() => food = _food);
       if (_food.ingredients != "<p>.</p>") {
         var otherItems = _food.ingredients.split('-');
@@ -51,6 +51,7 @@ class FoodController extends ControllerMVC {
       ));
     }, onDone: () {
       calculateTotal();
+      loadSimilarItems();
       if (message != null) {
         scaffoldKey.currentState?.showSnackBar(SnackBar(
           content: Text(message),
@@ -169,11 +170,12 @@ class FoodController extends ControllerMVC {
   Future<void> refreshFood() async {
     var _id = food.id;
     food = new Food();
+    similarItems = new List<Food>();
     listenForFavorite(foodId: _id);
     listenForFood(foodId: _id, message: S.of(context).foodRefreshedSuccessfuly);
   }
 
-  void calculateTotal() {
+  calculateTotal() {
     total = food?.price ?? 0;
     food?.extras?.forEach((extra) {
       total += extra.checked ? extra.price : 0;
@@ -195,4 +197,22 @@ class FoodController extends ControllerMVC {
       calculateTotal();
     }
   }
+
+  loadSimilarItems() async {
+    final Stream<Food> stream = await getSimilarItems(food.id);
+    stream.listen((Food _food) async {
+      bool repeated_item = false;
+      for (int i = 0; i < similarItems.length; i++) {
+        if (_food.id == similarItems.elementAt(i)) {
+          repeated_item = true;
+          break;
+        }
+      }
+      if (!repeated_item) {
+        setState(() => similarItems.add(_food));
+      }
+
+    });
+  }
+
 }

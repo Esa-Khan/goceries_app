@@ -186,7 +186,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   _con.food.weight == '0' || _con.food.weight == '' || _con.food.weight == "<p>.</p>" ? SizedBox(height: 0)
                                   : Container(
                                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                        decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
+                                        decoration: BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
                                         child: Text(
                                           _con.food.weight,
 //                                          _con.food.weight + " " + _con.food.unit,
@@ -197,7 +197,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       ? SizedBox(height: 0)
                                       : Container(
                                           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                          decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
+                                          decoration: BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
                                           child: Text(
                                             _con.aisle.name,
                                             style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
