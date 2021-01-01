@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../src/models/route_argument.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/payment_method.dart';
@@ -30,10 +31,7 @@ class PaymentMethodListItemWidget extends StatelessWidget {
         } else if(this.paymentMethod.id == "paypal"){
           Navigator.of(context).pushNamed(this.paymentMethod.route);
         } else {
-          ConfirmationDialogBox(
-            context: context,
-            route: this.paymentMethod.route,
-          );
+          Navigator.of(context).pushNamed(this.paymentMethod.route, arguments: new RouteArgument(param: 'Cash on Delivery'));
         }
         print(CustomTrace(StackTrace.current, message: this.paymentMethod.name));
       },

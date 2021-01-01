@@ -31,7 +31,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _con.scaffoldKey,
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomPadding: true,
           body: Stack(alignment: AlignmentDirectional.topCenter, children: <
                 Widget>[
               Container(
@@ -188,7 +188,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                   ),
                                   FlatButton(
                                     onPressed: () {
-                                      Navigator.of(context).pushNamed('/Login');
+                                      Navigator.of(context).popAndPushNamed('/Login');
                                     },
                                     textColor: Theme.of(context).hintColor,
                                     child: Text(S.of(context).i_have_account_back_to_login, textAlign: TextAlign.center),
@@ -201,7 +201,8 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                           ),
                         FlatButton(
                           onPressed: () {
-                            Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                            // Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                            Navigator.pop(context);
                           },
                           shape: StadiumBorder(),
                           textColor: Theme.of(context).hintColor,

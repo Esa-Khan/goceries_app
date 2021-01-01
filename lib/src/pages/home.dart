@@ -1,17 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/CategoryListWidget.dart';
-import 'package:saudaghar/src/elements/SocialMediaOrdering.dart';
+import '../elements/SocialMediaOrdering.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/models/route_argument.dart';
-
+import '../models/route_argument.dart';
 import '../../generated/l10n.dart';
 import '../controllers/home_controller.dart';
 import '../elements/CardsCarouselWidget.dart';
 import '../elements/CaregoriesCarouselWidget.dart';
 import '../elements/DeliveryAddressBottomSheetWidget.dart';
-import '../elements/FoodsCarouselWidget.dart';
-import '../elements/GridWidget.dart';
 import '../elements/ReviewsListWidget.dart';
 import '../elements/SearchBarWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
@@ -34,11 +30,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
     _con = controller;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
 //void showPopup() async {
 //  await showDialog(
 //      context: context,
@@ -55,8 +46,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
           onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
         ),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         centerTitle: true,
         title: ValueListenableBuilder(
           valueListenable: settingsRepo.setting,

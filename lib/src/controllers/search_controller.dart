@@ -1,4 +1,3 @@
-import 'package:saudaghar/src/controllers/restaurant_controller.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../models/address.dart';

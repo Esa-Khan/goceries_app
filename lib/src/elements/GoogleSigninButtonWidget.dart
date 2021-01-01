@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/controllers/user_controller.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart' as settingsRepo;
+import '../../src/controllers/user_controller.dart';
+import '../../src/repository/settings_repository.dart' as settingsRepo;
 
 
 class GoogleSigninButtonWidget extends StatelessWidget {
@@ -34,13 +34,13 @@ class GoogleSigninButtonWidget extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Image(image: AssetImage("assets/img/google_logo.png"), height: settingsRepo.compact_view ? 30 : 35),
+            Image(image: AssetImage("assets/img/google_logo.png"), height: settingsRepo.compact_view_horizontal ? 30 : 35),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
                 isLogin ? 'Sign in with Google' : 'Sign up with Google',
                 style: TextStyle(
-                  fontSize: settingsRepo.compact_view ? 14 : 19,
+                  fontSize: settingsRepo.compact_view_horizontal ? 14 : 19,
                   color: Colors.grey,
                 ),
               ),

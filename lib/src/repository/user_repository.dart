@@ -24,8 +24,12 @@ Future<User> login(User user) async {
     body: json.encode(user.toMap()),
   );
   if (response.statusCode == 200) {
-    if (response.body.isEmpty)
-      throw new Exception("No Account with this Email");
+    if (response.body.isEmpty) {
+      throw new Exception("No account with this email");
+    } else if(response.body == 'Incorrect password') {
+      throw new Exception(response.body);
+    }
+
     setCurrentUser(response.body);
     currentUser.value = User.fromJSON(json.decode(response.body)['data']);
   } else {

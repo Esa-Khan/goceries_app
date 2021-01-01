@@ -35,13 +35,13 @@ dependencies:
   global_configuration: 1.5.0
   http: ^0.12.1
   html: 0.14.0+3
-  shared_preferences: 0.5.7+3
+  shared_preferences: ^0.5.12+4
   flutter_html: ^1.0.0
   flutter_svg: ^0.18.0
   location: 3.0.2
   flutter_inappwebview: ^4.0.0+4
   url_launcher: 5.4.10
-  firebase_messaging: 6.0.16
+  firebase_messaging: ^6.0.16
   cached_network_image: ^2.3.3
   fluttertoast: 4.0.1
   flutter_staggered_grid_view: 0.3.0
@@ -52,6 +52,7 @@ dependencies:
   flutter_facebook_login: ^3.0.0
   apple_sign_in: ^0.1.0
   device_info: ^0.4.1+4
+  bubble_showcase: ^0.2.0+4
 
 
 dev_dependencies:
@@ -73,6 +74,7 @@ flutter:
   assets:
     - assets/cfg/
     - assets/img/
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -106,6 +108,7 @@ flutter:
         weight: 800
       - asset: assets/fonts/Poppins-Black.ttf
         weight: 900
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: assets/fonts/TrajanPro.ttf

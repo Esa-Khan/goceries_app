@@ -6,8 +6,6 @@ import '../controllers/settings_controller.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/PaymentSettingsDialog.dart';
 import '../elements/ProfileSettingsDialog.dart';
-import '../elements/SearchBarWidget.dart';
-import '../helpers/helper.dart';
 import '../repository/user_repository.dart';
 
 class SettingsWidget extends StatefulWidget {
@@ -74,7 +72,9 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                   Navigator.of(context).pushNamed('/Profile');
                                 },
                                 child: CircleAvatar(
-                                  backgroundImage: NetworkImage(currentUser.value.image.thumb),
+                                  backgroundImage: currentUser.value.image.thumb == 'https://acb73d648852.ngrok.io/images/profile_picture.jpg'
+                                        ? Image.asset('assets/img/profile_picture.jpg').image
+                                        : NetworkImage(currentUser.value.image.thumb),
                                 ),
                               )),
                         ],
@@ -253,7 +253,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                   size: 22,
                                   color: Theme.of(context).focusColor,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(
                                   S.of(context).languages,
                                   style: Theme.of(context).textTheme.bodyText2,
@@ -277,7 +277,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                   size: 22,
                                   color: Theme.of(context).focusColor,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(
                                   S.of(context).delivery_addresses,
                                   style: Theme.of(context).textTheme.bodyText2,
@@ -297,7 +297,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                   size: 22,
                                   color: Theme.of(context).focusColor,
                                 ),
-                                SizedBox(width: 10),
+                                const SizedBox(width: 10),
                                 Text(
                                   S.of(context).help_supports,
                                   style: Theme.of(context).textTheme.bodyText2,

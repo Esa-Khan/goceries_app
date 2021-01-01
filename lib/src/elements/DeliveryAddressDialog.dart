@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:saudaghar/src/controllers/settings_controller.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import '../../src/controllers/settings_controller.dart';
+import '../../src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/checkbox_form_field.dart';
@@ -19,9 +19,16 @@ class DeliveryAddressDialog {
 
   DeliveryAddressDialog({this.context, this.address, this.onChanged}) {
     phoneTextCon.text = currentUser.value.phone;
+
     String validatePhone(String input){
-      if (input.trim().length == 0){
+      if (input.length == 0) {
         return "Invalid: Cannot leave empty";
+
+      } else if (input.length < 11){
+        return "Invalid: Number must be 11 digits";
+
+      } else if (input.substring(0, 2) != '03'){
+        return "Invalid: Number must start with '03'";
 
       } else if(int.tryParse(input) == null){
         return "Invalid: Only numbers allowed";
@@ -45,7 +52,7 @@ class DeliveryAddressDialog {
                 ),
                 SizedBox(width: 10),
                 Text(
-                  "Confirm address and number!",
+                  "Confirm address and number",
 //                  S.of(context).add_delivery_address,
                   style: Theme.of(context).textTheme.bodyText1,
                 )
@@ -56,17 +63,6 @@ class DeliveryAddressDialog {
                 key: _deliveryAddressFormKey,
                 child: Column(
                   children: <Widget>[
-//                    Padding(
-//                      padding: const EdgeInsets.symmetric(horizontal: 20),
-//                      child: new TextFormField(
-//                        style: TextStyle(color: Theme.of(context).hintColor),
-//                        keyboardType: TextInputType.text,
-//                        decoration: getInputDecoration(hintText: S.of(context).home_address, labelText: S.of(context).description),
-//                        initialValue: address.description?.isNotEmpty ?? false ? address.description : null,
-//                        validator: (input) => input.trim().length == 0 ? 'Not valid address description' : null,
-//                        onSaved: (input) => address.description = input,
-//                      ),
-//                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: new TextFormField(
@@ -85,11 +81,11 @@ class DeliveryAddressDialog {
                         keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
                         controller: phoneTextCon,
                         inputFormatters: [
-                          WhitelistingTextInputFormatter.digitsOnly,
-                          new LengthLimitingTextInputFormatter(11)
+                          FilteringTextInputFormatter.digitsOnly,
+                          new LengthLimitingTextInputFormatter(11),
                         ],
                         decoration: getInputDecoration(hintText: "03001234567", labelText: S.of(context).phone_number),
-//                        initialValue: currentUser.value.phone?.isNotEmpty ?? false ? currentUser.value.phone : "",
+                        // initialValue: currentUser.value.phone,
                         validator: (input) => validatePhone(input),
 //                        onSaved: (input) => currentUser.value.phone = input,
                       ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/pages/sg_home.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart';
+import '../../src/driver/pages/orders_history.dart';
+import '../../src/pages/profile.dart';
+import '../../src/repository/user_repository.dart';
+import '../../src/pages/sg_home.dart';
 
 import '../elements/DrawerWidget.dart';
 import '../elements/FilterWidget.dart';
@@ -53,6 +55,23 @@ class _PagesWidgetState extends State<PagesWidget> {
 
   void _selectTab(int tabItem) {
     setState(() {
+      if (currentUser.value.isDriver != null && currentUser.value.isDriver) {
+        widget.currentTab = tabItem == 3 ? 1 : tabItem;
+        switch (tabItem) {
+          case 0:
+            widget.currentPage = ProfileWidget(parentScaffoldKey: widget.scaffoldKey);
+            break;
+          case 1:
+            widget.currentPage = OrdersWidget(parentScaffoldKey: widget.scaffoldKey);
+            break;
+          case 2:
+            widget.currentPage = OrdersHistoryWidget(parentScaffoldKey: widget.scaffoldKey);
+            break;
+          case 3:
+            widget.currentPage = MapWidget(parentScaffoldKey: widget.scaffoldKey, routeArgument: widget.routeArgument);
+            break;
+        }
+      } else {
       widget.currentTab = tabItem;
       switch (tabItem) {
         case 0:
@@ -75,6 +94,8 @@ class _PagesWidgetState extends State<PagesWidget> {
           widget.currentPage = FavoritesWidget(parentScaffoldKey: widget.scaffoldKey);
           break;
       }
+      }
+
     });
   }
 
@@ -85,9 +106,9 @@ class _PagesWidgetState extends State<PagesWidget> {
       child: Scaffold(
         key: widget.scaffoldKey,
         drawer: DrawerWidget(),
-        endDrawer: FilterWidget(onFilter: (filter) {
-          Navigator.of(context).pushReplacementNamed('/Pages', arguments: widget.currentTab);
-        }),
+        // endDrawer: FilterWidget(onFilter: (filter) {
+        //   Navigator.of(context).pushReplacementNamed('/Pages', arguments: widget.currentTab);
+        // }),
         body: widget.currentPage,
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,

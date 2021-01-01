@@ -1,6 +1,8 @@
-import 'package:saudaghar/src/controllers/food_controller.dart';
-import 'package:saudaghar/src/models/address.dart';
-import 'package:saudaghar/src/repository/restaurant_repository.dart';
+import 'package:global_configuration/global_configuration.dart';
+
+import '../../src/controllers/food_controller.dart';
+import '../../src/models/address.dart';
+import '../../src/repository/restaurant_repository.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/category.dart';
@@ -55,7 +57,8 @@ class Food {
       restaurant = jsonMap['restaurant'] != null ? Restaurant.fromJSON(jsonMap['restaurant']) : Restaurant.fromJSON({});
       price = price*restaurant.defaultTax + price;
       category = jsonMap['category_id'] != null ? jsonMap['category_id'] : 0;
-      image_url = jsonMap['image_url'] != null && jsonMap['image_url'] != "NULL" ? jsonMap['image_url'] : null;
+      // image_url = jsonMap['image_url'] != null && jsonMap['image_url'] != "NULL" ? jsonMap['image_url'] : null;
+      image_url = '${GlobalConfiguration().getString('base_url')}storage/app/public/foods/${id}.jpg';
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0])
                                                                                 : image_url != null ? Media.fromURL(image_url): new Media(isCat: true);
 

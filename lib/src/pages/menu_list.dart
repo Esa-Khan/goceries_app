@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/CategoryListWidget.dart';
+import '../../src/elements/CategoryListWidget.dart';
 import '../../generated/l10n.dart';
 import '../elements/AislesItemWidget.dart';
 import '../elements/FoodItemWidget.dart';
@@ -38,7 +38,7 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
     super.initState();
     _con.restaurant = widget.routeArgument.param;
     while (_con.restaurant.used_cats == null) {
-      Future.delayed(Duration(microseconds: 100));
+      Timer(Duration(microseconds: 100), () {});
     }
     _con.listenForUsedCategories(_con.restaurant.id);
   }
@@ -68,7 +68,9 @@ class _MenuWidgetState extends StateMVC<MenuWidget> {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      body: CategoryListWidget(store: _con.restaurant)
+      body: _con.restaurant == null
+          ? const Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
+          : CategoryListWidget(store: _con.restaurant)
     );
 
   }

@@ -5,7 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:io' show Platform;
-import 'package:saudaghar/src/elements/EmptyOrdersWidget.dart';
+import '../../src/elements/EmptyOrdersWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../elements/CardsCarouselLoaderWidget.dart';
@@ -98,23 +98,15 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
               ),
             ),
           ),
-          Offstage(
-              offstage: false,
-                child: GridView.count(
+                GridView.count(
 //              scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   primary: true,
                   physics: new NeverScrollableScrollPhysics(),
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                  padding: EdgeInsets.symmetric(horizontal: 70),
+                  padding: EdgeInsets.symmetric(horizontal: 40),
                   // Create a grid with 2 columns. If you change the scrollDirection to
                   // horizontal, this produces 2 rows.
-                  crossAxisCount:
-                      MediaQuery.of(context).orientation == Orientation.portrait
-                          ? 2
-                          : 4,
-                  // Generate 100 widgets that display their index in the List.
+                  crossAxisCount: 4,
                   children: List.generate(logo_color.length, (index) {
                     return GestureDetector(
                       onTap: () {
@@ -135,27 +127,29 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
 
                       },
                         child: Container(
-                      padding: EdgeInsets.all(30),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        boxShadow: [
-                          BoxShadow(
-                              color:
-                                  Theme.of(context).focusColor.withOpacity(0.1),
-                              blurRadius: 15,
-                              offset: Offset(0, 5)),
-                        ],
-                      ),
-                      child: SvgPicture.asset(
-                        logo_img.elementAt(index),
-                        color: logo_color.elementAt(index),
-                        height: MediaQuery.of(context).size.width / 2 - 50,
-                        fit: BoxFit.contain,
-                      ),
-                    ));
+                          padding: EdgeInsets.all(10),
+                          margin: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            boxShadow: [
+                              BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.9), blurRadius: 3, offset: Offset(0, 2)),
+                              // BoxShadow(
+                              //   color: Theme.of(context).focusColor.withOpacity(0.1),
+                              //   blurRadius: 15,
+                              //   offset: Offset(0, 5)),
+                            ],
+                          ),
+                          child: SvgPicture.asset(
+                            logo_img.elementAt(index),
+                            color: logo_color.elementAt(index),
+                            width: 100,
+                            height: MediaQuery.of(context).size.width / 2 - 50,
+                            fit: BoxFit.contain,
+                          ),
+                          ));
                   }),
-              )),
+              ),
           Divider(height: 30),
         ],
       ),

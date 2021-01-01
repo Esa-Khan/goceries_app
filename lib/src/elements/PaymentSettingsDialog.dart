@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:saudaghar/src/elements/CartBottomDetailsWidget.dart';
+import '../../src/elements/CartBottomDetailsWidget.dart';
 
 import '../../generated/l10n.dart';
 import '../models/credit_card.dart';
@@ -85,13 +85,13 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.numberWithOptions(decimal: false, signed: false),
                           inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly,
+                            FilteringTextInputFormatter.digitsOnly,
                             new LengthLimitingTextInputFormatter(19),
                             new CardNumberInputFormatter()
                           ],
 //                          controller: creditNumberCon,
                           decoration: getInputDecoration(hintText: '4242 4242 4242 4242', labelText: S.of(context).number),
-                          initialValue: widget.creditCard.number != null && widget.creditCard.number.isNotEmpty ? widget.creditCard.number : 'Test',
+                          initialValue: widget.creditCard.number != null && widget.creditCard.number.isNotEmpty ? widget.creditCard.number : '',
 //                          validator: (input) => input.trim().length != 16 ? S.of(context).not_a_valid_number : null,
                           validator: (input) => validateCardNumWithLuhnAlgorithm(input),
                           onSaved: (input) => widget.creditCard.number = input,
@@ -100,7 +100,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                             style: TextStyle(color: Theme.of(context).hintColor),
                             keyboardType: TextInputType.datetime,
                             inputFormatters: [
-                              WhitelistingTextInputFormatter.digitsOnly,
+                              FilteringTextInputFormatter.digitsOnly,
                               new LengthLimitingTextInputFormatter(4),
                               new CardMonthInputFormatter()
                             ],
@@ -116,7 +116,7 @@ class _PaymentSettingsDialogState extends State<PaymentSettingsDialog> {
                           style: TextStyle(color: Theme.of(context).hintColor),
                           keyboardType: TextInputType.number,
                           inputFormatters: [
-                            WhitelistingTextInputFormatter.digitsOnly,
+                            FilteringTextInputFormatter.digitsOnly,
                             new LengthLimitingTextInputFormatter(3),
                           ],
                           decoration: getInputDecoration(hintText: '253', labelText: S.of(context).cvc),

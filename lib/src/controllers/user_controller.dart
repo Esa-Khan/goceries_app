@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:apple_sign_in/apple_sign_in.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -47,7 +46,11 @@ class UserController extends ControllerMVC {
       Overlay.of(context).insert(loader);
       repository.login(user).then((value) {
         if (value != null && value.apiToken != null) {
-          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          if (value.isDriver) {
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+          } else {
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          }
         } else {
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).wrong_email_or_password),
@@ -56,7 +59,7 @@ class UserController extends ControllerMVC {
       }).catchError((e) {
         loader.remove();
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).this_account_not_exist),
+          content: Text(e.message, textAlign: TextAlign.center,),
         ));
       }).whenComplete(() {
         Helper.hideLoader(loader);
@@ -90,15 +93,15 @@ class UserController extends ControllerMVC {
         this.user.password = currentUser.uid;
 
         thirdPartyLogin();
-        Helper.hideLoader(loader);
         return 'signInWithGoogle succeeded: $user';
+      } else {
+        Helper.hideLoader(loader);
       }
 
     } catch (e) {
       print("ERROR: " + e.toString());
       Helper.hideLoader(loader);
     }
-    Helper.hideLoader(loader);
   }
 
   void signOutGoogle() async {
@@ -119,6 +122,7 @@ class UserController extends ControllerMVC {
         case FacebookLoginStatus.cancelledByUser:
           print("CancelledByUser");
           onLoginStatusChanged(false);
+          Helper.hideLoader(loader);
           break;
         case FacebookLoginStatus.loggedIn:
           print("LoggedIn");
@@ -165,8 +169,7 @@ class UserController extends ControllerMVC {
               String.fromCharCodes(appleIdCredential.authorizationCode),
             );
 
-            final AuthResult _res = await FirebaseAuth.instance
-                .signInWithCredential(credential);
+            final AuthResult _res = await FirebaseAuth.instance.signInWithCredential(credential);
 
             FirebaseAuth.instance.currentUser().then((val) async {
               UserUpdateInfo updateUser = UserUpdateInfo();
@@ -201,25 +204,36 @@ class UserController extends ControllerMVC {
       if (value != null && value.apiToken != null) {
         print("-------------Login Success-------------");
         Helper.hideLoader(loader);
-        Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+        if (value.isDriver) {
+          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+        } else {
+          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
+          // Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+        }
       } else {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).wrong_email_or_password),
         ));
       }
+      Helper.hideLoader(loader);
     }).catchError((e) {
-      print("-------------Login Failed-------------" + e.toString());
-      if (e.toString() == "Exception: No Account with this Email") {
+      print("-------------Login Failed-------------\n" + e.toString());
+      if (e.message == "No account with this email") {
         repository.register(this.user).then((value) {
           if (value != null && value.apiToken != null) {
             print("-------------Register Success-------------");
             Helper.hideLoader(loader);
-            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+            if (value.isDriver) {
+              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+            } else {
+              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
+            }
           } else {
             scaffoldKey?.currentState?.showSnackBar(SnackBar(
               content: Text(S.of(context).wrong_email_or_password),
             ));
           }
+          Helper.hideLoader(loader);
         }).catchError((e) {
           print("-------------Register Failed-------------");
           if (e.toString() == "Exception: Account already exits") {
@@ -227,6 +241,8 @@ class UserController extends ControllerMVC {
               content: Text("Wrong password. Try a different login method."),
             ));
           }
+          Helper.hideLoader(loader);
+
         });
       }
       });
@@ -239,7 +255,11 @@ class UserController extends ControllerMVC {
       Overlay.of(context).insert(loader);
       repository.register(user).then((value) {
         if (value != null && value.apiToken != null) {
-          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          if (value.isDriver) {
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+          } else {
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+          }
         } else {
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).wrong_email_or_password),

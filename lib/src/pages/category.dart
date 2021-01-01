@@ -46,13 +46,15 @@ class _CategoryWidgetState extends StateMVC<CategoryWidget> {
     return Scaffold(
       key: _con.scaffoldKey,
       drawer: DrawerWidget(),
-      endDrawer: FilterWidget(onFilter: (filter) {
-        Navigator.of(context).pushReplacementNamed('/Category', arguments: RouteArgument(id: widget.routeArgument.id));
-      }),
+      // endDrawer: FilterWidget(onFilter: (filter) {
+      //   Navigator.of(context).pushReplacementNamed('/Category', arguments: RouteArgument(id: widget.routeArgument.id));
+      // }),
       appBar: AppBar(
-        leading: new IconButton(
-          icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
-          onPressed: () => _con.scaffoldKey?.currentState?.openDrawer(),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back),
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,

@@ -28,7 +28,7 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (!hasTimedout)
+    if (!hasTimedout && widget.heroTag == 'home_top_restaurants')
       Future.delayed(const Duration(milliseconds: 10000), () {
         if (mounted)
           setState(() => hasTimedout = true);
@@ -44,18 +44,22 @@ class _CardsCarouselWidgetState extends State<CardsCarouselWidget> {
                 scrollDirection: Axis.horizontal,
                 itemCount: widget.restaurantsList.length,
                 itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('/Details',
-                          arguments: RouteArgument(
-                            id: widget.restaurantsList.elementAt(index).id,
-                            heroTag: widget.heroTag,
-                          ));
-                    },
-                    child: widget.restaurantsList.elementAt(index).availableForDelivery
-                      ? CardWidget(restaurant: widget.restaurantsList.elementAt(index), heroTag: widget.heroTag)
-                        : SizedBox(height: 0),
-                  );
+                  if (widget.restaurantsList.elementAt(index).id == '0') {
+                    return const SizedBox();
+                  } else {
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed('/Details',
+                            arguments: RouteArgument(
+                              id: widget.restaurantsList.elementAt(index).id,
+                              heroTag: widget.heroTag,
+                            ));
+                      },
+                      child: widget.restaurantsList.elementAt(index).availableForDelivery
+                          ? CardWidget(restaurant: widget.restaurantsList.elementAt(index), heroTag: widget.heroTag)
+                          : const SizedBox(),
+                    );
+                  }
                 },
               ),
             );

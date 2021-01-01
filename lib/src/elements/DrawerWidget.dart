@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -12,14 +13,9 @@ class DrawerWidget extends StatefulWidget {
 }
 
 class _DrawerWidgetState extends StateMVC<DrawerWidget> {
-  //ProfileController _con;
 
   _DrawerWidgetState() : super(ProfileController()) {
-    //_con = controller;
-  }
-  @override
-  void dispose() {
-    super.dispose();
+
   }
 
   @override
@@ -46,8 +42,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                     currentAccountPicture: CircleAvatar(
                       backgroundColor: Theme.of(context).accentColor,
-                      backgroundImage: currentUser.value.image.thumb == 'https://goceries.org/images/image_default.png'
-                                        || currentUser.value.image.thumb == 'https://goceries.org/images/profile_picture.jpg'
+                      backgroundImage: currentUser.value.image.thumb == '${GlobalConfiguration().getString('base_url')}images/image_default.png'
+                                        || currentUser.value.image.thumb == '${GlobalConfiguration().getString('base_url')}images/profile_picture.jpg'
                           ? AssetImage('assets/img/profile_picture.jpg')
                           : NetworkImage(currentUser.value.image.thumb),
                     ),
@@ -75,6 +71,19 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
+              Navigator.of(context).pushReplacementNamed('/StoreSelect');
+            },
+            leading: Icon(
+              Icons.list,
+              color: Theme.of(context).focusColor.withOpacity(1),
+            ),
+            title: Text(
+              "Where to Shop?",
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
+            ),
+          ),
+          ListTile(
+            onTap: () {
               settingsRepo.isStore.value = 0;
               Navigator.of(context).pushNamed('/Pages',arguments: 2);
             },
@@ -84,20 +93,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).home,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-          ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).pushReplacementNamed('/StoreSelect');
-            },
-            leading: Icon(
-              Icons.list,
-              color: Theme.of(context).focusColor.withOpacity(1),
-            ),
-            title: Text(
-              "Where to Shop?",
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           // ListTile(
@@ -123,7 +119,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).my_orders,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           ListTile(
@@ -136,7 +132,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).favorite_foods,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           ListTile(
@@ -160,7 +156,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).help__support,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           ListTile(
@@ -177,22 +173,22 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               S.of(context).settings,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
-          ListTile(
-            onTap: () {
-              Navigator.of(context).pushNamed('/Languages');
-            },
-            leading: Icon(
-              Icons.translate,
-              color: Theme.of(context).focusColor.withOpacity(1),
-            ),
-            title: Text(
-              S.of(context).languages,
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-          ),
+          // ListTile(
+          //   onTap: () {
+          //     Navigator.of(context).pushNamed('/Languages');
+          //   },
+          //   leading: Icon(
+          //     Icons.translate,
+          //     color: Theme.of(context).focusColor.withOpacity(1),
+          //   ),
+          //   title: Text(
+          //     S.of(context).languages,
+          //     style: Theme.of(context).textTheme.subtitle1,
+          //   ),
+          // ),
           ListTile(
             onTap: () {
               if (Theme.of(context).brightness == Brightness.dark) {
@@ -210,14 +206,15 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               Theme.of(context).brightness == Brightness.dark ? S.of(context).light_mode : S.of(context).dark_mode,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           ListTile(
             onTap: () {
               if (currentUser.value.apiToken != null) {
                 logout().then((value) {
-                  Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
+                  // Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
+                  Navigator.of(context).pushNamedAndRemoveUntil('/StoreSelect', (Route<dynamic> route) => false);
                 });
               } else {
                 Navigator.of(context).pushNamed('/Login');
@@ -229,7 +226,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             ),
             title: Text(
               currentUser.value.apiToken != null ? S.of(context).log_out : S.of(context).login,
-              style: Theme.of(context).textTheme.subtitle1,
+              style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
             ),
           ),
           currentUser.value.apiToken == null
@@ -243,7 +240,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   ),
                   title: Text(
                     S.of(context).register,
-                    style: Theme.of(context).textTheme.subtitle1,
+                    style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: 17)),
                   ),
                 )
               : SizedBox(height: 0),

@@ -4,10 +4,9 @@ import '../helpers/helper.dart';
 import '../models/food.dart';
 import '../models/route_argument.dart';
 
-// ignore: must_be_immutable
 class FoodListItemWidget extends StatelessWidget {
-  String heroTag;
-  Food food;
+  final String heroTag;
+  final Food food;
 
   FoodListItemWidget({Key key, this.heroTag, this.food}) : super(key: key);
 

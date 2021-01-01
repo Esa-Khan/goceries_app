@@ -91,17 +91,20 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                     : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
                               ],
                             ),
-//                            Row(
-//                              children: <Widget>[
-//                                Expanded(
-//                                  child: Text(
-//                                    '${S.of(context).tax} (${widget.order.tax}%)',
-//                                    style: Theme.of(context).textTheme.bodyText1,
-//                                  ),
-//                                ),
-//                                Helper.getPrice(Helper.getTaxOrder(widget.order), context, style: Theme.of(context).textTheme.subtitle1)
-//                              ],
-//                            ),
+                           Row(
+                             children: <Widget>[
+                               Expanded(
+                                 child: Text(
+                                   'Discount:',
+                                   style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.greenAccent)),
+                                 ),
+                               ),
+                               Helper.getPrice(
+                                   widget.order.discount,
+                                   context,
+                                   style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent)))
+                             ],
+                           ),
                             Row(
                               children: <Widget>[
                                 Expanded(
@@ -198,7 +201,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
 //          width: 140,
           width: 190,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.active ? Theme.of(context).accentColor : Colors.redAccent),
+              borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.active ? widget.order.orderStatus.status_color : Colors.redAccent),
           alignment: AlignmentDirectional.center,
           child: Text(
             widget.order.active ? '${widget.order.orderStatus.status}' : S.of(context).canceled,

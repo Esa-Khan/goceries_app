@@ -46,15 +46,14 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                 Navigator.of(context).pushReplacementNamed('/Food', arguments: RouteArgument(id: widget.routeArgument.id));
               } else if(widget.routeArgument.param == '/Details') {
                 Navigator.pop(context);
+              } else if(widget.routeArgument.param == '/StoreSelect') {
+                Navigator.of(context).pushReplacementNamed('/StoreSelect');
               } else {
-                Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
+                Navigator.of(context).pushNamed('/Pages', arguments: 2);
               }
             },
             icon: Icon(Icons.arrow_back),
-            color: Theme.of(context).accentColor,
           ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
           centerTitle: true,
           title: Text(
             S.of(context).cart,
@@ -68,27 +67,23 @@ class _CartWidgetState extends StateMVC<CartWidget> {
               ? EmptyCartWidget()
               : Container(
                   child: ListView(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: EdgeInsets.only(bottom: 10),
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 10),
+                        padding: const EdgeInsets.only(left: 20, right: 10, top: 10),
                         child: ListTile(
-                          contentPadding: EdgeInsets.symmetric(vertical: 0),
                           leading: Icon(
                             Icons.shopping_cart,
                             color: Theme.of(context).hintColor,
                           ),
-                          title: Text(
-                            S.of(context).shopping_cart,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                          subtitle: Text(
-                            S.of(context).verify_your_quantity_and_click_checkout,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.caption,
+                          title: Container(
+                            // padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
+                            child: Text(
+                              'Verify your quantity or add any extra notes and click checkout',
+                              maxLines: 5,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
                           ),
                         ),
                       ),

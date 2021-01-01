@@ -13,6 +13,11 @@ class User {
   String address;
   String bio;
   Media image;
+  bool isDriver = false;
+  bool isManager = false;
+  String work_hours;
+  String store_ids;
+
 
   // used for indicate if client logged in or not
   bool auth;
@@ -45,6 +50,13 @@ class User {
         bio = "";
       }
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media(isCat: false);
+      isDriver = jsonMap['isDriver'] == 0 || jsonMap['isDriver'] == null ? false : true;
+      isManager = jsonMap['isManager'] == 0 || jsonMap['isManager'] == null ? false : true;
+      isDriver = isDriver || isManager;
+      if (isDriver) {
+        work_hours = jsonMap['work_hours'];
+        store_ids = jsonMap['store_ids'];
+      }
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }
@@ -65,6 +77,8 @@ class User {
     map["address"] = address;
     map["bio"] = bio;
     map["media"] = image?.toMap();
+    map["isDriver"] = isDriver;
+    map["isManager"] = isManager;
     return map;
   }
 

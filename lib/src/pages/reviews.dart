@@ -56,11 +56,11 @@ class _ReviewsWidgetState extends StateMVC<ReviewsWidget> {
                                     child: Hero(
                                       tag: widget.routeArgument.heroTag + _con.order.foodOrders[0].food.restaurant.id,
                                       child: CachedNetworkImage(
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.contain,
                                         imageUrl: _con.order.foodOrders[0].food.restaurant.image.url,
                                         placeholder: (context, url) => Image.asset(
                                           'assets/img/loading.gif',
-                                          fit: BoxFit.cover,
+                                          fit: BoxFit.contain,
                                         ),
                                         errorWidget: (context, url, error) => Icon(Icons.error),
                                       ),

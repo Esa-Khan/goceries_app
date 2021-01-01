@@ -1,11 +1,8 @@
-import 'dart:io';
-
-import 'package:apple_sign_in/apple_sign_in.dart';
-import 'package:apple_sign_in/apple_sign_in_button.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../elements/FacebookSigninButtonWidget.dart';
 import '../elements/GoogleSigninButtonWidget.dart';
+import '../elements/AppleSigninButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -13,6 +10,7 @@ import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
 import '../repository/user_repository.dart' as userRepo;
+import '../repository/settings_repository.dart' as settingsRepo;
 import '../helpers/helper.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -40,7 +38,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _con.scaffoldKey,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       body: Stack(
         alignment: AlignmentDirectional.topCenter,
         children: <Widget>[
@@ -53,7 +51,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             shrinkWrap: true,
             children: [
               Padding(
-                  padding: EdgeInsets.only(top: 45, bottom: 10),
+                  padding: EdgeInsets.only(top: settingsRepo.compact_view_vertical ? 10 : 45, bottom: 10),
                   child: Column(
                       children: [
                         Container(
@@ -89,20 +87,10 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                 GoogleSigninButtonWidget(con: _con),
                                 const Divider(height: 15),
                                 supportsAppleSignIn
-                                  ? Container(
-                                      // height: screenHeight / 15,
-                                      // width: screenWidth / 1.5,
-                                      child: AppleSignInButton(
-                                        // style: ButtonStyle.black,
-                                        type: ButtonType.continueButton,
-                                        onPressed: () {
-                                          _con.signInWithApple();
-                                        },
-                                      ),
-                                    )
-                                  : const SizedBox(height: 0),
+                                  ? AppleSigninButtonWidget(con: _con)
+                                  : const SizedBox(),
                                 Padding(
-                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_vertical ? 5 : 15),
                                     child: Text(
                                       "OR",
                                       textAlign: TextAlign.center,
@@ -212,7 +200,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                   text: TextSpan(
                                       text: S.of(context).dont_have_an_account,
                                       style: Theme.of(context).textTheme.bodyText1,
-                                      recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).pushNamed('/SignUp')),
+                                      recognizer: TapGestureRecognizer()..onTap = () => Navigator.of(context).popAndPushNamed('/SignUp')),
                                 ),
                                 const SizedBox(height: 10),
                                 RichText(
@@ -244,7 +232,8 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                       ])),
                       FlatButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                          // Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                          Navigator.pop(context);
                         },
                         shape: StadiumBorder(),
                         textColor: Theme.of(context).hintColor,

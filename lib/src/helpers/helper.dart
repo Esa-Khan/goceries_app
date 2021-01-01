@@ -79,6 +79,26 @@ class Helper {
     return marker;
   }
 
+  static Future<Marker> getOrderMarker(Map<String, dynamic> res) async {
+    final Uint8List markerIcon = await getBytesFromAsset('assets/img/marker.png', 120);
+    final Marker marker = Marker(
+        markerId: MarkerId(res['id']),
+        icon: BitmapDescriptor.fromBytes(markerIcon),
+//        onTap: () {
+//          //print(res.name);
+//        },
+        anchor: Offset(0.5, 0.5),
+        infoWindow: InfoWindow(
+            title: res['address'],
+            snippet: '',
+            onTap: () {
+              print('infowi tap');
+            }),
+        position: LatLng(res['latitude'], res['longitude']));
+
+    return marker;
+  }
+
   static Future<Marker> getMyPositionMarker(double latitude, double longitude) async {
     final Uint8List markerIcon = await getBytesFromAsset('assets/img/my_marker.png', 120);
     final Marker marker = Marker(
@@ -180,7 +200,7 @@ class Helper {
     order.foodOrders.forEach((foodOrder) {
       total += getTotalOrderPrice(foodOrder);
     });
-    return order.tax * total / 100;
+    return order.discount * total / 100;
   }
 
   static double getTotalOrdersPrice(Order order) {
@@ -191,7 +211,15 @@ class Helper {
     if (total < settingsRepo.setting.value.deliveryFeeLimit){
       total += order.deliveryFee;
     }
-//    total += order.tax * total / 100;
+    total -= order.discount;
+    return total;
+  }
+
+  static double getSubTotalOrdersPrice(Order order) {
+    double total = 0;
+    order.foodOrders.forEach((foodOrder) {
+      total += getTotalOrderPrice(foodOrder);
+    });
     return total;
   }
 
@@ -218,6 +246,8 @@ class Helper {
     _can &= _restaurant.availableForDelivery && (_restaurant.distance <= _deliveryRange);
     return _can;
   }
+
+
 
   static String skipHtml(String htmlString) {
     try {
@@ -267,7 +297,8 @@ class Helper {
         left: 0,
         child: Material(
           color: Theme.of(context).primaryColor.withOpacity(0.85),
-          child: CircularLoadingWidget(height: 200),
+          // child: CircularLoadingWidget(height: 200),
+          child: Center(heightFactor: 3.5, child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
         ),
       );
     });
@@ -322,6 +353,8 @@ class Helper {
         return S.of(context).km;
       case "mi":
         return S.of(context).mi;
+      case "App\\Notifications\\AssignedOrder":
+        return 'Order assigned';
       default:
         return "";
     }
@@ -336,5 +369,22 @@ class Helper {
       return supportsAppleSignIn;
     }
     return false;
+  }
+
+  static bool validWorkHours(String time){
+    if (time == null) {
+      return false;
+    } else if (time == '24/7'){
+      return true;
+    }
+    String tmp = DateTime.now().toUtc().add(Duration(hours: 5)).toIso8601String();
+    var now = DateTime.parse(tmp.substring(0, tmp.length - 1));
+    List<DateTime> open = [DateTime(now.year, now.month, now.day-1, int.parse(time.split("|")[0].split(":")[0]), int.parse(time.split("|")[0].split(":")[1]), int.parse(time.split("|")[0].split(":")[2])),
+      DateTime(now.year, now.month, now.day, int.parse(time.split("|")[0].split(":")[0]), int.parse(time.split("|")[0].split(":")[1]), int.parse(time.split("|")[0].split(":")[2]))];
+
+    List<DateTime> close = [open[0].add(Duration(hours: int.parse(time.split("|")[1].split(":")[0]), minutes: int.parse(time.split("|")[1].split(":")[1]))),
+      open[1].add(Duration(hours: int.parse(time.split("|")[1].split(":")[0]), minutes: int.parse(time.split("|")[1].split(":")[1])))];
+    bool isValid = (now.isAfter(open[0]) && now.isBefore(close[0])) || (now.isAfter(open[1]) && now.isBefore(close[1]));
+    return isValid;
   }
 }

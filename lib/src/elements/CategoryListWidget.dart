@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/controllers/category_controller.dart';
+import '../../src/controllers/category_controller.dart';
 
 import '../models/category.dart';
 import '../models/restaurant.dart';
 import 'AislesItemWidget.dart';
+import 'EmptyItemSearchWidget.dart';
 import 'FoodItemWidget.dart';
 
 class CategoryListWidget extends StatefulWidget {
@@ -21,7 +22,8 @@ class CategoryListWidget extends StatefulWidget {
 class _CategoryListState extends StateMVC<CategoryListWidget> {
   CategoryController _con;
   var _searchBarController = TextEditingController();
-  bool first_load = true, _isSearching = false, _isSearched = false, _searchBarTapped = false;
+  bool first_load = true, _isSearching = false, _isSearched = false;
+  //, _searchBarTapped = false;
 
   _CategoryListState() : super(CategoryController()) {
     _con = controller;
@@ -52,13 +54,19 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
             padding: const EdgeInsets.fromLTRB(12, 1, 12, 30),
             child: TextField(
               onSubmitted: (text) async {
-                setState(() => _isSearching = true);
-                await _con.refreshSearch(text);
-                setState(() {
-                  _searchBarTapped = false;
-                  _isSearching = false;
-                  _isSearched = true;
-                });
+                if (text == "") {
+                  setState(() => _isSearched = false);
+                  _searchBarController.clear();
+                  await _con.refreshSearch("");
+                } else {
+                  setState(() => _isSearching = true);
+                  await _con.refreshSearch(text);
+                  setState(() {
+                    // _searchBarTapped = false;
+                    _isSearching = false;
+                    _isSearched = true;
+                  });
+                }
               },
               onChanged: (val) async {
                 if (val == "") {
@@ -68,7 +76,7 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                 }
               },
               onTap: () {
-                setState(() => _searchBarTapped = true);
+                // setState(() => _searchBarTapped = true);
               },
               controller: _searchBarController,
               decoration: InputDecoration(
@@ -97,14 +105,13 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
           ),
           _isSearching
               ? Column(
-            children: <Widget>[
-              SizedBox(height: 50),
-
-              // Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
-            ],
-          )
+                  children: <Widget>[
+                    SizedBox(height: 50),
+                    Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
+                  ],
+                )
               : _isSearched && _con.searchedItems.isEmpty
-                ? SizedBox(height: 300)
+                ? EmptyItemSearchWidget(search_str: _searchBarController.text)
                 : _con.searchedItems.isNotEmpty
                   ? ListView.separated(
                       padding: EdgeInsets.only(bottom: 40),
@@ -129,6 +136,16 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                         }
                       },
                     )
+
+
+
+
+
+
+
+
+
+
 
 
                 : !_con.hasAislesLoaded
@@ -160,26 +177,30 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                         } else {
                           // Define a Aisle dropdown
                           return AislesItemWidget(
-                              aisle: currAisle,
-                              store: _con.restaurant,
-                              items: _con.subaisleToItemsMap,
-                              subAisles: _con.aisleToSubaisleMap[currAisle.id],
-                              timeout: index,
-                              onPressed: (aisleVal) async {
-                                _con.isExpandedList.forEach((key, value) {
-                                  setState(() => _con.isExpandedList[key] = false);
-                                });
-                                if (!_con.isExpandedList[aisleVal.id])
-                                  _con.isExpandedList[aisleVal.id] = true;
+                            aisle: currAisle,
+                            items: _con.subaisleToItemsMap,
+                            subAisles: _con.aisleToSubaisleMap[currAisle.id],
+                            timeout: index,
+                            onPressed: (aisleVal) async {
+                              _con.isExpandedList.updateAll((key, value) => value = false);
+                              if (!_con.isExpandedList[aisleVal.id])
+                                _con.isExpandedList[aisleVal.id] = true;
 
-                                if (aisleVal.id.length > 2 &&
-                                    !_con.isAisleLoadedList[aisleVal.id] &&
-                                    _con.isExpandedList[aisleVal.id]) {
+                              if (aisleVal.id.length > 2 &&
+                                  !_con.isAisleLoadedList[aisleVal.id] &&
+                                  _con.isExpandedList[aisleVal.id]) {
                                   print(aisleVal.name);
                                   await _con.listenForItemsByCategory(aisleVal.id, storeID: _con.restaurant.id);
                                   _con.isAisleLoadedList[aisleVal.id] = true;
-                                }
-                              });
+                                  if (_con.loadedSubaisles.length == 5) {
+                                    String aisleitems_to_delete = _con.loadedSubaisles.first;
+                                    _con.subaisleToItemsMap[aisleitems_to_delete] = null;
+                                    _con.loadedSubaisles.remove(aisleitems_to_delete);
+                                    _con.isAisleLoadedList[aisleitems_to_delete] = false;
+                                  }
+                                  _con.loadedSubaisles.add(aisleVal.id);
+                              }
+                            });
                         }
 
                   })

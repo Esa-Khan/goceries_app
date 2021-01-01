@@ -4,10 +4,12 @@ import 'dart:convert';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:location/location.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/Step.dart';
 import '../repository/settings_repository.dart';
+import '../models/address.dart';
 
 class MapsUtil {
   static const BASE_URL = "https://maps.googleapis.com/maps/api/directions/json?";
@@ -61,4 +63,42 @@ class MapsUtil {
       return null;
     }
   }
+
+
+  static Future<bool> withinRange(Address current_address, Address store_address, double range) async {
+    bool isWithin = false;
+    try {
+      var endPoint =
+          'https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${current_address.latitude},${current_address.longitude}'
+          '&destinations=${store_address.latitude},${store_address.longitude}&key=${setting.value.googleMapsKey}';
+      var response = jsonDecode((await http.get(endPoint, headers: await LocationUtils.getAppHeaders())).body);
+      // var value = response['rows'][0]['elements'][0]['distance']['value'];
+      if (response['rows'][0]['elements'][0]['status'] == 'ZERO_RESULTS') {
+        return isWithin;
+      } else {
+        int value = response['rows'][0]['elements'][0]['distance']['value'];
+        print(value);
+        isWithin = value < range*1000;
+        return isWithin;
+      }
+    } catch (e) {
+      print(CustomTrace(StackTrace.current, message: e));
+      return false;
+    }
+
+  }
+
+  static Future<Address> getCurrentLocation() async {
+    var location = new Location();
+    Address _address = new Address();
+    MapsUtil mapsUtil = new MapsUtil();
+    await location.requestService();
+    LocationData _locationData = await location.getLocation();
+    String _addressName = await mapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
+    _address = Address.fromJSON({'address': _addressName, 'latitude': _locationData?.latitude, 'longitude': _locationData?.longitude});
+    return _address;
+
+  }
+
+
 }

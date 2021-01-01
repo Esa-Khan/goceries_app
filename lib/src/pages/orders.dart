@@ -7,7 +7,6 @@ import '../elements/EmptyOrdersWidget.dart';
 import '../elements/OrderItemWidget.dart';
 import '../elements/PermissionDeniedWidget.dart';
 import '../elements/SearchBarWidget.dart';
-import '../elements/ShoppingCartButtonWidget.dart';
 import '../repository/user_repository.dart';
 
 class OrdersWidget extends StatefulWidget {

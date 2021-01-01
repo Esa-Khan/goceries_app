@@ -10,7 +10,7 @@ import '../helpers/maps_util.dart';
 import '../models/address.dart';
 import '../models/restaurant.dart';
 import '../repository/restaurant_repository.dart';
-import '../repository/settings_repository.dart' as sett;
+import '../repository/settings_repository.dart' as settingsRepo;
 
 class MapController extends ControllerMVC {
   Restaurant currentRestaurant;
@@ -25,21 +25,23 @@ class MapController extends ControllerMVC {
   void listenForNearRestaurants(Address myLocation, Address areaLocation) async {
     final Stream<Restaurant> stream = await getNearStores(myLocation, areaLocation);
     stream.listen((Restaurant _restaurant) {
-      setState(() {
-        if (_restaurant.distance < _restaurant.deliveryRange)
-          closestStores.add(_restaurant);
-      });
-      Helper.getMarker(_restaurant.toMap()).then((marker) {
+      if (_restaurant.id != '0') {
         setState(() {
-          allMarkers.add(marker);
+          if (_restaurant.distance < _restaurant.deliveryRange)
+            closestStores.add(_restaurant);
         });
-      });
+        Helper.getMarker(_restaurant.toMap()).then((marker) {
+          setState(() {
+            allMarkers.add(marker);
+          });
+        });
+      }
     }, onError: (a) {}, onDone: () {});
   }
 
   void getCurrentLocation() async {
     try {
-      currentAddress = sett.deliveryAddress.value;
+      currentAddress = settingsRepo.deliveryAddress.value;
       setState(() {
         if (currentAddress.isUnknown()) {
           cameraPosition = CameraPosition(
@@ -69,7 +71,7 @@ class MapController extends ControllerMVC {
 
   void getRestaurantLocation() async {
     try {
-      currentAddress = await sett.getCurrentLocation();
+      currentAddress = await settingsRepo.getCurrentLocation();
       setState(() {
         cameraPosition = CameraPosition(
           target: LatLng(double.parse(currentRestaurant.latitude), double.parse(currentRestaurant.longitude)),
@@ -91,9 +93,9 @@ class MapController extends ControllerMVC {
   Future<void> goCurrentLocation() async {
     final GoogleMapController controller = await mapController.future;
 
-    sett.setCurrentLocation().then((_currentAddress) {
+    settingsRepo.setCurrentLocation().then((_currentAddress) {
       setState(() {
-        sett.deliveryAddress.value = _currentAddress;
+        settingsRepo.deliveryAddress.value = _currentAddress;
         currentAddress = _currentAddress;
       });
       controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -116,7 +118,7 @@ class MapController extends ControllerMVC {
   }
 
   void getDirectionSteps() async {
-    currentAddress = await sett.getCurrentLocation();
+    currentAddress = await settingsRepo.getCurrentLocation();
     mapsUtil
         .get("origin=" +
         currentAddress.latitude.toString() +
@@ -126,7 +128,7 @@ class MapController extends ControllerMVC {
         currentRestaurant.latitude +
         "," +
         currentRestaurant.longitude +
-        "&key=${sett.setting.value?.googleMapsKey}")
+        "&key=${settingsRepo.setting.value?.googleMapsKey}")
         .then((dynamic res) {
       if (res != null) {
         List<LatLng> _latLng = res as List<LatLng>;

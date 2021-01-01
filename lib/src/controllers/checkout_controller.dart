@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/repository/cart_repository.dart';
+import '../../src/repository/cart_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../models/cart.dart';
@@ -9,7 +9,7 @@ import '../models/order.dart';
 import '../models/order_status.dart';
 import '../models/payment.dart';
 import '../repository/order_repository.dart' as orderRepo;
-import '../repository/settings_repository.dart' as settingRepo;
+import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart' as userRepo;
 import 'cart_controller.dart';
 import '../helpers/helper.dart';
@@ -22,7 +22,9 @@ class CheckoutController extends CartController {
   double subTotal = 0.0;
   double total = 0.0;
   CreditCard creditCard = new CreditCard();
-  bool loading = true;
+  bool loading = false;
+  bool order_submitted = false;
+  bool card_declined = false;
   String hint = "";
   String time = "";
   GlobalKey<ScaffoldState> scaffoldKey;
@@ -39,20 +41,23 @@ class CheckoutController extends CartController {
 
   @override
   void onLoadingCartDone({String hint}) {
-    if (payment != null) addOrder(carts, hint);
     super.onLoadingCartDone();
+    if (payment != null) {
+      setState(() => loading = true);
+      addOrder(carts, hint);
+    }
   }
 
   void addOrder(List<Cart> carts, String hint) async {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
-    _order.tax = 0;//carts[0].food.restaurant.defaultTax;
+    _order.discount = settingsRepo.setting.value.promo[promotion] ?? 0;
     _order.hint = currentCart_note.value;
-    _order.scheduled_time = currentCart_time.value.replaceAll(" ", "");
+    _order.scheduled_time = currentCart_time.value.toString();
     OrderStatus _orderStatus = new OrderStatus();
     _orderStatus.id = '1';
     _order.orderStatus = _orderStatus;
-    _order.deliveryAddress = settingRepo.deliveryAddress.value;
+    _order.deliveryAddress = settingsRepo.deliveryAddress.value;
     _order.deliveryFee = carts[0].food.restaurant.deliveryFee;
     carts.forEach((_cart) {
       FoodOrder _foodOrder = new FoodOrder();
@@ -62,28 +67,87 @@ class CheckoutController extends CartController {
       _foodOrder.extras = _cart.extras;
       _order.foodOrders.add(_foodOrder);
     });
-    if (Helper.getTotalOrdersPrice(_order) < settingRepo.setting.value.deliveryFeeLimit){
+    if (Helper.getTotalOrdersPrice(_order) < settingsRepo.setting.value.deliveryFeeLimit){
       _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].food.restaurant.deliveryFee;
     } else {
       _order.deliveryFee = 0;
     };
-    orderRepo.addOrder(_order, this.payment).then((value) {
-      currentCart_note.value = "";
-      currentCart_time.value = "";
-      if (value is Order) {
+      orderRepo.addOrder(_order, this.payment).then((value) {
+        currentCart_time.value = null;
+        currentCart_note.value = '';
+
+        if (value is Order) {
+          setState(() {
+            loading = false;
+            order_submitted = true;
+          });
+        }
+      }).catchError((Object obj, StackTrace stackTrace) {
+        showDialog(
+          context: context,
+          builder: (context) => cardDeclinedDialog()
+        );
         setState(() {
+          order_submitted = false;
           loading = false;
+          card_declined = true;
         });
-      }
-    });
+      });
+  }
+
+  Widget cardDeclinedDialog() {
+    return AlertDialog(
+      title:  Wrap(
+        spacing: 10,
+        children: <Widget>[
+          Icon(Icons.report, color: Colors.orange),
+          Text(
+            'Credit-card declined',
+            style: TextStyle(color: Colors.orange, fontSize: 20),
+          ),
+        ],
+      ),
+      content: Text("Unfortunately your card ending with '${creditCard.number.substring(18)}' was declined, try checking your information or try a new credit-card."),
+      actions: <Widget>[
+        FlatButton(
+          child: new Text(
+              S.of(context).dismiss),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 
   void updateCreditCard(CreditCard creditCard) {
     userRepo.setCreditCard(creditCard).then((value) {
-      setState(() {});
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).payment_card_updated_successfully),
       ));
     });
+  }
+
+  Future<void> applePromotion(String code) async {
+    bool isUsed = false;
+    // await orderRepo.checkCode(code).then((value) => ;
+    await orderRepo.checkCode(code).then((value) => isUsed = value);
+    if (isUsed) {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Code already used'),
+        duration: Duration(seconds: 1),
+      ));
+    } else {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Discount added'),
+        duration: Duration(seconds: 1),
+      ));
+      promotion = code;
+      if (total - settingsRepo.setting.value.promo[promotion] > 0) {
+        setState(() => total -= settingsRepo.setting.value.promo[promotion]);
+      }
+      setState(() {promotion; total;});
+    }
+
   }
 }

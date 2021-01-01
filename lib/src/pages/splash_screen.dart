@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart' as settingRepo;
+import '../../src/repository/settings_repository.dart' as settingRepo;
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../controllers/splash_screen_controller.dart';
@@ -35,7 +35,11 @@ class SplashScreenState extends StateMVC<SplashScreen> {
       if (progress == 100 && isNotDone) {
         try {
           isNotDone = false;
-          Navigator.of(context).pushReplacementNamed('/StoreSelect');
+          if (userRepo.currentUser.value.isDriver != null && userRepo.currentUser.value.isDriver) {
+            Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
+          } else {
+            Navigator.of(context).pushReplacementNamed('/StoreSelect');
+          }
         } catch (e) {}
       }
     });
@@ -43,8 +47,8 @@ class SplashScreenState extends StateMVC<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    settingRepo.compact_view = MediaQuery.of(context).size.width < 380;
-    print(MediaQuery.of(context).size.width);
+    settingRepo.compact_view_horizontal = MediaQuery.of(context).size.width < 380;
+    settingRepo.compact_view_vertical = MediaQuery.of(context).size.height < 580;
     return Scaffold(
       key: _con.scaffoldKey,
       body: Container(

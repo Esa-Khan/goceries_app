@@ -9,6 +9,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
+import 'package:saudaghar/src/repository/user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/custom_trace.dart';
@@ -17,13 +18,16 @@ import '../models/address.dart';
 import '../models/setting.dart';
 
 ValueNotifier<Setting> setting = new ValueNotifier(new Setting());
+ValueNotifier<Address> myAddress = new ValueNotifier(new Address());
+ValueNotifier<bool> isDebug = new ValueNotifier(false);
 ValueNotifier<Address> deliveryAddress = new ValueNotifier(new Address());
-ValueNotifier<bool> firstStart = new ValueNotifier(true);
 ValueNotifier<int> isStore = new ValueNotifier(0);
-bool compact_view = false;
+bool compact_view_horizontal = false;
+bool compact_view_vertical = false;
 final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<Setting> initSettings() async {
+  isDebug.value = GlobalConfiguration().getString('debug') == 'true';
   Setting _setting;
   final String url = '${GlobalConfiguration().getString('api_base_url')}settings';
   try {
@@ -82,14 +86,26 @@ Future<Address> changeCurrentLocation(Address _address) async {
 }
 
 Future<Address> getCurrentLocation() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  //await prefs.clear();
-  if (prefs.containsKey('delivery_address')) {
-    deliveryAddress.value = Address.fromJSON(json.decode(prefs.getString('delivery_address')));
-    return deliveryAddress.value;
+  if (currentUser.value.isDriver) {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+//  await prefs.clear();
+    if (prefs.containsKey('my_address')) {
+      myAddress.value = Address.fromJSON(json.decode(prefs.getString('my_address')));
+      return myAddress.value;
+    } else {
+      myAddress.value = Address.fromJSON({});
+      return Address.fromJSON({});
+    }
   } else {
-    deliveryAddress.value = Address.fromJSON({});
-    return Address.fromJSON({});
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //await prefs.clear();
+    if (prefs.containsKey('delivery_address')) {
+      deliveryAddress.value = Address.fromJSON(json.decode(prefs.getString('delivery_address')));
+      return deliveryAddress.value;
+    } else {
+      deliveryAddress.value = Address.fromJSON({});
+      return Address.fromJSON({});
+    }
   }
 }
 

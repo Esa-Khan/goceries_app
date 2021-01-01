@@ -305,10 +305,10 @@ class S {
     );
   }
 
-  /// `Favorite Foods`
+  /// `Favorites`
   String get favorite_foods {
     return Intl.message(
-      'Favorite Foods',
+      'Favorites',
       name: 'favorite_foods',
       desc: '',
       args: [],
@@ -490,16 +490,6 @@ class S {
     return Intl.message(
       'Confirmation',
       name: 'confirmation',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Your order has been successfully submitted!`
-  String get your_order_has_been_successfully_submitted {
-    return Intl.message(
-      'Your order has been successfully submitted!',
-      name: 'your_order_has_been_successfully_submitted',
       desc: '',
       args: [],
     );
@@ -900,16 +890,6 @@ class S {
     return Intl.message(
       'Shopping Cart',
       name: 'shopping_cart',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Verify your quantity and click checkout`
-  String get verify_your_quantity_and_click_checkout {
-    return Intl.message(
-      'Verify your quantity and click checkout',
-      name: 'verify_your_quantity_and_click_checkout',
       desc: '',
       args: [],
     );
@@ -2065,10 +2045,10 @@ class S {
     );
   }
 
-  /// `Select you address, Swipe to delete, Long press to edit address`
+  /// `Select you address, swipe to delete or long press to edit address`
   String get click_to_confirm_your_address_and_pay_or_long_press {
     return Intl.message(
-      'Select you address, Swipe to delete, Long press to edit address',
+      'Select you address, swipe to delete or long press to edit address',
       name: 'click_to_confirm_your_address_and_pay_or_long_press',
       desc: '',
       args: [],
@@ -2550,6 +2530,256 @@ class S {
     return Intl.message(
       'Adding food to cart, please wait.',
       name: 'adding_food_to_cart_please_wait',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Account does not exist`
+  String get thisAccountNotExist {
+    return Intl.message(
+      'Account does not exist',
+      name: 'thisAccountNotExist',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Orders`
+  String get orders {
+    return Intl.message(
+      'Orders',
+      name: 'orders',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `History`
+  String get history {
+    return Intl.message(
+      'History',
+      name: 'history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No notification`
+  String get dont_have_any_item_in_the_notification_list {
+    return Intl.message(
+      'No notification',
+      name: 'dont_have_any_item_in_the_notification_list',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No orders assign yet`
+  String get you_dont_have_any_order_assigned_to_you {
+    return Intl.message(
+      'No orders assign yet',
+      name: 'you_dont_have_any_order_assigned_to_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `View details`
+  String get viewDetails {
+    return Intl.message(
+      'View details',
+      name: 'viewDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order status changed`
+  String get order_satatus_changed {
+    return Intl.message(
+      'Order status changed',
+      name: 'order_satatus_changed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Order`
+  String get new_order_from_costumer {
+    return Intl.message(
+      'New Order',
+      name: 'new_order_from_costumer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New order assigned to you`
+  String get your_have_an_order_assigned_to_you {
+    return Intl.message(
+      'New order assigned to you',
+      name: 'your_have_an_order_assigned_to_you',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Swipe left to delete`
+  String get swip_left_the_notification_to_delete_or_read__unread {
+    return Intl.message(
+      'Swipe left to delete',
+      name: 'swip_left_the_notification_to_delete_or_read__unread',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery Confirmation`
+  String get delivery_confirmation {
+    return Intl.message(
+      'Delivery Confirmation',
+      name: 'delivery_confirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Are you sure you want to update the order?`
+  String get are_you_sure_you_want_to_update_the_order {
+    return Intl.message(
+      'Are you sure you want to update the order?',
+      name: 'are_you_sure_you_want_to_update_the_order',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dismiss`
+  String get dismiss {
+    return Intl.message(
+      'Dismiss',
+      name: 'dismiss',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm`
+  String get confirm {
+    return Intl.message(
+      'Confirm',
+      name: 'confirm',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Update`
+  String get update {
+    return Intl.message(
+      'Update',
+      name: 'update',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Details`
+  String get order_details {
+    return Intl.message(
+      'Order Details',
+      name: 'order_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ordered Items`
+  String get ordered_foods {
+    return Intl.message(
+      'Ordered Items',
+      name: 'ordered_foods',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Customer`
+  String get customer {
+    return Intl.message(
+      'Customer',
+      name: 'customer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full Name`
+  String get fullName {
+    return Intl.message(
+      'Full Name',
+      name: 'fullName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery Address`
+  String get deliveryAddress {
+    return Intl.message(
+      'Delivery Address',
+      name: 'deliveryAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Address not provided, please call customer.`
+  String get address_not_provided_please_call_the_client {
+    return Intl.message(
+      'Address not provided, please call customer.',
+      name: 'address_not_provided_please_call_the_client',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get phoneNumber {
+    return Intl.message(
+      'Phone Number',
+      name: 'phoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order History`
+  String get orders_history {
+    return Intl.message(
+      'Order History',
+      name: 'orders_history',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tap again to leave`
+  String get tapBackAgainToLeave {
+    return Intl.message(
+      'Tap again to leave',
+      name: 'tapBackAgainToLeave',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Help & Support`
+  String get help_support {
+    return Intl.message(
+      'Help & Support',
+      name: 'help_support',
       desc: '',
       args: [],
     );

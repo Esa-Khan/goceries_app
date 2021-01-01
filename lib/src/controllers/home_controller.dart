@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/models/address.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import '../../src/repository/user_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../helpers/helper.dart';
@@ -10,10 +9,8 @@ import '../models/food.dart';
 import '../models/restaurant.dart';
 import '../models/review.dart';
 import '../repository/category_repository.dart';
-import '../repository/food_repository.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/settings_repository.dart';
-import '../repository/user_repository.dart' as userRepo;
 import '../repository/settings_repository.dart' as settingsRepo;
 
 class HomeController extends ControllerMVC {

@@ -74,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "g" : MessageLookupByLibrary.simpleMessage("g"),
     "guest" : MessageLookupByLibrary.simpleMessage("Guest"),
     "help__support" : MessageLookupByLibrary.simpleMessage("헬프 & 지원"),
+    "help_support" : MessageLookupByLibrary.simpleMessage("헬프 & 지원"),
     "help_supports" : MessageLookupByLibrary.simpleMessage("헬프 & 지원"),
     "hint_full_address" : MessageLookupByLibrary.simpleMessage("12 Street, City 21663, Country"),
     "home" : MessageLookupByLibrary.simpleMessage("Home"),
@@ -169,7 +170,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "unknown" : MessageLookupByLibrary.simpleMessage("Unknown"),
     "verify" : MessageLookupByLibrary.simpleMessage("확인"),
     "verify_your_internet_connection" : MessageLookupByLibrary.simpleMessage("인터넷 연결상태 확인"),
-    "verify_your_quantity_and_click_checkout" : MessageLookupByLibrary.simpleMessage("수량 확인 및 결제 확인"),
     "version" : MessageLookupByLibrary.simpleMessage("버젼"),
     "welcome" : MessageLookupByLibrary.simpleMessage("환영합니다"),
     "what_they_say" : MessageLookupByLibrary.simpleMessage("What They Say ?"),
@@ -179,7 +179,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "you_must_signin_to_access_to_this_section" : MessageLookupByLibrary.simpleMessage("You must sign-in to access to this section"),
     "your_address" : MessageLookupByLibrary.simpleMessage("귀하의 주소는"),
     "your_biography" : MessageLookupByLibrary.simpleMessage("당신의 전기는"),
-    "your_order_has_been_successfully_submitted" : MessageLookupByLibrary.simpleMessage("성공적으로 주문되었습니다!"),
     "your_reset_link_has_been_sent_to_your_email" : MessageLookupByLibrary.simpleMessage("Your reset link has been sent to your email")
   };
 }

@@ -38,8 +38,6 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
     return Scaffold(
       key: _con.scaffoldKey,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
         centerTitle: true,
         title: Text(
           S.of(context).delivery_addresses,
@@ -87,7 +85,6 @@ class _DeliveryAddressesWidgetState extends StateMVC<DeliveryAddressesWidget> {
               Padding(
                 padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
                 child: ListTile(
-                  contentPadding: EdgeInsets.symmetric(vertical: 0),
                   leading: Icon(
                     Icons.map,
                     color: Theme.of(context).hintColor,

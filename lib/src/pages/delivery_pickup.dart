@@ -1,19 +1,21 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/CircularLoadingWidget.dart';
-import 'package:saudaghar/src/elements/DeliveryBottomDetailsWidget.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import '../elements/EmptyDeliveryAddressWidget.dart';
+import '../elements/DeliveryBottomDetailsWidget.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
+import '../repository/user_repository.dart';
 import 'package:google_map_location_picker/google_map_location_picker.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
-import '../elements/CartBottomDetailsWidget.dart';
 import '../elements/DeliveryAddressDialog.dart';
 import '../elements/DeliveryAddressesItemWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../helpers/helper.dart';
+import '../helpers/maps_util.dart';
 import '../models/address.dart';
 import '../models/payment_method.dart';
 import '../models/route_argument.dart';
@@ -36,10 +38,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     _con = controller;
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,20 +48,22 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 //      widget.pickup = widget.list.pickupList.elementAt(0);
 //      widget.delivery = widget.list.pickupList.elementAt(1);
     }
+
+
     return Scaffold(
       key: _con.scaffoldKey,
       bottomNavigationBar: DeliveryBottomDetailsWidget(con: _con),
       appBar: AppBar(
-        leading: BackButton(
-          color: Theme.of(context).accentColor,
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        leading: BackButton(),
         centerTitle: true,
         title: Text(
-          S.of(context).delivery,
-          style: Theme.of(context).textTheme.headline6
-              .merge(TextStyle(letterSpacing: 1.3)),
+          'Delivery Address',
+          style: Theme.of(context).textTheme.headline6.merge(
+              TextStyle(
+                 letterSpacing: settingsRepo.compact_view_horizontal ? 0.5 : 1.3,
+                 fontSize: settingsRepo.compact_view_horizontal ? 15 : 17
+              )
+          ),
         ),
         actions: <Widget>[
           new ShoppingCartButtonWidget(
@@ -71,160 +72,49 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         ],
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: EdgeInsets.only(bottom: 10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-//            Padding(
-//              padding: const EdgeInsets.only(left: 20, right: 10),
-//              child: ListTile(
-//                contentPadding: EdgeInsets.symmetric(vertical: 0),
-//                leading: Icon(
-//                  Icons.domain,
-//                  color: Theme.of(context).hintColor,
-//                ),
-//                title: Text(
-//                  S.of(context).pickup,
-//                  maxLines: 1,
-//                  overflow: TextOverflow.ellipsis,
-//                  style: Theme.of(context).textTheme.headline4,
-//                ),
-//                subtitle: Text(
-//                  S.of(context).select_to_pickup_your_food_from_the_store,
-//                  maxLines: 1,
-//                  overflow: TextOverflow.ellipsis,
-//                  style: Theme.of(context).textTheme.caption,
-//                ),
-//              ),
-//            ),
-//            PickUpMethodItem(
-//                paymentMethod: _con.getPickUpMethod(),
-//                onPressed: (paymentMethod) {
-//                  showDialog(context: context, builder: (BuildContext context) {return ConfirmationDialogBox(); });
-//                  if (_con.togglePickUp())
-//                    ConfirmationDialogBox(
-//                      context: context,
-//                    );
-//                }),
             Column(
               children: <Widget>[
+                _con.loading
+                  ? SizedBox(
+                      height: 3,
+                      child: LinearProgressIndicator(
+                        backgroundColor: Theme.of(context).accentColor.withOpacity(0.2),
+                      ),
+                    )
+                  : SizedBox(),
                 Padding(
-                  padding: const EdgeInsets.only(
-                      top: 20, bottom: 10, left: 20, right: 10),
+                  padding: const EdgeInsets.only(bottom: 10, left: 20, right: 10, top: 10),
                   child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(vertical: 0),
                     leading: Icon(
                       Icons.map,
                       color: Theme.of(context).hintColor,
                     ),
                     title: Text(
-                      S.of(context).delivery,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                    subtitle: _con.carts.isNotEmpty &&
-                        Helper.canDelivery(_con.carts[0].food.restaurant,
-                            carts: _con.carts)
-                        ? Text(
                       S.of(context).click_to_confirm_your_address_and_pay_or_long_press,
-                      maxLines: 3,
+                      maxLines: 5,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption,
+                      style: Theme.of(context).textTheme.bodyText1,
                     )
-                        : Text(S.of(context).deliveryMethodNotAllowed,
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ),
+                  )
                 ),
-                _con.carts.isNotEmpty &&
-                    Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
-//                ? ListView.separated(
-//                    padding: EdgeInsets.symmetric(vertical: 15),
-//                    scrollDirection: Axis.vertical,
-//                    shrinkWrap: true,
-//                    primary: false,
-//                    itemCount: _conDeliveryAdresses.addresses.length,
-//                    separatorBuilder: (context, index) {
-//                      return SizedBox(height: 15);
-//                    },
-//                    itemBuilder: (context, index) {
-//                      return DeliveryAddressesItemWidget(
-//                        address: _conDeliveryAdresses.addresses.elementAt(index),
-//                        onPressed: (Address _address) {
-//                          DeliveryAddressDialog(
-//                            context: context,
-//                            address: _address,
-//                            onChanged: (Address _address) {
-//                              _con.updateAddress(_address);
-//                            },
-//                          );
-//                        },
-//                        onLongPress: (Address _address) {
-//                          DeliveryAddressDialog(
-//                            context: context,
-//                            address: _address,
-//                            onChanged: (Address _address) {
-//                              _con.updateAddress(_address);
-//                            },
-//                          );
-//                        },
-//                        onDismissed: (Address _address) {
-//                          _conDeliveryAdresses.removeDeliveryAddress(_address);
-//                        },
-//                      );
-//                    },
-//                )
+                _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts) && _con.deliveryAddress.isNotEmpty
                     ? ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: _con.deliveryAddress.length,
-                  shrinkWrap: true,
-                  primary: false,
-//                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  itemBuilder: (context, index) {
-                    if (_con.deliveryAddress.elementAt(index).address != null && _con.deliveryAddress.elementAt(index).id != null) {
-                      return DeliveryAddressesItemWidget(
-                        paymentMethod: _con.getDeliveryMethod(),
-                        address: _con.deliveryAddress.elementAt(index),
-                        onPressed: (Address _address) {
-                          if (_address.id == null || _address.id == 'null' || currentUser.value.phone == null || currentUser.value.phone == "") {
-                            DeliveryAddressDialog(
-                              context: context,
-                              address: _address,
-                              onChanged: (Address _address) {
-                                _con.toggleDelivery(currAddress: _address);
-//                              _con.addAddress(_address);
-                              },
-                            );
+                      scrollDirection: Axis.vertical,
+                      itemCount: _con.deliveryAddress.length,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) => getAddressItem(index),
+                    )
+                  : EmptyDeliveryAddressWidget(),
 
-                          } else {
-                            _con.toggleDelivery(currAddress: _address);
-                          }
-                        },
-                        onLongPress: (Address _address) {
-                          DeliveryAddressDialog(
-                            context: context,
-                            address: _address,
-                            onChanged: (Address _address) {
-                              _con.updateAddress(_address);
-                            },
-                          );
-                        },
-                        onDismissed: (Address _address) {
-                          _con.removeDeliveryAddress(_address);
-                        },
-                      );
-                    } else {
-                      return SizedBox(height: 0);
-                    }
+                // : CircularLoadingWidget(height: 150),
 
-                  },
-                )
-          : CircularLoadingWidget(height: 150),
 
                 SizedBox(height: 30),
                 InkWell(
@@ -232,22 +122,36 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   focusColor: Theme.of(context).accentColor,
                   highlightColor: Theme.of(context).primaryColor,
                   onTap: () async {
+                    setState(()=> _con.loading = true);
                     LocationResult result = await showLocationPicker(
                       context,
-                      setting.value.googleMapsKey,
-                      initialCenter: LatLng(deliveryAddress.value?.latitude ?? 0, deliveryAddress.value?.longitude ?? 0),
+                      settingsRepo.setting.value.googleMapsKey,
+                      initialCenter: LatLng(settingsRepo.deliveryAddress.value?.latitude ?? 0, settingsRepo.deliveryAddress.value?.longitude ?? 0),
                       //automaticallyAnimateToCurrentLocation: true,
                       //mapStylePath: 'assets/mapStyle.json',
                       myLocationButtonEnabled: true,
                       //resultCardAlignment: Alignment.bottomCenter,
                     );
-                    _con.addAddress(new Address.fromJSON({
-                      'address': result.address,
-                      'latitude': result.latLng.latitude,
-                      'longitude': result.latLng.longitude,
-                    }));
-                    print("result = $result");
-                    // Navigator.of(widget.scaffoldKey.currentContext).pop();
+                    Address store_address = new Address(long: double.tryParse(_con.carts[0].food.restaurant.longitude),
+                                                        lat: double.tryParse(_con.carts[0].food.restaurant.latitude));
+                    Address curr_address = new Address(long: result.latLng.longitude,
+                                                        lat: result.latLng.latitude);
+                    bool within_range = await MapsUtil.withinRange(curr_address, store_address, _con.carts[0].food.restaurant.deliveryRange);
+                    if (within_range) {
+                      _con.addAddress(new Address.fromJSON({
+                        'address': result.address,
+                        'latitude': result.latLng.latitude,
+                        'longitude': result.latLng.longitude,
+                      }));
+                      setState(()=> _con.loading = false);
+                      // Navigator.of(widget.scaffoldKey.currentContext).pop();
+                    } else {
+                      // _con.showOutOfRangeSnack();
+                      showDialog(
+                          context: context,
+                          builder: (context) => updateOrderDialog()
+                      );
+                    }
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -261,51 +165,27 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       ],
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Stack(
-                          alignment: AlignmentDirectional.center,
-                          children: <Widget>[
-                            Container(
-                              height: 20,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                                  color: Theme.of(context).primaryColor),
-                              child: Icon(
-                                Icons.add_circle_outline,
-                                color: Theme.of(context).accentColor,
-                                size: 30,
-                              ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.add_circle_outline,
+                              color: Theme.of(context).accentColor,
+                              size: 30,
+                            ),
+                            const SizedBox(width: 20),
+                            Text(
+                              S.of(context).add_new_delivery_address,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ],
                         ),
-                        SizedBox(width: 15),
-                        Flexible(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      S.of(context).add_new_delivery_address,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                                color: Theme.of(context).focusColor,
-                              ),
-                            ],
-                          ),
-                        )
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Theme.of(context).focusColor,
+                        ),
                       ],
                     ),
                   ),
@@ -317,8 +197,30 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                   splashColor: Theme.of(context).accentColor,
                   focusColor: Theme.of(context).accentColor,
                   highlightColor: Theme.of(context).primaryColor,
-                  onTap: () {
-                    _con.changeDeliveryAddressToCurrentLocation();
+                  onTap: () async {
+                    // _con.changeDeliveryAddressToCurrentLocation();
+                    setState(()=> _con.loading = true);
+
+                    Address store_address = new Address(long: double.tryParse(_con.carts[0].food.restaurant.longitude),
+                                                        lat: double.tryParse(_con.carts[0].food.restaurant.latitude));
+                    Address curr_address = await MapsUtil.getCurrentLocation();
+                    bool within_range = await MapsUtil.withinRange(curr_address, store_address, _con.carts[0].food.restaurant.deliveryRange);
+                    if (within_range) {
+                      _con.addAddress(new Address.fromJSON({
+                        'address': curr_address.address,
+                        'latitude': curr_address.latitude,
+                        'longitude': curr_address.longitude,
+                      }));
+                      setState(()=> _con.loading = false);
+                      // Navigator.of(widget.scaffoldKey.currentContext).pop();
+                    } else {
+                      // _con.showOutOfRangeSnack();
+                      showDialog(
+                          context: context,
+                          builder: (context) => updateOrderDialog()
+                      );
+                    }
+                    setState(()=> _con.loading = false);
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -333,93 +235,33 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       ],
                     ),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Stack(
-                          alignment: AlignmentDirectional.center,
-                          children: <Widget>[
-                            Container(
-                              height: 20,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                  BorderRadius.all(Radius.circular(8)),
-                                  color: Theme.of(context).primaryColor),
-                              child: Icon(
-                                Icons.my_location,
-                                color: Theme.of(context).accentColor,
-                                size: 30,
-                              ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.my_location,
+                              color: Theme.of(context).accentColor,
+                              size: 30,
+                            ),
+                            const SizedBox(width: 20),
+                            Text(
+                              S.of(context).current_location,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ],
                         ),
-                        SizedBox(width: 15),
-                        Flexible(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      S.of(context).current_location,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: Theme.of(context).textTheme.subtitle1,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(width: 8),
-                              Icon(
-                                Icons.keyboard_arrow_right,
-                                color: Theme.of(context).focusColor,
-                              ),
-                            ],
-                          ),
-                        )
+                        Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Theme.of(context).focusColor,
+                        ),
                       ],
                     ),
                   ),
                 ),
-
-                SizedBox(height: 90),
-
-
-
-
-
-//                DeliveryAddressesItemWidget(
-//                        paymentMethod: _con.getDeliveryMethod(),
-//                        address: _con.deliveryAddress.first,
-//                        onPressed: (Address _address) {
-//                          if (_con.deliveryAddress.first.id == null ||
-//                              _con.deliveryAddress.first.id == 'null' ||
-//                              currentUser.value.phone == null) {
-//                            DeliveryAddressDialog(
-//                              context: context,
-//                              address: _address,
-//                              onChanged: (Address _address) {
-//                                _con.addAddress(_address);
-//                              },
-//                            );
-//                          } else {
-//                            _con.toggleDelivery();
-//                          }
-//                        },
-//                        onLongPress: (Address _address) {
-//                          DeliveryAddressDialog(
-//                            context: context,
-//                            address: _address,
-//                            onChanged: (Address _address) {
-//                              _con.updateAddress(_address);
-//                            },
-//                          );
-//                        },
-//                      )
-//                    : NotDeliverableAddressesItemWidget()
+                SizedBox(height: 30),
               ],
             )
           ],
@@ -427,4 +269,79 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       ),
     );
   }
+
+
+
+
+
+
+
+  Widget getAddressItem(int index) {
+    if (_con.deliveryAddress.elementAt(index).address != null
+        && _con.deliveryAddress.elementAt(index).id != null) {
+      return DeliveryAddressesItemWidget(
+        paymentMethod: _con.getDeliveryMethod(),
+        address: _con.deliveryAddress.elementAt(index),
+        onPressed: (Address _address) {
+          if (_address.id == null ||
+                _address.id == 'null' ||
+                currentUser.value.phone == null ||
+                currentUser.value.phone == "") {
+            DeliveryAddressDialog(
+              context: context,
+              address: _address,
+              onChanged: (Address _address) {
+                _con.toggleDelivery(currAddress: _address);
+                //                              _con.addAddress(_address);
+              },
+            );
+          } else {
+            _con.toggleDelivery(currAddress: _address);
+          }
+        },
+        onLongPress: (Address _address) {
+          DeliveryAddressDialog(
+            context: context,
+            address: _address,
+            onChanged: (Address _address) {
+              _con.updateAddress(_address);
+            },
+          );
+        },
+        onDismissed: (Address _address) {
+          _con.removeDeliveryAddress(_address);
+        },
+      );
+    } else {
+      return const SizedBox();
+    }
+  }
+
+
+  Widget updateOrderDialog() {
+    return AlertDialog(
+      title:  Wrap(
+        spacing: 10,
+        children: <Widget>[
+          Icon(Icons.report, color: Colors.orange),
+          Text(
+            'Store too far',
+            style: TextStyle(color: Colors.orange, fontSize: 20),
+          ),
+        ],
+      ),
+      content: Text('Unfortunately ${_con.carts.first.food.restaurant.name} does not deliver to this address, feel free to  contact our support team for more information.'),
+      actions: <Widget>[
+        FlatButton(
+          child: new Text(
+              S.of(context).dismiss),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+
+
 }

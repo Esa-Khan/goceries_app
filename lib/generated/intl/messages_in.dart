@@ -74,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "g" : MessageLookupByLibrary.simpleMessage("g"),
     "guest" : MessageLookupByLibrary.simpleMessage("Guest"),
     "help__support" : MessageLookupByLibrary.simpleMessage("Help & Support"),
+    "help_support" : MessageLookupByLibrary.simpleMessage("Help & Support"),
     "help_supports" : MessageLookupByLibrary.simpleMessage("Help & Supports"),
     "hint_full_address" : MessageLookupByLibrary.simpleMessage("12 Street, City 21663, Country"),
     "home" : MessageLookupByLibrary.simpleMessage("Home"),
@@ -169,7 +170,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "unknown" : MessageLookupByLibrary.simpleMessage("Unknown"),
     "verify" : MessageLookupByLibrary.simpleMessage("Verify"),
     "verify_your_internet_connection" : MessageLookupByLibrary.simpleMessage("Verify your internet connection"),
-    "verify_your_quantity_and_click_checkout" : MessageLookupByLibrary.simpleMessage("Verify your quantity and click checkout"),
     "version" : MessageLookupByLibrary.simpleMessage("Version"),
     "welcome" : MessageLookupByLibrary.simpleMessage("Welcome"),
     "what_they_say" : MessageLookupByLibrary.simpleMessage("What They Say ?"),
@@ -179,7 +179,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "you_must_signin_to_access_to_this_section" : MessageLookupByLibrary.simpleMessage("You must sign-in to access to this section"),
     "your_address" : MessageLookupByLibrary.simpleMessage("Your Address"),
     "your_biography" : MessageLookupByLibrary.simpleMessage("Your biography"),
-    "your_order_has_been_successfully_submitted" : MessageLookupByLibrary.simpleMessage("Your order has been successfully submitted!"),
     "your_reset_link_has_been_sent_to_your_email" : MessageLookupByLibrary.simpleMessage("Your reset link has been sent to your email")
   };
 }

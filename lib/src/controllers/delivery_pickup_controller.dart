@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/helpers/helper.dart';
-import 'package:saudaghar/src/models/route_argument.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import '../../src/helpers/helper.dart';
+import '../../src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../models/address.dart' as model;
@@ -9,16 +8,18 @@ import '../models/payment_method.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
 import 'cart_controller.dart';
+import '../helpers/maps_util.dart';
 
 class DeliveryPickupController extends CartController {
   GlobalKey<ScaffoldState> scaffoldKey;
   List<model.Address> deliveryAddress = new List<model.Address>();
   PaymentMethodList list;
+  bool loading = false;
 
   DeliveryPickupController() {
-    this.scaffoldKey = new GlobalKey<ScaffoldState>();
     super.listenForCarts();
 //    listenForDeliveryAddress();
+    this.scaffoldKey = new GlobalKey<ScaffoldState>();
     listenForAddresses();
   }
 
@@ -43,6 +44,7 @@ class DeliveryPickupController extends CartController {
   }
 
   void listenForAddresses({String message}) async {
+    setState(() => loading = true);
     final Stream<model.Address> stream = await userRepo.getAddresses();
     stream.listen((model.Address _address) {
       setState(() {
@@ -53,7 +55,7 @@ class DeliveryPickupController extends CartController {
             repeatingAddress = true;
           }
         });
-        if (!repeatingAddress){
+        if (!repeatingAddress && _address.address != null && _address.longitude != null && _address.latitude != null){
           if (_address.isDefault){
 //          deliveryAddress = _address;
             deliveryAddress.insert(0, _address);
@@ -76,6 +78,7 @@ class DeliveryPickupController extends CartController {
           content: Text(message),
         ));
       }
+      setState(() => loading = false);
     });
   }
 
@@ -174,39 +177,40 @@ class DeliveryPickupController extends CartController {
   }
 
   Future<void> changeDeliveryAddressToCurrentLocation() async {
-    scaffoldKey?.currentState?.showSnackBar(SnackBar(
-      content: Text(S.of(context).getting_current_location),
-      duration: Duration(seconds: 1),
-    ));
+    setState(() => loading = true);
+    scaffoldKey?.currentState?.showSnackBar(
+      SnackBar(
+        content: Text(S.of(context).getting_current_location),
+        duration: Duration(seconds: 1),
+      ));
     model.Address _address = await settingRepo.setCurrentLocation();
-//    if (_address.latitude != null && _address.longitude != null) {
-      setState(() {
-        bool repeatedAddress = false;
-        for (var currAddress in deliveryAddress) {
-          if (!repeatedAddress && currAddress.address == _address.address) {
-            repeatedAddress = true;
-            break;
-          }
+   if (_address.latitude != null && _address.longitude != null) {
+      bool repeatedAddress = false;
+      for (var currAddress in deliveryAddress) {
+        if (!repeatedAddress && currAddress.address == _address.address) {
+          repeatedAddress = true;
+          break;
         }
-        if (!repeatedAddress) {
-          addAddress(_address);
-          settingRepo.deliveryAddress.value = _address;
-          currentUser.value.address = _address.address;
-        } else {
-          scaffoldKey?.currentState?.showSnackBar(SnackBar(
-            content: Text(S.of(context).address_is_already_added),
-            duration: Duration(seconds: 1),
-          ));
-        }
-
-      });
+      }
+      if (!repeatedAddress) {
+        addAddress(_address);
+        settingRepo.deliveryAddress.value = _address;
+        currentUser.value.address = _address.address;
+        // deliveryAddress.add(_address);
+      } else {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).address_is_already_added),
+          duration: Duration(seconds: 1),
+        ));
+      }
       settingRepo.deliveryAddress.notifyListeners();
-//    } else {
-//      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//        content: Text("Do not have permission. Allow location services in settings.", maxLines: 3),
-//        duration: Duration(seconds: 1),
-//      ));
-//    }
+      setState(() => loading = false);
+   } else {
+     scaffoldKey?.currentState?.showSnackBar(SnackBar(
+       content: Text("Do not have permission. Allow location services in settings.", maxLines: 3),
+       duration: Duration(seconds: 1),
+     ));
+   }
   }
 
 
@@ -234,6 +238,14 @@ class DeliveryPickupController extends CartController {
     scaffoldKey?.currentState?.showSnackBar(SnackBar(
       content: Text("Please specify both date and time.", textScaleFactor: 0.92),
       duration: Duration(seconds: 3),
+    ));
+  }
+
+
+  void showOutOfRangeSnack() {
+    scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      content: Text('Address out of range'),
+      duration: Duration(seconds: 1),
     ));
   }
 }

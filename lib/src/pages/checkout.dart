@@ -50,7 +50,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
         ),
       ),
       body: _con.carts.isEmpty
-          ? CircularLoadingWidget(height: 400)
+          ? Center(heightFactor: 3.5, child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
           : Stack(
               fit: StackFit.expand,
               children: <Widget>[
@@ -201,9 +201,9 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                               color: Theme.of(context).accentColor,
                               shape: const StadiumBorder(),
                               child: Text(
-                                S.of(context).confirm_payment,
+                                'Next',
                                 textAlign: TextAlign.start,
-                                style: TextStyle(color: Theme.of(context).primaryColor),
+                                style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 20),
                               ),
                             ),
                           ),
