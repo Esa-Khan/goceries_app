@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/models/route_argument.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
@@ -152,7 +153,7 @@ class CartController extends ControllerMVC {
         content: Text(S.of(context).this_restaurant_is_closed_),
       ));
     } else {
-      Navigator.of(context).pushNamed('/DeliveryPickup');
+      Navigator.of(context).pushNamed('/DeliveryPickup', arguments: RouteArgument(param: this));
     }
 //    }
   }

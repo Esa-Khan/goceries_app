@@ -100,5 +100,24 @@ class MapsUtil {
 
   }
 
+  static Future<int> getDeliveryTime(LatLng store, LatLng customer) async {
+    try {
+      var endPoint =
+          'https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${store.latitude},${store.longitude}'
+          '&destinations=${customer.latitude},${customer.longitude}&key=${setting.value.googleMapsKey}';
+      var response = jsonDecode((await http.get(endPoint, headers: await LocationUtils.getAppHeaders())).body);
+      // var value = response['rows'][0]['elements'][0]['distance']['value'];
+      if (response['rows'][0]['elements'][0]['status'] == 'ZERO_RESULTS') {
+        return -1;
+      } else {
+        int value = response['rows'][0]['elements'][0]['duration']['value'];
+        return value;
+      }
+    } catch (e) {
+      print(CustomTrace(StackTrace.current, message: e));
+      return -1;
+    }
+  }
+
 
 }

@@ -152,6 +152,7 @@ class FoodController extends ControllerMVC {
       });
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).thisFoodWasAddedToFavorite),
+        duration: Duration(seconds: 1),
       ));
     });
   }
@@ -163,6 +164,7 @@ class FoodController extends ControllerMVC {
       });
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).thisFoodWasRemovedFromFavorites),
+        duration: Duration(seconds: 1),
       ));
     });
   }

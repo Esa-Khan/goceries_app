@@ -178,11 +178,25 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
               ]
             ),
             SizedBox(height: 5),
-            Text(
-              "Free delivery for orders over Rs. " + setting.value.deliveryFeeLimit.toString(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 13)),
-            ),
+
+              // "Free delivery for orders over Rs. " + setting.value.deliveryFeeLimit.toString(),
+              widget.con.total < setting.value.deliveryFeeLimit
+                ? RichText(
+                    text: TextSpan(
+                      text: 'Order ',
+                      style: DefaultTextStyle.of(context).style,
+                      children: <TextSpan>[
+                        TextSpan(text: 'Rs.' + (setting.value.deliveryFeeLimit - widget.con.total).toString(),
+                                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.greenAccent[400])),
+                        TextSpan(text: ' more to get free delivery.'),
+                      ],
+                    ),
+                  )
+                : Text(
+                  'Eligible for free delivery',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 13, color: Colors.greenAccent[400], fontWeight: FontWeight.bold)),
+                  ),
           ],
         ),
       ),

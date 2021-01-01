@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/helpers/maps_util.dart';
 import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import '../elements/CheckoutBottomDetailsWidget.dart';
@@ -31,6 +33,18 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
     // route param contains the payment method
     _con.payment = new Payment(widget.routeArgument.param);
     _con.listenForCarts();
+    getDeliveryTime();
+  }
+
+  getDeliveryTime() async {
+    int count = 5000;
+    while (_con.carts.isEmpty) {
+      await Future.delayed(Duration(microseconds: 500));
+    }
+    if (_con.carts.isNotEmpty) {
+      print(count);
+      _con.getDeliveryTime();
+    }
   }
 
   @override
@@ -47,9 +61,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
            leading: _con.order_submitted
                       ? const SizedBox()
                       : IconButton(
-                           onPressed: () {
-                             Navigator.of(context).pop();
-                           },
+                           onPressed: () => Navigator.of(context).pop(),
                            icon: Icon(Icons.arrow_back),
                            color: Theme.of(context).hintColor,
                          ),
@@ -179,42 +191,37 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         ],
                       ),
                       const SizedBox(height: 15),
+
+
+
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         alignment: AlignmentDirectional.centerStart,
-                        // color: Theme.of(context).primaryColor,
-                        // decoration: BoxDecoration(
-                        //     color: Theme.of(context).primaryColor,
-                        //     borderRadius: BorderRadius.circular(10),
-                        //     boxShadow: [
-                        //       BoxShadow(
-                        //           color: Theme.of(context).focusColor.withOpacity(0.55),
-                        //           offset: Offset(0, 5),
-                        //           blurRadius: 5.0
-                        //       )]),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _con.carts.first.food.restaurant.name,
+                              'Ordering from ' + _con.carts.first.food.restaurant.name,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: Theme.of(context).textTheme.headline3,
+                              style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 15)),
                             ),
                             Text(
                               'Payment by ' + _con.payment.method,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black54)),
+                              style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 15)),
                             ),
-                            currentCart_time.value == null
-                                ? const SizedBox()
-                                : Text(
-                                    'Scheduled Delivery:  ' + currentCart_time.value.toString().substring(0, 16),
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                    style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black54, fontSize: 13)),
-                                  ),
+                            _con.delivery_time != null
+                              ? Text(
+                                currentCart_time.value == null
+                                  ? 'Estimated delivery within ${(_con.delivery_time/60 + 5).ceil().clamp(0, 45)} - ${(_con.delivery_time/60 + 20).ceil().clamp(0, 60)} mins'
+                                  : 'Scheduled delivery:  ' + currentCart_time.value.toString().substring(0, 16),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                  style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 15)),
+                                )
+                              : const SizedBox(),
                             currentCart_note.value.isEmpty
                                 ? const SizedBox()
                                 : Text(

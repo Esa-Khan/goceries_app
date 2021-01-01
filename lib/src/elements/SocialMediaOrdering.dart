@@ -77,80 +77,66 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 120,
       child: Column(
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: ListTile(
-              dense: true,
-              contentPadding: EdgeInsets.symmetric(vertical: 5),
-              leading: Icon(
-                Icons.contact_phone,
-                color: Theme.of(context).hintColor,
-              ),
-              title: Text(
-                "Order from anywhere!",
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              subtitle: Text(
-                "Problem with the app?  Find help and order from anywhere!",
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ),
+          const SizedBox(height: 10),
+          Text(
+            "Help and Support",
+            style: Theme.of(context).textTheme.bodyText1,
           ),
-                GridView.count(
+          GridView.count(
 //              scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  primary: true,
-                  physics: new NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(horizontal: 40),
-                  // Create a grid with 2 columns. If you change the scrollDirection to
-                  // horizontal, this produces 2 rows.
-                  crossAxisCount: 4,
-                  children: List.generate(logo_color.length, (index) {
-                    return GestureDetector(
-                      onTap: () {
-                        switch(index) {
-                          case 0:
-                            launchWA();
-                            break;
-                          case 1:
-                            launchFB();
-                            break;
-                          case 2:
-                            launchIG();
-                            break;
-                          case 3:
-                            launchCall();
-                            break;
-                        }
+            shrinkWrap: true,
+            primary: true,
+            physics: new NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.symmetric(horizontal: 40),
+            // Create a grid with 2 columns. If you change the scrollDirection to
+            // horizontal, this produces 2 rows.
+            crossAxisCount: 4,
+            children: List.generate(logo_color.length, (index) {
+              return GestureDetector(
+                onTap: () {
+                  switch(index) {
+                    case 0:
+                      launchWA();
+                      break;
+                    case 1:
+                      launchFB();
+                      break;
+                    case 2:
+                      launchIG();
+                      break;
+                    case 3:
+                      launchCall();
+                      break;
+                  }
 
-                      },
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          margin: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            boxShadow: [
-                              BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.9), blurRadius: 3, offset: Offset(0, 2)),
-                              // BoxShadow(
-                              //   color: Theme.of(context).focusColor.withOpacity(0.1),
-                              //   blurRadius: 15,
-                              //   offset: Offset(0, 5)),
-                            ],
-                          ),
-                          child: SvgPicture.asset(
-                            logo_img.elementAt(index),
-                            color: logo_color.elementAt(index),
-                            width: 100,
-                            height: MediaQuery.of(context).size.width / 2 - 50,
-                            fit: BoxFit.contain,
-                          ),
-                          ));
-                  }),
-              ),
-          Divider(height: 30),
+                },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      boxShadow: [
+                        BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.9), blurRadius: 3, offset: Offset(0, 2)),
+                        // BoxShadow(
+                        //   color: Theme.of(context).focusColor.withOpacity(0.1),
+                        //   blurRadius: 15,
+                        //   offset: Offset(0, 5)),
+                      ],
+                    ),
+                    child: SvgPicture.asset(
+                      logo_img.elementAt(index),
+                      color: logo_color.elementAt(index),
+                      width: 100,
+                      height: MediaQuery.of(context).size.width / 2 - 50,
+                      fit: BoxFit.contain,
+                    ),
+                    ));
+            }),
+        ),
         ],
       ),
     );
