@@ -95,9 +95,8 @@ class Colors {
   }
 
   Color secureColor(double opacity) {
-    // TODO test if brightness is dark or not
     try {
-      return Color(0xFF1b03a3).withOpacity(opacity);
+      return Color(0x1DB954).withOpacity(opacity);
     } catch (e) {
       return Color(0xFFCCCCCC).withOpacity(opacity);
     }

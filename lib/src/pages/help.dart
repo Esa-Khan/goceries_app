@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/elements/SocialMediaOrdering.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/faq_controller.dart';
@@ -49,6 +50,7 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
                   new ShoppingCartButtonWidget(iconColor: Theme.of(context).primaryColor, labelColor: Theme.of(context).accentColor),
                 ],
               ),
+              bottomNavigationBar: SocialMediaOrdering(),
               body: RefreshIndicator(
                 onRefresh: _con.refreshFaqs,
                 child: TabBarView(

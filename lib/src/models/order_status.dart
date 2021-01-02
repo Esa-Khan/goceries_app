@@ -17,7 +17,7 @@ class OrderStatus {
       status = jsonMap['status'] != null ? jsonMap['status'] : '';
       switch(id) {
         case '1':
-          status_color = Colors.green;
+          status_color = Colors.greenAccent.shade700;
           break;
         case '2':
           status_color = Colors.orange;

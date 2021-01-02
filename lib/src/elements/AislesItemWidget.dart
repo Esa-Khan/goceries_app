@@ -55,7 +55,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 
   Future<void> img_timeout() async {
     if (mounted && !timed_out) {
-      Future.delayed(Duration(milliseconds: ((widget.timeout/2)*2000).ceil())).whenComplete(() {
+      Future.delayed(Duration(milliseconds: ((widget.timeout)*900).ceil())).whenComplete(() {
         if (mounted) {
           // print("---------TIMEDOUT AFTER ${widget.timeout} SECONDS----------");
           setState(() => timed_out = true);
@@ -66,7 +66,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 
   Future<void> subimg_timeout(int index) async {
     if (mounted && !sub_timed_out[index]) {
-      Future.delayed(Duration(milliseconds: ((index/2)*2000).ceil())).whenComplete(() {
+      Future.delayed(Duration(milliseconds: ((index)*900).ceil())).whenComplete(() {
         if (mounted) {
           // print("---------SUB-TIMEDOUT AFTER ${index} SECONDS----------");
           setState(() => sub_timed_out[index] = true);

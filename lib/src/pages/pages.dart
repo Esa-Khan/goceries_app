@@ -5,7 +5,6 @@ import '../../src/repository/user_repository.dart';
 import '../../src/pages/sg_home.dart';
 
 import '../elements/DrawerWidget.dart';
-import '../elements/FilterWidget.dart';
 import '../models/route_argument.dart';
 import '../pages/favorites.dart';
 import '../pages/home.dart';

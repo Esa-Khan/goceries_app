@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:saudaghar/src/helpers/maps_util.dart';
 import '../../src/repository/cart_repository.dart';
 
 import '../../generated/l10n.dart';
@@ -27,6 +29,7 @@ class CheckoutController extends CartController {
   bool card_declined = false;
   String hint = "";
   String time = "";
+  int delivery_time = null;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   CheckoutController() {
@@ -37,6 +40,14 @@ class CheckoutController extends CartController {
   void listenForCreditCard() async {
     creditCard = await userRepo.getCreditCard();
     setState(() {});
+  }
+
+  Future<void> getDeliveryTime() async {
+    LatLng store = new LatLng(double.tryParse(carts.first.food.restaurant.latitude), double.tryParse(carts.first.food.restaurant.longitude));
+    LatLng customer = new LatLng(settingsRepo.deliveryAddress.value.latitude, settingsRepo.deliveryAddress.value.longitude);
+    // LatLng store = new LatLng(1, 1);
+    // LatLng customer = new LatLng(1, 1);
+    MapsUtil.getDeliveryTime(store, customer).then((value) => setState(() => delivery_time = value));
   }
 
   @override

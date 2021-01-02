@@ -111,7 +111,6 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         ),
                       ),
                       CardsCarouselWidget(restaurantsList: _con.closestStores, heroTag: 'home_top_restaurants'),
-                      SocialMediaOrdering(),
                       _con.categories.isEmpty ? const SizedBox()
                       : Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),

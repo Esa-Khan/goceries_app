@@ -42,6 +42,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _con.carts = widget.routeArgument.param.carts;
+    _con.calculateSubtotal();
     if (_con.list == null) {
       _con.list = new PaymentMethodList(context);
       _con.listenForAddresses();

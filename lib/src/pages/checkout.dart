@@ -84,7 +84,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                           ),
                         ),
                         SizedBox(height: 20),
-                        new CreditCardsWidget(
+                        new CreditCardsWidget (
                             creditCard: _con.creditCard,
                             onChanged: (creditCard) {
                               _con.updateCreditCard(creditCard);

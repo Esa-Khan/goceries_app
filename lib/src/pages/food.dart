@@ -43,29 +43,6 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     super.initState();
   }
 
-  void addToCart() {
-    if (currentUser.value.apiToken == null) {
-      Navigator.of(context).pushNamed("/Login");
-    } else {
-      if (_con.isSameRestaurants(_con.food)) {
-        _con.addToCart(_con.food);
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            // return object of type Dialog
-            return AddToCartAlertDialogWidget(
-                oldFood: _con.carts.elementAt(0)?.food,
-                newFood: _con.food,
-                onPressed: (food, {reset: true}) {
-                  return _con.addToCart(_con.food, reset: true);
-                });
-          },
-        );
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     if (!hasTimedout) {
@@ -138,7 +115,13 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                             style: Theme.of(context).textTheme.headline3,
                                           ),
                                           Text(
-                                            _con.food?.restaurant?.name ?? '',
+                                            'Category - ' + (_con.aisle == null ? 'Miscellaneous': _con.aisle.name),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 14)),
+                                          ),
+                                          Text(
+                                            'Store - ' + _con.food.restaurant.name,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                             style: Theme.of(context).textTheme.bodyText2,
@@ -160,6 +143,16 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                               ? Helper.getPrice(_con.food.discountPrice, context,
                                                   style: Theme.of(context).textTheme.bodyText2.merge(TextStyle(color: Colors.black, decoration: TextDecoration.lineThrough, fontSize: 15)))
                                               : SizedBox(height: 0),
+                                          _con.food.weight == '0' || _con.food.weight == '' || _con.food.weight == "<p>.</p>"
+                                              ? SizedBox(height: 0)
+                                              : Container(
+                                              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                                              decoration: BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
+                                              child: Text(
+                                                _con.food.weight,
+                                                style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: 16)),
+                                              )
+                                          ),
                                         ],
                                       ),
                                     ),
@@ -183,25 +176,38 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 //                                            ),
 //                                    ),
 //                                    Expanded(child: SizedBox(height: 0)),
-                                  _con.food.weight == '0' || _con.food.weight == '' || _con.food.weight == "<p>.</p>" ? SizedBox(height: 0)
-                                  : Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                        decoration: BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
-                                        child: Text(
-                                          _con.food.weight,
-//                                          _con.food.weight + " " + _con.food.unit,
-                                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                        )),
-                                    SizedBox(width: 5),
-                                    _con.aisle == null
-                                      ? SizedBox(height: 0)
-                                      : Container(
-                                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                          decoration: BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
-                                          child: Text(
-                                            _con.aisle.name,
-                                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                          )),
+//                                     Expanded(child: const SizedBox()),
+                                    _con.food.featured
+                                        ? Container(
+                                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                                            decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(24)),
+                                            child: Row (
+                                              children: [
+                                                Icon(
+                                                  Icons.star,
+                                                  color: Theme.of(context).primaryColor,
+                                                  size: 10,
+                                                ),
+                                                const SizedBox(width: 3),
+                                                Text(
+                                                  'Featured',
+                                                  style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                                )
+                                              ],
+                                            )
+                                          )
+                                        : const SizedBox(),
+                                    Expanded(child: const SizedBox()),
+                                      // _con.aisle == null
+                                      //   ? SizedBox(height: 0)
+                                      //   : Container(
+                                      //       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                                      //       decoration: BoxDecoration(color: Colors.deepOrange, borderRadius: BorderRadius.circular(24)),
+                                      //       child: Text(
+                                      //         _con.aisle.name,
+                                      //         style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                      //       )
+                                      //     ),
                                   ],
                                 ),
                                 _con.food.description == '' ? SizedBox(height: 0,)
@@ -386,33 +392,34 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                               children: <Widget>[
                                 Expanded(
                                   child: _con.favorite?.id != null
-                                      ? OutlineButton(
-                                          onPressed: () {
-                                            _con.removeFromFavorite(_con.favorite);
-                                          },
-                                          padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
-                                          color: Theme.of(context).primaryColor,
-                                          shape: StadiumBorder(),
-                                          borderSide: BorderSide(color: Theme.of(context).accentColor),
-                                          child: Icon(
-                                            Icons.favorite,
-                                            color: Theme.of(context).accentColor,
-                                          ))
-                                      : FlatButton(
-                                          onPressed: () {
-                                            if (currentUser.value.apiToken == null) {
-                                              Navigator.of(context).pushNamed("/Login");
-                                            } else {
-                                              _con.addToFavorite(_con.food);
-                                            }
-                                          },
-                                          padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
-                                          color: Theme.of(context).accentColor,
-                                          shape: StadiumBorder(),
-                                          child: Icon(
-                                            Icons.favorite,
-                                            color: Theme.of(context).primaryColor,
-                                          )),
+                                    ? FlatButton(
+                                      onPressed: () {
+                                        _con.removeFromFavorite(_con.favorite);
+                                      },
+                                      padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
+                                      color: Theme.of(context).accentColor,
+                                      shape: StadiumBorder(),
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: Theme.of(context).primaryColor,
+                                      ))
+                                   : OutlineButton(
+                                      onPressed: () {
+                                        if (currentUser.value.apiToken == null) {
+                                          Navigator.of(context).pushNamed("/Login");
+                                        } else {
+                                          _con.addToFavorite(_con.food);
+                                        }
+                                      },
+                                      padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
+                                      color: Theme.of(context).primaryColor,
+                                      shape: StadiumBorder(),
+                                      borderSide: BorderSide(color: Theme.of(context).accentColor),
+                                      child: Icon(
+                                        Icons.favorite,
+                                        color: Theme.of(context).accentColor,
+                                      )
+                                  ),
                                 ),
                                 SizedBox(width: 10),
                                 Stack(
@@ -465,4 +472,29 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
       ),
     );
   }
+
+
+  void addToCart() {
+    if (currentUser.value.apiToken == null) {
+      Navigator.of(context).pushNamed("/Login");
+    } else {
+      if (_con.isSameRestaurants(_con.food)) {
+        _con.addToCart(_con.food);
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // return object of type Dialog
+            return AddToCartAlertDialogWidget(
+                oldFood: _con.carts.elementAt(0)?.food,
+                newFood: _con.food,
+                onPressed: (food, {reset: true}) {
+                  return _con.addToCart(_con.food, reset: true);
+                });
+          },
+        );
+      }
+    }
+  }
+
 }

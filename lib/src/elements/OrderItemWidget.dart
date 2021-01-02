@@ -91,20 +91,22 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                     : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
                               ],
                             ),
-                           Row(
-                             children: <Widget>[
-                               Expanded(
-                                 child: Text(
-                                   'Discount:',
-                                   style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.greenAccent)),
-                                 ),
-                               ),
-                               Helper.getPrice(
-                                   widget.order.discount,
-                                   context,
-                                   style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent)))
-                             ],
-                           ),
+                            widget.order.discount != 0
+                              ? Row(
+                                 children: <Widget>[
+                                   Expanded(
+                                     child: Text(
+                                       'Discount:',
+                                       style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.greenAccent.shade700)),
+                                     ),
+                                   ),
+                                   Helper.getPrice(
+                                       widget.order.discount,
+                                       context,
+                                       style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent.shade700)))
+                                 ],
+                               )
+                              : const SizedBox(),
                             Row(
                               children: <Widget>[
                                 Expanded(

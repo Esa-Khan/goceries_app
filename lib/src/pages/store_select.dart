@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/elements/SocialMediaOrdering.dart';
 import '../../src/elements/StoreSelectShoppingCartButtonWidget.dart';
 import '../controllers/restaurant_controller.dart';
 import '../controllers/cart_controller.dart';
@@ -51,6 +52,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                 new StoreSelectShoppingCartButtonWidget()
               ],
             ),
+            // bottomNavigationBar: SocialMediaOrdering(),
             body: Center(
                 child: ListView(
                     shrinkWrap: true,
@@ -158,7 +160,8 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 50)
+                          const SizedBox(height: 20),
+                          SocialMediaOrdering(),
               ]),
                     ]))));
   }

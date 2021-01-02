@@ -168,7 +168,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                     alignment: AlignmentDirectional.bottomEnd,
                                     children: <Widget>[
                                       Text(
-                                        'Promo\nCode',
+                                        '+ Promo\nCode',
                                         textAlign: TextAlign.center,
                                         textScaleFactor: 0.7,
                                         style: TextStyle(color: Theme.of(context).primaryColor),

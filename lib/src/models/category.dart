@@ -20,7 +20,7 @@ class Category {
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0]) : new Media(isCat: true);
       isGeneralCat = jsonMap['isGeneralCat'] == 0 ? false : true;
 //      aisleImage = IDtoCategoryMap[id].elementAt(1);
-      aisleImage = jsonMap['description'] == ''
+      aisleImage = jsonMap['description'] == "" || jsonMap['description'] == null
           ? '${GlobalConfiguration().getString('base_url')}storage/app/public/aisles/misc.jpg}'
           : '${GlobalConfiguration().getString('base_url')}storage/app/public/aisles/${jsonMap['description']}';
     } catch (e) {

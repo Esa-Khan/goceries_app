@@ -17,7 +17,7 @@ class DeliveryPickupController extends CartController {
   bool loading = false;
 
   DeliveryPickupController() {
-    super.listenForCarts();
+    // super.listenForCarts();
 //    listenForDeliveryAddress();
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     listenForAddresses();
