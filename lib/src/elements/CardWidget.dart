@@ -16,7 +16,7 @@ class CardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 292,
+      width: compact_view_vertical ? 250 : 292,
       margin: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 20),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
@@ -50,7 +50,12 @@ class CardWidget extends StatelessWidget {
                       width: double.infinity,
                       height: 150,
                     ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/img/image_default.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 150,
+                    ),
                   ),
                 ),
               ),

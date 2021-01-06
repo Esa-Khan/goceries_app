@@ -11,7 +11,7 @@ import 'OrderNotesWidget.dart';
 
 
 class CartBottomDetailsWidget extends StatefulWidget{
-  final con;
+  final CartController con;
 
   const CartBottomDetailsWidget ({ Key key, this.con }): super(key: key);
 
@@ -56,17 +56,19 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
         : Container(
             height: 180,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(20),
-              topLeft: Radius.circular(20)),
-          boxShadow: [
-            BoxShadow(
-                color: Theme.of(context).focusColor.withOpacity(0.55),
-                offset: Offset(0, -4),
-                blurRadius: 5.0)
-          ]),
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20)),
+              boxShadow: [
+                BoxShadow(
+                    color: Theme.of(context).focusColor.withOpacity(0.55),
+                    offset: Offset(0, -4),
+                    blurRadius: 5.0
+                )
+              ]
+            ),
       child: SizedBox(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -186,7 +188,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                       text: 'Order ',
                       style: DefaultTextStyle.of(context).style,
                       children: <TextSpan>[
-                        TextSpan(text: 'Rs.' + (setting.value.deliveryFeeLimit - widget.con.total).toString(),
+                        TextSpan(text: 'Rs.' + (setting.value.deliveryFeeLimit - widget.con.subTotal).toString(),
                                   style: TextStyle(fontWeight: FontWeight.bold, color: Colors.greenAccent[400])),
                         TextSpan(text: ' more to get free delivery.'),
                       ],

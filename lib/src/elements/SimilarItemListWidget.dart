@@ -45,7 +45,12 @@ class SimilarItemListWidget extends StatelessWidget {
                     height: 60,
                     width: 60,
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/img/image_default.png',
+                    fit: BoxFit.cover,
+                    height: 60,
+                    width: 60,
+                  ),
                 ),
               ),
             ),
@@ -72,7 +77,7 @@ class SimilarItemListWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Helper.getPrice(food.price, context,
-                          style: Theme.of(context).textTheme.caption
+                      style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 15)),
                       ),
                       food.weight == '0' || food.weight == '' ? SizedBox(height: 0)
                           : Container(
