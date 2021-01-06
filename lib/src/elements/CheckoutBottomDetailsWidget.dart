@@ -9,7 +9,7 @@ import '../helpers/helper.dart';
 import '../elements/PromocodeDialog.dart';
 
 class CheckoutBottomDetailsWidget extends StatefulWidget{
-  final con;
+  final CheckoutController con;
 
   const CheckoutBottomDetailsWidget ({ Key key, this.con }): super(key: key);
 
@@ -48,7 +48,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
     return _con.carts.isEmpty
         ? const SizedBox()
         : Container(
-            height: _con.promotion == '' ? 182 : 200,
+            height: _con.promotion == '' ? 160 : 180,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
@@ -216,12 +216,12 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                           ]
             ),
 
-            SizedBox(height: 5),
-            Text(
-              "Free delivery for orders over Rs. " + settingsRepo.setting.value.deliveryFeeLimit.toString(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 13)),
-            ),
+            // SizedBox(height: 5),
+            // Text(
+            //   "Free delivery for orders over Rs. " + settingsRepo.setting.value.deliveryFeeLimit.toString(),
+            //   textAlign: TextAlign.center,
+            //   style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 13)),
+            // ),
           ],
         ),
       ),

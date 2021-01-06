@@ -338,10 +338,14 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                             food: _con.food,
                           ),
                   ),
+
+
+
+
                   Positioned(
                     bottom: 0,
                     child: Container(
-                      height: 170,
+                      height: 150,
                       padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,
@@ -368,7 +372,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       onPressed: () {
                                         _con.decrementQuantity();
                                       },
-                                      iconSize: 35,
+                                      iconSize: 25,
                                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                       icon: Icon(Icons.remove_circle_outline),
                                       color: Theme.of(context).hintColor,
@@ -378,7 +382,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       onPressed: () {
                                         _con.incrementQuantity();
                                       },
-                                      iconSize: 35,
+                                      iconSize: 25,
                                       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
                                       icon: Icon(Icons.add_circle_outline),
                                       color: Theme.of(context).hintColor,

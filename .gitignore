@@ -76,3 +76,4 @@ app-release.aab
 #assets/cfg/configurations.json
 ios/Flutter/flutter_export_environment.sh
 .flutter-plugins-dependencies
+assets/cfg/configurations.json

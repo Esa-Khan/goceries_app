@@ -52,118 +52,115 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                 new StoreSelectShoppingCartButtonWidget()
               ],
             ),
-            // bottomNavigationBar: SocialMediaOrdering(),
-            body: Center(
-                child: ListView(
-                    shrinkWrap: true,
+            body: Stack(
+              children: [
+                Column(
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // LogoLoadingWidget(),
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: FlatButton(
-                              onPressed: () => nextPage(0),
-                              child: Image.asset(
-                                'assets/img/saudaghar.png',
-                              ),
-                            ),
-                            // decoration: BoxDecoration(
-                            //   borderRadius: BorderRadius.only(
-                            //       topLeft: Radius.circular(10),
-                            //       topRight: Radius.circular(10),
-                            //       bottomLeft: Radius.circular(10),
-                            //       bottomRight: Radius.circular(10)
-                            //   ),
-                            //   boxShadow: [
-                            //     BoxShadow(
-                            //       spreadRadius: 5,
-                            //       blurRadius: 7,
-                            //       offset: Offset(0, 3), // changes position of shadow
-                            //     ),
-                            //   ],
-                            // ),
-                          ),
-                          Text(
-                            "Shop at saudaghar",
-                            style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: 25)),
-                          ),
-                          Text(
-                            "Delivered in under 60 minutes",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            'OR',
-                            style: TextStyle(fontSize: 30),
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            "Scheduled Delivery",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 10),
-                          Row(
+                      Center(
+                        child:
+                        Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Expanded(
-                                child: Column(
-                                  children: [
-                                    Material(
-                                      elevation: 14.0,
-                                      shape: CircleBorder(),
-                                      clipBehavior: Clip.hardEdge,
-                                      color: Colors.transparent,
-                                      child: Ink.image(
-                                        image: AssetImage('assets/img/others.jpg'),
-                                        fit: BoxFit.cover,
-                                        width: 120.0,
-                                        height: 120.0,
-                                        child: InkWell(
-                                          onTap: () => nextPage(1),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Other Stores',
-                                      style: Theme.of(context).textTheme.headline5,
-                                    ),
-                                  ],
+                              // LogoLoadingWidget(),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 40),
+                                child: FlatButton(
+                                  onPressed: () => nextPage(0),
+                                  child: Image.asset(
+                                    'assets/img/saudaghar.png',
+                                  ),
                                 ),
                               ),
-                              Expanded(
-                                child: Column(
+                              Text(
+                                "Shop at saudaghar",
+                                style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: settingsRepo.compact_view_vertical ? 20 : 22)),
+                              ),
+                              Text(
+                                "Delivered in under 60 minutes",
+                                style: TextStyle(fontSize: settingsRepo.compact_view_vertical ? 12 : 16),
+                              ),
+                              SizedBox(height: settingsRepo.compact_view_vertical ? 5 : 20),
+                              Text(
+                                'OR',
+                                style: TextStyle(fontSize: settingsRepo.compact_view_vertical ? 20 : 30),
+                              ),
+                              SizedBox(height: settingsRepo.compact_view_vertical ? 5 : 20),
+                              Text(
+                                "Scheduled Delivery",
+                                style: TextStyle(fontSize: settingsRepo.compact_view_vertical ? 12 : 16),
+                              ),
+                              const SizedBox(height: 10),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Material(
-                                    elevation: 14.0,
-                                    shape: CircleBorder(),
-                                    clipBehavior: Clip.hardEdge,
-                                    color: Colors.transparent,
-                                    child: Ink.image(
-                                      image: AssetImage('assets/img/resto.jpg'),
-                                      fit: BoxFit.cover,
-                                      width: 120.0,
-                                      height: 120.0,
-                                      child: InkWell(
-                                        onTap: () => nextPage(2),
-                                      ),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Material(
+                                          elevation: 14.0,
+                                          shape: CircleBorder(),
+                                          clipBehavior: Clip.hardEdge,
+                                          color: Colors.transparent,
+                                          child: Ink.image(
+                                            image: AssetImage('assets/img/others.jpg'),
+                                            fit: BoxFit.cover,
+                                            width: settingsRepo.compact_view_vertical ? 80 : 120.0,
+                                            height: settingsRepo.compact_view_vertical ? 80 : 120.0,
+                                            child: InkWell(
+                                              onTap: () => nextPage(1),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          'Other Stores',
+                                          style: Theme.of(context).textTheme.headline5,
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(height: 10),
-                                  Text(
-                                    'Home Cooked',
-                                    style: Theme.of(context).textTheme.headline5,
+                                  Expanded(
+                                    child: Column(
+                                        children: [
+                                          Material(
+                                            elevation: 14.0,
+                                            shape: CircleBorder(),
+                                            clipBehavior: Clip.hardEdge,
+                                            color: Colors.transparent,
+                                            child: Ink.image(
+                                              image: AssetImage('assets/img/resto.jpg'),
+                                              fit: BoxFit.cover,
+                                              width: settingsRepo.compact_view_vertical ? 80 : 120.0,
+                                              height: settingsRepo.compact_view_vertical ? 80 : 120.0,
+                                              child: InkWell(
+                                                onTap: () => nextPage(2),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            'Home Cooked',
+                                            style: Theme.of(context).textTheme.headline5,
+                                          ),
+                                        ]),
                                   ),
-                                ]),
+                                ],
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          SocialMediaOrdering(),
-              ]),
-                    ]))));
+                              SizedBox(height: settingsRepo.compact_view_vertical ? 10 : 20),
+                            ]
+                        ),
+                      ),
+                    ]
+                ),
+                Positioned(
+                  bottom: 0,
+                  width: MediaQuery.of(context).size.width,
+                  child: SocialMediaOrdering()
+                ),
+              ],
+            )
+        )
+    );
   }
 
   void nextPage(int isStore) {

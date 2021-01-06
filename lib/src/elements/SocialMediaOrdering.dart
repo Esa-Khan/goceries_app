@@ -5,14 +5,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:io' show Platform;
-import '../../src/elements/EmptyOrdersWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../elements/CardsCarouselLoaderWidget.dart';
-import '../models/restaurant.dart';
-import '../models/route_argument.dart';
-import 'CardWidget.dart';
-import 'EmptyClosestStoreWidget.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 
 // ignore: must_be_immutable
@@ -77,20 +71,17 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 120,
       child: Column(
         children: <Widget>[
-          const SizedBox(height: 10),
           Text(
             "Help and Support",
             style: Theme.of(context).textTheme.bodyText1,
           ),
           GridView.count(
-//              scrollDirection: Axis.vertical,
             shrinkWrap: true,
             primary: true,
             physics: new NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: 40),
+            padding: EdgeInsets.symmetric(horizontal: settingRepo.compact_view_horizontal ? 40 : 50),
             // Create a grid with 2 columns. If you change the scrollDirection to
             // horizontal, this produces 2 rows.
             crossAxisCount: 4,
@@ -111,32 +102,27 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
                       launchCall();
                       break;
                   }
-
                 },
                   child: Container(
-                    padding: EdgeInsets.all(10),
-                    margin: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(7),
+                    margin: EdgeInsets.all(settingRepo.compact_view_vertical ? 10 : 15),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       boxShadow: [
                         BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.9), blurRadius: 3, offset: Offset(0, 2)),
-                        // BoxShadow(
-                        //   color: Theme.of(context).focusColor.withOpacity(0.1),
-                        //   blurRadius: 15,
-                        //   offset: Offset(0, 5)),
                       ],
                     ),
                     child: SvgPicture.asset(
                       logo_img.elementAt(index),
                       color: logo_color.elementAt(index),
-                      width: 100,
-                      height: MediaQuery.of(context).size.width / 2 - 50,
                       fit: BoxFit.contain,
                     ),
-                    ));
-            }),
-        ),
+                  )
+              );
+            }
+            ),
+          ),
         ],
       ),
     );
