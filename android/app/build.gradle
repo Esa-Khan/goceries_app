@@ -46,8 +46,8 @@ android {
         applicationId "com.ezpz.saudaghar"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 18
-        versionName '2.0.8'
+        versionCode 20
+        versionName '2.0.10.20'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
