@@ -43,7 +43,7 @@ class GoogleSigninButtonWidget extends StatelessWidget {
               child: Text(
                 isLogin ? 'Sign in with Google' : 'Sign up with Google',
                 style: TextStyle(
-                  fontSize: SizeConfig.blockSizeHorizontal*50,
+                  fontSize: isLogin ? SizeConfig.blockSizeHorizontal*50 : SizeConfig.blockSizeHorizontal*48,
                   color: Colors.grey,
                 ),
               ),
