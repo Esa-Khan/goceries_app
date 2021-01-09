@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:saudaghar/src/elements/SocialMediaOrdering.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/faq_controller.dart';
@@ -24,6 +25,7 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return _con.faqs.isEmpty
         ? CircularLoadingWidget(height: 500)
         : DefaultTabController(
@@ -41,16 +43,21 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
                     return Tab(text: _con.faqs.elementAt(index).name ?? '');
                   }),
                   labelColor: Theme.of(context).primaryColor,
+                  labelStyle: TextStyle(fontSize: SizeConfig.FontSize(70)),
                 ),
                 title: Text(
                   S.of(context).faq,
-                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3, color: Theme.of(context).primaryColor)),
+                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(
+                            letterSpacing: 1,
+                            color: Theme.of(context).primaryColor,
+                            fontSize: SizeConfig.FontSize(120)
+                    )
+                  ),
                 ),
                 actions: <Widget>[
                   new ShoppingCartButtonWidget(iconColor: Theme.of(context).primaryColor, labelColor: Theme.of(context).accentColor),
                 ],
               ),
-              bottomNavigationBar: SocialMediaOrdering(),
               body: RefreshIndicator(
                 onRefresh: _con.refreshFaqs,
                 child: TabBarView(
@@ -62,6 +69,8 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
+                          SocialMediaOrdering(),
+                          const SizedBox(height: 15),
 //                          SearchBarWidget(),
 //                          SizedBox(height: 15),
 //                          ListTile(
@@ -84,7 +93,7 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
                             primary: false,
                             itemCount: _con.faqs.elementAt(index).faqs.length,
                             separatorBuilder: (context, index) {
-                              return SizedBox(height: 15);
+                              return const SizedBox(height: 15);
                             },
                             itemBuilder: (context, indexFaq) {
                               return FaqItemWidget(faq: _con.faqs.elementAt(index).faqs.elementAt(indexFaq));

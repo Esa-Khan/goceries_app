@@ -84,7 +84,7 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
             primary: true,
             physics: new NeverScrollableScrollPhysics(),
             // padding: EdgeInsets.symmetric(horizontal: settingRepo.compact_view_horizontal ? 40 : 50),
-            padding: EdgeInsets.symmetric(horizontal: SizeConfig.WidthSize(120)),
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.WidthSize(80)),
             // Create a grid with 2 columns. If you change the scrollDirection to
             // horizontal, this produces 2 rows.
             crossAxisCount: 4,
