@@ -64,7 +64,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                             children: [
                               // LogoLoadingWidget(),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: (SizeConfig.blockSizeVertical*70)),
+                                padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical*70),
                                 child: FlatButton(
                                   onPressed: () => nextPage(0),
                                   child: Image.asset(
@@ -83,9 +83,9 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                               SizedBox(height: SizeConfig.HeightSize(10)),
                               Text(
                                 'OR',
-                                style: TextStyle(fontSize: settingsRepo.compact_view_vertical ? 20 : 30),
+                                style: TextStyle(fontSize: SizeConfig.blockSizeVertical*40),
                               ),
-                              SizedBox(height: SizeConfig.HeightSize(10)),
+                              SizedBox(height: SizeConfig.blockSizeVertical*10),
                               Text(
                                 "Scheduled Delivery",
                                 style: TextStyle(fontSize: SizeConfig.FontSize(55)),
@@ -105,8 +105,8 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                           child: Ink.image(
                                             image: AssetImage('assets/img/others.jpg'),
                                             fit: BoxFit.cover,
-                                            width: settingsRepo.compact_view_vertical ? 80 : 120.0,
-                                            height: settingsRepo.compact_view_vertical ? 80 : 120.0,
+                                            width: SizeConfig.blockSizeVertical*160,
+                                            height: SizeConfig.blockSizeVertical*160,
                                             child: InkWell(
                                               onTap: () => nextPage(1),
                                             ),
@@ -131,8 +131,8 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                             child: Ink.image(
                                               image: AssetImage('assets/img/resto.jpg'),
                                               fit: BoxFit.cover,
-                                              width: settingsRepo.compact_view_vertical ? 80 : 120.0,
-                                              height: settingsRepo.compact_view_vertical ? 80 : 120.0,
+                                              width: SizeConfig.blockSizeVertical*160,
+                                              height: SizeConfig.blockSizeVertical*160,
                                               child: InkWell(
                                                 onTap: () => nextPage(2),
                                               ),
