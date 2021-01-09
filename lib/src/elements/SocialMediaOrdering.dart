@@ -109,7 +109,7 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
                   child: Container(
                     padding: EdgeInsets.all(7),
                     // margin: EdgeInsets.all(settingRepo.compact_view_vertical ? 10 : 15),
-                    margin: EdgeInsets.all(SizeConfig.HeightSize(25)),
+                    margin: EdgeInsets.all(14 - SizeConfig.blockSizeHorizontal),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
