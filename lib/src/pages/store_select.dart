@@ -64,7 +64,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                             children: [
                               // LogoLoadingWidget(),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: SizeConfig.WidthSize(90)),
+                                padding: EdgeInsets.symmetric(horizontal: (SizeConfig.blockSizeVertical*70)),
                                 child: FlatButton(
                                   onPressed: () => nextPage(0),
                                   child: Image.asset(

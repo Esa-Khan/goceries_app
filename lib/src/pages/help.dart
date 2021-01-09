@@ -43,14 +43,14 @@ class _HelpWidgetState extends StateMVC<HelpWidget> {
                     return Tab(text: _con.faqs.elementAt(index).name ?? '');
                   }),
                   labelColor: Theme.of(context).primaryColor,
-                  labelStyle: TextStyle(fontSize: SizeConfig.FontSize(70)),
+                  labelStyle: TextStyle(fontSize: SizeConfig.blockSizeHorizontal*40),
                 ),
                 title: Text(
                   S.of(context).faq,
                   style: Theme.of(context).textTheme.headline6.merge(TextStyle(
                             letterSpacing: 1,
                             color: Theme.of(context).primaryColor,
-                            fontSize: SizeConfig.FontSize(120)
+                            fontSize: SizeConfig.blockSizeHorizontal*45
                     )
                   ),
                 ),
