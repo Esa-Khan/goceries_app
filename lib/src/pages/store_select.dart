@@ -4,8 +4,8 @@ import 'package:saudaghar/src/elements/SocialMediaOrdering.dart';
 import '../../src/elements/StoreSelectShoppingCartButtonWidget.dart';
 import '../controllers/restaurant_controller.dart';
 import '../controllers/cart_controller.dart';
-import '../elements/ShoppingCartButtonWidget.dart';
 import '../repository/user_repository.dart';
+import '../helpers/size_config.dart';
 
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
@@ -36,6 +36,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
@@ -63,7 +64,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                             children: [
                               // LogoLoadingWidget(),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 40),
+                                padding: EdgeInsets.symmetric(horizontal: SizeConfig.WidthSize(90)),
                                 child: FlatButton(
                                   onPressed: () => nextPage(0),
                                   child: Image.asset(
@@ -73,21 +74,21 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                               ),
                               Text(
                                 "Shop at saudaghar",
-                                style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: settingsRepo.compact_view_vertical ? 20 : 22)),
+                                style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: SizeConfig.FontSize(90))),
                               ),
                               Text(
                                 "Delivered in under 60 minutes",
-                                style: TextStyle(fontSize: settingsRepo.compact_view_vertical ? 12 : 16),
+                                style: TextStyle(fontSize: SizeConfig.FontSize(55)),
                               ),
-                              SizedBox(height: settingsRepo.compact_view_vertical ? 5 : 20),
+                              SizedBox(height: SizeConfig.HeightSize(10)),
                               Text(
                                 'OR',
                                 style: TextStyle(fontSize: settingsRepo.compact_view_vertical ? 20 : 30),
                               ),
-                              SizedBox(height: settingsRepo.compact_view_vertical ? 5 : 20),
+                              SizedBox(height: SizeConfig.HeightSize(10)),
                               Text(
                                 "Scheduled Delivery",
-                                style: TextStyle(fontSize: settingsRepo.compact_view_vertical ? 12 : 16),
+                                style: TextStyle(fontSize: SizeConfig.FontSize(55)),
                               ),
                               const SizedBox(height: 10),
                               Row(

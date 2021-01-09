@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 import 'dart:io' show Platform;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,7 +31,7 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
 
   Future<void> launchWA() async {
     var whatsappUrl ="whatsapp://send?phone=${settingRepo.setting.value.whatsapp_number}";
-    await canLaunch(whatsappUrl)? launch(whatsappUrl):print("open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
+    await canLaunch(whatsappUrl)? launch(whatsappUrl) : print("Whatsapp ERROR: ${whatsappUrl}");
   }
   Future<void> launchFB() async {
     String fbProtocolUrl;
@@ -70,6 +71,7 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Container(
       child: Column(
         children: <Widget>[
@@ -81,7 +83,8 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
             shrinkWrap: true,
             primary: true,
             physics: new NeverScrollableScrollPhysics(),
-            padding: EdgeInsets.symmetric(horizontal: settingRepo.compact_view_horizontal ? 40 : 50),
+            // padding: EdgeInsets.symmetric(horizontal: settingRepo.compact_view_horizontal ? 40 : 50),
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.WidthSize(120)),
             // Create a grid with 2 columns. If you change the scrollDirection to
             // horizontal, this produces 2 rows.
             crossAxisCount: 4,
@@ -105,7 +108,8 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
                 },
                   child: Container(
                     padding: EdgeInsets.all(7),
-                    margin: EdgeInsets.all(settingRepo.compact_view_vertical ? 10 : 15),
+                    // margin: EdgeInsets.all(settingRepo.compact_view_vertical ? 10 : 15),
+                    margin: EdgeInsets.all(SizeConfig.HeightSize(25)),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
