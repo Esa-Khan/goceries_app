@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:apple_sign_in/apple_sign_in.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -364,9 +365,13 @@ class Helper {
   static Future<bool> checkiOSVersion() async {
     // this bool will be true if apple sign in is enabled
     if (Platform.isIOS) {
-      bool supportsAppleSignIn = await AppleSignIn.isAvailable();
-      print("---------${supportsAppleSignIn}");
-      return supportsAppleSignIn;
+      // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+      var iosInfo = await DeviceInfoPlugin().iosInfo;
+      var version = iosInfo.systemVersion;
+      if (double.tryParse(version) < 14) {
+        bool supportsAppleSignIn = await AppleSignIn.isAvailable();
+        return supportsAppleSignIn;
+      }
     }
     return false;
   }
