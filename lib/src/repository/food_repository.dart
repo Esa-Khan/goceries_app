@@ -91,13 +91,6 @@ Future<Stream<Food>> getSimilarItems(String item_id) async {
   Uri uri = Helper.getUri('api/similaritems');
   Map<String, dynamic> _queryParams = {};
   _queryParams['id'] = item_id;
-  final String _apiToken = userRepo.currentUser.value.apiToken;
-
-  if (_apiToken == null) {
-    return Stream.value(null);
-  } else {
-    _queryParams['api_token'] = _apiToken;
-  }
 
   uri = uri.replace(queryParameters: _queryParams);
   try {
