@@ -44,7 +44,10 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               centerTitle: true,
-              leading: const SizedBox(),
+              leading: new IconButton(
+                icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
+                onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
+              ),
               title: Text(
                 "Where to Shop?",
                 style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.5)),
