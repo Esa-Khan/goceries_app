@@ -63,7 +63,7 @@ class CheckoutController extends CartController {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
     _order.discount = settingsRepo.setting.value.promo[promotion] ?? 0;
-    _order.hint = currentCart_note.value;
+    _order.hint = store.id == 0 ? currentCart_note.value : timeslot_time.value;
     _order.scheduled_time = currentCart_time.value.toString();
     OrderStatus _orderStatus = new OrderStatus();
     _orderStatus.id = '1';

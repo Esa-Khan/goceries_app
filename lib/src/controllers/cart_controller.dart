@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/models/restaurant.dart';
 import 'package:saudaghar/src/models/route_argument.dart';
 
 import '../../generated/l10n.dart';
@@ -10,6 +11,7 @@ import '../repository/settings_repository.dart' as settingsRepo;
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
+  Restaurant store;
   double taxAmount = 0.0;
   double deliveryFee = 0.0;
   int cartCount = 0;
@@ -45,6 +47,7 @@ class CartController extends ControllerMVC {
     }, onDone: () {
       if (carts.isNotEmpty) {
         calculateSubtotal();
+        store = carts.first.store;
       }
       if (message != null) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(

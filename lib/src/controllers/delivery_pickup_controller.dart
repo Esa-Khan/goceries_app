@@ -234,6 +234,13 @@ class DeliveryPickupController extends CartController {
     ));
   }
 
+  void showChooseTimeSlotSnack() {
+    scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      content: Text("Please select a timeslot for delivery.", textScaleFactor: 0.92),
+      duration: Duration(seconds: 2),
+    ));
+  }
+
   void showSnackToSelectBothTimeAndDate() {
     scaffoldKey?.currentState?.showSnackBar(SnackBar(
       content: Text("Please specify both date and time.", textScaleFactor: 0.92),

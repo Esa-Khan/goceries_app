@@ -37,13 +37,14 @@ class GoogleSigninButtonWidget extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Image(image: AssetImage("assets/img/google_logo.png"),
-                  height: SizeConfig.HeightSize(55)),
+                  height: SizeConfig.WidthSize(90)
+            ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
                 isLogin ? 'Sign in with Google' : 'Sign up with Google',
                 style: TextStyle(
-                  fontSize: isLogin ? SizeConfig.blockSizeHorizontal*50 : SizeConfig.blockSizeHorizontal*48,
+                  fontSize: isLogin ? SizeConfig.blockSizeHorizontal*45 : SizeConfig.blockSizeHorizontal*42,
                   color: Colors.grey,
                 ),
               ),

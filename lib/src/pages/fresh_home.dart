@@ -2,28 +2,28 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import '../../src/elements/CategoryListWidget.dart';
-import '../../src/models/route_argument.dart';
+import 'package:saudaghar/src/controllers/freshhome_controller.dart';
+import 'package:saudaghar/src/elements/FreshCategoryListWidget.dart';
 
-import '../controllers/sghome_controller.dart';
+import '../../src/models/route_argument.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart';
 
-class SGHomeWidget extends StatefulWidget {
+class FreshHomeWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState> parentScaffoldKey;
   final RouteArgument routeArgument;
 
-  SGHomeWidget({Key key, this.parentScaffoldKey, this.routeArgument}) : super(key: key);
+  FreshHomeWidget({Key key, this.parentScaffoldKey, this.routeArgument}) : super(key: key);
 
   @override
-  _SGHomeWidgetState createState() => _SGHomeWidgetState();
+  _FreshHomeWidgetState createState() => _FreshHomeWidgetState();
 }
 
-class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
-  SGHomeController _con;
+class _FreshHomeWidgetState extends StateMVC<FreshHomeWidget> {
+  FreshHomeController _con;
   bool first_load = true;
-  _SGHomeWidgetState() : super(SGHomeController()) {
+  _FreshHomeWidgetState() : super(FreshHomeController()) {
     _con = controller;
   }
 
@@ -32,7 +32,7 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
     super.initState();
     if (first_load) {
       first_load = false;
-      _con.getSaudaghar();
+      _con.getStore();
     }
   }
 
@@ -66,9 +66,9 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
           new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
         ],
       ),
-      body: _con.saudaghar == null
+      body: _con.store == null
             ? const Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
-            : CategoryListWidget(store: _con.saudaghar)
+            : FreshCategoryListWidget(store: _con.store)
     );
   }
 }

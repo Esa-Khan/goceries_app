@@ -13,6 +13,7 @@ import '../repository/user_repository.dart' as userRepo;
 
 ValueNotifier<String> currentCart_note = new ValueNotifier("");
 ValueNotifier<DateTime> currentCart_time = new ValueNotifier(null);
+ValueNotifier<String> timeslot_time = new ValueNotifier(null);
 
 Future<Stream<Cart>> getCart() async {
   User _user = userRepo.currentUser.value;

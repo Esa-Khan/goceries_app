@@ -9,7 +9,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import 'user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/custom_trace.dart';

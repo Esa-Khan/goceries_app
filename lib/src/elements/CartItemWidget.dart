@@ -61,7 +61,12 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                     height: 90,
                     width: 90,
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/img/image_default.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 150,
+                  ),
                 ),
               ),
               SizedBox(width: 15),

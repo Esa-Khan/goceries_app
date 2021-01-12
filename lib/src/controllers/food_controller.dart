@@ -119,7 +119,7 @@ class FoodController extends ControllerMVC {
           });
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).item_was_added_to_cart),
-            duration: Duration(seconds: 1),
+            duration: Duration(milliseconds: 500),
           ));
         });
       } else {

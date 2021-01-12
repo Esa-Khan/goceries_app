@@ -11,22 +11,22 @@ import 'AislesItemWidget.dart';
 import 'EmptyItemSearchWidget.dart';
 import 'FoodItemWidget.dart';
 
-class CategoryListWidget extends StatefulWidget {
+class FreshCategoryListWidget extends StatefulWidget {
   final Restaurant store;
 
-  CategoryListWidget({Key key, this.store}) : super(key: key);
+  FreshCategoryListWidget({Key key, this.store}) : super(key: key);
 
   @override
-  _CategoryListState createState() => _CategoryListState();
+  _FreshCategoryListState createState() => _FreshCategoryListState();
 }
 
-class _CategoryListState extends StateMVC<CategoryListWidget> {
+class _FreshCategoryListState extends StateMVC<FreshCategoryListWidget> {
   CategoryController _con;
   var _searchBarController = TextEditingController();
   bool first_load = true, _isSearching = false, _isSearched = false;
   //, _searchBarTapped = false;
 
-  _CategoryListState() : super(CategoryController()) {
+  _FreshCategoryListState() : super(CategoryController()) {
     _con = controller;
   }
 
@@ -43,7 +43,6 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 10, bottom: 50),
       child: Column(
@@ -163,7 +162,7 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       primary: false,
-                      itemCount: _con.aisleToSubaisleMap.length,
+                      itemCount: _con.aisles.length,
                       separatorBuilder: (context, index) {
                         Category currAisle = _con.aisles.elementAt(index);
                         if (_con.aisleToSubaisleMap[currAisle.id] == null) {
@@ -191,7 +190,6 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                               if (aisleVal.id.length > 2 &&
                                   !_con.isAisleLoadedList[aisleVal.id] &&
                                   _con.isExpandedList[aisleVal.id]) {
-                                  print(aisleVal.name);
                                   await _con.listenForItemsByCategory(aisleVal.id, storeID: _con.restaurant.id);
                                   _con.isAisleLoadedList[aisleVal.id] = true;
                                   if (_con.loadedSubaisles.length == 5) {

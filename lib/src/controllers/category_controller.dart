@@ -79,8 +79,6 @@ class CategoryController extends ControllerMVC {
             setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
           }
           setState(() => subaisleToItemsMap[_category.id] = new List<Food>());
-
-
         } else {
           setState(() => aisles.add(_category));
         }
@@ -94,6 +92,39 @@ class CategoryController extends ControllerMVC {
       setState(() => hasAislesLoaded = false);
     }, onDone: () {
       setState(() => hasAislesLoaded = true);
+    });
+  }
+
+  Future<void> listenForFreshCategories(String storeID) async {
+    // final Stream<Category> stream = await getUsedCategories(storeID);
+    List<String> category_list = ['22', '30', '36'];
+    category_list.forEach((element) async {
+      final Stream<Category> stream = await getCategory(element);
+      stream.listen((Category _category) async {
+        if (_category.id.length > 2) {
+          String mainAisleID = _category.id.substring(_category.id.length - 2, _category.id.length);
+          mainAisleID = (int.parse(mainAisleID)).toString();
+          if (aisleToSubaisleMap[mainAisleID] == null) {
+            aisleToSubaisleMap[mainAisleID] = new List<Category>();
+            setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
+          } else {
+            setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
+          }
+          setState(() => subaisleToItemsMap[_category.id] = new List<Food>());
+        } else {
+          setState(() => aisles.add(_category));
+        }
+
+        setState(() {
+          isExpandedList[_category.id] = false;
+          isAisleLoadedList[_category.id] = false;
+        });
+      }, onError: (a) {
+        print(a);
+        setState(() => hasAislesLoaded = false);
+      }, onDone: () {
+        setState(() => hasAislesLoaded = true);
+      });
     });
   }
 

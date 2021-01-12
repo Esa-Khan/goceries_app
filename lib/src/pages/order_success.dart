@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/helpers/maps_util.dart';
 import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import '../elements/CheckoutBottomDetailsWidget.dart';
 import '../elements/CheckoutItemListWidget.dart';
 import '../controllers/checkout_controller.dart';
-import '../elements/CircularLoadingWidget.dart';
 import '../models/payment.dart';
 import '../models/route_argument.dart';
 
@@ -37,12 +34,12 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
   }
 
   getDeliveryTime() async {
-    int count = 5000;
-    while (_con.carts.isEmpty) {
+    int count = 100;
+    while (_con.carts.isEmpty && count > 0) {
       await Future.delayed(Duration(microseconds: 500));
+      count -= 1;
     }
     if (_con.carts.isNotEmpty) {
-      print(count);
       _con.getDeliveryTime();
     }
   }
