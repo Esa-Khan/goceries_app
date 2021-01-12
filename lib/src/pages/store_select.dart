@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/elements/SocialMediaOrdering.dart';
+import '../elements/SocialMediaOrdering.dart';
 import '../../src/elements/StoreSelectShoppingCartButtonWidget.dart';
 import '../controllers/restaurant_controller.dart';
 import '../controllers/cart_controller.dart';
@@ -11,11 +11,10 @@ import '../models/route_argument.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 
 class StoreSelectWidget extends StatefulWidget {
-  final RouteArgument routeArgument;
   final GlobalKey<ScaffoldState> parentScaffoldKey;
+  final RouteArgument routeArgument;
 
-  StoreSelectWidget({Key key, this.routeArgument, this.parentScaffoldKey})
-      : super(key: key);
+  StoreSelectWidget({Key key, this.parentScaffoldKey, this.routeArgument}) : super(key: key);
 
   @override
   _StoreSelectWidgetState createState() => _StoreSelectWidgetState();
@@ -45,6 +44,10 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
               elevation: 0,
               centerTitle: true,
               leading: const SizedBox(),
+              // new IconButton(
+              //   icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
+              //   onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
+              // ),
               title: Text(
                 "Where to Shop?",
                 style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.5)),
@@ -53,75 +56,50 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                 new StoreSelectShoppingCartButtonWidget()
               ],
             ),
-            body: Stack(
-              children: [
-                Column(
-                    children: [
-                      Center(
-                        child:
-                        Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // LogoLoadingWidget(),
-                              Container(
-                                padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical*70),
-                                child: FlatButton(
-                                  onPressed: () => nextPage(0),
-                                  child: Image.asset(
-                                    'assets/img/saudaghar.png',
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                "Shop at saudaghar",
-                                style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: SizeConfig.FontSize(90))),
-                              ),
-                              Text(
-                                "Delivered in under 60 minutes",
-                                style: TextStyle(fontSize: SizeConfig.FontSize(55)),
-                              ),
-                              SizedBox(height: SizeConfig.HeightSize(10)),
-                              Text(
-                                'OR',
-                                style: TextStyle(fontSize: SizeConfig.blockSizeVertical*40),
-                              ),
-                              SizedBox(height: SizeConfig.blockSizeVertical*10),
-                              Text(
-                                "Scheduled Delivery",
-                                style: TextStyle(fontSize: SizeConfig.FontSize(55)),
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Material(
-                                          elevation: 14.0,
-                                          shape: CircleBorder(),
-                                          clipBehavior: Clip.hardEdge,
-                                          color: Colors.transparent,
-                                          child: Ink.image(
-                                            image: AssetImage('assets/img/others.jpg'),
-                                            fit: BoxFit.cover,
-                                            width: SizeConfig.blockSizeVertical*160,
-                                            height: SizeConfig.blockSizeVertical*160,
-                                            child: InkWell(
-                                              onTap: () => nextPage(1),
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Text(
-                                          'Other Stores',
-                                          style: Theme.of(context).textTheme.headline5,
-                                        ),
-                                      ],
+            body: SafeArea(
+              child: Stack(
+                children: [
+                  Column(
+                      children: [
+                        Center(
+                          child:
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // LogoLoadingWidget(),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical*70),
+                                  child: FlatButton(
+                                    onPressed: () => nextPage(0),
+                                    child: Image.asset(
+                                      'assets/img/saudaghar.png',
                                     ),
                                   ),
-                                  Expanded(
-                                    child: Column(
+                                ),
+                                Text(
+                                  "Shop at saudaghar",
+                                  style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: SizeConfig.FontSize(90))),
+                                ),
+                                Text(
+                                  "Delivered in under 60 minutes",
+                                  style: TextStyle(fontSize: SizeConfig.FontSize(55)),
+                                ),
+                                SizedBox(height: SizeConfig.HeightSize(10)),
+                                Text(
+                                  'OR',
+                                  style: TextStyle(fontSize: SizeConfig.blockSizeVertical*40),
+                                ),
+                                SizedBox(height: SizeConfig.blockSizeVertical*10),
+                                Text(
+                                  "Scheduled Delivery",
+                                  style: TextStyle(fontSize: SizeConfig.FontSize(55)),
+                                ),
+                                const SizedBox(height: 10),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
                                         children: [
                                           Material(
                                             elevation: 14.0,
@@ -129,36 +107,63 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                             clipBehavior: Clip.hardEdge,
                                             color: Colors.transparent,
                                             child: Ink.image(
-                                              image: AssetImage('assets/img/resto.jpg'),
+                                              image: AssetImage('assets/img/others.jpg'),
                                               fit: BoxFit.cover,
                                               width: SizeConfig.blockSizeVertical*160,
                                               height: SizeConfig.blockSizeVertical*160,
                                               child: InkWell(
-                                                onTap: () => nextPage(2),
+                                                onTap: () => nextPage(1),
                                               ),
                                             ),
                                           ),
                                           const SizedBox(height: 10),
                                           Text(
-                                            'Home Cooked',
+                                            'Fresh Produce',
                                             style: Theme.of(context).textTheme.headline5,
                                           ),
-                                        ]),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: settingsRepo.compact_view_vertical ? 10 : 20),
-                            ]
+                                        ],
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                          children: [
+                                            Material(
+                                              elevation: 14.0,
+                                              shape: CircleBorder(),
+                                              clipBehavior: Clip.hardEdge,
+                                              color: Colors.transparent,
+                                              child: Ink.image(
+                                                image: AssetImage('assets/img/resto.jpg'),
+                                                fit: BoxFit.cover,
+                                                width: SizeConfig.blockSizeVertical*160,
+                                                height: SizeConfig.blockSizeVertical*160,
+                                                child: InkWell(
+                                                  onTap: () => nextPage(2),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              'Home Cooked',
+                                              style: Theme.of(context).textTheme.headline5,
+                                            ),
+                                          ]),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: settingsRepo.compact_view_vertical ? 10 : 20),
+                              ]
+                          ),
                         ),
-                      ),
-                    ]
-                ),
-                Positioned(
-                  bottom: 0,
-                  width: MediaQuery.of(context).size.width,
-                  child: SocialMediaOrdering()
-                ),
-              ],
+                      ]
+                  ),
+                  Positioned(
+                      bottom: 0,
+                      width: MediaQuery.of(context).size.width,
+                      child: SocialMediaOrdering()
+                  ),
+                ],
+              ),
             )
         )
     );

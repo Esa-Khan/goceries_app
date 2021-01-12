@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:saudaghar/src/helpers/size_config.dart';
+import '../helpers/size_config.dart';
 import 'dart:io' show Platform;
 import 'package:url_launcher/url_launcher.dart';
 
@@ -57,6 +57,7 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
     if (await canLaunch(url)) {
       await launch(
         url,
+        forceSafariVC: false,
         universalLinksOnly: true,
       );
     } else {

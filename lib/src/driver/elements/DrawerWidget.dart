@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 
 import '../../../generated/l10n.dart';
 import '../../controllers/profile_controller.dart';
@@ -54,6 +55,27 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                   ),
                 ),
+                currentUser.value.id == null || currentUser.value.isDriver == null || currentUser.value.isManager == false
+                    ? const SizedBox()
+                    : ListTile(
+                        leading: Switch(
+                                  onChanged: (value) => setState(() {
+                                    currentUser.value.isDriver = !currentUser.value.isDriver;
+                                    if (currentUser.value.isDriver) {
+                                      Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
+                                    } else {
+                                      Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                                    }
+                                  }),
+                                  value: currentUser.value.isDriver,
+                                  activeColor: Theme.of(context).accentColor,
+                                  inactiveThumbColor: Theme.of(context).primaryColor,
+                                ),
+                        title: Text(
+                          'Driver View',
+                          style: Theme.of(context).textTheme.subtitle1,
+                        ),
+                      ),
                 ListTile(
                   onTap: () {
                     Navigator.of(context).pushNamed('/Pages', arguments: 1);

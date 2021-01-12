@@ -1,3 +1,5 @@
+import 'package:saudaghar/src/models/restaurant.dart';
+
 import '../helpers/custom_trace.dart';
 import '../models/extra.dart';
 import '../models/food.dart';
@@ -5,6 +7,7 @@ import '../models/food.dart';
 class Cart {
   String id;
   Food food;
+  Restaurant store;
   double quantity;
   List<Extra> extras;
   String userId;
@@ -16,6 +19,7 @@ class Cart {
       id = jsonMap['id'].toString();
       quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
       food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : Food.fromJSON({});
+      store = food.restaurant;
       extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : [];
     } catch (e) {
       id = '';

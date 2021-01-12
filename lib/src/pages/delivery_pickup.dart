@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import '../elements/EmptyDeliveryAddressWidget.dart';
 import '../elements/DeliveryBottomDetailsWidget.dart';
@@ -43,6 +41,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   @override
   Widget build(BuildContext context) {
     _con.carts = widget.routeArgument.param.carts;
+    _con.store = widget.routeArgument.param.carts.first.store;
     _con.calculateSubtotal();
     if (_con.list == null) {
       _con.list = new PaymentMethodList(context);
@@ -114,7 +113,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       itemBuilder: (context, index) => getAddressItem(index),
                     )
                   : EmptyDeliveryAddressWidget(),
-
                 // : CircularLoadingWidget(height: 150),
 
 

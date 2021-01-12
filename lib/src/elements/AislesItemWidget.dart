@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 import '../../src/controllers/controller.dart';
 import '../../src/controllers/category_controller.dart';
 import '../../src/models/food.dart';
@@ -77,6 +78,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
     return Stack(
       children: <Widget>[
@@ -87,7 +89,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(bottom: 10),
-                padding: EdgeInsets.only(top: 30, bottom: 30),
+                padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*40),
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: timed_out ? Image.network(widget.aisle.aisleImage).image : Image.asset('assets/img/loading.gif').image,
@@ -157,13 +159,19 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                           category.Category currSubAisle = widget.subAisles.elementAt(index);
                           List<Food> items = widget.items[currSubAisle.id];
                           subimg_timeout(index);
-                          // Define a SubAisle dropdown
-                          return SubCategoryItemWidget(
-                            index: index,
-                            currSubAisle: currSubAisle,
-                            items: items,
-                            theme: theme
-                          );
+                          if (widget.subAisles.length == 1) {
+                            // Define a SubAisle dropdown
+                            return ItemListWidget(items);
+                          } else {
+                            // Define a SubAisle dropdown
+                            return SubCategoryItemWidget(
+                                index: index,
+                                currSubAisle: currSubAisle,
+                                items: items,
+                                theme: theme
+                            );
+                          }
+
                               },
                         )
                           : Center(heightFactor: 2,
@@ -200,13 +208,13 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                         padding: EdgeInsets.only(top: 10, bottom: 10),
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                              // image: Image.network(widget.subAisles[int.parse(currSubAisle.id)].aisleImage).image,
                               image: sub_timed_out[index] && currSubAisle.aisleImage != null
                                   ? Image.network(currSubAisle.aisleImage).image
                                   : Image.asset('assets/img/loading.gif').image,
                               fit: BoxFit.cover,
                               onError: (dynamic, StackTrace) {
                                 print("Error Loading Image: ${currSubAisle.aisleImage}");
+                                currSubAisle.aisleImage = 'assets/img/loading.gif';
                               },
                             ),
                             color: Theme.of(context).primaryColor.withOpacity(0.9),
@@ -249,29 +257,33 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                 ),
                                 children: <Widget>[
                                   const SizedBox(height: 10),
-                                  items == null || items.isEmpty
-                                      ? Center(heightFactor: 2, child: const SizedBox(width: 60, height: 60,
-                                      child: CircularProgressIndicator(strokeWidth: 5)))
-                                      : ListView.separated(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    primary: false,
-                                    itemCount: items.length,
-                                    separatorBuilder: (context, index) {
-                                      return SizedBox(height: 10);
-                                    },
-                                    // ignore: missing_return
-                                    itemBuilder: (context, index) {
-                                      return FoodItemWidget(
-                                        heroTag: 'menu_list',
-                                        food: items.elementAt(index),
-                                      );
-                                    },
-                                  ),
+                                  ItemListWidget(items),
                                   SizedBox(height: 20),
                                 ])))
                   ]))
         ]);
+  }
+
+  Widget ItemListWidget(List<Food> items) {
+    return items == null || items.isEmpty
+        ? Center(heightFactor: 2, child: const SizedBox(width: 60, height: 60,
+        child: CircularProgressIndicator(strokeWidth: 5)))
+        : ListView.separated(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            primary: false,
+            itemCount: items.length,
+            separatorBuilder: (context, index) {
+              return SizedBox(height: 10);
+            },
+            // ignore: missing_return
+            itemBuilder: (context, index) {
+              return FoodItemWidget(
+                heroTag: 'menu_list',
+                food: items.elementAt(index),
+              );
+            },
+          );
   }
 
 
