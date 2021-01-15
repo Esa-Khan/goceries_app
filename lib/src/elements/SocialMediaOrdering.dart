@@ -85,7 +85,7 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
             primary: true,
             physics: new NeverScrollableScrollPhysics(),
             // padding: EdgeInsets.symmetric(horizontal: settingRepo.compact_view_horizontal ? 40 : 50),
-            padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical*80),
+            padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical*80.clamp(100, 160).ceilToDouble()),
             // Create a grid with 2 columns. If you change the scrollDirection to
             // horizontal, this produces 2 rows.
             crossAxisCount: 4,
@@ -110,7 +110,7 @@ class _SocialMediaOrderingState extends State<SocialMediaOrdering> {
                   child: Container(
                     padding: EdgeInsets.all(7),
                     // margin: EdgeInsets.all(settingRepo.compact_view_vertical ? 10 : 15),
-                    margin: EdgeInsets.all(14 - SizeConfig.blockSizeHorizontal),
+                    margin: EdgeInsets.all(SizeConfig.screenWidth/40),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(10)),
