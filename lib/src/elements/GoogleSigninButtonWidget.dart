@@ -48,7 +48,7 @@ class GoogleSigninButtonWidget extends StatelessWidget {
                       ? 'Continue with Google'
                       : 'Sign up with Google',
                 style: TextStyle(
-                  fontSize: isLogin ? (SizeConfig.blockSizeHorizontal*45).clamp(0, 25).toDouble() : (SizeConfig.blockSizeHorizontal)*42.clamp(0, 25).toDouble(),
+                  fontSize: isLogin ? (SizeConfig.blockSizeHorizontal*45).clamp(0, 25).toDouble() : (SizeConfig.blockSizeHorizontal*45).clamp(0, 25).toDouble(),
                   color: Colors.grey,
                 ),
               ),

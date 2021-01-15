@@ -39,7 +39,7 @@ class FacebookSigninButtonWidget extends StatelessWidget {
                     ? 'Continue with Facebook'
                     : 'Sign up with Facebook',
                 style: TextStyle(
-                  fontSize: isLogin ? (SizeConfig.blockSizeHorizontal*45).clamp(0, 25).toDouble() : (SizeConfig.blockSizeHorizontal)*42.clamp(0, 25).toDouble(),
+                  fontSize: isLogin ? (SizeConfig.blockSizeHorizontal*45).clamp(0, 25).toDouble() : (SizeConfig.blockSizeHorizontal*42).clamp(0, 25).toDouble(),
                   color: Colors.blue,
                   letterSpacing: -0.2,
                 ),
