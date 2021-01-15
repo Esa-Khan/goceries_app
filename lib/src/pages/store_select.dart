@@ -68,7 +68,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                               children: [
                                 // LogoLoadingWidget(),
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: SizeConfig.blockSizeVertical*70),
+                                  padding: EdgeInsets.symmetric(horizontal: (SizeConfig.blockSizeVertical*70).clamp(0, 100).ceilToDouble()),
                                   child: FlatButton(
                                     onPressed: () => nextPage(0),
                                     child: Image.asset(
@@ -78,11 +78,11 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                 ),
                                 Text(
                                   "Shop at saudaghar",
-                                  style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: SizeConfig.FontSize(90))),
+                                  style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: (SizeConfig.FontSize(90)).clamp(0, 70).ceilToDouble())),
                                 ),
                                 Text(
                                   "Delivered in under 60 minutes",
-                                  style: TextStyle(fontSize: SizeConfig.FontSize(55)),
+                                  style: TextStyle(fontSize: (SizeConfig.FontSize(55)).clamp(0, 40).ceilToDouble()),
                                 ),
                                 SizedBox(height: SizeConfig.HeightSize(10)),
                                 Text(
@@ -92,7 +92,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                 SizedBox(height: SizeConfig.blockSizeVertical*10),
                                 Text(
                                   "Scheduled Delivery",
-                                  style: TextStyle(fontSize: SizeConfig.FontSize(55)),
+                                  style: TextStyle(fontSize: (SizeConfig.FontSize(55)).clamp(0, 40).ceilToDouble()),
                                 ),
                                 const SizedBox(height: 10),
                                 Row(
@@ -109,8 +109,8 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                             child: Ink.image(
                                               image: AssetImage('assets/img/others.jpg'),
                                               fit: BoxFit.cover,
-                                              width: SizeConfig.blockSizeVertical*160,
-                                              height: SizeConfig.blockSizeVertical*160,
+                                              width: SizeConfig.blockSizeVertical*160.clamp(0, 150).ceilToDouble(),
+                                              height: SizeConfig.blockSizeVertical*160.clamp(0, 150).ceilToDouble(),
                                               child: InkWell(
                                                 onTap: () => nextPage(1),
                                               ),
@@ -119,7 +119,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                           const SizedBox(height: 10),
                                           Text(
                                             'Fresh Produce',
-                                            style: Theme.of(context).textTheme.headline5,
+                                            style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: SizeConfig.FontSize(55).clamp(0, 45).ceilToDouble())),
                                           ),
                                         ],
                                       ),
@@ -135,8 +135,8 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                               child: Ink.image(
                                                 image: AssetImage('assets/img/resto.jpg'),
                                                 fit: BoxFit.cover,
-                                                width: SizeConfig.blockSizeVertical*160,
-                                                height: SizeConfig.blockSizeVertical*160,
+                                                width: SizeConfig.blockSizeVertical*160.clamp(0, 150).ceilToDouble(),
+                                                height: SizeConfig.blockSizeVertical*160.clamp(0, 150).ceilToDouble(),
                                                 child: InkWell(
                                                   onTap: () => nextPage(2),
                                                 ),
@@ -145,7 +145,7 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                                             const SizedBox(height: 10),
                                             Text(
                                               'Home Cooked',
-                                              style: Theme.of(context).textTheme.headline5,
+                                              style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: SizeConfig.FontSize(55).clamp(0, 45).ceilToDouble())),
                                             ),
                                           ]),
                                     ),
