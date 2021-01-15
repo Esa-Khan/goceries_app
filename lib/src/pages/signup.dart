@@ -80,7 +80,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                   GoogleSigninButtonWidget(con: _con, isLogin: false),
                                   const Divider(height: 15),
                                   _con.supportsAppleSignIn
-                                      ? AppleSigninButtonWidget(con: _con)
+                                      ? AppleSigninButtonWidget(con: _con, isLogin: false)
                                       : const SizedBox(),
                                   Padding(
                                       padding: EdgeInsets.symmetric(vertical: 15),

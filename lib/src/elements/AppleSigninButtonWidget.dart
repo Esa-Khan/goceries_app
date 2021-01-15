@@ -1,4 +1,4 @@
-import 'package:apple_sign_in/apple_sign_in_button.dart';
+import 'package:apple_sign_in/apple_sign_in_button.dart' as appl;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../src/controllers/user_controller.dart';
@@ -19,12 +19,13 @@ class AppleSigninButtonWidget extends StatelessWidget {
       borderSide: BorderSide(color: Colors.grey),
       onPressed: () { },
       child:  Padding(
-        padding: const EdgeInsets.symmetric(vertical: 2),
-        child: AppleSignInButton(
-        // style: ButtonStyle.black,
-        type: ButtonType.continueButton,
-        onPressed: con.signInWithApple,
-    ),
+        padding: const EdgeInsets.symmetric(vertical: 0),
+        child: appl.AppleSignInButton(
+          type: isLogin ? appl.ButtonType.signIn : appl.ButtonType.continueButton,
+          onPressed: con.signInWithApple,
+          style: appl.ButtonStyle.white,
+          cornerRadius: 40,
+        ),
       )
     );
   }
