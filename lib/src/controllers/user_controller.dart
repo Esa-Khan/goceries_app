@@ -179,6 +179,14 @@ class UserController extends ControllerMVC {
               updateUser.photoUrl =
               "define an url";
               await val.updateProfile(updateUser);
+              print(val.displayName);
+              print(val.email);
+              print(val.uid);
+              this.user.email = val.email;
+              this.user.name = val.displayName;
+              this.user.password =val.uid;
+              thirdPartyLogin();
+
             });
           } catch (e) {
             print("error");

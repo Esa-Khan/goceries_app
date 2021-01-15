@@ -366,12 +366,12 @@ class Helper {
     // this bool will be true if apple sign in is enabled
     if (Platform.isIOS) {
       // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-      var iosInfo = await DeviceInfoPlugin().iosInfo;
-      var version = iosInfo.systemVersion;
-      if (double.tryParse(version) < 14) {
-        bool supportsAppleSignIn = await AppleSignIn.isAvailable();
-        return supportsAppleSignIn;
-      }
+      // var iosInfo = await DeviceInfoPlugin().iosInfo;
+      // var version = iosInfo.systemVersion;
+      // if (double.tryParse(version) < 14) {
+      bool supportsAppleSignIn = await AppleSignIn.isAvailable();
+      return supportsAppleSignIn;
+      // }
     }
     return false;
   }
