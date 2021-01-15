@@ -39,7 +39,7 @@ class SearchController extends ControllerMVC {
 //      search = await getRecentSearch();
 //    }
     Address _address = deliveryAddress.value;
-    final Stream<Food> stream = await searchFoods(search, _address, storeID: storeID);
+    final Stream<Food> stream = await searchFoods(search, _address, storeID: storeID, isStore: false);
     stream.listen((Food _food) {
       setState(() => foods.add(_food));
     }, onError: (a) {

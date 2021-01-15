@@ -107,7 +107,7 @@ Future<Stream<Food>> getSimilarItems(String item_id) async {
 }
 
 
-Future<Stream<Food>> searchFoods(String search, Address address, {String storeID, String limit, String id}) async {
+Future<Stream<Food>> searchFoods(String search, Address address, {String storeID, String limit, String id, bool isStore}) async {
   if (search == null) search = "";
   Uri uri = Helper.getUri('api/foods');
   Map<String, dynamic> _queryParams = {};
@@ -115,6 +115,8 @@ Future<Stream<Food>> searchFoods(String search, Address address, {String storeID
   _queryParams['searchFields'] = 'name:like;description:like';
   if (id != null)
     _queryParams['id'] = id;
+  if (isStore != null)
+    _queryParams['isStore'] = 'false';
 
   if (storeID != null && limit != null) {
     _queryParams['restaurant_id'] = storeID;

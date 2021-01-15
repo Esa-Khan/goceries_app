@@ -77,6 +77,7 @@ Future<Stream<Restaurant>> searchRestaurants(String search, Address address) asy
   _queryParams['search'] = 'name:$search;description:$search';
   _queryParams['searchFields'] = 'name:like;description:like';
   _queryParams['limit'] = '5';
+  _queryParams['isStore'] = false;
   if (!address.isUnknown()) {
     _queryParams['myLon'] = address.longitude.toString();
     _queryParams['myLat'] = address.latitude.toString();

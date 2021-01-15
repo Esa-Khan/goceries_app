@@ -236,7 +236,8 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
   }
 
   void gotoOrders() {
-    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
+    // Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
+    Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 3);
   }
 
 }

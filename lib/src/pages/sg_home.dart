@@ -57,7 +57,9 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
           valueListenable: settingsRepo.setting,
           builder: (context, value, child) {
             return Text(
-              currentUser.value.name == null ? value.appName : "Welcome " + currentUser.value.name?.split(" ")[0] + "!",
+              currentUser.value.name == null || currentUser.value.name.contains('null') || currentUser.value.name.trim().length == 0
+                  ? value.appName
+                  : "Welcome " + currentUser.value.name?.split(" ")[0] + "!",
               style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
             );
           },

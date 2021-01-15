@@ -11,7 +11,8 @@ class Address {
   bool isDefault;
   String userId;
 
-  Address({double long, double lat}){
+  Address({String address, double long, double lat}){
+    this.address = address;
     longitude = long;
     latitude = lat;
   }

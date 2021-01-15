@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/elements/AppleSigninButtonWidget.dart';
 import '../elements/FacebookSigninButtonWidget.dart';
 import '../elements/GoogleSigninButtonWidget.dart';
 import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
+import '../helpers/helper.dart';
 
 class SignUpWidget extends StatefulWidget {
   @override
@@ -14,8 +16,8 @@ class SignUpWidget extends StatefulWidget {
 
 class _SignUpWidgetState extends StateMVC<SignUpWidget> {
   UserController _con;
-
   final textEditingContoller = TextEditingController();
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -76,6 +78,10 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                   FacebookSigninButtonWidget(con: _con, isLogin: false),
                                   const Divider(height: 15),
                                   GoogleSigninButtonWidget(con: _con, isLogin: false),
+                                  const Divider(height: 15),
+                                  _con.supportsAppleSignIn
+                                      ? AppleSigninButtonWidget(con: _con)
+                                      : const SizedBox(),
                                   Padding(
                                       padding: EdgeInsets.symmetric(vertical: 15),
                                       child: Text(

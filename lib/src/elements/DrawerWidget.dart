@@ -92,7 +92,9 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                 ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushReplacementNamed('/StoreSelect');
+              // Navigator.of(context).pushReplacementNamed('/StoreSelect');
+              Navigator.of(context).pushNamedAndRemoveUntil('/StoreSelect', (Route<dynamic> route) => false);
+
             },
             leading: Icon(
               Icons.list,

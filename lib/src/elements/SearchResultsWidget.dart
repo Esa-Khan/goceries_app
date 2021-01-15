@@ -7,6 +7,7 @@ import '../elements/CardWidget.dart';
 import '../elements/CircularLoadingWidget.dart';
 import '../elements/FoodItemWidget.dart';
 import '../models/route_argument.dart';
+import 'EmptyItemSearchWidget.dart';
 
 class SearchResultWidget extends StatefulWidget {
   final String heroTag;
@@ -19,6 +20,7 @@ class SearchResultWidget extends StatefulWidget {
 
 class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
   SearchController _con;
+  bool timed_out = false;
 
   _SearchResultWidgetState() : super(SearchController()) {
     _con = controller;
@@ -113,31 +115,35 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
                         },
                       ),
 
-                      _con.foods.isEmpty ? CircularLoadingWidget(height: 288) :
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: ListTile(
-                          dense: true,
-                          contentPadding: EdgeInsets.symmetric(vertical: 0),
-                          title: Text(
-                            S.of(context).item_results,
-                            style: Theme.of(context).textTheme.subtitle1,
-                          ),
-                        ),
-                      ),
-                      _con.foods.isEmpty ? CircularLoadingWidget(height: 288) :
-                      ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: _con.foods.length,
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(height: 10);
-                        },
-                        itemBuilder: (context, index) {
-                          return FoodItemWidget(
-                            heroTag: 'search_list',
-                            food: _con.foods.elementAt(index),
+                      _con.foods.isEmpty
+                          ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
+                          : Padding(
+                              padding: const EdgeInsets.only(left: 20, right: 20),
+                              child: ListTile(
+                                dense: true,
+                                contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                title: Text(
+                                  S.of(context).item_results,
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                ),
+                              ),
+                            ),
+                      _con.foods.isEmpty
+                          ? timed_out
+                            ? EmptyItemSearchWidget()
+                            :  Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
+                          : ListView.separated(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              primary: false,
+                              itemCount: _con.foods.length,
+                              separatorBuilder: (context, index) {
+                                return const SizedBox(height: 10);
+                              },
+                              itemBuilder: (context, index) {
+                                return FoodItemWidget(
+                                  heroTag: 'search_list',
+                                  food: _con.foods.elementAt(index),
                                 );
                               },
                             ),
@@ -148,5 +154,16 @@ class _SearchResultWidgetState extends StateMVC<SearchResultWidget> {
         ],
       ),
     );
+  }
+
+  Future<void> search_timeout() async {
+    if (mounted && !timed_out) {
+      Future.delayed(Duration(seconds: 1)).whenComplete(() {
+        if (mounted) {
+          print("---------TIMEDOUT----------");
+          setState(() => timed_out = true);
+        }
+      });
+    }
   }
 }

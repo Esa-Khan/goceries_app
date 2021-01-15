@@ -20,7 +20,6 @@ class LoginWidget extends StatefulWidget {
 
 class _LoginWidgetState extends StateMVC<LoginWidget> {
   UserController _con;
-  bool supportsAppleSignIn = false;
   _LoginWidgetState() : super(UserController()) {
     _con = controller;
   }
@@ -28,7 +27,6 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
   @override
   void initState() {
     super.initState();
-    Helper.checkiOSVersion().then((value) => setState(() => supportsAppleSignIn = value));
     if (userRepo.currentUser.value.apiToken != null) {
       Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
     }
@@ -86,7 +84,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                 const Divider(height: 15),
                                 GoogleSigninButtonWidget(con: _con),
                                 const Divider(height: 15),
-                                supportsAppleSignIn
+                                _con.supportsAppleSignIn
                                   ? AppleSigninButtonWidget(con: _con)
                                   : const SizedBox(),
                                 Padding(

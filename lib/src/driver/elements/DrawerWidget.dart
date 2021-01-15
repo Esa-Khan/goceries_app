@@ -62,9 +62,11 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                                   onChanged: (value) => setState(() {
                                     currentUser.value.isDriver = !currentUser.value.isDriver;
                                     if (currentUser.value.isDriver) {
-                                      Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
+                                      Navigator.of(context)..pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 1);
+                                      // Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
                                     } else {
-                                      Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                                      // Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                                      Navigator.of(context).pushNamedAndRemoveUntil('/StoreSelect', (Route<dynamic> route) => false);
                                     }
                                   }),
                                   value: currentUser.value.isDriver,

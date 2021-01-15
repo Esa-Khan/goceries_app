@@ -26,6 +26,8 @@ class UserController extends ControllerMVC {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   bool fb_isLoggedIn = false;
+  bool supportsAppleSignIn = false;
+
 
   UserController() {
     loader = Helper.overlayLoader(context);
@@ -37,6 +39,8 @@ class UserController extends ControllerMVC {
     }).catchError((e) {
       print('Notification not configured');
     });
+    Helper.checkiOSVersion().then((value) => setState(() => supportsAppleSignIn = value));
+
   }
 
   void login() async {
@@ -153,11 +157,10 @@ class UserController extends ControllerMVC {
       final AuthorizationResult result = await AppleSignIn.performRequests([
         AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
       ]);
-
       switch (result.status) {
         case AuthorizationStatus.authorized:
           try {
-            print("successfull sign in");
+            print("Successfull apple sign in");
             final AppleIdCredential appleIdCredential = result.credential;
 
             OAuthProvider oAuthProvider =
@@ -186,7 +189,6 @@ class UserController extends ControllerMVC {
               this.user.name = val.displayName;
               this.user.password =val.uid;
               thirdPartyLogin();
-
             });
           } catch (e) {
             print("error");
@@ -208,8 +210,10 @@ class UserController extends ControllerMVC {
   }
 
   void thirdPartyLogin() async {
+    timeout();
     repository.login(this.user).then((value) {
-      if (value != null && value.apiToken != null) {
+      if (value != null && value.apiToken != null && loading) {
+        loading = false;
         print("-------------Login Success-------------");
         Helper.hideLoader(loader);
         if (value.isDriver) {
@@ -228,7 +232,8 @@ class UserController extends ControllerMVC {
       print("-------------Login Failed-------------\n" + e.toString());
       if (e.message == "No account with this email") {
         repository.register(this.user).then((value) {
-          if (value != null && value.apiToken != null) {
+          if (value != null && value.apiToken != null && loading) {
+            loading = false;
             print("-------------Register Success-------------");
             Helper.hideLoader(loader);
             if (value.isDriver) {
@@ -280,6 +285,23 @@ class UserController extends ControllerMVC {
         ));
       }).whenComplete(() {
         Helper.hideLoader(loader);
+      });
+    }
+  }
+
+  Future<void> timeout() async {
+    if (!loading) {
+      loading = true;
+      Future.delayed(Duration(seconds: 5)).whenComplete(() {
+        if (loading) {
+          print("---------TIMEDOUT----------");
+          Helper.hideLoader(loader);
+          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Login');
+          loading = false;
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text('Request timed out, please try again.'),
+          ));
+        }
       });
     }
   }

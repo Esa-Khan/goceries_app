@@ -51,7 +51,7 @@ class MapsUtil {
     return _latLang;
   }
 
-  Future<String> getAddressName(LatLng location, String apiKey) async {
+  static Future<String> getAddressName(LatLng location, String apiKey) async {
     try {
       var endPoint =
           'https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}&language=${setting.value.mobileLanguage.value}&key=$apiKey';
@@ -94,7 +94,7 @@ class MapsUtil {
     MapsUtil mapsUtil = new MapsUtil();
     await location.requestService();
     LocationData _locationData = await location.getLocation();
-    String _addressName = await mapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
+    String _addressName = await MapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
     _address = Address.fromJSON({'address': _addressName, 'latitude': _locationData?.latitude, 'longitude': _locationData?.longitude});
     return _address;
 

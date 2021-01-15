@@ -190,7 +190,6 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                       const SizedBox(height: 15),
 
 
-
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         alignment: AlignmentDirectional.centerStart,

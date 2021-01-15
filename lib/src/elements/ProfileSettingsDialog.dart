@@ -19,13 +19,13 @@ class _ProfileSettingsDialogState extends State<ProfileSettingsDialog> {
 
   String validatePhone(String input){
     if (input.trim().length == 0){
-      return "Invalid: Cannot leave empty";
+      return "Phone number needed";
 
     } else if(int.tryParse(input) == null){
-      return "Invalid: Only numbers allowed";
+      return "Only numbers allowed";
 
     } else if(input.trim().length != 11){
-      return "Invalid: Needs to be 11 digits";
+      return "Needs to be 11 digits";
 
     } else {
       return null;

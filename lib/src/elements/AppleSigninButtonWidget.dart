@@ -13,16 +13,19 @@ class AppleSigninButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OutlineButton(
-      // splashColor: Colors.grey,
-      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      splashColor: Colors.grey,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.grey),
       onPressed: () { },
-      child: AppleSignInButton(
+      child:  Padding(
+        padding: const EdgeInsets.symmetric(vertical: 2),
+        child: AppleSignInButton(
         // style: ButtonStyle.black,
         type: ButtonType.continueButton,
         onPressed: con.signInWithApple,
-      ),
+    ),
+      )
     );
   }
 

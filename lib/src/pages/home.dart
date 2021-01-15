@@ -99,7 +99,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                             ),
                           ),
                           title: Text(
-                            settingsRepo.isStore.value == 1 ? 'Closest Stores' : 'Closest Restaurants',
+                            'Closest Restaurants',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           subtitle: Text(
