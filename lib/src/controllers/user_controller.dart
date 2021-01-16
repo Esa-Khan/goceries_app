@@ -39,7 +39,7 @@ class UserController extends ControllerMVC {
     }).catchError((e) {
       print('Notification not configured');
     });
-    Helper.checkiOSVersion().then((value) => setState(() => supportsAppleSignIn = true));
+    Helper.checkiOSVersion().then((value) => setState(() => supportsAppleSignIn = value));
 
   }
 
@@ -188,26 +188,65 @@ class UserController extends ControllerMVC {
               this.user.email = val.email;
               this.user.name = val.displayName == 'null null' ? '' : val.displayName;
               this.user.password =val.uid;
-              thirdPartyLogin();
+              Helper.hideLoader(loader);
+              showDialog(
+                  context: context,
+                  builder: (context) => cardDeclinedDialog()
+              );
             });
           } catch (e) {
+            Helper.hideLoader(loader);
             print("error");
           }
           break;
         case AuthorizationStatus.error:
+          Helper.hideLoader(loader);
           print("-------------Apple Signin Failed-------------");
           // do something
           break;
         case AuthorizationStatus.cancelled:
+          Helper.hideLoader(loader);
           print('User cancelled');
           break;
       }
     } catch (error) {
-      print("error with apple sign in");
       Helper.hideLoader(loader);
+      print("error with apple sign in");
     }
-    Helper.hideLoader(loader);
   }
+
+  Widget cardDeclinedDialog() {
+    return AlertDialog(
+      title:  Wrap(
+        spacing: 10,
+        children: <Widget>[
+          Icon(Icons.report, color: Colors.orange),
+          Text(
+            'Login Confirmation',
+            style: TextStyle(color: Colors.orange, fontSize: 20),
+          ),
+        ],
+      ),
+      content: Text("Name: ${this.user.name}\nEmail: ${this.user.email}"),
+      actions: <Widget>[
+        FlatButton(
+          child: new Text('Dismiss'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          }
+        ),
+        FlatButton(
+          child: new Text('Confirm'),
+          onPressed: () {
+            Overlay.of(context).insert(loader);
+            thirdPartyLogin();
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+
 
   void thirdPartyLogin() async {
     timeout();
@@ -215,13 +254,13 @@ class UserController extends ControllerMVC {
       if (value != null && value.apiToken != null && loading) {
         loading = false;
         print("-------------Login Success-------------");
+        Helper.hideLoader(loader);
         if (value.isDriver) {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
         } else {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
           // Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
         }
-        Helper.hideLoader(loader);
       } else {
         Helper.hideLoader(loader);
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -235,12 +274,12 @@ class UserController extends ControllerMVC {
           if (value != null && value.apiToken != null && loading) {
             loading = false;
             print("-------------Register Success-------------");
+            Helper.hideLoader(loader);
             if (value.isDriver) {
               Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
             } else {
               Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
             }
-            Helper.hideLoader(loader);
           } else {
             Helper.hideLoader(loader);
             scaffoldKey?.currentState?.showSnackBar(SnackBar(
