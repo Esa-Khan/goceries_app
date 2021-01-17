@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import '../elements/CheckoutBottomDetailsWidget.dart';
@@ -36,7 +37,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
   getDeliveryTime() async {
     int count = 100;
     while (_con.carts.isEmpty && count > 0) {
-      await Future.delayed(Duration(microseconds: 500));
+      await Future.delayed(Duration(milliseconds: 500));
       count -= 1;
     }
     if (_con.carts.isNotEmpty) {
@@ -189,7 +190,6 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                       ),
                       const SizedBox(height: 15),
 
-
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         alignment: AlignmentDirectional.centerStart,
@@ -200,13 +200,13 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                               'Ordering from ' + _con.carts.first.food.restaurant.name,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 15)),
+                              style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                             ),
                             Text(
                               'Payment by ' + _con.payment.method,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 15)),
+                              style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                             ),
                             _con.delivery_time != null
                               ? Text(
@@ -215,16 +215,42 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                   : 'Scheduled delivery:  ' + currentCart_time.value.toString().substring(0, 16),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 2,
-                                  style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 15)),
+                                  style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                                 )
                               : const SizedBox(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Delivering to ',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 15)),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Flexible(
+                                    child: Container(
+                                      child: Text(
+                                        settingsRepo.deliveryAddress.value.address,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 10,
+                                        style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                             currentCart_note.value.isEmpty
                                 ? const SizedBox()
                                 : Text(
                                     'Note:  ' + currentCart_note.value,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 4,
-                                    style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black54, fontSize: 13)),
+                                    style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontSize: 12)),
                                   ),
                           ],
                         )

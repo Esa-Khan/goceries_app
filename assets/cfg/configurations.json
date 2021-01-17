@@ -1,5 +1,5 @@
 {
-  "base_url": "https://saudagharpk.com/",
-  "api_base_url": "https://saudagharpk.com/api/",
-  "debug": "false"
+  "base_url": "https://2ec4c4b6a65a.ngrok.io/",
+  "api_base_url": "https://2ec4c4b6a65a.ngrok.io/api/",
+  "debug": "true"
 }

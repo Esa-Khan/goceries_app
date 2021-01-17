@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/elements/LoadingDeliveryAddressWidget.dart';
 import '../elements/EmptyDeliveryAddressWidget.dart';
 import '../elements/DeliveryBottomDetailsWidget.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
@@ -102,23 +103,21 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                     )
                   )
                 ),
-                _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts) && _con.deliveryAddress.isNotEmpty
+                _con.loading
+                  ? LoadingDeliveryAddressWidget()
+                  : _con.deliveryAddress.isNotEmpty && _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
                     ? ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: _con.deliveryAddress.length,
-                      shrinkWrap: true,
-                      primary: false,
-                      itemBuilder: (context, index) => getAddressItem(index),
-                    )
-                  : EmptyDeliveryAddressWidget(),
-                // : CircularLoadingWidget(height: 150),
-
-
+                        scrollDirection: Axis.vertical,
+                        itemCount: _con.deliveryAddress.length,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemBuilder: (context, index) => getAddressItem(index),
+                      )
+                    : EmptyDeliveryAddressWidget(),
                 SizedBox(height: 30),
                 addNewAddress(),
                 SizedBox(height: 5),
                 addCurrLocation(),
-
                 SizedBox(height: 30),
               ],
             )
@@ -176,38 +175,6 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   }
 
 
-  Widget updateOrderDialog(Address curr_address) {
-    String address = '';
-    if (curr_address.address == null) {
-      address = "this address.\n\n";
-    } else {
-      print(curr_address.address);
-      address = "address: \n\n'${curr_address.address}' \n\n";
-    }
-    return AlertDialog(
-      title:  Wrap(
-        spacing: 10,
-        children: <Widget>[
-          Icon(Icons.report, color: Colors.orange),
-          Text(
-            'Store too far',
-            style: TextStyle(color: Colors.orange, fontSize: 20),
-          ),
-        ],
-      ),
-      content: Text("Unfortunately ${_con.carts.first.food.restaurant.name} does not deliver to ${address} We aim to expand our services in the near future. Feel free to  contact our support team for more information."),
-      actions: <Widget>[
-        FlatButton(
-          child: new Text(
-              S.of(context).dismiss),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-  }
-
   Widget addNewAddress() {
     if (_con.loading) {
       return SizedBox();
@@ -219,42 +186,31 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
         onTap: () async {
           if (!_con.loading) {
             setState(() => _con.loading = true);
-
-            LocationResult result = await showLocationPicker(
-              context,
-              settingsRepo.setting.value.googleMapsKey,
-              initialCenter: LatLng(
-                  settingsRepo.deliveryAddress.value?.latitude ?? 0,
-                  settingsRepo.deliveryAddress.value?.longitude ?? 0),
-              //automaticallyAnimateToCurrentLocation: true,
-              //mapStylePath: 'assets/mapStyle.json',
-              myLocationButtonEnabled: true,
-              //resultCardAlignment: Alignment.bottomCenter,
-            );
-            Address store_address = new Address(
-                long: double.tryParse(_con.carts[0].food.restaurant.longitude),
-                lat: double.tryParse(_con.carts[0].food.restaurant.latitude));
-            Address curr_address = new Address(address: result.address,
-                long: result.latLng.longitude,
-                lat: result.latLng.latitude);
-            bool within_range = await MapsUtil.withinRange(
-                curr_address, store_address,
-                _con.carts[0].food.restaurant.deliveryRange);
-            if (within_range) {
-              _con.addAddress(new Address.fromJSON({
-                'address': result.address,
-                'latitude': result.latLng.latitude,
-                'longitude': result.latLng.longitude,
-              }));
-              // Navigator.of(widget.scaffoldKey.currentContext).pop();
-            } else {
-              // _con.showOutOfRangeSnack();
-              showDialog(
-                  context: context,
-                  builder: (context) => updateOrderDialog(curr_address)
+            try {
+              LocationResult result = await showLocationPicker(
+                context,
+                settingsRepo.setting.value.googleMapsKey,
+                initialCenter: LatLng(
+                    settingsRepo.deliveryAddress.value?.latitude ?? 0,
+                    settingsRepo.deliveryAddress.value?.longitude ?? 0),
+                //automaticallyAnimateToCurrentLocation: true,
+                //mapStylePath: 'assets/mapStyle.json',
+                myLocationButtonEnabled: true,
+                //resultCardAlignment: Alignment.bottomCenter,
               );
-            }
-            setState(() => _con.loading = false);
+              if (result != null) {
+                _con.addAddress(new Address.fromJSON({
+                  'address': result.address,
+                  'latitude': result.latLng.latitude,
+                  'longitude': result.latLng.longitude,
+                }));
+              } else {
+                setState(() => _con.loading = false);
+              }
+              // Navigator.of(widget.scaffoldKey.currentContext).pop();
+          } catch (e) {
+            print('ERROR: ' + e.toString());
+          }
           }
         },
         child: Container(
@@ -302,42 +258,21 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
       return SizedBox();
     } else {
       return InkWell(
-        splashColor: Theme
-            .of(context)
-            .accentColor,
-        focusColor: Theme
-            .of(context)
-            .accentColor,
-        highlightColor: Theme
-            .of(context)
-            .primaryColor,
+        splashColor: Theme.of(context).accentColor,
+        focusColor: Theme.of(context).accentColor,
+        highlightColor: Theme.of(context).primaryColor,
         onTap: () async {
           // _con.changeDeliveryAddressToCurrentLocation();
           if (!_con.loading) {
             setState(() => _con.loading = true);
 
-            Address store_address = new Address(
-                long: double.tryParse(_con.carts[0].food.restaurant.longitude),
-                lat: double.tryParse(_con.carts[0].food.restaurant.latitude));
             Address curr_address = await MapsUtil.getCurrentLocation();
-            bool within_range = await MapsUtil.withinRange(
-                curr_address, store_address,
-                _con.carts[0].food.restaurant.deliveryRange);
-            if (within_range) {
-              _con.addAddress(new Address.fromJSON({
-                'address': curr_address.address,
-                'latitude': curr_address.latitude,
-                'longitude': curr_address.longitude,
-              }));
-              setState(() => _con.loading = false);
-              // Navigator.of(widget.scaffoldKey.currentContext).pop();
-            } else {
-              // _con.showOutOfRangeSnack();
-              showDialog(
-                  context: context,
-                  builder: (context) => updateOrderDialog(curr_address)
-              );
-            }
+            _con.showSnackBar('Obtained current location');
+            _con.addAddress(new Address.fromJSON({
+              'address': curr_address.address,
+              'latitude': curr_address.latitude,
+              'longitude': curr_address.longitude,
+            }));
 
             setState(() => _con.loading = false);
           }

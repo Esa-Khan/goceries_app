@@ -53,6 +53,7 @@ dependencies:
   apple_sign_in: ^0.1.0
   device_info: ^0.4.1+4
   bubble_showcase: ^0.2.0+4
+  flutter_signin_button: ^1.1.0
 
 
 dev_dependencies:

@@ -110,11 +110,14 @@ Future<Order> addOrder(Order order, Payment payment) async {
   final client = new http.Client();
   Map params = order.toMap();
   params.addAll(_creditCard.toMap());
+  if (GlobalConfiguration().getString('debug') == 'true')
+    params['DEBUG'] = 1;
   final response = await client.post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(params),
   );
+  print(response.body);
   if (response.body == 'Error: Card Declined') {
     throw new Exception(response.body);
   } else {

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/elements/AppleSigninButtonWidget.dart';
-import '../elements/FacebookSigninButtonWidget.dart';
-import '../elements/GoogleSigninButtonWidget.dart';
 import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
-import '../helpers/helper.dart';
+import '../repository/settings_repository.dart' as _setting;
 
 class SignUpWidget extends StatefulWidget {
   @override
@@ -75,13 +74,40 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  FacebookSigninButtonWidget(con: _con, isLogin: false),
-                                  const Divider(height: 15),
-                                  GoogleSigninButtonWidget(con: _con, isLogin: false),
-                                  const Divider(height: 15),
+                                  // FacebookSigninButtonWidget(con: _con, isLogin: false),
+                                  // const Divider(height: 15),
+                                  // GoogleSigninButtonWidget(con: _con, isLogin: false),
+                                  // const Divider(height: 15),
+                                  // _con.supportsAppleSignIn
+                                  //     ? AppleSigninButtonWidget(con: _con, isLogin: false)
+                                  //     : const SizedBox(),
                                   _con.supportsAppleSignIn
-                                      ? AppleSigninButtonWidget(con: _con, isLogin: false)
+                                      ? SignInButton(
+                                          _setting.setting.value.brightness.value == Brightness.light
+                                              ? Buttons.AppleDark
+                                              : Buttons.Apple,
+                                          text: "Sign up with Apple",
+                                          onPressed: () {
+                                            // _showButtonPressDialog(context, 'Apple');
+                                          },
+                                        )
                                       : const SizedBox(),
+                                  SignInButton(
+                                    _setting.setting.value.brightness.value == Brightness.light
+                                        ? Buttons.Google
+                                        : Buttons.GoogleDark,
+                                    text: "Sign up with Google",
+                                    onPressed: () {
+                                      // _showButtonPressDialog(context, 'Apple');
+                                    },
+                                  ),
+                                  SignInButton(
+                                    Buttons.Facebook,
+                                    text: "Sign up with Facebook",
+                                    onPressed: () {
+                                      // _showButtonPressDialog(context, 'Apple');
+                                    },
+                                  ),
                                   Padding(
                                       padding: EdgeInsets.symmetric(vertical: 15),
                                       child: Text(
@@ -197,7 +223,10 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                       Navigator.of(context).popAndPushNamed('/Login');
                                     },
                                     textColor: Theme.of(context).hintColor,
-                                    child: Text(S.of(context).i_have_account_back_to_login, textAlign: TextAlign.center),
+                                    child: Text(S.of(context).i_have_account_back_to_login,
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context).textTheme.bodyText1,
+                                            ),
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 30, vertical: 19),
                                   ),

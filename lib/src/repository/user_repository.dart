@@ -214,3 +214,19 @@ Future<Address> removeDeliveryAddress(Address address) async {
     return new Address.fromJSON({});
   }
 }
+
+Future<Address> deactivateDeliveryAddress(Address address) async {
+  User _user = userRepo.currentUser.value;
+  final String url = '${GlobalConfiguration().getString('api_base_url')}deactivate_address/${address.id}?api_token=${_user.apiToken}';
+  final client = new http.Client();
+  try {
+    final response = await client.put(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    return Address.fromJSON(json.decode(response.body)['data']);
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+    return new Address.fromJSON({});
+  }
+}

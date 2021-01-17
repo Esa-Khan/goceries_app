@@ -46,7 +46,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
       }
       first_load = false;
       _con.category = widget.aisle;
-      img_timeout();
+      // img_timeout();
       widget.subAisles.forEach((element) {
         _con.isExpandedList[element.id] = false;
         _con.isAisleLoadedList[element.id] = false;
@@ -54,27 +54,27 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
     }
   }
 
-  Future<void> img_timeout() async {
-    if (mounted && !timed_out) {
-      Future.delayed(Duration(milliseconds: ((widget.timeout)*900).ceil())).whenComplete(() {
-        if (mounted) {
-          // print("---------TIMEDOUT AFTER ${widget.timeout} SECONDS----------");
-          setState(() => timed_out = true);
-        }
-      });
-    }
-  }
+  // Future<void> img_timeout() async {
+  //   if (mounted && !timed_out) {
+  //     Future.delayed(Duration(milliseconds: ((widget.timeout)*900).ceil())).whenComplete(() {
+  //       if (mounted) {
+  //         // print("---------TIMEDOUT AFTER ${widget.timeout} SECONDS----------");
+  //         setState(() => timed_out = true);
+  //       }
+  //     });
+  //   }
+  // }
 
-  Future<void> subimg_timeout(int index) async {
-    if (mounted && !sub_timed_out[index]) {
-      Future.delayed(Duration(milliseconds: ((index)*900).ceil())).whenComplete(() {
-        if (mounted) {
-          // print("---------SUB-TIMEDOUT AFTER ${index} SECONDS----------");
-          setState(() => sub_timed_out[index] = true);
-        }
-      });
-    }
-  }
+  // Future<void> subimg_timeout(int index) async {
+  //   if (mounted && !sub_timed_out[index]) {
+  //     Future.delayed(Duration(milliseconds: ((index)*900).ceil())).whenComplete(() {
+  //       if (mounted) {
+  //         // print("---------SUB-TIMEDOUT AFTER ${index} SECONDS----------");
+  //         setState(() => sub_timed_out[index] = true);
+  //       }
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,8 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                 padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*40),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: timed_out ? Image.network(widget.aisle.aisleImage).image : Image.asset('assets/img/loading.gif').image,
+                    // image: timed_out ? Image.network(widget.aisle.aisleImage).image : Image.asset('assets/img/loading.gif').image,
+                    image: Image.network(widget.aisle.aisleImage).image,
                     fit: BoxFit.cover,
                     colorFilter: new ColorFilter.mode(Colors.white.withOpacity(aisle_img_opacity), BlendMode.dstIn),
                     onError: (dynamic, StackTrace) {
@@ -158,7 +159,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                         itemBuilder: (context, index) {
                           category.Category currSubAisle = widget.subAisles.elementAt(index);
                           List<Food> items = widget.items[currSubAisle.id];
-                          subimg_timeout(index);
+                          // subimg_timeout(index);
                           if (widget.subAisles.length == 1) {
                             // Define a SubAisle dropdown
                             return ItemListWidget(items);
@@ -208,13 +209,14 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                         padding: EdgeInsets.only(top: 10, bottom: 10),
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: sub_timed_out[index] && currSubAisle.aisleImage != null
-                                  ? Image.network(currSubAisle.aisleImage).image
-                                  : Image.asset('assets/img/loading.gif').image,
+                              // image: sub_timed_out[index] && currSubAisle.aisleImage != null
+                              //     ? Image.network(currSubAisle.aisleImage).image
+                              //     : Image.asset('assets/img/loading.gif').image,
+                              image: Image.network(currSubAisle.aisleImage).image,
                               fit: BoxFit.cover,
                               onError: (dynamic, StackTrace) {
                                 print("Error Loading Image: ${currSubAisle.aisleImage}");
-                                currSubAisle.aisleImage = 'assets/img/loading.gif';
+                                // currSubAisle.aisleImage = 'assets/img/loading.gif';
                               },
                             ),
                             color: Theme.of(context).primaryColor.withOpacity(0.9),
