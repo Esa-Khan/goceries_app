@@ -16,7 +16,6 @@ class FacebookSigninButtonWidget extends StatelessWidget {
     SizeConfig().init(context);
     return OutlineButton(
       splashColor: Colors.grey,
-      onPressed: () => con.initiateFacebookLogin(),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.blue),
