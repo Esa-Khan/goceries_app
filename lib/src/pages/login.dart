@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import '../elements/FacebookSigninButtonWidget.dart';
 import '../elements/GoogleSigninButtonWidget.dart';
 import '../elements/AppleSigninButtonWidget.dart';
@@ -10,7 +12,7 @@ import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
 import '../repository/user_repository.dart' as userRepo;
-import '../repository/settings_repository.dart' as settingsRepo;
+import '../repository/settings_repository.dart' as _setting;
 import '../helpers/helper.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -49,7 +51,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             shrinkWrap: true,
             children: [
               Padding(
-                  padding: EdgeInsets.only(top: settingsRepo.compact_view_vertical ? 10 : 45, bottom: 10),
+                  padding: EdgeInsets.only(top: _setting.compact_view_vertical ? 10 : 45, bottom: 10),
                   child: Column(
                       children: [
                         Container(
@@ -80,15 +82,34 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                FacebookSigninButtonWidget(con: _con),
-                                const Divider(height: 15),
-                                GoogleSigninButtonWidget(con: _con),
-                                const Divider(height: 15),
                                 _con.supportsAppleSignIn
-                                  ? AppleSigninButtonWidget(con: _con)
+                                  ? SignInButton(
+                                    _setting.setting.value.brightness.value == Brightness.light
+                                      ? Buttons.AppleDark
+                                      : Buttons.Apple,
+                                      onPressed: () {
+                                        // _showButtonPressDialog(context, 'Apple');
+                                      },
+                                    )
                                   : const SizedBox(),
+                                SignInButton(
+                                  _setting.setting.value.brightness.value == Brightness.light
+                                      ? Buttons.Google
+                                      : Buttons.GoogleDark,
+                                  onPressed: () {
+                                    // _showButtonPressDialog(context, 'Apple');
+                                  },
+                                ),
+                                SignInButton(
+                                  Buttons.Facebook,
+                                  onPressed: () {
+                                    // _showButtonPressDialog(context, 'Apple');
+                                  },
+                                ),
+
+
                                 Padding(
-                                    padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_vertical ? 5 : 15),
+                                    padding: EdgeInsets.symmetric(vertical: _setting.compact_view_vertical ? 5 : 15),
                                     child: Text(
                                       "OR",
                                       textAlign: TextAlign.center,

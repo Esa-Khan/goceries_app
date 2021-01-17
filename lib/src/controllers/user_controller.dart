@@ -39,7 +39,7 @@ class UserController extends ControllerMVC {
     }).catchError((e) {
       print('Notification not configured');
     });
-    Helper.checkiOSVersion().then((value) => setState(() => supportsAppleSignIn = true));
+    Helper.checkiOSVersion().then((value) => setState(() => supportsAppleSignIn = value));
 
   }
 

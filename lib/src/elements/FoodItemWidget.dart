@@ -37,24 +37,7 @@ class FoodItemWidget extends StatelessWidget {
               tag: heroTag + food.id,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-             child: CachedNetworkImage(
-                  height: 60,
-                  width: 60,
-                  fit: BoxFit.cover,
-                  imageUrl: food.image_url != null ? food.image_url : food.image.thumb,
-                  placeholder: (context, url) => Image.asset(
-                    'assets/img/loading.gif',
-                    fit: BoxFit.cover,
-                    height: 60,
-                    width: 60,
-                  ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    'assets/img/image_default.png',
-                    fit: BoxFit.cover,
-                    height: 60,
-                    width: 60,
-                  ),
-                ),
+             child: getItemIMG(),
               ),
             ),
             SizedBox(width: settingsRepo.compact_view_horizontal ? 5 : 15),
@@ -122,4 +105,34 @@ class FoodItemWidget extends StatelessWidget {
       ),
     );
   }
+
+
+  Widget getItemIMG() {
+    CachedNetworkImage img;
+    try {
+       img = CachedNetworkImage(
+        height: 60,
+        width: 60,
+        fit: BoxFit.cover,
+        imageUrl: food.image_url != null ? food.image_url : food.image.thumb,
+        placeholder: (context, url) => Image.asset(
+          'assets/img/loading.gif',
+          fit: BoxFit.cover,
+          height: 60,
+          width: 60,
+        ),
+        errorWidget: (context, url, error) => Image.asset(
+          'assets/img/image_default.png',
+          fit: BoxFit.cover,
+          height: 60,
+          width: 60,
+        ),
+      );
+    } catch (e) {
+      print('ERROR: Could not get item ${food.id}');
+    }
+
+    return  img;
+  }
+
 }
