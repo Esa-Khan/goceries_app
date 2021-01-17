@@ -113,7 +113,7 @@ class UserController extends ControllerMVC {
     print("User Sign Out");
   }
 
-  void initiateFacebookLogin() async {
+  void signInWithFacebook() async {
     try {
       Overlay.of(context).insert(loader);
       var facebookLogin = FacebookLogin();

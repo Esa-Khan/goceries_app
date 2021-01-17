@@ -88,7 +88,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                       ? Buttons.AppleDark
                                       : Buttons.Apple,
                                       onPressed: () {
-                                        // _showButtonPressDialog(context, 'Apple');
+                                      _con.signInWithApple();
                                       },
                                     )
                                   : const SizedBox(),
@@ -97,13 +97,13 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                                       ? Buttons.Google
                                       : Buttons.GoogleDark,
                                   onPressed: () {
-                                    // _showButtonPressDialog(context, 'Apple');
+                                    _con.signInWithGoogle();
                                   },
                                 ),
                                 SignInButton(
                                   Buttons.Facebook,
                                   onPressed: () {
-                                    // _showButtonPressDialog(context, 'Apple');
+                                    _con.signInWithFacebook();
                                   },
                                 ),
 

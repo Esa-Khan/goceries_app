@@ -88,7 +88,7 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                               : Buttons.Apple,
                                           text: "Sign up with Apple",
                                           onPressed: () {
-                                            // _showButtonPressDialog(context, 'Apple');
+                                            _con.signInWithApple();
                                           },
                                         )
                                       : const SizedBox(),
@@ -98,14 +98,14 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                         : Buttons.GoogleDark,
                                     text: "Sign up with Google",
                                     onPressed: () {
-                                      // _showButtonPressDialog(context, 'Apple');
+                                      _con.signInWithGoogle();
                                     },
                                   ),
                                   SignInButton(
                                     Buttons.Facebook,
                                     text: "Sign up with Facebook",
                                     onPressed: () {
-                                      // _showButtonPressDialog(context, 'Apple');
+                                      _con.signInWithFacebook();
                                     },
                                   ),
                                   Padding(
