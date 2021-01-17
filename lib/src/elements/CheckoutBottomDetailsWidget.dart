@@ -106,15 +106,10 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                     style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13, color: Theme.of(context).accentColor)),
                   ),
                 ),
-                RichText(
-                  softWrap: false,
-                  overflow: TextOverflow.fade,
-                  maxLines: 1,
-                  text: TextSpan(
-                          text: settingsRepo.setting.value.promo[_con.promotion].toString(),
-                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Theme.of(context).accentColor)),
-                        ),
-                )
+                Text(
+                  settingsRepo.setting.value.promo[_con.promotion].toString(),
+                  style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Theme.of(context).accentColor)),
+                ),
               ],
             ),
             SizedBox(height: 20),

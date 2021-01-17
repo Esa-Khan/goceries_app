@@ -26,7 +26,7 @@ class CheckoutController extends CartController {
   CreditCard creditCard = new CreditCard();
   bool loading = false;
   bool order_submitted = false;
-  bool card_declined = false;
+  bool order_declined = false;
   String hint = "";
   String time = "";
   int delivery_time = null;
@@ -63,6 +63,7 @@ class CheckoutController extends CartController {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
     _order.discount = settingsRepo.setting.value.promo[promotion] ?? 0;
+    _order.promotion = promotion == '' ? null : promotion;
     _order.hint = store.id == 0 ? currentCart_note.value : timeslot_time.value;
     _order.scheduled_time = currentCart_time.value.toString();
     OrderStatus _orderStatus = new OrderStatus();
@@ -94,14 +95,16 @@ class CheckoutController extends CartController {
           });
         }
       }).catchError((Object obj, StackTrace stackTrace) {
-        showDialog(
-          context: context,
-          builder: (context) => cardDeclinedDialog()
-        );
+        if (creditCard.number != '' && creditCard.cvc != '') {
+          showDialog(
+              context: context,
+              builder: (context) => cardDeclinedDialog()
+          );
+        }
         setState(() {
           order_submitted = false;
           loading = false;
-          card_declined = true;
+          order_declined = true;
         });
       });
   }
@@ -141,7 +144,6 @@ class CheckoutController extends CartController {
 
   Future<void> applePromotion(String code) async {
     bool isUsed = false;
-    // await orderRepo.checkCode(code).then((value) => ;
     await orderRepo.checkCode(code).then((value) => isUsed = value);
     if (isUsed) {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(

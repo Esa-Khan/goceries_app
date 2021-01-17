@@ -90,7 +90,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                     gradient: LinearGradient(
                                         begin: Alignment.bottomLeft,
                                         end: Alignment.topRight,
-                                        colors: _con.card_declined
+                                        colors: _con.order_declined
                                             ? [Colors.red.withOpacity(0.2), Colors.red.withOpacity(1)]
                                             : [Theme.of(context).accentColor.withOpacity(0.2), Theme.of(context).accentColor.withOpacity(1)]
                                     )),
@@ -107,7 +107,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                             valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).scaffoldBackgroundColor),
                                           ),
                                         )
-                                      : _con.card_declined
+                                      : _con.order_declined
                                         ? Icon(
                                             Icons.error_outline,
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -155,12 +155,12 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                             child: Text(
                               _con.order_submitted
                                 ? 'Order  Submitted!'
-                                : _con.card_declined
-                                  ? 'Card declined'
+                                : _con.order_declined
+                                  ? 'Could not place order '
                                   : 'Ready to Checkout?',
                               style: Theme.of(context).textTheme.headline2.merge(
                                   TextStyle(fontWeight: FontWeight.bold,
-                                            color: _con.card_declined
+                                            color: _con.order_declined
                                                 ? Colors.red
                                                 : Theme.of(context).accentColor,
                                             fontSize: settingsRepo.compact_view_horizontal ? 18 : 20

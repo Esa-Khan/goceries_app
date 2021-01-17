@@ -98,7 +98,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                     colorFilter: new ColorFilter.mode(Colors.white.withOpacity(aisle_img_opacity), BlendMode.dstIn),
                     onError: (dynamic, StackTrace) {
                       print("Error Loading Image: ${widget.aisle.aisleImage}");
-                      widget.aisle.aisleImage = 'assets/img/loading.gif';
+                      // widget.aisle.aisleImage = 'assets/img/loading.gif';
                     },
                   ),
                   color: Theme.of(context).primaryColor.withOpacity(0.9),

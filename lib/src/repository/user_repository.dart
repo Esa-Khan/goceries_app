@@ -24,14 +24,21 @@ Future<User> login(User user) async {
     body: json.encode(user.toMap()),
   );
   if (response.statusCode == 200) {
-    if (response.body.isEmpty) {
+    if (response.body.isEmpty)
       throw new Exception("No account with this email");
-    } else if(response.body == 'Incorrect password') {
-      throw new Exception(response.body);
+
+    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+    setCurrentUser(response.body);
+  } else if (response.statusCode == 500) {
+    switch (json.decode(response.body)['message']) {
+      case 'Incorrect Password':
+        throw new Exception('Incorrect Password');
+        break;
+      default:
+        throw new Exception('Unknown error');
+        break;
     }
 
-    setCurrentUser(response.body);
-    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
   } else {
     print(CustomTrace(StackTrace.current, message: response.body).toString());
     throw new Exception(response.body);

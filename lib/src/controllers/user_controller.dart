@@ -188,65 +188,26 @@ class UserController extends ControllerMVC {
               this.user.email = val.email;
               this.user.name = val.displayName == 'null null' ? '' : val.displayName;
               this.user.password =val.uid;
-              Helper.hideLoader(loader);
-              showDialog(
-                  context: context,
-                  builder: (context) => cardDeclinedDialog()
-              );
+              thirdPartyLogin();
             });
           } catch (e) {
-            Helper.hideLoader(loader);
             print("error");
           }
           break;
         case AuthorizationStatus.error:
-          Helper.hideLoader(loader);
           print("-------------Apple Signin Failed-------------");
           // do something
           break;
         case AuthorizationStatus.cancelled:
-          Helper.hideLoader(loader);
           print('User cancelled');
           break;
       }
     } catch (error) {
-      Helper.hideLoader(loader);
       print("error with apple sign in");
+      Helper.hideLoader(loader);
     }
+    Helper.hideLoader(loader);
   }
-
-  Widget cardDeclinedDialog() {
-    return AlertDialog(
-      title:  Wrap(
-        spacing: 10,
-        children: <Widget>[
-          Icon(Icons.report, color: Colors.orange),
-          Text(
-            'Login Confirmation',
-            style: TextStyle(color: Colors.orange, fontSize: 20),
-          ),
-        ],
-      ),
-      content: Text("Name: ${this.user.name}\nEmail: ${this.user.email}"),
-      actions: <Widget>[
-        FlatButton(
-          child: new Text('Dismiss'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          }
-        ),
-        FlatButton(
-          child: new Text('Confirm'),
-          onPressed: () {
-            Overlay.of(context).insert(loader);
-            thirdPartyLogin();
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );
-  }
-
 
   void thirdPartyLogin() async {
     timeout();
@@ -254,13 +215,13 @@ class UserController extends ControllerMVC {
       if (value != null && value.apiToken != null && loading) {
         loading = false;
         print("-------------Login Success-------------");
-        Helper.hideLoader(loader);
         if (value.isDriver) {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
         } else {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
           // Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
         }
+        Helper.hideLoader(loader);
       } else {
         Helper.hideLoader(loader);
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -269,34 +230,49 @@ class UserController extends ControllerMVC {
       }
     }).catchError((e) {
       print("-------------Login Failed-------------\n" + e.toString());
-      if (e.message == "No account with this email") {
-        repository.register(this.user).then((value) {
-          if (value != null && value.apiToken != null && loading) {
-            loading = false;
-            print("-------------Register Success-------------");
-            Helper.hideLoader(loader);
-            if (value.isDriver) {
-              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+      loading = false;
+      switch (e.message) {
+        case 'No account with this email':
+          repository.register(this.user).then((value) {
+            if (value != null && value.apiToken != null && loading) {
+              loading = false;
+              print("-------------Register Success-------------");
+              if (value.isDriver) {
+                Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+              } else {
+                Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
+              }
+              Helper.hideLoader(loader);
             } else {
-              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
+              Helper.hideLoader(loader);
+              scaffoldKey?.currentState?.showSnackBar(SnackBar(
+                content: Text(S.of(context).wrong_email_or_password),
+              ));
             }
-          } else {
+          }).catchError((e) {
             Helper.hideLoader(loader);
-            scaffoldKey?.currentState?.showSnackBar(SnackBar(
-              content: Text(S.of(context).wrong_email_or_password),
-            ));
-          }
-        }).catchError((e) {
+            print("-------------Register Failed-------------");
+            if (e.toString() == "Exception: Account already exits") {
+              scaffoldKey?.currentState?.showSnackBar(SnackBar(
+                content: Text("Wrong password. Try a different login method."),
+              ));
+            }
+          });
+          break;
+        case 'Incorrect Password':
           Helper.hideLoader(loader);
-          print("-------------Register Failed-------------");
-          if (e.toString() == "Exception: Account already exits") {
-            scaffoldKey?.currentState?.showSnackBar(SnackBar(
-              content: Text("Wrong password. Try a different login method."),
-            ));
-          }
-        });
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text('Incorrect password, try a different login'),
+          ));
+          break;
+        default:
+          Helper.hideLoader(loader);
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text("Unknown error, please try again"),
+          ));
+          break;
       }
-      });
+    });
   }
 
   void register() async {

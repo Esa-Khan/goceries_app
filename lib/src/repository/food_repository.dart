@@ -88,11 +88,11 @@ Future<Stream<Food>> getStoreItems(String storeID, {String limit, String id}) as
 
 
 Future<Stream<Food>> getSimilarItems(String item_id) async {
-  Uri uri = Helper.getUri('api/similaritems');
-  Map<String, dynamic> _queryParams = {};
-  _queryParams['id'] = item_id;
-
-  uri = uri.replace(queryParameters: _queryParams);
+  Uri uri = Helper.getUri('api/similaritems/${item_id}');
+  // Map<String, dynamic> _queryParams = {};
+  // _queryParams['id'] = item_id;
+  //
+  // uri = uri.replace(queryParameters: _queryParams);
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
