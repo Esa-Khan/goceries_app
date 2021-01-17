@@ -230,34 +230,49 @@ class UserController extends ControllerMVC {
       }
     }).catchError((e) {
       print("-------------Login Failed-------------\n" + e.toString());
-      if (e.message == "No account with this email") {
-        repository.register(this.user).then((value) {
-          if (value != null && value.apiToken != null && loading) {
-            loading = false;
-            print("-------------Register Success-------------");
-            if (value.isDriver) {
-              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+      loading = false;
+      switch (e.message) {
+        case 'No account with this email':
+          repository.register(this.user).then((value) {
+            if (value != null && value.apiToken != null && loading) {
+              loading = false;
+              print("-------------Register Success-------------");
+              if (value.isDriver) {
+                Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+              } else {
+                Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
+              }
+              Helper.hideLoader(loader);
             } else {
-              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
+              Helper.hideLoader(loader);
+              scaffoldKey?.currentState?.showSnackBar(SnackBar(
+                content: Text(S.of(context).wrong_email_or_password),
+              ));
             }
+          }).catchError((e) {
             Helper.hideLoader(loader);
-          } else {
-            Helper.hideLoader(loader);
-            scaffoldKey?.currentState?.showSnackBar(SnackBar(
-              content: Text(S.of(context).wrong_email_or_password),
-            ));
-          }
-        }).catchError((e) {
+            print("-------------Register Failed-------------");
+            if (e.toString() == "Exception: Account already exits") {
+              scaffoldKey?.currentState?.showSnackBar(SnackBar(
+                content: Text("Wrong password. Try a different login method."),
+              ));
+            }
+          });
+          break;
+        case 'Incorrect Password':
           Helper.hideLoader(loader);
-          print("-------------Register Failed-------------");
-          if (e.toString() == "Exception: Account already exits") {
-            scaffoldKey?.currentState?.showSnackBar(SnackBar(
-              content: Text("Wrong password. Try a different login method."),
-            ));
-          }
-        });
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text('Incorrect password, try a different login'),
+          ));
+          break;
+        default:
+          Helper.hideLoader(loader);
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text("Unknown error, please try again"),
+          ));
+          break;
       }
-      });
+    });
   }
 
   void register() async {
