@@ -84,29 +84,29 @@ class CheckoutController extends CartController {
     } else {
       _order.deliveryFee = 0;
     };
-      orderRepo.addOrder(_order, this.payment).then((value) {
-        currentCart_time.value = null;
-        currentCart_note.value = '';
+    orderRepo.addOrder(_order, this.payment).then((value) {
+      currentCart_time.value = null;
+      currentCart_note.value = '';
 
-        if (value is Order) {
-          setState(() {
-            loading = false;
-            order_submitted = true;
-          });
-        }
-      }).catchError((Object obj, StackTrace stackTrace) {
-        if (creditCard.number != '' && creditCard.cvc != '') {
-          showDialog(
-              context: context,
-              builder: (context) => cardDeclinedDialog()
-          );
-        }
+      if (value is Order) {
         setState(() {
-          order_submitted = false;
           loading = false;
-          order_declined = true;
+          order_submitted = true;
         });
+      }
+    }).catchError((Object obj, StackTrace stackTrace) {
+      if (creditCard.number != '' && creditCard.cvc != '') {
+        showDialog(
+            context: context,
+            builder: (context) => cardDeclinedDialog()
+        );
+      }
+      setState(() {
+        order_submitted = false;
+        loading = false;
+        order_declined = true;
       });
+    });
   }
 
   Widget cardDeclinedDialog() {

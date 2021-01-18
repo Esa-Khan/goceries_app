@@ -78,7 +78,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                           title: Container(
                             // padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                             child: Text(
-                              'Verify your quantity or add any extra notes and click checkout',
+                              'Verify your quantity or add any extra notes and click checkout\nSwipe item to remove',
                               maxLines: 5,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodyText1,

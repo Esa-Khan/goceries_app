@@ -2045,10 +2045,10 @@ class S {
     );
   }
 
-  /// `Select you address, swipe to delete or long press to edit address`
+  /// `Select your address, swipe to delete or long press to edit address`
   String get click_to_confirm_your_address_and_pay_or_long_press {
     return Intl.message(
-      'Select you address, swipe to delete or long press to edit address',
+      'Select your address, swipe to delete or long press to edit address',
       name: 'click_to_confirm_your_address_and_pay_or_long_press',
       desc: '',
       args: [],
