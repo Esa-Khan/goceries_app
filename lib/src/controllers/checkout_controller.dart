@@ -79,7 +79,7 @@ class CheckoutController extends CartController {
       _foodOrder.extras = _cart.extras;
       _order.foodOrders.add(_foodOrder);
     });
-    if (Helper.getTotalOrdersPrice(_order) < settingsRepo.setting.value.deliveryFeeLimit){
+    if (Helper.getSubTotalOrdersPrice(_order) < settingsRepo.setting.value.deliveryFeeLimit){
       _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].food.restaurant.deliveryFee;
     } else {
       _order.deliveryFee = 0;
