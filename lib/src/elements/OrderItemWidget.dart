@@ -109,7 +109,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                     style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.red)),
                                   ),
                                 ),
-                                Helper.getTotalOrdersPrice(widget.order) < settingsRepo.setting.value.deliveryFeeLimit
+                                Helper.getSubTotalOrdersPrice(widget.order) < settingsRepo.setting.value.deliveryFeeLimit
                                   ? Helper.getPrice(widget.order.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.red)))
                                   : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.red)))
                               ],

@@ -182,7 +182,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
             SizedBox(height: 5),
 
               // "Free delivery for orders over Rs. " + setting.value.deliveryFeeLimit.toString(),
-              widget.con.total < setting.value.deliveryFeeLimit
+              widget.con.subTotal < setting.value.deliveryFeeLimit
                 ? RichText(
                     text: TextSpan(
                       text: 'Order ',

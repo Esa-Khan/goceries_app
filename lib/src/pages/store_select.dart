@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import '../elements/SocialMediaOrdering.dart';
-import '../../src/elements/StoreSelectShoppingCartButtonWidget.dart';
-import '../controllers/restaurant_controller.dart';
-import '../controllers/cart_controller.dart';
-import '../repository/user_repository.dart';
-import '../helpers/size_config.dart';
 
+import '../../src/elements/StoreSelectShoppingCartButtonWidget.dart';
+import '../controllers/cart_controller.dart';
+import '../controllers/restaurant_controller.dart';
+import '../helpers/size_config.dart';
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
+import '../repository/user_repository.dart';
 
 class StoreSelectWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState> parentScaffoldKey;
   final RouteArgument routeArgument;
 
-  StoreSelectWidget({Key key, this.parentScaffoldKey, this.routeArgument}) : super(key: key);
+  StoreSelectWidget({Key key, this.parentScaffoldKey, this.routeArgument})
+      : super(key: key);
 
   @override
   _StoreSelectWidgetState createState() => _StoreSelectWidgetState();
@@ -22,8 +22,8 @@ class StoreSelectWidget extends StatefulWidget {
 
 class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
   CartController _con = new CartController();
-  _StoreSelectWidgetState() : super(RestaurantController()) {
-  }
+
+  _StoreSelectWidgetState() : super(RestaurantController()) {}
 
   @override
   void initState() {
@@ -39,134 +39,72 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
     return WillPopScope(
         onWillPop: () async => false,
         child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              centerTitle: true,
-              leading: const SizedBox(),
-              // new IconButton(
-              //   icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
-              //   onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
-              // ),
-              title: Text(
-                "Where to Shop?",
-                style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.5)),
-              ),
-              actions: <Widget>[
-                new StoreSelectShoppingCartButtonWidget()
-              ],
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            centerTitle: true,
+            leading: const SizedBox(),
+            // new IconButton(
+            //   icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
+            //   onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
+            // ),
+            title: Text(
+              "Where to Shop?",
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6
+                  .merge(TextStyle(letterSpacing: 1.5)),
             ),
-            body: SafeArea(
-              child: Stack(
-                children: [
-                  Column(
-                      children: [
-                        Center(
-                          child:
-                          Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // LogoLoadingWidget(),
-                                Container(
-                                  padding: EdgeInsets.symmetric(horizontal: (SizeConfig.blockSizeVertical*70).clamp(0, 100).ceilToDouble()),
-                                  child: FlatButton(
-                                    onPressed: () => nextPage(0),
-                                    child: Image.asset(
-                                      'assets/img/saudaghar.png',
-                                    ),
-                                  ),
+            actions: <Widget>[new StoreSelectShoppingCartButtonWidget()],
+          ),
+          body: SafeArea(
+            child: Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // LogoLoadingWidget(),
+                    Container(
+                      height: SizeConfig.blockSizeVertical*260,
+                      child: FlatButton(
+                                onPressed: () => nextPage(0),
+                                child: Image.asset(
+                                  'assets/img/saudaghar.png',
                                 ),
-                                Text(
-                                  "Shop at saudaghar",
-                                  style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: (SizeConfig.FontSize(90)).clamp(0, 70).ceilToDouble())),
-                                ),
-                                Text(
-                                  "Delivered in under 60 minutes",
-                                  style: TextStyle(fontSize: (SizeConfig.FontSize(55)).clamp(0, 40).ceilToDouble()),
-                                ),
-                                SizedBox(height: SizeConfig.HeightSize(10)),
-                                Text(
-                                  'OR',
-                                  style: TextStyle(fontSize: SizeConfig.blockSizeVertical*40),
-                                ),
-                                SizedBox(height: SizeConfig.blockSizeVertical*10),
-                                Text(
-                                  "Scheduled Delivery",
-                                  style: TextStyle(fontSize: (SizeConfig.FontSize(55)).clamp(0, 40).ceilToDouble()),
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Material(
-                                            elevation: 14.0,
-                                            shape: CircleBorder(),
-                                            clipBehavior: Clip.hardEdge,
-                                            color: Colors.transparent,
-                                            child: Ink.image(
-                                              image: AssetImage('assets/img/others.jpg'),
-                                              fit: BoxFit.cover,
-                                              width: SizeConfig.blockSizeVertical*160.clamp(0, 150).ceilToDouble(),
-                                              height: SizeConfig.blockSizeVertical*160.clamp(0, 150).ceilToDouble(),
-                                              child: InkWell(
-                                                onTap: () => nextPage(1),
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            'Fresh Produce',
-                                            style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: SizeConfig.FontSize(55).clamp(0, 45).ceilToDouble())),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                          children: [
-                                            Material(
-                                              elevation: 14.0,
-                                              shape: CircleBorder(),
-                                              clipBehavior: Clip.hardEdge,
-                                              color: Colors.transparent,
-                                              child: Ink.image(
-                                                image: AssetImage('assets/img/resto.jpg'),
-                                                fit: BoxFit.cover,
-                                                width: SizeConfig.blockSizeVertical*160.clamp(0, 150).ceilToDouble(),
-                                                height: SizeConfig.blockSizeVertical*160.clamp(0, 150).ceilToDouble(),
-                                                child: InkWell(
-                                                  onTap: () => nextPage(2),
-                                                ),
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Home Cooked',
-                                              style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: SizeConfig.FontSize(55).clamp(0, 45).ceilToDouble())),
-                                            ),
-                                          ]),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: settingsRepo.compact_view_vertical ? 10 : 20),
-                              ]
-                          ),
+                              ),
+                    ),
+                    Divider(height: SizeConfig.blockSizeVertical*30),
+                    Container(
+                      height: SizeConfig.blockSizeVertical*260,
+                      child: FlatButton(
+                        onPressed: () => nextPage(0),
+                        child: Image.asset(
+                          'assets/img/fresh.png',
                         ),
-                      ]
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      width: MediaQuery.of(context).size.width,
-                      child: SocialMediaOrdering()
-                  ),
-                ],
+                      ),
+                    ),
+                    Divider(height: SizeConfig.blockSizeVertical*30),
+                    Container(
+                      height: SizeConfig.blockSizeVertical*260,
+                      child: FlatButton(
+                        onPressed: () => nextPage(0),
+                        child: Image.asset(
+                          'assets/img/home.png',
+                        ),
+                      ),
+                    ),
+                  ]
               ),
-            )
-        )
-    );
+            ),
+            // ]
+            // ),
+            // Positioned(
+            //     bottom: 0,
+            //     width: MediaQuery.of(context).size.width,
+            //     child: SocialMediaOrdering()
+            // ),
+          ),
+        ));
   }
 
   void nextPage(int isStore) {

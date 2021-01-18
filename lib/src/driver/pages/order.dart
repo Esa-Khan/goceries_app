@@ -677,7 +677,6 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
       title: Text(S.of(context).delivery_confirmation),
       content: Text(S.of(context).are_you_sure_you_want_to_update_the_order),
       actions: <Widget>[
-        // usually buttons at the bottom of the dialog
         FlatButton(
           child: new Text(
               S.of(context).dismiss),
