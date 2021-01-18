@@ -90,7 +90,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                     gradient: LinearGradient(
                                         begin: Alignment.bottomLeft,
                                         end: Alignment.topRight,
-                                        colors: _con.order_declined
+                                        colors: _con.order_declined && !_con.order_submitted
                                             ? [Colors.red.withOpacity(0.2), Colors.red.withOpacity(1)]
                                             : [Theme.of(context).accentColor.withOpacity(0.2), Theme.of(context).accentColor.withOpacity(1)]
                                     )),

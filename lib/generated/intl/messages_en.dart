@@ -61,7 +61,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "clickOnTheFoodToGetMoreDetailsAboutIt" : MessageLookupByLibrary.simpleMessage("Click on an item to get more details"),
     "clickToPayWithRazorpayMethod" : MessageLookupByLibrary.simpleMessage("Click to pay with RazorPay"),
     "click_on_the_stars_below_to_leave_comments" : MessageLookupByLibrary.simpleMessage("Click on the stars below to leave comments"),
-    "click_to_confirm_your_address_and_pay_or_long_press" : MessageLookupByLibrary.simpleMessage("Select you address, swipe to delete or long press to edit address"),
+    "click_to_confirm_your_address_and_pay_or_long_press" : MessageLookupByLibrary.simpleMessage("Select your address, swipe to delete or long press to edit address"),
     "click_to_pay_cash_on_delivery" : MessageLookupByLibrary.simpleMessage("Click to pay cash on delivery"),
     "click_to_pay_on_pickup" : MessageLookupByLibrary.simpleMessage("Click to pay on pickup"),
     "click_to_pay_with_your_mastercard" : MessageLookupByLibrary.simpleMessage("Click to pay with your MasterCard"),

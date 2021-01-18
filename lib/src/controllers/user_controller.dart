@@ -262,7 +262,7 @@ class UserController extends ControllerMVC {
         case 'Incorrect Password':
           Helper.hideLoader(loader);
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
-            content: Text('Incorrect password, try a different login'),
+            content: Text("Wrong password. Try a different login method."),
           ));
           break;
         default:
