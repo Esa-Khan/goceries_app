@@ -87,23 +87,33 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                               ? Buttons.AppleDark
                                               : Buttons.Apple,
                                           text: "Sign up with Apple",
+                                          elevation: 10,
+                                          padding: EdgeInsets.symmetric(vertical: 15),
                                           onPressed: () {
                                             _con.signInWithApple();
                                           },
                                         )
                                       : const SizedBox(),
+                                  _con.supportsAppleSignIn
+                                      ? const Divider(height: 10)
+                                      : const SizedBox(),
                                   SignInButton(
                                     _setting.setting.value.brightness.value == Brightness.light
                                         ? Buttons.Google
                                         : Buttons.GoogleDark,
+                                    elevation: 10,
+                                    padding: EdgeInsets.symmetric(vertical: 5),
                                     text: "Sign up with Google",
                                     onPressed: () {
                                       _con.signInWithGoogle();
                                     },
                                   ),
+                                  const Divider(height: 10),
                                   SignInButton(
                                     Buttons.Facebook,
                                     text: "Sign up with Facebook",
+                                    elevation: 10,
+                                    padding: EdgeInsets.symmetric(vertical: 15),
                                     onPressed: () {
                                       _con.signInWithFacebook();
                                     },

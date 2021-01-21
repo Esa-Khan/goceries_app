@@ -458,115 +458,120 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
   }
 
   Future<void> checkout() async {
-    Overlay.of(context).insert(loader);
-    Address store_address = new Address(
-                                    long: double.tryParse(widget.con.carts[0].food.restaurant.longitude),
-                                    lat: double.tryParse(widget.con.carts[0].food.restaurant.latitude)
-                                );
-    // Address curr_address = new Address(address: result.address,
-    //                                     long: result.latLng.longitude,
-    //                                     lat: result.latLng.latitude
-    //                             );
-    bool within_range = await MapsUtil.withinRange(settingsRepo.deliveryAddress.value, store_address,
-                                    widget.con.carts[0].food.restaurant.deliveryRange);
-    Helper.hideLoader(loader);
-    if (!within_range) {
-      showDialog(
-          context: context,
-          builder: (context) => updateOrderDialog(settingsRepo.deliveryAddress.value)
+    print(widget.con.selectedAddress);
+    if (widget.con.selectedAddress) {
+      Overlay.of(context).insert(loader);
+      Address store_address = new Address(
+          long: double.tryParse(widget.con.carts[0].food.restaurant.longitude),
+          lat: double.tryParse(widget.con.carts[0].food.restaurant.latitude)
       );
-    } else {
-      if (widget.con.store.id == '0') {
-        timeslot_time.value = null;
-        if (!_isVisible || (_date == "Set Day" && _time == "Set Time")) {
-          widget.con.goCheckout(context);
-        } else if (_isVisible
-            && ((_date == "Set Day" && _time != "Set Time")
-                || (_date != "Set Day" && _time == "Set Time"))) {
+      // Address curr_address = new Address(address: result.address,
+      //                                     long: result.latLng.longitude,
+      //                                     lat: result.latLng.latitude
+      //                             );
+      bool within_range = await MapsUtil.withinRange(settingsRepo.deliveryAddress.value, store_address,
+          widget.con.carts[0].food.restaurant.deliveryRange);
+      Helper.hideLoader(loader);
+      if (!within_range) {
+        showDialog(
+            context: context,
+            builder: (context) => updateOrderDialog(settingsRepo.deliveryAddress.value)
+        );
+      } else {
+        if (widget.con.store.id == '0') {
+          timeslot_time.value = null;
+          if (!_isVisible || (_date == "Set Day" && _time == "Set Time")) {
+            widget.con.goCheckout(context);
+          } else if (_isVisible
+              && ((_date == "Set Day" && _time != "Set Time")
+                  || (_date != "Set Day" && _time == "Set Time"))) {
 
-          widget.con.showSnackBar("Please specify both date and time.");
-
-        } else {
-          _time = _time.replaceAll(" ", "");
-          String year = _date.split('/')[2];
-          String month = int.parse(_date.split('/')[1]) < 10 ? '0' + _date.split('/')[1] : _date.split('/')[1];
-          String day = _date.split('/')[0];
-          String hour = _time.trim().split(':')[0];
-          String minute = _time.trim().split(':')[1];
-          DateTime scheduled_time = DateTime.parse(year + month + day + 'T' + hour + minute + '00');
-          currentCart_time.value = scheduled_time;
-          var desc = widget.con.carts[0].food?.restaurant?.description;
-          if (desc != '24/7') {
-            var now = int.parse(_time.trim().split(':')[0]) + int.parse(_time.trim().split(':')[1]) / 100;
-            var times = desc
-                .replaceAll(" ", "")
-                .replaceAll("m", "")
-                .replaceAll("<p>", "")
-                .replaceAll("</p>", "")
-                .split('-');
-            var openTime_hour = -1,
-                closeTime_hour = -1,
-                openTime_min = 0,
-                closeTime_min = 0;
-
-            if (times[0].contains(":")) {
-              openTime_min = int.parse(times[0]
-                  .substring(times[0].indexOf(':') + 1, times[0].length - 1));
-              times[0] = times[0].replaceAll(":" + openTime_min.toString(), "");
-            }
-
-            if (times[0].endsWith('a') ||
-                (times[1].contains("12") && times[1].endsWith("p"))) {
-              openTime_hour =
-                  int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
-            } else if (times[0].endsWith('p') ||
-                (times[1].contains("12") && times[1].endsWith("a"))) {
-              openTime_hour =
-                  12 + int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
-            }
-
-            if (times[1].contains(":")) {
-              closeTime_min = int.parse(times[1]
-                  .substring(times[1].indexOf(':') + 1, times[1].length - 1));
-              times[1] = times[1].replaceAll(":" + closeTime_min.toString(), "");
-            }
-
-            if (times[1].endsWith('p') ||
-                (times[1].contains("12") && times[1].endsWith("a"))) {
-              closeTime_hour = 12 + int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
-            } else if ((times[1].endsWith('a') &&
-                int.parse(times[1].replaceAll("a", "")) > openTime_hour) ||
-                (times[1].contains("12") && times[1].endsWith("p"))) {
-              closeTime_hour = int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
-            } else if (times[1].endsWith("a") &&
-                int.parse(times[1].replaceAll("a", "")) < openTime_hour) {
-              closeTime_hour = 24 + int.parse(times[1].replaceAll("a", ""));
-            }
-
-            if (now >= (openTime_hour + openTime_min / 100) && now <= (closeTime_hour + closeTime_min / 100)) {
-              // currentCart_time.value = _date + " " + _time;
-              widget.con.goCheckout(context);
-            } else {
-              desc = desc
-                  .replaceAll("<p>", "")
-                  .replaceAll("</p>", "")
-                  .replaceAll("-", " - ");
-              widget.con.showSnackBar("Delivery not available at that time. Timings: ${desc}.");
-            }
+            widget.con.showSnackBar("Please specify both date and time.");
 
           } else {
+            _time = _time.replaceAll(" ", "");
+            String year = _date.split('/')[2];
+            String month = int.parse(_date.split('/')[1]) < 10 ? '0' + _date.split('/')[1] : _date.split('/')[1];
+            String day = int.parse(_date.split('/')[0]) < 10 ? '0' + _date.split('/')[0] : _date.split('/')[0];
+            String hour = int.parse(_time.trim().split(':')[0]) < 10 ? '0' + _time.trim().split(':')[0] : _time.trim().split(':')[0];
+            String minute = int.parse(_time.trim().split(':')[1]) < 10 ? '0' + _time.trim().split(':')[1] : _time.trim().split(':')[1];
+            DateTime scheduled_time = DateTime.parse(year + month + day + 'T' + hour + minute + '00');
+            currentCart_time.value = scheduled_time;
+            var desc = widget.con.carts[0].food?.restaurant?.description;
+            if (desc != '24/7') {
+              var now = int.parse(_time.trim().split(':')[0]) + int.parse(_time.trim().split(':')[1]) / 100;
+              var times = desc
+                  .replaceAll(" ", "")
+                  .replaceAll("m", "")
+                  .replaceAll("<p>", "")
+                  .replaceAll("</p>", "")
+                  .split('-');
+              var openTime_hour = -1,
+                  closeTime_hour = -1,
+                  openTime_min = 0,
+                  closeTime_min = 0;
+
+              if (times[0].contains(":")) {
+                openTime_min = int.parse(times[0]
+                    .substring(times[0].indexOf(':') + 1, times[0].length - 1));
+                times[0] = times[0].replaceAll(":" + openTime_min.toString(), "");
+              }
+
+              if (times[0].endsWith('a') ||
+                  (times[1].contains("12") && times[1].endsWith("p"))) {
+                openTime_hour =
+                    int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
+              } else if (times[0].endsWith('p') ||
+                  (times[1].contains("12") && times[1].endsWith("a"))) {
+                openTime_hour =
+                    12 + int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
+              }
+
+              if (times[1].contains(":")) {
+                closeTime_min = int.parse(times[1]
+                    .substring(times[1].indexOf(':') + 1, times[1].length - 1));
+                times[1] = times[1].replaceAll(":" + closeTime_min.toString(), "");
+              }
+
+              if (times[1].endsWith('p') ||
+                  (times[1].contains("12") && times[1].endsWith("a"))) {
+                closeTime_hour = 12 + int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
+              } else if ((times[1].endsWith('a') &&
+                  int.parse(times[1].replaceAll("a", "")) > openTime_hour) ||
+                  (times[1].contains("12") && times[1].endsWith("p"))) {
+                closeTime_hour = int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
+              } else if (times[1].endsWith("a") &&
+                  int.parse(times[1].replaceAll("a", "")) < openTime_hour) {
+                closeTime_hour = 24 + int.parse(times[1].replaceAll("a", ""));
+              }
+
+              if (now >= (openTime_hour + openTime_min / 100) && now <= (closeTime_hour + closeTime_min / 100)) {
+                // currentCart_time.value = _date + " " + _time;
+                widget.con.goCheckout(context);
+              } else {
+                desc = desc
+                    .replaceAll("<p>", "")
+                    .replaceAll("</p>", "")
+                    .replaceAll("-", " - ");
+                widget.con.showSnackBar("Delivery not available at that time. Timings: ${desc}.");
+              }
+
+            } else {
+              widget.con.goCheckout(context);
+            }
+          }
+        } else {
+          if (dropdownValue == 'Select Delivery Timeslot') {
+            widget.con.showSnackBar("Please select a timeslot for delivery");
+          } else {
+            timeslot_time.value = dropdownValue;
+            currentCart_time.value = null;
             widget.con.goCheckout(context);
           }
         }
-      } else {
-        if (dropdownValue == 'Select Delivery Timeslot') {
-          widget.con.showSnackBar("Please select a timeslot for delivery");
-        } else {
-          timeslot_time.value = dropdownValue;
-          currentCart_time.value = null;
-          widget.con.goCheckout(context);
-        }
       }
+    } else {
+      widget.con.showSnackBar(S.of(context).please_select_delivery);
     }
 
   }

@@ -209,13 +209,24 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                               style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                             ),
                             _con.delivery_time != null
-                              ? Text(
-                                currentCart_time.value == null
-                                  ? 'Estimated delivery within ${(_con.delivery_time/60 + 5).ceil().clamp(0, 45)} - ${(_con.delivery_time/60 + 20).ceil().clamp(0, 60)} mins'
-                                  : 'Scheduled delivery:  ' + currentCart_time.value.toString().substring(0, 16),
+                              ? RichText(
+                                  textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
-                                  style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
+                                  text: TextSpan(
+                                          text: currentCart_time.value == null
+                                            ? 'Estimated delivery within'
+                                            : 'Scheduled delivery:',
+                                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: currentCart_time.value == null
+                                                ? ' ${(_con.delivery_time/60 + 5).ceil().clamp(0, 45)} - ${(_con.delivery_time/60 + 20).ceil().clamp(0, 60)} mins'
+                                                : '  ' + currentCart_time.value.toString().substring(0, 16),
+                                              style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13, letterSpacing: 1.1)
+                                              )
+                                            ),
+                                          ]
+                                  )
                                 )
                               : const SizedBox(),
                             Padding(

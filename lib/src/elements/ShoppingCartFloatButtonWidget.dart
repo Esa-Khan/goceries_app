@@ -61,12 +61,18 @@ class _ShoppingCartFloatButtonWidgetState extends StateMVC<ShoppingCartFloatButt
               size: 28,
             ),
             Container(
-              child: Text(
-                _con.cartCount.toString(),
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.caption.merge(
-                      TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),
-                    ),
+              child: Center(
+                child: _con.cartcount_isLoaded
+                    ? Text(
+                  _con.cartCount.toString(),
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.caption.merge(
+                    TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),
+                  ),
+                )
+                    : SizedBox(width: 120, height: 120,
+                    child: CircularProgressIndicator(strokeWidth: 2, backgroundColor: Theme.of(context).primaryColor)
+                )
               ),
               padding: EdgeInsets.all(0),
               decoration: BoxDecoration(color: this.widget.labelColor, borderRadius: BorderRadius.all(Radius.circular(10))),

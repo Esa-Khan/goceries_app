@@ -60,10 +60,14 @@ class CartController extends ControllerMVC {
 
   void onLoadingCartDone() {}
 
+  bool cartcount_isLoaded = false;
   void listenForCartsCount({String message}) async {
     final Stream<int> stream = await getCartCount();
     stream.listen((int _count) {
-      setState(() => this.cartCount = _count);
+      setState(() {
+        this.cartCount = _count;
+        cartcount_isLoaded = true;
+      });
     }, onError: (a) {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),

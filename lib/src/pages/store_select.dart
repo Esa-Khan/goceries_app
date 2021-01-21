@@ -64,32 +64,53 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // LogoLoadingWidget(),
-                    Container(
-                      height: SizeConfig.blockSizeVertical*260,
-                      child: FlatButton(
-                                onPressed: () => nextPage(0),
-                                child: Image.asset(
-                                  'assets/img/saudaghar.png',
-                                ),
-                              ),
-                    ),
-                    Divider(height: SizeConfig.blockSizeVertical*30),
-                    Container(
-                      height: SizeConfig.blockSizeVertical*260,
-                      child: FlatButton(
-                        onPressed: () => nextPage(0),
-                        child: Image.asset(
-                          'assets/img/fresh.png',
+                    ClipRect(
+                      child: Container(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          widthFactor: 1.0,
+                          heightFactor: SizeConfig.HeightSize(1.15).clamp(0.1, 1).toDouble(),
+                          child: FlatButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () => nextPage(0),
+                            child: Image.asset(
+                              'assets/img/saudaghar.png',
+                            ),
+                          ),
                         ),
                       ),
                     ),
                     Divider(height: SizeConfig.blockSizeVertical*30),
-                    Container(
-                      height: SizeConfig.blockSizeVertical*260,
-                      child: FlatButton(
-                        onPressed: () => nextPage(0),
-                        child: Image.asset(
-                          'assets/img/home.png',
+                    ClipRect(
+                      child: Container(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          widthFactor: 1.0,
+                          heightFactor: SizeConfig.HeightSize(1.15).clamp(0.1, 1).toDouble(),
+                          child: FlatButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () => nextPage(1),
+                            child: Image.asset(
+                              'assets/img/fresh.png',
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Divider(height: SizeConfig.blockSizeVertical*30),
+                    ClipRect(
+                      child: Container(
+                        child: Align(
+                          alignment: Alignment.topCenter,
+                          widthFactor: 1.0,
+                          heightFactor: SizeConfig.HeightSize(1.15).clamp(0.1, 1).toDouble(),
+                          child: FlatButton(
+                            padding: EdgeInsets.all(0),
+                            onPressed: () => nextPage(2),
+                            child: Image.asset(
+                              'assets/img/home.png',
+                            ),
+                          ),
                         ),
                       ),
                     ),
