@@ -19,7 +19,8 @@ class CardWidget extends StatelessWidget {
     SizeConfig().init(context);
     return Container(
       // width: compact_view_vertical ? 250 : 292,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 200),
+      width: 292,
+      margin: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 20),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
         borderRadius: BorderRadius.all(Radius.circular(10)),

@@ -31,7 +31,7 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
   void initState() {
     super.initState();
     orderRepo.con.value.listenForOrders();
-    timer = Timer.periodic(Duration(seconds: 100), (Timer t) => autoOrderRefresh());
+    timer = Timer.periodic(Duration(seconds: 30), (Timer t) => autoOrderRefresh());
   }
 
   void autoOrderRefresh() {
@@ -43,8 +43,8 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
 
   @override
   void dispose() {
-    timer?.cancel();
     super.dispose();
+    timer?.cancel();
   }
 
   @override

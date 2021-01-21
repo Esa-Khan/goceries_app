@@ -70,6 +70,7 @@ class OrderController extends ControllerMVC {
   }
 
   Future<void> refreshOrders() async {
+    setState(() => isWorking = Helper.validWorkHours(currentUser.value.work_hours));
     orders.clear();
     listenForOrders(message: S.of(context).order_refreshed_successfuly);
   }

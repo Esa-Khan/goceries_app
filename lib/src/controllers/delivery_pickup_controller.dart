@@ -13,6 +13,7 @@ import '../helpers/maps_util.dart';
 class DeliveryPickupController extends CartController {
   GlobalKey<ScaffoldState> scaffoldKey;
   List<model.Address> deliveryAddress = new List<model.Address>();
+  bool selectedAddress = false;
   PaymentMethodList list;
   bool loading = false;
 
@@ -142,6 +143,7 @@ class DeliveryPickupController extends CartController {
         currPaymentMethod.selected = !currPaymentMethod.selected;
         currPaymentMethod.selected = !currPaymentMethod.selected;
       }
+      selectedAddress = currPaymentMethod.selected;
       if (currPaymentMethod.selected) {
         settingRepo.deliveryAddress.value = currAddress;
       }

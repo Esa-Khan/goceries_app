@@ -111,22 +111,23 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         ),
                       ),
                       CardsCarouselWidget(restaurantsList: _con.closestStores, heroTag: 'home_top_restaurants'),
-                      _con.categories.isEmpty ? const SizedBox()
-                      : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ListTile(
-                          dense: true,
-                          leading: Icon(
-                            Icons.category,
-                            color: Theme.of(context).hintColor,
-                          ),
-                          title: Text(
-                            S.of(context).aisles,
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                        ),
-                      ),
-                      _con.categories.isEmpty ? const SizedBox() : CategoriesCarouselWidget(categories: _con.categories),
+                      // _con.categories.isEmpty
+                      //   ? const SizedBox()
+                      //   : Padding(
+                      //     padding: const EdgeInsets.symmetric(horizontal: 20),
+                      //     child: ListTile(
+                      //       dense: true,
+                      //       leading: Icon(
+                      //         Icons.category,
+                      //         color: Theme.of(context).hintColor,
+                      //       ),
+                      //       title: Text(
+                      //         S.of(context).aisles,
+                      //         style: Theme.of(context).textTheme.headline4,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // _con.categories.isEmpty ? const SizedBox() : CategoriesCarouselWidget(categories: _con.categories),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: ListTile(
