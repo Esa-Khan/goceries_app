@@ -67,9 +67,9 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                     ClipRect(
                       child: Container(
                         child: Align(
-                          alignment: Alignment.topCenter,
+                          alignment: Alignment(0, 0),
                           widthFactor: 1.0,
-                          heightFactor: SizeConfig.HeightSize(1.15).clamp(0.1, 1).toDouble(),
+                          heightFactor: SizeConfig.HeightSize(1.15).clamp(0.1, 0.85).toDouble(),
                           child: FlatButton(
                             padding: EdgeInsets.all(0),
                             onPressed: () => nextPage(0),
@@ -80,13 +80,13 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                         ),
                       ),
                     ),
-                    Divider(height: SizeConfig.blockSizeVertical*30),
+                    Divider(height: SizeConfig.blockSizeVertical*20),
                     ClipRect(
                       child: Container(
                         child: Align(
-                          alignment: Alignment.topCenter,
+                          alignment: Alignment(0, -0.7),
                           widthFactor: 1.0,
-                          heightFactor: SizeConfig.HeightSize(1.15).clamp(0.1, 1).toDouble(),
+                          heightFactor: SizeConfig.HeightSize(1.15).clamp(0.1, 0.85).toDouble(),
                           child: FlatButton(
                             padding: EdgeInsets.all(0),
                             onPressed: () => nextPage(1),
@@ -97,13 +97,13 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                         ),
                       ),
                     ),
-                    Divider(height: SizeConfig.blockSizeVertical*30),
+                    Divider(height: SizeConfig.blockSizeVertical*20),
                     ClipRect(
                       child: Container(
                         child: Align(
-                          alignment: Alignment.topCenter,
+                          alignment: Alignment(0, -0.7),
                           widthFactor: 1.0,
-                          heightFactor: SizeConfig.HeightSize(1.15).clamp(0.1, 1).toDouble(),
+                          heightFactor: SizeConfig.HeightSize(1.15).clamp(0.1, 0.85).toDouble(),
                           child: FlatButton(
                             padding: EdgeInsets.all(0),
                             onPressed: () => nextPage(2),
