@@ -237,3 +237,34 @@ Future<Address> deactivateDeliveryAddress(Address address) async {
     return new Address.fromJSON({});
   }
 }
+
+
+Future<void> getDriverAvail() async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}getDriverAvail/${userRepo.currentUser.value.id}';
+  final client = new http.Client();
+  try {
+    final response = await client.get(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    currentUser.value.available = json.decode(response.body)['data'];
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+  }
+}
+
+
+Future<void> setDriverAvail(bool isAvail) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}setDriverAvail/${userRepo.currentUser.value.id}/${isAvail ? 1 : 0}';
+  final client = new http.Client();
+  try {
+    final response = await client.put(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    currentUser.value.available = json.decode(response.body)['data']['available'];
+    currentUser.value.work_hours = json.decode(response.body)['data']['work_hours'];
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+  }
+}

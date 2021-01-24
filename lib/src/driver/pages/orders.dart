@@ -1,3 +1,5 @@
+import 'package:saudaghar/src/repository/user_repository.dart';
+
 import '../elements/NotWorkingWidget.dart';
 import '../elements/OrderItemWidget.dart';
 import 'dart:async';
@@ -31,7 +33,7 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
   void initState() {
     super.initState();
     orderRepo.con.value.listenForOrders();
-    timer = Timer.periodic(Duration(seconds: 30), (Timer t) => autoOrderRefresh());
+    timer = Timer.periodic(Duration(seconds: 60), (Timer t) => autoOrderRefresh());
   }
 
   void autoOrderRefresh() {
@@ -73,7 +75,7 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
-            !orderRepo.con.value.isWorking
+            !currentUser.value.available && orderRepo.con.value.orders.isEmpty
                 ? NotWorkingWidget()
                 : !orderRepo.con.value.orders_loaded || orderRepo.con.value.orders.isEmpty
                     ? EmptyOrdersWidget()

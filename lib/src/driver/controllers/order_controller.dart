@@ -9,13 +9,13 @@ import '../repository/order_repository.dart';
 
 class OrderController extends ControllerMVC {
   List<Order> orders = <Order>[];
-  bool isWorking = false;
   bool orders_loaded = false;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   OrderController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
-    isWorking = Helper.validWorkHours(currentUser.value.work_hours);
+    getDriverAvail();
+    // Helper.validWorkHours(currentUser.value.work_hours);
   }
 
   void listenForOrders({String message}) async {
@@ -36,8 +36,8 @@ class OrderController extends ControllerMVC {
       setState(() => orders_loaded = true);
       if (message != null) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(message),
-          duration: Duration(seconds: 1),
+          content: Text(message, textAlign: TextAlign.center),
+          duration: Duration(milliseconds: 500),
         ));
       }
     });
@@ -70,7 +70,8 @@ class OrderController extends ControllerMVC {
   }
 
   Future<void> refreshOrders() async {
-    setState(() => isWorking = Helper.validWorkHours(currentUser.value.work_hours));
+    getDriverAvail();
+    // Helper.validWorkHours(currentUser.value.work_hours);
     orders.clear();
     listenForOrders(message: S.of(context).order_refreshed_successfuly);
   }
