@@ -494,7 +494,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
             String month = int.parse(_date.split('/')[1]) < 10 ? '0' + _date.split('/')[1] : _date.split('/')[1];
             String day = int.parse(_date.split('/')[0]) < 10 ? '0' + _date.split('/')[0] : _date.split('/')[0];
             String hour = int.parse(_time.trim().split(':')[0]) < 10 ? '0' + _time.trim().split(':')[0] : _time.trim().split(':')[0];
-            String minute = int.parse(_time.trim().split(':')[1]) < 10 ? '0' + _time.trim().split(':')[1] : _time.trim().split(':')[1];
+            String minute = _time.trim().split(':')[1];
             DateTime scheduled_time = DateTime.parse(year + month + day + 'T' + hour + minute + '00');
             currentCart_time.value = scheduled_time;
             var desc = widget.con.carts[0].food?.restaurant?.description;

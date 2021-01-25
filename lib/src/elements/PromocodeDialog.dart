@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:saudaghar/src/helpers/helper.dart';
 import '../../src/controllers/checkout_controller.dart';
-import '../../src/repository/settings_repository.dart' as settingsRepo;
+import '../../src/repository/settings_repository.dart';
 import '../../src/repository/user_repository.dart';
 
 import '../../generated/l10n.dart';
@@ -19,7 +20,7 @@ class PromocodeDialog {
   PromocodeDialog({this.context, this.con}) {
 
     String valdiatePromocode(String input) {
-      if(settingsRepo.setting.value.promo.containsKey(input)){
+      if(setting.value.promo.containsKey(input)){
         return null;
       }
       return "Invalid code";

@@ -150,6 +150,8 @@ Future<bool> checkCode(String code) async {
   map['api_token'] = _user.apiToken;
   map['user_id'] = _user.id;
   map['code'] = code;
+  map['number'] = _user.phone;
+
 
   final client = new http.Client();
   final response = await client.post(

@@ -11,7 +11,7 @@ import '../models/order.dart';
 import '../models/order_status.dart';
 import '../models/payment.dart';
 import '../repository/order_repository.dart' as orderRepo;
-import '../repository/settings_repository.dart' as settingsRepo;
+import '../repository/settings_repository.dart';
 import '../repository/user_repository.dart' as userRepo;
 import 'cart_controller.dart';
 import '../helpers/helper.dart';
@@ -44,7 +44,7 @@ class CheckoutController extends CartController {
 
   Future<void> getDeliveryTime() async {
     LatLng store = new LatLng(double.tryParse(carts.first.food.restaurant.latitude), double.tryParse(carts.first.food.restaurant.longitude));
-    LatLng customer = new LatLng(settingsRepo.deliveryAddress.value.latitude, settingsRepo.deliveryAddress.value.longitude);
+    LatLng customer = new LatLng(deliveryAddress.value.latitude, deliveryAddress.value.longitude);
     // LatLng store = new LatLng(1, 1);
     // LatLng customer = new LatLng(1, 1);
     MapsUtil.getDeliveryTime(store, customer).then((value) => setState(() => delivery_time = value));
@@ -62,14 +62,14 @@ class CheckoutController extends CartController {
   void addOrder(List<Cart> carts, String hint) async {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
-    _order.discount = settingsRepo.setting.value.promo[promotion] ?? 0;
+    _order.discount = setting.value.promo[promotion] ?? 0;
     _order.promotion = promotion == '' ? null : promotion;
     _order.hint = store.id == 0 ? currentCart_note.value : timeslot_time.value;
     _order.scheduled_time = currentCart_time.value.toString();
     OrderStatus _orderStatus = new OrderStatus();
     _orderStatus.id = '1';
     _order.orderStatus = _orderStatus;
-    _order.deliveryAddress = settingsRepo.deliveryAddress.value;
+    _order.deliveryAddress = deliveryAddress.value;
     _order.deliveryFee = carts[0].food.restaurant.deliveryFee;
     carts.forEach((_cart) {
       FoodOrder _foodOrder = new FoodOrder();
@@ -79,7 +79,7 @@ class CheckoutController extends CartController {
       _foodOrder.extras = _cart.extras;
       _order.foodOrders.add(_foodOrder);
     });
-    if (Helper.getSubTotalOrdersPrice(_order) < settingsRepo.setting.value.deliveryFeeLimit){
+    if (Helper.getSubTotalOrdersPrice(_order) < setting.value.deliveryFeeLimit){
       _order.deliveryFee = payment.method == 'Pay on Pickup' ? 0 : carts[0].food.restaurant.deliveryFee;
     } else {
       _order.deliveryFee = 0;
@@ -92,15 +92,16 @@ class CheckoutController extends CartController {
         setState(() {
           loading = false;
           order_submitted = true;
+          order_declined = false;
         });
       }
     }).catchError((Object obj, StackTrace stackTrace) {
-      if (creditCard.number != '' && creditCard.cvc != '') {
-        showDialog(
-            context: context,
-            builder: (context) => cardDeclinedDialog()
-        );
-      }
+      // if (creditCard.number != '' && creditCard.cvc != '') {
+      //   showDialog(
+      //       context: context,
+      //       builder: (context) => cardDeclinedDialog()
+      //   );
+      // }
       setState(() {
         order_submitted = false;
         loading = false;
@@ -151,15 +152,42 @@ class CheckoutController extends CartController {
         duration: Duration(seconds: 1),
       ));
     } else {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text('Discount added'),
-        duration: Duration(seconds: 1),
-      ));
-      promotion = code;
-      if (total - settingsRepo.setting.value.promo[promotion] > 0) {
-        setState(() => total -= settingsRepo.setting.value.promo[promotion]);
+      if (subTotal < setting.value.promo[code]) {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text('Subtotal must be greater than Rs.${setting.value.promo[code]} to use this promocode', textAlign: TextAlign.center),
+          duration: Duration(seconds: 3),
+        ));
+      } else {
+        if (promotion != '') {
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text('Cannot use multiple promocodes'),
+            duration: Duration(seconds: 1),
+          ));
+          total += setting.value.promo[promotion];
+          promotion = code;
+          if (total - setting.value.promo[promotion] > 0) {
+            setState(() => total -= setting.value.promo[promotion]);
+          }
+          setState(() {
+            promotion;
+            total;
+          });
+        } else {
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text('Discount added'),
+            duration: Duration(seconds: 1),
+          ));
+
+          promotion = code;
+          if (total - setting.value.promo[promotion] > 0) {
+            setState(() => total -= setting.value.promo[promotion]);
+          }
+          setState(() {promotion; total;}
+          );
+        }
+
       }
-      setState(() {promotion; total;});
+
     }
 
   }

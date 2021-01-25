@@ -283,7 +283,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         },
                         itemBuilder: (context, index) {
                           return CheckoutItemListWidget(
-                            heroTag: 'favorites_list',
+                            heroTag: 'order_submission',
                             cart_item: _con.carts.elementAt(index),
                           );
                         },
