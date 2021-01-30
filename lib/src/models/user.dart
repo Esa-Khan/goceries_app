@@ -16,6 +16,7 @@ class User {
   bool isDriver = false;
   bool available = null;
   bool isManager = false;
+  bool debugger = false;
   String work_hours;
   String store_ids;
 
@@ -59,6 +60,7 @@ class User {
         store_ids = jsonMap['store_ids'];
         available = jsonMap['available'];
       }
+      debugger = jsonMap['debugger'];
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }

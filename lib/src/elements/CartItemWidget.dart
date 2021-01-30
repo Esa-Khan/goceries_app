@@ -34,7 +34,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
         focusColor: Theme.of(context).accentColor,
         highlightColor: Theme.of(context).primaryColor,
         onTap: () {
-          Navigator.of(context).pushNamed('/Food', arguments: RouteArgument(id: widget.cart.food.id, heroTag: widget.heroTag));
+          Navigator.of(context).pushNamed('/Item', arguments: RouteArgument(id: widget.cart.food.id, heroTag: widget.heroTag));
         },
         child: Container(
 //          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
@@ -92,7 +92,30 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                               );
                             }),
                           ),
-                          Helper.getPrice(widget.cart.food.price, context, style: Theme.of(context).textTheme.headline4)
+                          Helper.getPrice(widget.cart.food.price, context, style: Theme.of(context).textTheme.headline4),
+                          if (widget.cart.food.quantity < widget.cart.quantity)
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                  color: Colors.redAccent,
+                                  borderRadius: BorderRadius.circular(24),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.red.withAlpha(125),
+                                      blurRadius: 2,
+                                      spreadRadius: 1,
+                                      offset: Offset(0, 0),
+                                    )
+                                  ],
+                                ),
+                                child: Text(
+                                  widget.cart.food.quantity == 0 ? 'Out of Stock' : 'Only ${widget.cart.food.quantity} left in stock',
+                                  style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                ),
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -101,11 +124,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         IconButton(
-                          onPressed: () {
-                            setState(() {
-                              widget.increment();
-                            });
-                          },
+                          onPressed: () => setState(() => widget.increment()),
                           iconSize: 30,
                           padding: EdgeInsets.symmetric(horizontal: 5),
                           icon: Icon(Icons.add_circle_outline),
@@ -113,11 +132,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                         ),
                         Text(widget.cart.quantity.toString(), style: Theme.of(context).textTheme.subtitle1),
                         IconButton(
-                          onPressed: () {
-                            setState(() {
-                              widget.decrement();
-                            });
-                          },
+                          onPressed: () => setState(() => widget.decrement()),
                           iconSize: 30,
                           padding: EdgeInsets.symmetric(horizontal: 5),
                           icon: Icon(Icons.remove_circle_outline),

@@ -41,8 +41,8 @@ class _CartWidgetState extends StateMVC<CartWidget> {
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
-              if (widget.routeArgument.param == '/Food') {
-                Navigator.of(context).pushReplacementNamed('/Food', arguments: RouteArgument(id: widget.routeArgument.id));
+              if (widget.routeArgument.param == '/Item') {
+                Navigator.of(context).pushReplacementNamed('/Item', arguments: RouteArgument(id: widget.routeArgument.id));
               } else if(widget.routeArgument.param == '/Details') {
                 Navigator.pop(context);
               } else if(widget.routeArgument.param == '/StoreSelect') {

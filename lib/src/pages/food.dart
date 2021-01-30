@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:saudaghar/src/models/item.dart';
 import '../../src/elements/SimilarItemListWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:async';
@@ -28,8 +30,9 @@ class FoodWidget extends StatefulWidget {
 
 class _FoodWidgetState extends StateMVC<FoodWidget> {
   FoodController _con;
-  Timer _timer;
-  bool hasTimedout = false;
+  TextEditingController name_controller;
+  TextEditingController wgt_controller;
+  TextEditingController qty_controller;
 
   _FoodWidgetState() : super(FoodController()) {
     _con = controller;
@@ -37,26 +40,28 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 
   @override
   void initState() {
+    super.initState();
     _con.listenForFood(foodId: widget.routeArgument.id, getAisle: true);
     _con.listenForCart();
     _con.listenForFavorite(foodId: widget.routeArgument.id);
-    super.initState();
+    name_controller = TextEditingController();
+    wgt_controller = TextEditingController();
+    qty_controller = TextEditingController();
+  }
+
+  void dispose() {
+    name_controller.dispose();
+    wgt_controller.dispose();
+    qty_controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (!hasTimedout) {
-      _timer = new Timer(const Duration(seconds: 3), () {
-        if (mounted) {
-          setState(() => hasTimedout = true);
-          _timer.cancel();
-        }
-      });
-    }
-
     return Scaffold(
       key: _con.scaffoldKey,
-      body: _con.food == null || _con.food?.image == null
+      resizeToAvoidBottomInset: false,
+      body: _con.item == null || _con.item?.image == null
           ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
           : SafeArea(
             child: RefreshIndicator(
@@ -78,10 +83,10 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                           flexibleSpace: FlexibleSpaceBar(
                             collapseMode: CollapseMode.parallax,
                             background: Hero(
-                              tag: widget.routeArgument.heroTag ?? '' + _con.food.id,
+                              tag: widget.routeArgument.heroTag ?? '' + _con.item.id,
                               child: CachedNetworkImage(
                                 fit: BoxFit.contain,
-                                imageUrl: _con.food.image.url,
+                                imageUrl: _con.item.image.url,
                                 placeholder: (context, url) => Image.asset(
                                   'assets/img/loading.gif',
                                   fit: BoxFit.contain,
@@ -109,7 +114,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            _con.food?.name ?? '',
+                                            _con.item?.name ?? '',
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                             style: Theme.of(context).textTheme.headline3,
@@ -121,7 +126,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                             style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 14)),
                                           ),
                                           Text(
-                                            'Store - ' + _con.food.restaurant.name,
+                                            'Store - ' + _con.item.restaurant.name,
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 2,
                                             style: Theme.of(context).textTheme.bodyText2,
@@ -135,101 +140,140 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: <Widget>[
                                           Helper.getPrice(
-                                            _con.food.price,
+                                            _con.item.price < _con.item.discountPrice
+                                                ? _con.item.price
+                                                : _con.item.discountPrice,
                                             context,
                                             style: Theme.of(context).textTheme.headline2,
                                           ),
-                                          _con.food.discountPrice > 0
-                                              ? Helper.getPrice(_con.food.discountPrice, context,
-                                                  style: Theme.of(context).textTheme.bodyText2.merge(TextStyle(color: Colors.black, decoration: TextDecoration.lineThrough, fontSize: 15)))
-                                              : SizedBox(height: 0),
-                                          _con.food.weight == '0' || _con.food.weight == '' || _con.food.weight == "<p>.</p>"
-                                              ? SizedBox(height: 0)
-                                              : Container(
+
+                                          if (_con.item.price < _con.item.discountPrice && _con.item.discountPrice > 0)
+                                            Helper.getPrice(_con.item.discountPrice, context,
+                                                  style: Theme.of(context).textTheme.bodyText2.merge(TextStyle(color: Colors.black, decoration: TextDecoration.lineThrough, fontSize: 15))),
+
+                                          if (_con.item.weight != '0' && _con.item.weight != '' && _con.item.weight != "<p>.</p>")
+                                            Container(
                                               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
                                               decoration: BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
                                               child: Text(
-                                                _con.food.weight,
+                                                _con.item.weight,
                                                 style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: 16)),
                                               )
-                                          ),
+                                            ),
+                                          _con.item.quantity == 0
+                                              ? Padding(
+                                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                                  child: Container(
+                                                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.redAccent,
+                                                      borderRadius: BorderRadius.circular(24),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: Colors.red.withAlpha(125),
+                                                          blurRadius: 2,
+                                                          spreadRadius: 1,
+                                                          offset: Offset(0, 0),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    child: Text(
+                                                      'Out of Stock',
+                                                      style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                                    ),
+                                                  ),
+                                                )
+                                              : _con.item.featured
+                                                ? Padding(
+                                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                                    child: Container(
+                                                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                                      decoration: BoxDecoration(
+                                                        color: Colors.green,
+                                                        borderRadius: BorderRadius.circular(24),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                            color: Colors.green.withAlpha(125),
+                                                            blurRadius: 2,
+                                                            spreadRadius: 1,
+                                                            offset: Offset(0, 0),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      child: Row (
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Icon(
+                                                            Icons.star,
+                                                            color: Theme.of(context).primaryColor,
+                                                            size: 10,
+                                                          ),
+                                                          const SizedBox(width: 3),
+                                                          Text(
+                                                            'Featured',
+                                                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                                                          )
+                                                        ],
+                                                      )
+                                                    ),
+                                                  )
+                                                : const SizedBox()
                                         ],
                                       ),
                                     ),
                                   ],
                                 ),
-                                Row(
-                                  children: <Widget>[
-//                                    Container(
-//                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-//                                      decoration: BoxDecoration(
-//                                          color: Helper.canDelivery(_con.food.restaurant) && _con.food.deliverable ? Colors.green : Colors.orange,
-//                                          borderRadius: BorderRadius.circular(24)),
-//                                      child: Helper.canDelivery(_con.food.restaurant) && _con.food.deliverable
-//                                          ? Text(
-//                                              S.of(context).deliverable,
-//                                              style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-//                                            )
-//                                          : Text(
-//                                              S.of(context).not_deliverable,
-//                                              style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-//                                            ),
-//                                    ),
-//                                    Expanded(child: SizedBox(height: 0)),
-//                                     Expanded(child: const SizedBox()),
-                                    _con.food.featured
-                                        ? Container(
-                                            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                            decoration: BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(24)),
-                                            child: Row (
-                                              children: [
-                                                Icon(
-                                                  Icons.star,
-                                                  color: Theme.of(context).primaryColor,
-                                                  size: 10,
-                                                ),
-                                                const SizedBox(width: 3),
-                                                Text(
-                                                  'Featured',
-                                                  style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                                )
-                                              ],
-                                            )
-                                          )
-                                        : const SizedBox(),
-                                    Expanded(child: const SizedBox()),
-                                      // _con.aisle == null
-                                      //   ? SizedBox(height: 0)
-                                      //   : Container(
-                                      //       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                                      //       decoration: BoxDecoration(color: Colors.deepOrange, borderRadius: BorderRadius.circular(24)),
-                                      //       child: Text(
-                                      //         _con.aisle.name,
-                                      //         style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-                                      //       )
-                                      //     ),
-                                  ],
-                                ),
-                                _con.food.description == '' ? SizedBox(height: 0,)
-                                : Helper.applyHtml(context, _con.food.description, style: TextStyle(fontSize: 12)),
-                                _con.food.nutritions.isEmpty
-                                    ? SizedBox(height: 0)
-                                    : ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                  leading: Icon(
-                                    Icons.local_activity,
-                                    color: Theme.of(context).hintColor,
+                                if (currentUser.value.isManager)
+                                  InkWell(
+                                    child: RaisedButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5.0)),
+                                      elevation: 4.0,
+                                      color: Theme.of(context).primaryColor,
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) => getInvDialog()
+                                        );
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.inventory),
+                                          const SizedBox(width: 5),
+                                          Text(
+                                            'Inventory Management - ${_con.item.quantity} left',
+                                            style: Theme.of(context).textTheme.subtitle1,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                  title: Text(
-                                    S.of(context).nutrition,
-                                    style: Theme.of(context).textTheme.subtitle1,
+
+
+
+
+
+                                if (_con.item.description != '' && _con.item.description != null)
+                                  Helper.applyHtml(context, _con.item.description, style: TextStyle(fontSize: 12)),
+                                if (_con.item.nutritions.isNotEmpty)
+                                  ListTile(
+                                    dense: true,
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10),
+                                    leading: Icon(
+                                      Icons.local_activity,
+                                      color: Theme.of(context).hintColor,
+                                    ),
+                                    title: Text(
+                                      S.of(context).nutrition,
+                                      style: Theme.of(context).textTheme.subtitle1,
+                                    ),
                                   ),
-                                ),
+
                                 Wrap(
                                   spacing: 8,
                                   runSpacing: 8,
-                                  children: List.generate(_con.food.nutritions.length, (index) {
+                                  children: List.generate(_con.item.nutritions.length, (index) {
                                     return Container(
                                       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                                       decoration: BoxDecoration(
@@ -239,47 +283,45 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       child: Column(
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
-                                          Text(_con.food.nutritions.elementAt(index).name,
+                                          Text(_con.item.nutritions.elementAt(index).name,
                                               overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.caption),
-                                          Text(_con.food.nutritions.elementAt(index).quantity.toString(),
+                                          Text(_con.item.nutritions.elementAt(index).quantity.toString(),
                                               overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.headline5),
                                         ],
                                       ),
                                     );
-                                  }),
+                                  }
+                                  ),
                                 ),
 
-                                _con.similarItems == null || _con.similarItems.isEmpty
-                                    ? hasTimedout
-                                      ? const SizedBox(height: 200)
-                                      : Column(
-                                            children: <Widget>[
-                                              Center(
-                                                  heightFactor: 2,
-                                                  child: SizedBox(
-                                                      width: 60,
-                                                      height: 60,
-                                                      child:
-                                                          CircularProgressIndicator(
-                                                              strokeWidth: 5))),
-                                              SizedBox(height: 300)
-                                            ],
-                                          )
-                                    : ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(vertical: 0),
-                                  leading: Icon(
-                                    Icons.add_circle_outline,
-                                    color: Theme.of(context).hintColor,
-                                  ),
-                                  title: Text(
-                                    S.of(context).similar_items,
-                                    style: Theme.of(context).textTheme.subtitle1,
-                                  ),
-                                ),
-                                _con.similarItems == null || _con.similarItems.isEmpty
-                                ? const SizedBox(height: 0)
-                                : ListView.separated(
+                                _con.loaded_similaritems
+                                  ? ListTile(
+                                      dense: true,
+                                      contentPadding: EdgeInsets.symmetric(vertical: 0),
+                                      leading: Icon(
+                                        Icons.list_alt_sharp,
+                                        color: Theme.of(context).hintColor,
+                                      ),
+                                      title: Text(
+                                        S.of(context).similar_items,
+                                        style: Theme.of(context).textTheme.headline3,
+                                      ),
+                                    )
+                                  : Column(
+                                        children: <Widget>[
+                                          Center(
+                                              heightFactor: 2,
+                                              child: SizedBox(
+                                                  width: 60,
+                                                  height: 60,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                          strokeWidth: 5))),
+                                          SizedBox(height: 300)
+                                        ],
+                                      ),
+                                if (_con.loaded_similaritems && _con.similarItems.isNotEmpty)
+                                  ListView.separated(
                                     padding: EdgeInsets.only(bottom: 80),
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
@@ -293,8 +335,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         food: _con.similarItems.elementAt(index),
                                       );
                                     },
-                                  ),
-//                                Helper.applyHtml(context, _con.food.ingredients, style: TextStyle(fontSize: 12)),
+                                  )
+//                                Helper.applyHtml(context, _con.item.ingredients, style: TextStyle(fontSize: 12)),
 
 
 
@@ -312,7 +354,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
 //                                  ),
 //                                ),
 //                                ReviewsListWidget(
-//                                  reviewsList: _con.food.foodReviews,
+//                                  reviewsList: _con.item.foodReviews,
 //                                ),
                               ],
                             ),
@@ -335,13 +377,13 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                         : ShoppingCartFloatButtonWidget(
                             iconColor: Theme.of(context).primaryColor,
                             labelColor: Theme.of(context).hintColor,
-                            food: _con.food,
+                            food: _con.item,
                           ),
                   ),
 
 
 
-
+                  // Bottom Nav
                   Positioned(
                     bottom: 0,
                     child: Container(
@@ -412,7 +454,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         if (currentUser.value.apiToken == null) {
                                           Navigator.of(context).pushNamed("/Login");
                                         } else {
-                                          _con.addToFavorite(_con.food);
+                                          _con.addToFavorite(_con.item);
                                         }
                                       },
                                       padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
@@ -434,9 +476,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       width: MediaQuery.of(context).size.width - 110,
                                       height: 60,
                                       child: FlatButton(
-                                        onPressed: () {
-                                          addToCart();
-                                        },
+                                        onPressed: _con.item.quantity > 0 ? () => addToCart() : null,
+                                        disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
                                         padding: EdgeInsets.symmetric(vertical: 14),
                                         color: Theme.of(context).accentColor,
                                         shape: StadiumBorder(),
@@ -478,12 +519,184 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
   }
 
 
+  Widget getInvDialog() {
+    Item new_food = _con.item;
+    name_controller.text = _con.item.name;
+    wgt_controller.text = _con.item.weight;
+    qty_controller.text = _con.item.quantity.toString();
+    bool submit_visible = false;
+    bool loading_submit = false;
+
+    return StatefulBuilder(
+        builder: (context, setState) {
+          return Dialog(
+            child: Wrap (
+              alignment: WrapAlignment.center,
+              runSpacing: 20,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.inventory),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Inventory Management',
+                        maxLines: null,
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                  child: TextField(
+                          controller: name_controller,
+                          keyboardType: TextInputType.text,
+                          autocorrect: true,
+                          maxLines: null,
+                          textAlignVertical: TextAlignVertical.center,
+                          style: Theme.of(context).textTheme.subtitle1,
+                          decoration: new InputDecoration(
+                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                              prefixText: 'Name:    ',
+                              counterText: "",
+                              prefixStyle: Theme.of(context).textTheme.bodyText1
+                          ),
+                          onChanged: (String val) {
+                            setState(() => submit_visible = true);
+                            new_food.name = val;
+                          }
+                          ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 15),
+                  child: TextField(
+                      controller: wgt_controller,
+                      keyboardType: TextInputType.text,
+                      autocorrect: true,
+                      maxLines: null,
+                      textAlignVertical: TextAlignVertical.center,
+                      style: Theme.of(context).textTheme.subtitle1,
+                      decoration: new InputDecoration(
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                          prefixText: 'Weight:   ',
+                          counterText: "",
+                          prefixStyle: Theme.of(context).textTheme.bodyText1
+                      ),
+                      onChanged: (String val) {
+                        setState(() => submit_visible = true);
+                        new_food.name = val;
+                      }
+                  ),
+                ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                if (int.tryParse(qty_controller.text) > 0) {
+                                  qty_controller.text = (int.tryParse(qty_controller.text) - 1).toString();
+                                  setState(() => qty_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true);
+                                }
+
+                              },
+                              iconSize: 30,
+                              icon: Icon(Icons.remove_circle_outline),
+                              color: Theme.of(context).hintColor,
+                            ),
+                            Expanded(
+                                child: Container(
+                                    height: 30.0,
+                                    child: TextField(
+                                      controller: qty_controller,
+                                      maxLength: 4,
+                                      maxLengthEnforced: true,
+                                      keyboardType: TextInputType.number,
+                                      autocorrect: false,
+                                      textAlign: TextAlign.center,
+                                      textAlignVertical: TextAlignVertical.center,
+                                      style: Theme.of(context).textTheme.headline4,
+                                      decoration: new InputDecoration(
+                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                                        counterText: "",
+                                        prefixText: 'Quantity : ',
+                                        prefixStyle: Theme.of(context).textTheme.headline4,
+                                      ),
+                                      onChanged: (String val) => setState(() => qty_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true),
+                                    )
+                                )
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                if (int.tryParse(qty_controller.text) < 9999) {
+                                  qty_controller.text = (int.tryParse(qty_controller.text) + 1).toString();
+                                  setState(() => qty_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true);
+                                }
+                              },
+                              iconSize: 30,
+                              padding: EdgeInsets.symmetric(horizontal: 5),
+                              icon: Icon(Icons.add_circle_outline),
+                              color: Theme.of(context).hintColor,
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      Visibility(
+                        visible: submit_visible,
+                        maintainState: true,
+                        maintainAnimation: true,
+                        maintainSize: true,
+                        child: Center(
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                            child: loading_submit
+                                ? Center(child: SizedBox(width: 40, height: 40, child: CircularProgressIndicator(strokeWidth: 4)))
+                                : RaisedButton(
+                                    elevation: 14.0,
+                                    color: Theme.of(context).primaryColor,
+                                    onPressed: () async {
+                                      new_food.quantity = qty_controller.toString().trim() == '' ? 0 : int.tryParse(qty_controller.text);
+                                      new_food.name = name_controller.text;
+                                      setState(() => loading_submit = true);
+                                      await _con.updateItem(new_food);
+                                      Navigator.pop(context);
+                                    },
+                                    child: Container(
+                                        alignment: Alignment.center,
+                                        height: 40.0,
+                                        width: 140.0,
+                                        child: Text(
+                                          "Submit Changes",
+                                          style: TextStyle(color: Theme.of(context).accentColor),
+                                        )
+                                    ),
+                            ),
+                          ),
+
+                        )
+                      )
+
+              ]
+            )
+          );
+        }
+        );
+  }
+
   void addToCart() {
     if (currentUser.value.apiToken == null) {
       Navigator.of(context).pushNamed("/Login");
     } else {
-      if (_con.isSameRestaurants(_con.food)) {
-        _con.addToCart(_con.food);
+      if (_con.isSameRestaurants(_con.item)) {
+        _con.addToCart(_con.item);
       } else {
         showDialog(
           context: context,
@@ -491,9 +704,9 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
             // return object of type Dialog
             return AddToCartAlertDialogWidget(
                 oldFood: _con.carts.elementAt(0)?.food,
-                newFood: _con.food,
-                onPressed: (food, {reset: true}) {
-                  return _con.addToCart(_con.food, reset: true);
+                newFood: _con.item,
+                onPressed: (item, {reset: true}) {
+                  return _con.addToCart(_con.item, reset: true);
                 });
           },
         );
@@ -502,3 +715,4 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
   }
 
 }
+

@@ -4,12 +4,12 @@ import '../../generated/l10n.dart';
 import 'package:http/http.dart' as http;
 
 import '../helpers/helper.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 class FoodItemWidget extends StatelessWidget {
   final String heroTag;
-  final Food food;
+  final Item food;
 
   const FoodItemWidget({Key key, this.food, this.heroTag}) : super(key: key);
 
@@ -20,7 +20,7 @@ class FoodItemWidget extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed('/Food', arguments: RouteArgument(id: food.id, heroTag: this.heroTag));
+        Navigator.of(context).pushNamed('/Item', arguments: RouteArgument(id: food.id, heroTag: this.heroTag));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -80,21 +80,48 @@ class FoodItemWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 8),
+                  // Column(
+                  //   children: <Widget>[
+                  //     Helper.getPrice(food.price, context,
+                  //         style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: settingsRepo.compact_view_horizontal ? 13 : 15))),
+                  //     food.ingredients != "<p>.</p>" && food.ingredients.isNotEmpty && food.ingredients != "0"
+                  //     ? Container(
+                  //       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  //       decoration:
+                  //       BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(24)),
+                  //       child: Text(
+                  //           S.of(context).add_options,
+                  //         style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                  //       ),
+                  //     )
+                  //     : SizedBox(height: 0),
+                  //   ],
+                  // )
                   Column(
                     children: <Widget>[
                       Helper.getPrice(food.price, context,
                           style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: settingsRepo.compact_view_horizontal ? 13 : 15))),
-                      food.ingredients != "<p>.</p>" && food.ingredients.isNotEmpty && food.ingredients != "0"
-                      ? Container(
-                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration:
-                        BoxDecoration(color: Colors.green, borderRadius: BorderRadius.circular(24)),
-                        child: Text(
-                            S.of(context).add_options,
-                          style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+
+                      if (food.quantity == 0)
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                                        color: Colors.redAccent,
+                                        borderRadius: BorderRadius.circular(24),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.red.withAlpha(125),
+                                              blurRadius: 2,
+                                              spreadRadius: 1,
+                                              offset: Offset(0, 0),
+                                            )
+                                          ],
+                                      ),
+                          child: Text(
+                            'Out of Stock',
+                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                          ),
                         ),
-                      )
-                      : SizedBox(height: 0),
                     ],
                   )
                 ],

@@ -1,5 +1,5 @@
 import '../helpers/custom_trace.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/restaurant.dart';
 import '../models/user.dart';
 
@@ -47,7 +47,7 @@ class Review {
     return map;
   }
 
-  Map ofFoodToMap(Food food) {
+  Map ofFoodToMap(Item food) {
     var map = this.toMap();
     map["food_id"] = food.id;
     return map;

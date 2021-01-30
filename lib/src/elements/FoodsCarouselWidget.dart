@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../elements/FoodsCarouselItemWidget.dart';
 import '../elements/FoodsCarouselLoaderWidget.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 
 class FoodsCarouselWidget extends StatelessWidget {
-  final List<Food> foodsList;
+  final List<Item> foodsList;
   final String heroTag;
 
   FoodsCarouselWidget({Key key, this.foodsList, this.heroTag}) : super(key: key);

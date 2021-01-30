@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../controllers/cart_controller.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/route_argument.dart';
 import '../repository/user_repository.dart';
 
@@ -16,7 +16,7 @@ class ShoppingCartFloatButtonWidget extends StatefulWidget {
 
   final Color iconColor;
   final Color labelColor;
-  final Food food;
+  final Item food;
 
   @override
   _ShoppingCartFloatButtonWidgetState createState() => _ShoppingCartFloatButtonWidgetState();
@@ -47,7 +47,7 @@ class _ShoppingCartFloatButtonWidgetState extends StateMVC<ShoppingCartFloatButt
         onPressed: () {
           if (currentUser.value.apiToken != null) {
             Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument(param: '/Details', heroTag: 'From food')).then((value) => this.setState(() { }));
-//            Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument(param: '/Food', id: widget.food.id));
+//            Navigator.of(context).pushNamed('/Cart', arguments: RouteArgument(param: '/Item', id: widget.food.id));
           } else {
             Navigator.of(context).pushNamed('/Login');
           }

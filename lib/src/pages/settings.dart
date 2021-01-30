@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/repository/settings_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/settings_controller.dart';
@@ -115,11 +116,11 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             dense: true,
                             title: Text(
                               S.of(context).full_name,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                             trailing: Text(
                               currentUser.value.name,
-                              style: TextStyle(color: Theme.of(context).focusColor),
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ),
                           ListTile(
@@ -127,11 +128,11 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             dense: true,
                             title: Text(
                               S.of(context).email,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                             trailing: Text(
                               currentUser.value.email,
-                              style: TextStyle(color: Theme.of(context).focusColor),
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ),
                           ListTile(
@@ -139,14 +140,14 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             dense: true,
                             title: Text(
                               S.of(context).phone,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                             trailing: Text(
                               currentUser.value.phone == null || currentUser.value.phone == ''
                                   // ? currentUser.value.phone = 'Phone number missing'
                                   ? 'Phone number needed'
                                   : currentUser.value.phone,
-                              style: TextStyle(color: Theme.of(context).focusColor),
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ),
 //                          ListTile(
@@ -214,7 +215,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                             dense: true,
                             title: Text(
                               S.of(context).default_credit_card,
-                              style: Theme.of(context).textTheme.bodyText2,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                             trailing: Text(
                               _con.creditCard.number.isNotEmpty ? _con.creditCard.number.replaceRange(0, _con.creditCard.number.length - 4, '...') : '',
@@ -242,30 +243,30 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           ),
-                          ListTile(
-                            onTap: () {
-                              Navigator.of(context).pushNamed('/Languages');
-                            },
-                            dense: true,
-                            title: Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.translate,
-                                  size: 22,
-                                  color: Theme.of(context).focusColor,
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  S.of(context).languages,
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                ),
-                              ],
-                            ),
-                            trailing: Text(
-                              S.of(context).english,
-                              style: TextStyle(color: Theme.of(context).focusColor),
-                            ),
-                          ),
+                          // ListTile(
+                          //   onTap: () {
+                          //     Navigator.of(context).pushNamed('/Languages');
+                          //   },
+                          //   dense: true,
+                          //   title: Row(
+                          //     children: <Widget>[
+                          //       Icon(
+                          //         Icons.translate,
+                          //         size: 22,
+                          //         color: Theme.of(context).focusColor,
+                          //       ),
+                          //       const SizedBox(width: 10),
+                          //       Text(
+                          //         S.of(context).languages,
+                          //         style: Theme.of(context).textTheme.bodyText2,
+                          //       ),
+                          //     ],
+                          //   ),
+                          //   trailing: Text(
+                          //     S.of(context).english,
+                          //     style: TextStyle(color: Theme.of(context).focusColor),
+                          //   ),
+                          // ),
                           ListTile(
                             onTap: () {
                               Navigator.of(context).pushNamed('/DeliveryAddresses');
@@ -281,7 +282,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                 const SizedBox(width: 10),
                                 Text(
                                   S.of(context).delivery_addresses,
-                                  style: Theme.of(context).textTheme.bodyText2,
+                                  style: Theme.of(context).textTheme.subtitle1,
                                 ),
                               ],
                             ),
@@ -301,9 +302,47 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                                 const SizedBox(width: 10),
                                 Text(
                                   S.of(context).help_supports,
-                                  style: Theme.of(context).textTheme.bodyText2,
+                                  style: Theme.of(context).textTheme.subtitle1,
                                 ),
                               ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    currentUser.value.id == null || currentUser.value.isDriver == null || currentUser.value.isManager == false
+                        ? const SizedBox()
+                        : Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(6),
+                        boxShadow: [BoxShadow(color: Theme.of(context).hintColor.withOpacity(0.15), offset: Offset(0, 3), blurRadius: 10)],
+                      ),
+                      child: ListView(
+                        shrinkWrap: true,
+                        primary: false,
+                        children: <Widget>[
+                          ListTile(
+                            leading: Icon(Icons.build_sharp),
+                            title: Text(
+                              'Manager Settings',
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                          ListTile(
+                            trailing: Switch(
+                              onChanged: (value) => setState(() {
+                                currentUser.value.debugger = !currentUser.value.debugger;
+                                setDebugger();
+                              }),
+                              value: currentUser.value.debugger,
+                              activeColor: Theme.of(context).accentColor,
+                              inactiveThumbColor: Theme.of(context).primaryColor,
+                            ),
+                            leading: Text(
+                              'Debugging Mode',
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ),
                         ],

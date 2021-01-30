@@ -43,4 +43,5 @@ class SettingsController extends ControllerMVC {
   Future<void> refreshSettings() async {
     creditCard = new CreditCard();
   }
+
 }

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:saudaghar/src/helpers/size_config.dart';
 
 import '../helpers/helper.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/route_argument.dart';
 
 class SimilarItemListWidget extends StatelessWidget {
-  final Food food;
+  final Item food;
 
   const SimilarItemListWidget({Key key, this.food}) : super(key: key);
 
@@ -19,7 +19,7 @@ class SimilarItemListWidget extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushReplacementNamed('/Food', arguments: RouteArgument(id: food.id));
+        Navigator.of(context).pushReplacementNamed('/Item', arguments: RouteArgument(id: food.id));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),

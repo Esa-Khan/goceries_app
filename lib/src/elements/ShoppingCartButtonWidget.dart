@@ -64,8 +64,8 @@ class _ShoppingCartButtonWidgetState extends StateMVC<ShoppingCartButtonWidget> 
                         ),
                   )
               : Center(
-                  child: SizedBox(width: 120, height: 120,
-                      child: CircularProgressIndicator(strokeWidth: 2, backgroundColor: Theme.of(context).primaryColor)
+                  child: SizedBox(width: 7, height: 7,
+                      child: CircularProgressIndicator(strokeWidth: 1, backgroundColor: Theme.of(context).primaryColor)
                   )
             ),
             padding: EdgeInsets.all(1.5),

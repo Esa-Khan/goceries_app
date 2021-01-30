@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:saudaghar/src/helpers/size_config.dart';
 import '../../src/controllers/controller.dart';
 import '../../src/controllers/category_controller.dart';
-import '../../src/models/food.dart';
+import '../../src/models/item.dart';
 import '../../src/models/restaurant.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
@@ -149,31 +149,31 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 
                       widget.subAisles != null && widget.subAisles.isNotEmpty
                       ? ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: widget.subAisles.length,
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(height: 10);
-                        },
-                        itemBuilder: (context, index) {
-                          category.Category currSubAisle = widget.subAisles.elementAt(index);
-                          List<Food> items = widget.items[currSubAisle.id];
-                          // subimg_timeout(index);
-                          if (widget.subAisles.length == 1) {
-                            // Define a SubAisle dropdown
-                            return ItemListWidget(items);
-                          } else {
-                            // Define a SubAisle dropdown
-                            return SubCategoryItemWidget(
-                                index: index,
-                                currSubAisle: currSubAisle,
-                                items: items,
-                                theme: theme
-                            );
-                          }
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: widget.subAisles.length,
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(height: 10);
+                          },
+                          itemBuilder: (context, index) {
+                            category.Category currSubAisle = widget.subAisles.elementAt(index);
+                            List<Item> items = widget.items[currSubAisle.id];
+                            // subimg_timeout(index);
+                            if (widget.subAisles.length == 1) {
+                              // Define a SubAisle dropdown
+                              return ItemListWidget(items);
+                            } else {
+                              // Define a SubAisle dropdown
+                              return SubCategoryItemWidget(
+                                  index: index,
+                                  currSubAisle: currSubAisle,
+                                  items: items,
+                                  theme: theme
+                              );
+                            }
 
-                              },
+                          },
                         )
                           : Center(heightFactor: 2,
                               child: SizedBox(
@@ -196,7 +196,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 
 
   Widget SubCategoryItemWidget({int index, category.Category currSubAisle,
-                                  ThemeData theme, List<Food> items}) {
+                                  ThemeData theme, List<Item> items}) {
     return Stack(
         children: <Widget>[
           Opacity(
@@ -266,7 +266,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
         ]);
   }
 
-  Widget ItemListWidget(List<Food> items) {
+  Widget ItemListWidget(List<Item> items) {
     return items == null || items.isEmpty
         ? Center(heightFactor: 2, child: const SizedBox(width: 60, height: 60,
         child: CircularProgressIndicator(strokeWidth: 5)))

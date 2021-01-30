@@ -7,27 +7,27 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../generated/l10n.dart';
 import '../models/cart.dart';
 import '../models/category.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../repository/cart_repository.dart';
 import '../repository/category_repository.dart';
 import '../repository/food_repository.dart';
 import 'dart:collection';
 
 class CategoryController extends ControllerMVC {
-  List<Food> foods = <Food>[];
+  List<Item> foods = <Item>[];
   bool noItems = false;
   GlobalKey<ScaffoldState> scaffoldKey;
   Category category;
   bool loadCart = false;
   List<Cart> carts = [];
-  List<Food> searchedItems = <Food>[];
+  List<Item> searchedItems = <Item>[];
   bool isLoading = false;
   Restaurant restaurant;
 
   List<Category> aisles = <Category>[];
   bool hasAislesLoaded = false;
   HashMap aisleToSubaisleMap = new HashMap<String, List<Category>>();
-  HashMap subaisleToItemsMap = new HashMap<String, List<Food>>();
+  HashMap subaisleToItemsMap = new HashMap<String, List<Item>>();
   HashMap isExpandedList = new HashMap<String, bool>();
   HashMap isAisleLoadedList = new HashMap<String, bool>();
   List<String> loadedSubaisles = <String>[];
@@ -50,7 +50,7 @@ class CategoryController extends ControllerMVC {
         } else {
           setState(() => aisleToSubaisleMap[mainAisleID].add(_aisle));
         }
-        setState(() => subaisleToItemsMap[_aisle.id] = new List<Food>());
+        setState(() => subaisleToItemsMap[_aisle.id] = new List<Item>());
       } else {
         setState(() => aisles.add(_aisle));
       }
@@ -78,7 +78,7 @@ class CategoryController extends ControllerMVC {
           } else {
             setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
           }
-          setState(() => subaisleToItemsMap[_category.id] = new List<Food>());
+          setState(() => subaisleToItemsMap[_category.id] = new List<Item>());
         } else {
           setState(() => aisles.add(_category));
         }
@@ -110,7 +110,7 @@ class CategoryController extends ControllerMVC {
           } else {
             setState(() => aisleToSubaisleMap[mainAisleID].add(_category));
           }
-          setState(() => subaisleToItemsMap[_category.id] = new List<Food>());
+          setState(() => subaisleToItemsMap[_category.id] = new List<Item>());
         } else {
           setState(() => aisles.add(_category));
         }
@@ -131,8 +131,8 @@ class CategoryController extends ControllerMVC {
 
 
   void listenForFoodsByCategory({String id, String message}) async {
-      final Stream<Food> stream = await getFoodsByCategory(id);
-      stream.listen((Food _food) {
+      final Stream<Item> stream = await getFoodsByCategory(id);
+      stream.listen((Item _food) {
         setState(() => this.foods.add(_food));
       }, onError: (a) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -149,8 +149,8 @@ class CategoryController extends ControllerMVC {
 
   void listenForItemsByCategory(String id, {String storeID, String message}) async {
     if (!this.isAisleLoadedList[id]) {
-      final Stream<Food> stream = await getFoodsByCategory(id, storeID: storeID);
-      stream.listen((Food _food) {
+      final Stream<Item> stream = await getFoodsByCategory(id, storeID: storeID);
+      stream.listen((Item _food) {
         addItemToAisle(_food, id);
       }, onError: (a) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
@@ -167,9 +167,9 @@ class CategoryController extends ControllerMVC {
   }
 
 
-  void addItemToAisle(Food _food, String aisleID) {
+  void addItemToAisle(Item _food, String aisleID) {
     if (this.subaisleToItemsMap[aisleID] == null)
-      this.subaisleToItemsMap[aisleID] = new List<Food>();
+      this.subaisleToItemsMap[aisleID] = new List<Item>();
 
     if (_food.ingredients != "<p>.</p>" &&
         _food.ingredients != "0" &&
@@ -211,14 +211,14 @@ class CategoryController extends ControllerMVC {
     });
   }
 
-  bool isSameRestaurants(Food food) {
+  bool isSameRestaurants(Item food) {
     if (carts.isNotEmpty) {
       return carts[0].food?.restaurant?.id == food.restaurant?.id;
     }
     return true;
   }
 
-  void addToCart(Food food, {bool reset = false}) async {
+  void addToCart(Item food, {bool reset = false}) async {
     setState(() {
       this.loadCart = true;
     });
@@ -268,7 +268,7 @@ class CategoryController extends ControllerMVC {
 
   Future<void> refreshSearch(search) async {
     setState(() {
-      searchedItems = <Food>[];
+      searchedItems = <Item>[];
     });
     if (search != null && search.toString().replaceAll(" ", "") != "")
       await listenForSearchedFoods(search: search, idRestaurant: restaurant.id);
@@ -277,8 +277,8 @@ class CategoryController extends ControllerMVC {
   void listenForSearchedFoods({String idRestaurant, String search}) async {
     searchedItems.clear();
     Address _address = deliveryAddress.value;
-    Stream<Food> initialStream = await searchFoods(search, _address, storeID: idRestaurant);
-    initialStream.listen((Food _food) {
+    Stream<Item> initialStream = await searchFoods(search, _address, storeID: idRestaurant);
+    initialStream.listen((Item _food) {
       setState(() => this.searchedItems.add(_food));
     }, onError: (a) {
       print(a);

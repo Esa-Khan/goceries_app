@@ -76,9 +76,11 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     onChanged: (value) => setState(() {
                       currentUser.value.isDriver = !currentUser.value.isDriver;
                       if (currentUser.value.isDriver) {
-                        Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
+                        Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 1);
+                        // Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
                       } else {
-                        Navigator.of(context).pushReplacementNamed('/StoreSelect');
+                        Navigator.of(context).pushNamedAndRemoveUntil('/StoreSelect', (Route<dynamic> route) => false);
+                        // Navigator.of(context).pushReplacementNamed('/StoreSelect');
                       }
                     }),
                     value: currentUser.value.isDriver,
@@ -90,27 +92,6 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
-          currentUser.value.id == null || currentUser.value.isDriver == null || currentUser.value.isManager == false
-              ? const SizedBox()
-              : ListTile(
-            leading: Switch(
-              onChanged: (value) => setState(() {
-                currentUser.value.isDriver = !currentUser.value.isDriver;
-                if (currentUser.value.isDriver) {
-                  Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
-                } else {
-                  Navigator.of(context).pushReplacementNamed('/StoreSelect');
-                }
-              }),
-              value: currentUser.value.isDriver,
-              activeColor: Theme.of(context).accentColor,
-              inactiveThumbColor: Theme.of(context).primaryColor,
-            ),
-            title: Text(
-              'Customer View',
-              style: Theme.of(context).textTheme.subtitle1,
-            ),
-          ),
           ListTile(
             onTap: () {
               // Navigator.of(context).pushReplacementNamed('/StoreSelect');

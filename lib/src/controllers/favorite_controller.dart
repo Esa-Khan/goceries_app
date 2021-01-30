@@ -7,6 +7,7 @@ import '../repository/food_repository.dart';
 
 class FavoriteController extends ControllerMVC {
   List<Favorite> favorites = <Favorite>[];
+  bool favorites_loaded = false;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   FavoriteController() {
@@ -15,6 +16,7 @@ class FavoriteController extends ControllerMVC {
   }
 
   void listenForFavorites({String message}) async {
+    setState(() => favorites_loaded = false);
     final Stream<Favorite> stream = await getFavorites();
     stream.listen((Favorite _favorite) {
       setState(() {
@@ -25,6 +27,7 @@ class FavoriteController extends ControllerMVC {
         content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
+      setState(() => favorites_loaded = true);
       if (message != null) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(message),

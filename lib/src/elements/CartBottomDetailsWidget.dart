@@ -108,38 +108,39 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
               children: [
                 Flexible(
                     flex: 1,
-                    child: FlatButton(
-                          height: 60,
-                          onPressed: () => {
-                            showDialog(
-                              context: context,
-                              builder: (context) => getDialog()
-                            )
-                          },
-                          disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
-                          padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),
-                          color: !widget.con.carts[0].food.restaurant.closed
-                              ? Theme.of(context).accentColor
-                              : Theme.of(context).focusColor.withOpacity(0.5),
-                          shape: StadiumBorder(),
-                          child: Stack(
-                            alignment: AlignmentDirectional.bottomEnd,
-                            children: <Widget>[
-                              Icon(
-                                Icons.note_add_outlined,
-                                color: Theme.of(context).primaryColor,
-                                size: 28,
-                              ),
-                              currentCart_note.value.trim().length == 0
-                                ? const SizedBox()
-                                : Container(
-                                child: Icon(Icons.check, size: 10, color: Theme.of(context).primaryColor),
-                                decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                                constraints: BoxConstraints(minWidth: 15, maxWidth: 15, minHeight: 15, maxHeight: 15),
-                              ),
-                            ],
-                          ),
-                      )
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: <Widget>[
+                        FlatButton(
+                            height: 60,
+                            onPressed: () => {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => getDialog()
+                              )
+                            },
+                            disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
+                            padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),
+                            color: !widget.con.carts[0].food.restaurant.closed
+                                ? Theme.of(context).accentColor
+                                : Theme.of(context).focusColor.withOpacity(0.5),
+                            shape: StadiumBorder(),
+                            child: Text(
+                                  'Extra\nNotes',
+                                  textAlign: TextAlign.center,
+                                  textScaleFactor: 0.7,
+                                  style: TextStyle(color: Theme.of(context).primaryColor),
+                                )),
+                                if (currentCart_note.value.trim().length != 0)
+                                  Positioned(
+                                    top: 0,
+                                    child: Container(
+                                      child: Icon(Icons.check, size: 20, color: Theme.of(context).primaryColor),
+                                      decoration: BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                                    ),
+                                  )
+                      ],
+                    )
                 ),
                 SizedBox(width: 10),
                 Flexible(
@@ -150,7 +151,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                       children: <Widget>[
                         FlatButton(
                               height: 60,
-                              onPressed: () => widget.con.goCheckout(context),
+                              onPressed: widget.con.item_unavail ? null : () => widget.con.goCheckout(context),
                               disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                               padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
                               color: !widget.con.carts[0].food.restaurant.closed
@@ -159,11 +160,18 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                               shape: StadiumBorder(),
                               child: Align(
                                 alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Next',
-                                  style: Theme.of(context).textTheme.bodyText1.merge(
-                                      TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
-                                ),
+                                child: widget.con.item_unavail
+                                  ? Text(
+                                      'Item(s) out of stock',
+                                      maxLines: 2,
+                                      style: Theme.of(context).textTheme.bodyText1.merge(
+                                      TextStyle(color: Theme.of(context).primaryColor, fontSize: 12)),
+                                    )
+                                  : Text(
+                                      'Next',
+                                      style: Theme.of(context).textTheme.bodyText1.merge(
+                                          TextStyle(color: Theme.of(context).primaryColor, fontSize: 20)),
+                                    ),
                               )
                           ),
                         Padding(

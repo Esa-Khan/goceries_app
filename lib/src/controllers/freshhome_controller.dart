@@ -5,7 +5,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../helpers/helper.dart';
 import '../models/category.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/restaurant.dart';
 import '../models/review.dart';
 import '../repository/category_repository.dart';
@@ -19,7 +19,7 @@ class FreshHomeController extends ControllerMVC {
   Restaurant store;
   List<Restaurant> popularRestaurants = <Restaurant>[];
   List<Review> recentReviews = <Review>[];
-  List<Food> trendingFoods = <Food>[];
+  List<Item> trendingFoods = <Item>[];
 
   FreshHomeController() {
   }
@@ -84,8 +84,8 @@ class FreshHomeController extends ControllerMVC {
   }
 
 //  Future<void> listenForTrendingFoods() async {
-//    final Stream<Food> stream = await getTrendingFoods(deliveryAddress.value);
-//    stream.listen((Food _food) {
+//    final Stream<Item> stream = await getTrendingFoods(deliveryAddress.value);
+//    stream.listen((Item _food) {
 //      setState(() => trendingFoods.add(_food));
 //    }, onError: (a) {
 //      print(a);
@@ -124,7 +124,7 @@ class FreshHomeController extends ControllerMVC {
       closestStores = <Restaurant>[];
 //      popularRestaurants = <Restaurant>[];
       recentReviews = <Review>[];
-//      trendingFoods = <Food>[];
+//      trendingFoods = <Item>[];
     });
     await listenForClosestStores();
 //    await listenForTrendingFoods();

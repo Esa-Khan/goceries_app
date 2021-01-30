@@ -2,12 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../helpers/helper.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/route_argument.dart';
 
 class FoodsCarouselItemWidget extends StatelessWidget {
   final double marginLeft;
-  final Food food;
+  final Item food;
   final String heroTag;
 
   FoodsCarouselItemWidget({Key key, this.heroTag, this.marginLeft, this.food}) : super(key: key);
@@ -18,7 +18,7 @@ class FoodsCarouselItemWidget extends StatelessWidget {
       splashColor: Theme.of(context).accentColor.withOpacity(0.08),
       highlightColor: Colors.transparent,
       onTap: () {
-        Navigator.of(context).pushNamed('/Food', arguments: RouteArgument(id: food.id, heroTag: heroTag));
+        Navigator.of(context).pushNamed('/Item', arguments: RouteArgument(id: food.id, heroTag: heroTag));
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -2,11 +2,11 @@ import 'package:saudaghar/src/models/restaurant.dart';
 
 import '../helpers/custom_trace.dart';
 import '../models/extra.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 
 class Cart {
   String id;
-  Food food;
+  Item food;
   Restaurant store;
   double quantity;
   List<Extra> extras;
@@ -18,13 +18,13 @@ class Cart {
     try {
       id = jsonMap['id'].toString();
       quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
-      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : Food.fromJSON({});
+      food = jsonMap['food'] != null ? Item.fromJSON(jsonMap['food']) : Item.fromJSON({});
       store = food.restaurant;
       extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : [];
     } catch (e) {
       id = '';
       quantity = 0.0;
-      food = Food.fromJSON({});
+      food = Item.fromJSON({});
       extras = [];
       print(CustomTrace(StackTrace.current, message: e));
     }

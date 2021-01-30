@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/route_argument.dart';
 
 class FoodGridItemWidget extends StatefulWidget {
   final String heroTag;
-  final Food food;
+  final Item food;
   final VoidCallback onPressed;
 
   FoodGridItemWidget({Key key, this.heroTag, this.food, this.onPressed}) : super(key: key);
@@ -21,7 +21,7 @@ class _FoodGridItemWidgetState extends State<FoodGridItemWidget> {
       highlightColor: Colors.transparent,
       splashColor: Theme.of(context).accentColor.withOpacity(0.08),
       onTap: () {
-        Navigator.of(context).pushNamed('/Food', arguments: new RouteArgument(heroTag: this.widget.heroTag, id: this.widget.food.id));
+        Navigator.of(context).pushNamed('/Item', arguments: new RouteArgument(heroTag: this.widget.heroTag, id: this.widget.food.id));
       },
       child: Stack(
         alignment: AlignmentDirectional.topEnd,

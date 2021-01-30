@@ -247,7 +247,8 @@ Future<void> getDriverAvail() async {
       url,
       headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     );
-    currentUser.value.available = json.decode(response.body)['data'];
+    currentUser.value.available = json.decode(response.body)['data']['available'];
+    currentUser.value.work_hours = json.decode(response.body)['data']['work_hours'];
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: url));
   }

@@ -83,7 +83,7 @@ class RouteGenerator {
         case '/Menu':
           return MaterialPageRoute(
               builder: (_) => MenuWidget(routeArgument: args as RouteArgument));
-        case '/Food':
+        case '/Item':
           return MaterialPageRoute(
               builder: (_) => FoodWidget(routeArgument: args as RouteArgument));
         case '/Category':
