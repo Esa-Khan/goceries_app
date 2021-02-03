@@ -123,7 +123,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                           children: <Widget>[
                             FlatButton(
                                 height: 60,
-                                onPressed: () => gotoOrders(),
+                                onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 0),
                                 padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
                                 color: Theme.of(context).accentColor,
                                 shape: StadiumBorder(),
@@ -232,7 +232,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
 
   void gotoOrders() {
     // Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
-    Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 3);
+
   }
 
 }

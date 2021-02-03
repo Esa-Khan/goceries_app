@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/profile_controller.dart';
@@ -20,6 +21,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Drawer(
       child: ListView(
         children: <Widget>[
@@ -96,10 +98,9 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             onTap: () {
               // Navigator.of(context).pushReplacementNamed('/StoreSelect');
               Navigator.of(context).pushNamedAndRemoveUntil('/StoreSelect', (Route<dynamic> route) => false);
-
             },
             leading: Icon(
-              Icons.list,
+              Icons.store_rounded,
               color: Theme.of(context).focusColor.withOpacity(1),
             ),
             title: Text(
@@ -109,8 +110,9 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
-              settingsRepo.isStore.value = 0;
-              Navigator.of(context).pushNamed('/Pages',arguments: 2);
+              settingsRepo.store_type.value = 0;
+              Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 1);
+              // Navigator.of(context).pushNamed('/Pages', arguments: 2);
             },
             leading: Icon(
               Icons.home,
@@ -136,7 +138,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           // ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Pages', arguments: 3);
+              Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 0);
+              // Navigator.of(context).pushNamed('/Pages', arguments: 3);
             },
             leading: Icon(
               Icons.local_mall,
@@ -149,7 +152,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
-              Navigator.of(context).pushNamed('/Pages', arguments: 4);
+              Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 2);
+              // Navigator.of(context).pushNamed('/Pages', arguments: 4);
             },
             leading: Icon(
               Icons.favorite,
@@ -164,7 +168,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
             dense: true,
             title: Text(
               S.of(context).application_preferences,
-              style: Theme.of(context).textTheme.bodyText2,
+              style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: SizeConfig.blockSizeHorizontal*40)),
             ),
             trailing: Icon(
               Icons.remove,

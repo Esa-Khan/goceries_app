@@ -91,7 +91,7 @@ class _EmptyFavouritesWidgetState extends State<EmptyFavouritesWidget> {
                     Opacity(
                       opacity: 0.4,
                       child: Text(
-                        'No Favourites',
+                        'No Favourites\n\nSubscription Service\nComing Soon!',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w300)),
                       ),

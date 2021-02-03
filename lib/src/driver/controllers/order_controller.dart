@@ -10,6 +10,7 @@ import '../repository/order_repository.dart';
 class OrderController extends ControllerMVC {
   List<Order> orders = <Order>[];
   bool orders_loaded = false;
+  bool app_paused = false;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   OrderController() {
@@ -34,7 +35,7 @@ class OrderController extends ControllerMVC {
       ));
     }, onDone: () {
       setState(() => orders_loaded = true);
-      if (message != null) {
+      if (message != null && !app_paused) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(message, textAlign: TextAlign.center),
           duration: Duration(milliseconds: 500),
@@ -72,6 +73,7 @@ class OrderController extends ControllerMVC {
   Future<void> refreshOrders() async {
     getDriverAvail();
     orders.clear();
+    getDriverAvail().then((value) => setState(() => currentUser.value));
     listenForOrders(message: S.of(context).order_refreshed_successfuly);
   }
 }

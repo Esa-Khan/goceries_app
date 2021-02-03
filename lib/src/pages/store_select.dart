@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../src/elements/StoreSelectShoppingCartButtonWidget.dart';
@@ -33,6 +35,13 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
     }
   }
 
+//void showPopup() async {
+//  await showDialog(
+//      context: context,
+//      builder: (_) => ImageDialog()
+//  );
+//}
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -43,11 +52,13 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle: true,
-            leading: const SizedBox(),
-            // new IconButton(
-            //   icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
-            //   onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
-            // ),
+            leading: currentUser.value.apiToken == null
+                ? const SizedBox()
+                : new IconButton(
+                    icon: new Icon(Icons.perm_identity_rounded, color: Theme.of(context).accentColor),
+                    // onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
+                    onPressed: () => Navigator.of(context).pushNamed('/Profile'),
+                  ),
             title: Text(
               "Where to Shop?",
               style: Theme.of(context)
@@ -55,7 +66,8 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                   .headline6
                   .merge(TextStyle(letterSpacing: 1.5)),
             ),
-            actions: <Widget>[new StoreSelectShoppingCartButtonWidget()],
+            actions: <Widget>[
+              new StoreSelectShoppingCartButtonWidget()],
           ),
           body: SafeArea(
             child: Center(
@@ -117,19 +129,56 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
                   ]
               ),
             ),
-            // ]
-            // ),
-            // Positioned(
-            //     bottom: 0,
-            //     width: MediaQuery.of(context).size.width,
-            //     child: SocialMediaOrdering()
-            // ),
           ),
         ));
   }
 
   void nextPage(int isStore) {
-    settingsRepo.isStore.value = isStore;
-    Navigator.of(context).pushNamed('/Pages', arguments: 2);
+    settingsRepo.store_type.value = isStore;
+    Navigator.of(context).pushNamed('/Pages', arguments: 1);
   }
+
+  void showPopup() async {
+    await showDialog(
+        context: context,
+        builder: (_) => ImageDialog()
+    );
+  }
+}
+
+
+
+
+class ImageDialog extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(30),
+        child: CachedNetworkImage(
+          height: MediaQuery.of(context).size.height / 1.8,
+          width: MediaQuery.of(context).size.width / 1.3,
+          fit: BoxFit.cover,
+          imageUrl: "${GlobalConfiguration().getString('base_url')}storage/app/public/promotions.png",
+          placeholder: (context, url) => Image.asset(
+            'assets/img/loading.gif',
+            fit: BoxFit.contain,
+            width: double.infinity,
+            height: 82,
+          ),
+          errorWidget: (context, url, error) => Image.asset(
+            'assets/img/image_default.png',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: 150,
+          ),
+        ),
+      ),
+      elevation: 10,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30.0))),
+    );
+  }
+
+
 }

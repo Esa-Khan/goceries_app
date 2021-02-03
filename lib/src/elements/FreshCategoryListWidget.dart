@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/helpers/size_config.dart';
+import '../helpers/size_config.dart';
 import '../../src/controllers/category_controller.dart';
 
 import '../models/category.dart';
 import '../models/restaurant.dart';
-import 'AislesItemWidget.dart';
 import 'EmptyItemSearchWidget.dart';
+import 'AislesItemWidget.dart';
 import 'FoodItemWidget.dart';
 
 class FreshCategoryListWidget extends StatefulWidget {
@@ -179,39 +179,8 @@ class _FreshCategoryListState extends StateMVC<FreshCategoryListWidget> {
                           // Define a Aisle dropdown
                           return AislesItemWidget(
                             aisle: currAisle,
-                            items: _con.subaisleToItemsMap,
-                            subAisles: _con.aisleToSubaisleMap[currAisle.id],
-                            timeout: index,
-                            onPressed: (aisleVal) async {
-                              _con.isExpandedList.updateAll((key, value) => value = false);
-                              if (!_con.isExpandedList[aisleVal.id])
-                                _con.isExpandedList[aisleVal.id] = true;
-
-                              if (aisleVal.id.length > 2 &&
-                                  !_con.isAisleLoadedList[aisleVal.id] &&
-                                  _con.isExpandedList[aisleVal.id]) {
-                                  await _con.listenForItemsByCategory(aisleVal.id, storeID: _con.restaurant.id);
-                                  _con.isAisleLoadedList[aisleVal.id] = true;
-                                  if (_con.loadedSubaisles.length == 5) {
-                                    String aisleitems_to_delete = _con.loadedSubaisles.first;
-                                    _con.subaisleToItemsMap[aisleitems_to_delete] = null;
-                                    _con.loadedSubaisles.remove(aisleitems_to_delete);
-                                    _con.isAisleLoadedList[aisleitems_to_delete] = false;
-                                  }
-                                  _con.loadedSubaisles.add(aisleVal.id);
-                              } else if (_con.aisleToSubaisleMap[currAisle.id].length == 1) {
-                                String id = _con.aisleToSubaisleMap[currAisle.id][0].id;
-                                await _con.listenForItemsByCategory(id, storeID: _con.restaurant.id);
-                                _con.isAisleLoadedList[id] = true;
-                                if (_con.loadedSubaisles.length == 5) {
-                                  String aisleitems_to_delete = _con.loadedSubaisles.first;
-                                  _con.subaisleToItemsMap[aisleitems_to_delete] = null;
-                                  _con.loadedSubaisles.remove(aisleitems_to_delete);
-                                  _con.isAisleLoadedList[aisleitems_to_delete] = false;
-                                }
-                                _con.loadedSubaisles.add(id);
-                              }
-                            });
+                            store: _con.restaurant,
+                          );
                         }
 
                   })

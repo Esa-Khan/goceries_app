@@ -156,14 +156,14 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                               _con.order_submitted
                                 ? 'Order  Submitted!'
                                 : _con.order_declined
-                                  ? 'Could not place order '
+                                  ? 'Could not place order.'
                                   : 'Ready to Checkout?',
                               style: Theme.of(context).textTheme.headline2.merge(
                                   TextStyle(fontWeight: FontWeight.bold,
                                             color: _con.order_declined
                                                 ? Colors.red
                                                 : Theme.of(context).accentColor,
-                                            fontSize: settingsRepo.compact_view_horizontal ? 18 : 20
+                                            fontSize: settingsRepo.compact_view_horizontal ? 20 : 19
                                   )
                               ),
                             )

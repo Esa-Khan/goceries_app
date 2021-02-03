@@ -51,7 +51,7 @@ class Item {
       ingredients = jsonMap['ingredients'];
       weight = jsonMap['weight'] != null ? jsonMap['weight'].toString() : '';
       unit = jsonMap['unit'] != null ? jsonMap['unit'].toString() : '';
-      quantity = jsonMap['quantity'] == null ? 0 : jsonMap['quantity'];
+      quantity = jsonMap['quantity'] == null ? 999 : jsonMap['quantity'];
       featured = jsonMap['featured'] ?? false;
       deliverable = jsonMap['deliverable'] ?? false;
       restaurant = jsonMap['restaurant'] != null ? Restaurant.fromJSON(jsonMap['restaurant']) : Restaurant.fromJSON({});
@@ -61,7 +61,6 @@ class Item {
       image_url = '${GlobalConfiguration().getString('base_url')}storage/app/public/foods/${id}.jpg';
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0])
                                                                                 : image_url != null ? Media.fromURL(image_url): new Media(isCat: true);
-
       extras = jsonMap['extras'] != null && (jsonMap['extras'] as List).length > 0
           ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toSet().toList()
           : [];

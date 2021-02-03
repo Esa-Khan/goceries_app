@@ -31,6 +31,7 @@ class Setting {
   bool enableVersion = true;
   double deliveryFeeLimit;
   Map<String, double> promo;
+  String debug_url;
 
   ValueNotifier<Brightness> brightness = new ValueNotifier(Brightness.light);
 
@@ -69,6 +70,7 @@ class Setting {
       } catch (e) {
         deliveryFeeLimit = double.maxFinite;
       }
+      debug_url = jsonMap['debug_url'] == null ? null : jsonMap['debug_url'];
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }

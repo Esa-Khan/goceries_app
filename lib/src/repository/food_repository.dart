@@ -133,6 +133,7 @@ Future<Stream<Item>> searchFoods(String search, Address address, {String storeID
     _queryParams['areaLon'] = address.longitude.toString();
     _queryParams['areaLat'] = address.latitude.toString();
   }
+
   uri = uri.replace(queryParameters: _queryParams);
   try {
     final client = new http.Client();
@@ -146,6 +147,29 @@ Future<Stream<Item>> searchFoods(String search, Address address, {String storeID
     return new Stream.value(new Item.fromJSON({}));
   }
 }
+
+
+Future<Stream<Item>> searchItemsInSubcategory({String search, String subcategoryID}) async {
+  if (search == null) search = "";
+  Uri uri = Helper.getUri('api/searchInSubcat');
+  Map<String, dynamic> _queryParams = {};
+  _queryParams['search'] = search;
+  _queryParams['id'] = subcategoryID;
+
+  uri = uri.replace(queryParameters: _queryParams);
+  try {
+    final client = new http.Client();
+    final streamedRest = await client.send(http.Request('get', uri));
+
+    return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
+      return Item.fromJSON(data);
+    });
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+    return new Stream.value(new Item.fromJSON({}));
+  }
+}
+
 
 Future<Stream<Item>> getFoodsByCategory(categoryId, {storeID}) async {
   Uri uri = Helper.getUri('api/foods');
