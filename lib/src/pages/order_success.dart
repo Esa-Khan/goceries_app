@@ -212,20 +212,28 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                               ? RichText(
                                   textAlign: TextAlign.center,
                                   overflow: TextOverflow.ellipsis,
-                                  text: TextSpan(
-                                          text: currentCart_time.value == null
-                                            ? 'Estimated delivery within'
-                                            : 'Scheduled delivery:',
+                                  text: currentCart_time.value == null && timeslot_time.value == null
+                                    ? TextSpan (
+                                          text: 'Estimated delivery within',
                                           style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                                           children: <TextSpan>[
                                             TextSpan(
-                                              text: currentCart_time.value == null
-                                                ? ' ${(_con.delivery_time/60 + 5).ceil().clamp(0, 45)} - ${(_con.delivery_time/60 + 20).ceil().clamp(0, 60)} mins'
-                                                : '  ' + currentCart_time.value.toString().substring(0, 16),
-                                              style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13, letterSpacing: 1.1)
+                                              text: ' ${(_con.delivery_time/60 + 5).ceil().clamp(0, 45)} - ${(_con.delivery_time/60 + 20).ceil().clamp(0, 60)} mins',
+                                              style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)
                                               )
                                             ),
                                           ]
+                                    )
+                                  : TextSpan(
+                                      text: 'Scheduled delivery:',
+                                      style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: '  ' + (currentCart_time.value ?? timeslot_time.value).toString().substring(0, 16),
+                                            style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)
+                                            )
+                                        ),
+                                      ]
                                   )
                                 )
                               : const SizedBox(),

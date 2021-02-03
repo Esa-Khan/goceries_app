@@ -368,7 +368,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
   String dropdownValue = '';
   Widget TimeSlotScheduler(List<String> timeslots) {
     if (dropdownValue == '') {
-      var current_date = DateTime.now().add(Duration(hours: 12));
+      var current_date = DateTime.now();
       List<int> starting_times = [];
       timeslots.forEach((element) {
         int day = 0;
