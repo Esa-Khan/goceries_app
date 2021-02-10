@@ -12,11 +12,9 @@ import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 
 class CartController extends ControllerMVC {
-  List<Cart> carts = <Cart>[];
   Restaurant store;
   double taxAmount = 0.0;
   double deliveryFee = 0.0;
-  int cartCount = 0;
   String promotion = '';
   double subTotal = 0.0;
   double total = 0.0;
@@ -30,6 +28,8 @@ class CartController extends ControllerMVC {
 
   void listenForCarts({String message}) async {
     setState(() => item_unavail = false);
+    cart.value = <Cart>[];
+    List<Cart> carts = <Cart>[];
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
         setState(() => carts.add(_cart));
@@ -38,6 +38,7 @@ class CartController extends ControllerMVC {
       print(a);
       showSnack(S.of(context).verify_your_internet_connection);
     }, onDone: () {
+      cart.value = carts;
       if (carts.isNotEmpty) {
         calculateSubtotal();
         store = carts.first.store;
@@ -56,7 +57,8 @@ class CartController extends ControllerMVC {
     final Stream<int> stream = await getCartCount();
     stream.listen((int _count) {
       setState(() {
-        this.cartCount = _count;
+        cart_count.value = _count;
+        cart_count.notifyListeners();
         cartcount_isLoaded = true;
       });
     }, onError: (a) {
@@ -68,50 +70,53 @@ class CartController extends ControllerMVC {
 
   Future<void> refreshCarts() async {
     setState(() {
-      carts = [];
+      cart.value = [];
     });
     listenForCarts(message: S.of(context).carts_refreshed_successfuly);
   }
 
   void removeFromCart(Cart _cart) async {
     setState(() {
-      this.carts.remove(_cart);
+      cart.value.remove(_cart);
     });
     removeCart(_cart).then((value) {
+      cart_count.value--;
       calculateSubtotal();
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).the_food_was_removed_from_your_cart(_cart.food.name)),
-        duration: Duration(seconds: 1),
+        duration: Duration(milliseconds: 200),
       ));
     });
   }
 
   void calculateSubtotal() async {
     subTotal = 0;
-    carts.forEach((cart) {
+    cart.value.forEach((cart) {
       subTotal += cart.food.price * cart.quantity;
       cart.extras.forEach((element) {
         subTotal += element.price;
       });
     });
-    if (Helper.canDelivery(carts[0].food.restaurant, carts: carts)) {
-      deliveryFee = carts[0].food.restaurant.deliveryFee;
-    }
-    taxAmount = (subTotal + deliveryFee) * carts[0].food.restaurant.defaultTax / 100;
-    if (subTotal < settingsRepo.setting.value.deliveryFeeLimit) {
-      total = subTotal + deliveryFee;
-      notifyFreeDelivery = true;
-    } else {
-      if (notifyFreeDelivery){
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).eligible_for_free_delivery),
-          duration: Duration(seconds: 2),
-        ));
+    if (cart.value.isNotEmpty) {
+      if (Helper.canDelivery(cart.value[0].food.restaurant, carts: cart.value)) {
+        deliveryFee = cart.value[0].food.restaurant.deliveryFee;
       }
-      notifyFreeDelivery = false;
-      promotion == ""
-        ? total = subTotal
-        : total = subTotal - settingsRepo.setting.value.promo[promotion];
+      taxAmount = (subTotal + deliveryFee) * cart.value[0].food.restaurant.defaultTax / 100;
+      if (subTotal < settingsRepo.setting.value.deliveryFeeLimit) {
+        total = subTotal + deliveryFee;
+        notifyFreeDelivery = true;
+      } else {
+        if (notifyFreeDelivery){
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text(S.of(context).eligible_for_free_delivery),
+            duration: Duration(seconds: 2),
+          ));
+        }
+        notifyFreeDelivery = false;
+        promotion == ""
+            ? total = subTotal
+            : total = subTotal - settingsRepo.setting.value.promo[promotion];
+      }
     }
     setState(() {});
   }
@@ -150,8 +155,8 @@ class CartController extends ControllerMVC {
 
   bool checkItemAvailabliity() {
     bool isAvail = true;
-    for (int i = 0; i < carts.length; i++) {
-      if (carts.elementAt(i).quantity > carts.elementAt(i).food.quantity) {
+    for (int i = 0; i < cart.value.length; i++) {
+      if (cart.value.elementAt(i).quantity > cart.value.elementAt(i).food.quantity) {
         isAvail = false;
         break;
       }
@@ -162,7 +167,7 @@ class CartController extends ControllerMVC {
 
 
   void goCheckout(BuildContext context) {
-    if (carts[0].food.restaurant.closed) {
+    if (cart.value[0].food.restaurant.closed) {
       showSnack(S.of(context).this_restaurant_is_closed_);
     } else {
       Navigator.of(context).pushNamed('/DeliveryPickup', arguments: RouteArgument(param: this));

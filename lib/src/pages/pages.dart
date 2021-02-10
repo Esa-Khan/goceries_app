@@ -81,23 +81,13 @@ class _PagesWidgetState extends State<PagesWidget> {
           case 1:
             switch (store_type.value) {
               case 0:
-                if (widget.routeArgument != null && widget.routeArgument.heroTag == 'item_list') {
-                  widget.currentPage = ItemsListWidget(parentScaffoldKey: widget.scaffoldKey, subAisle: widget.routeArgument.param, store: widget.routeArgument.param2);
-                } else {
-                  widget.currentPage = SGHomeWidget(parentScaffoldKey: widget.scaffoldKey);
-                }
+                widget.currentPage = SGHomeWidget(parentScaffoldKey: widget.scaffoldKey);
                 break;
               case 1:
-                if (widget.routeArgument != null && widget.routeArgument.heroTag == 'item_list') {
-                  widget.currentPage = ItemsListWidget(parentScaffoldKey: widget.scaffoldKey, subAisle: widget.routeArgument.param, store: widget.routeArgument.param2);
-                } else {
-                  widget.currentPage = FreshHomeWidget(parentScaffoldKey: widget.scaffoldKey);
-                }
-
+                widget.currentPage = FreshHomeWidget(parentScaffoldKey: widget.scaffoldKey);
                 break;
               case 2:
-                widget.currentPage =
-                    HomeWidget(parentScaffoldKey: widget.scaffoldKey);
+                widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey);
                 break;
             }
             // widget.currentPage = MapWidget(parentScaffoldKey: widget.scaffoldKey, routeArgument: widget.routeArgument);

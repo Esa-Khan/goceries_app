@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/repository/cart_repository.dart';
 
 import '../controllers/cart_controller.dart';
 import '../models/route_argument.dart';
@@ -28,6 +29,7 @@ class _ShoppingCartButtonWidgetState extends StateMVC<ShoppingCartButtonWidget> 
 
   @override
   void initState() {
+    cart_count.addListener(() => setState(() => cart_count));
     _con.listenForCartsCount();
     super.initState();
   }
@@ -57,7 +59,7 @@ class _ShoppingCartButtonWidgetState extends StateMVC<ShoppingCartButtonWidget> 
           Container(
             child: _con.cartcount_isLoaded
               ?   Text(
-                    _con.cartCount.toString(),
+                    cart_count.value.toString(),
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.caption.merge(
                           TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),

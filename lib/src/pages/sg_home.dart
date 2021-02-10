@@ -4,9 +4,9 @@ import 'package:saudaghar/src/elements/AislesItemWidget.dart';
 import 'package:saudaghar/src/elements/EmptyItemSearchWidget.dart';
 import 'package:saudaghar/src/elements/FoodItemWidget.dart';
 import 'package:saudaghar/src/helpers/size_config.dart';
-import '../../src/models/route_argument.dart';
-import '../../src/models/category.dart';
 
+import '../../src/models/category.dart';
+import '../../src/models/route_argument.dart';
 import '../controllers/sghome_controller.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../repository/settings_repository.dart';
@@ -39,7 +39,6 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
       _con.getStore(store_type.value.toString());
     }
   }
-
 
 
   @override
@@ -90,8 +89,6 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
                     ? EmptyItemSearchWidget(search_str: _searchBarController.text)
                     : _con.searchedItems.isNotEmpty
                     ? SearchResultsWidget()
-
-
                     : CategoryList()
 
 

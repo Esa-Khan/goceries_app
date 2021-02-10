@@ -105,7 +105,7 @@ class _EmptyCartWidgetState extends State<EmptyCartWidget> {
               !loading
                   ? FlatButton(
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/Pages', arguments: 2);
+                        Navigator.of(context).pushNamed('/Pages', arguments: 1);
                       },
                       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 30),
                       color: Theme.of(context).accentColor.withOpacity(1),

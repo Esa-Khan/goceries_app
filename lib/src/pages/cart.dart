@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/repository/cart_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
@@ -41,15 +42,16 @@ class _CartWidgetState extends StateMVC<CartWidget> {
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
-              if (widget.routeArgument.param == '/Item') {
-                Navigator.of(context).pushReplacementNamed('/Item', arguments: RouteArgument(id: widget.routeArgument.id));
-              } else if(widget.routeArgument.param == '/Details') {
-                Navigator.pop(context);
-              } else if(widget.routeArgument.param == '/StoreSelect') {
-                Navigator.of(context).pushReplacementNamed('/StoreSelect');
-              } else {
-                Navigator.of(context).pushNamed('/Pages', arguments: 2);
-              }
+              Navigator.pop(context);
+              // if (widget.routeArgument.param == '/Item') {
+              //   Navigator.of(context).pushReplacementNamed('/Item', arguments: RouteArgument(id: widget.routeArgument.id));
+              // } else if(widget.routeArgument.param == '/Details') {
+              //   Navigator.pop(context);
+              // } else if(widget.routeArgument.param == '/StoreSelect') {
+              //   Navigator.of(context).pushReplacementNamed('/StoreSelect');
+              // } else {
+              //   Navigator.of(context).pushNamed('/Pages', arguments: 1);
+              // }
             },
             icon: Icon(Icons.arrow_back),
           ),
@@ -62,7 +64,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
 
         body: RefreshIndicator(
           onRefresh: _con.refreshCarts,
-          child: _con.carts.isEmpty
+          child: cart.value == null || cart.value.isEmpty
               ? EmptyCartWidget()
               : Container(
                   child: ListView(
@@ -91,22 +93,22 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: _con.carts.length,
+                        itemCount: cart.value.length,
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 15);
                         },
                         itemBuilder: (context, index) {
                           return CartItemWidget(
-                            cart: _con.carts.elementAt(index),
+                            cart: cart.value.elementAt(index),
                             heroTag: 'cart',
                             increment: () {
-                              _con.incrementQuantity(_con.carts.elementAt(index));
+                              _con.incrementQuantity(cart.value.elementAt(index));
                             },
                             decrement: () {
-                              _con.decrementQuantity(_con.carts.elementAt(index));
+                              _con.decrementQuantity(cart.value.elementAt(index));
                             },
                             onDismissed: () {
-                              _con.removeFromCart(_con.carts.elementAt(index));
+                              _con.removeFromCart(cart.value.elementAt(index));
                             },
                           );
                         },

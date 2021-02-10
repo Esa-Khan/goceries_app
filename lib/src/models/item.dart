@@ -58,7 +58,9 @@ class Item {
       price = price*restaurant.defaultTax + price;
       category = jsonMap['category_id'] != null ? jsonMap['category_id'] : 0;
       // image_url = jsonMap['image_url'] != null && jsonMap['image_url'] != "NULL" ? jsonMap['image_url'] : null;
-      image_url = '${GlobalConfiguration().getString('base_url')}storage/app/public/foods/${id}.jpg';
+      image_url = jsonMap['image_url'] == null
+          ? '${GlobalConfiguration().getString('base_url')}storage/app/public/foods/${id}.jpg'
+          : jsonMap['image_url'];
       image = jsonMap['media'] != null && (jsonMap['media'] as List).length > 0 ? Media.fromJSON(jsonMap['media'][0])
                                                                                 : image_url != null ? Media.fromURL(image_url): new Media(isCat: true);
       extras = jsonMap['extras'] != null && (jsonMap['extras'] as List).length > 0
@@ -103,7 +105,7 @@ class Item {
     map["id"] = id;
     map["name"] = name;
     map["price"] = price;
-    map["discountPrice"] = discountPrice;
+    map["discount_price"] = discountPrice;
     map["description"] = description;
     map["quantity"] = quantity;
     map["ingredients"] = ingredients;

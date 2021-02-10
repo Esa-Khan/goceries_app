@@ -58,7 +58,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.con.carts.isEmpty
+    return cart.value.isEmpty
         ? const SizedBox()
         : Container(
             height: 240,
@@ -104,11 +104,11 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                         ),
                       ),
                       if (Helper.canDelivery(
-                              widget.con.carts[0].food.restaurant,
-                              carts: widget.con.carts) &&
+                              cart.value[0].food.restaurant,
+                              carts: cart.value) &&
                           widget.con.subTotal < settingsRepo.setting.value.deliveryFeeLimit)
                         Helper.getPrice(
-                            widget.con.carts[0].food.restaurant.deliveryFee,
+                            cart.value[0].food.restaurant.deliveryFee,
                             context,
                             style: Theme.of(context).textTheme.subtitle1)
                       else
@@ -131,7 +131,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                                 Theme.of(context).focusColor.withOpacity(0.5),
                             padding: EdgeInsets.symmetric(
                                 vertical: 14, horizontal: 25),
-                            color: !widget.con.carts[0].food.restaurant.closed
+                            color: !cart.value[0].food.restaurant.closed
                                 ? Theme.of(context).accentColor
                                 : Theme.of(context).focusColor.withOpacity(0.5),
                             shape: StadiumBorder(),
@@ -493,15 +493,15 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
     if (widget.con.selectedAddress) {
       Overlay.of(context).insert(loader);
       Address store_address = new Address(
-          long: double.tryParse(widget.con.carts[0].food.restaurant.longitude),
-          lat: double.tryParse(widget.con.carts[0].food.restaurant.latitude)
+          long: double.tryParse(cart.value[0].food.restaurant.longitude),
+          lat: double.tryParse(cart.value[0].food.restaurant.latitude)
       );
       // Address curr_address = new Address(address: result.address,
       //                                     long: result.latLng.longitude,
       //                                     lat: result.latLng.latitude
       //                             );
       bool within_range = await MapsUtil.withinRange(settingsRepo.deliveryAddress.value, store_address,
-          widget.con.carts[0].food.restaurant.deliveryRange);
+          cart.value[0].food.restaurant.deliveryRange);
       Helper.hideLoader(loader);
       if (!within_range) {
         showDialog(
@@ -528,7 +528,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
             String minute = _time.trim().split(':')[1];
             DateTime scheduled_time = DateTime.parse(year + month + day + 'T' + hour + minute + '00');
             currentCart_time.value = scheduled_time;
-            var desc = widget.con.carts[0].food?.restaurant?.description;
+            var desc = cart.value[0].food?.restaurant?.description;
             if (desc != '24/7') {
               var now = int.parse(_time.trim().split(':')[0]) + int.parse(_time.trim().split(':')[1]) / 100;
               var times = desc
@@ -626,7 +626,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
           ),
         ],
       ),
-      content: Text("Unfortunately ${widget.con.carts.first.food.restaurant.name} does not deliver to ${address} We aim to expand our services in the near future. Feel free to  contact our support team for more information."),
+      content: Text("Unfortunately ${cart.value.first.food.restaurant.name} does not deliver to ${address} We aim to expand our services in the near future. Feel free to  contact our support team for more information."),
       actions: <Widget>[
         FlatButton(
           child: new Text(

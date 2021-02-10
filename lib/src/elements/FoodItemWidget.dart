@@ -35,10 +35,7 @@ class FoodItemWidget extends StatelessWidget {
           children: <Widget>[
             Hero(
               tag: heroTag + food.id,
-              child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-             child: getItemIMG(),
-              ),
+              child: getItemIMG(),
             ),
             SizedBox(width: settingsRepo.compact_view_horizontal ? 5 : 15),
             Flexible(

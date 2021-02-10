@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/repository/cart_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/checkout_controller.dart';
@@ -49,7 +50,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
       ),
-      body: _con.carts.isEmpty
+      body: cart.value.isEmpty
           ? Center(heightFactor: 3.5, child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
           : Stack(
               fit: StackFit.expand,
@@ -155,7 +156,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                 ),
                               ),
                               _con.subTotal < setting.value.deliveryFeeLimit
-                                  ? Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                                  ? Helper.getPrice(cart.value[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
                                   : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
 
                             ],

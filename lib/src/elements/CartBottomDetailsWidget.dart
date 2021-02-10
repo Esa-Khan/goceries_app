@@ -51,7 +51,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.con.carts.isEmpty
+    return cart.value == null || cart.value.isEmpty
         ? SizedBox(height: 0)
         : Container(
             height: 180,
@@ -94,10 +94,10 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                     style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13)),
                   ),
                 ),
-                if (Helper.canDelivery(widget.con.carts[0].food.restaurant,
-                    carts: widget.con.carts) &&
+                if (Helper.canDelivery(cart.value[0].food.restaurant,
+                    carts: cart.value) &&
                     widget.con.subTotal < setting.value.deliveryFeeLimit)
-                  Helper.getPrice(widget.con.carts[0].food.restaurant.deliveryFee, context,
+                  Helper.getPrice(cart.value[0].food.restaurant.deliveryFee, context,
                       style: Theme.of(context).textTheme.subtitle1)
                 else
                   Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
@@ -121,7 +121,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                             },
                             disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                             padding: EdgeInsets.symmetric(vertical: 14, horizontal: 2),
-                            color: !widget.con.carts[0].food.restaurant.closed
+                            color: !cart.value[0].food.restaurant.closed
                                 ? Theme.of(context).accentColor
                                 : Theme.of(context).focusColor.withOpacity(0.5),
                             shape: StadiumBorder(),
@@ -154,7 +154,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
                               onPressed: widget.con.item_unavail ? null : () => widget.con.goCheckout(context),
                               disabledColor: Theme.of(context).focusColor.withOpacity(0.5),
                               padding: EdgeInsets.symmetric(vertical: 14, horizontal: 25),
-                              color: !widget.con.carts[0].food.restaurant.closed
+                              color: !cart.value[0].food.restaurant.closed
                                   ? Theme.of(context).accentColor
                                   : Theme.of(context).focusColor.withOpacity(0.5),
                               shape: StadiumBorder(),

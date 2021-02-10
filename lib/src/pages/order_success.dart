@@ -36,11 +36,11 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
 
   getDeliveryTime() async {
     int count = 100;
-    while (_con.carts.isEmpty && count > 0) {
+    while (cart.value.isEmpty && count > 0) {
       await Future.delayed(Duration(milliseconds: 500));
       count -= 1;
     }
-    if (_con.carts.isNotEmpty) {
+    if (cart.value.isNotEmpty) {
       _con.getDeliveryTime();
     }
   }
@@ -69,7 +69,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
               style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
             ),
           ),
-          body: _con.carts.isEmpty
+          body: cart.value.isEmpty
               ? Center(heightFactor: 3.5, child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
               : SingleChildScrollView(
                   child: Column(
@@ -197,7 +197,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Ordering from ' + _con.carts.first.food.restaurant.name,
+                              'Ordering from ' + cart.value.first.food.restaurant.name,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
@@ -211,6 +211,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                             _con.delivery_time != null
                               ? RichText(
                                   textAlign: TextAlign.center,
+                                  maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   text: currentCart_time.value == null && timeslot_time.value == null
                                     ? TextSpan (
@@ -229,8 +230,8 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                       style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: '  ' + (currentCart_time.value ?? timeslot_time.value).toString().substring(0, 16),
-                                            style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)
+                                            text: '  ' + (currentCart_time.value ?? timeslot_time.value).toString(),
+                                            style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13),
                                             )
                                         ),
                                       ]
@@ -285,14 +286,14 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: _con.carts.length,
+                        itemCount: cart.value.length,
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 10);
                         },
                         itemBuilder: (context, index) {
                           return CheckoutItemListWidget(
                             heroTag: 'order_submission',
-                            cart_item: _con.carts.elementAt(index),
+                            cart_item: cart.value.elementAt(index),
                           );
                         },
                       ),
