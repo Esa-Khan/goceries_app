@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../generated/l10n.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 
-typedef FoodBoolFunc = void Function(Food food, {bool reset});
+typedef FoodBoolFunc = void Function(Item food, {bool reset});
 
 class AddToCartAlertDialogWidget extends StatelessWidget {
-  final Food oldFood;
-  final Food newFood;
+  final Item oldFood;
+  final Item newFood;
   final FoodBoolFunc onPressed;
 
   const AddToCartAlertDialogWidget({
@@ -28,7 +28,7 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 20, left: 20, bottom: 20),
             child: Text(
-              S.of(context).you_must_add_foods_of_the_same_restaurants_choose_one,
+              'You can only order from one place at a time',
               style: Theme.of(context).textTheme.caption,
             ),
           ),
@@ -79,7 +79,9 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                S.of(context).reset_your_cart_and_order_meals_form_this_restaurant,
+                                this.newFood.restaurant.information == null || this.newFood.restaurant.information == 'S'
+                                  ? 'Reset your cart and order from this store'
+                                  : 'Reset your cart and order from this restaruant',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],
@@ -139,7 +141,9 @@ class AddToCartAlertDialogWidget extends StatelessWidget {
                               ),
                               SizedBox(height: 8),
                               Text(
-                                S.of(context).keep_your_old_meals_of_this_restaurant,
+                                this.oldFood.restaurant.information == null || this.oldFood.restaurant.information == 'S'
+                                    ? 'Keep your order from this store'
+                                    : 'Keep your order from this restaruant',
                                 style: Theme.of(context).textTheme.caption,
                               ),
                             ],

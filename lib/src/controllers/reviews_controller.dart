@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/order.dart';
 import '../models/order_status.dart';
 import '../models/review.dart';
@@ -14,7 +14,7 @@ class ReviewsController extends ControllerMVC {
   Review restaurantReview;
   List<Review> foodsReviews = [];
   Order order;
-  List<Food> foodsOfOrder = [];
+  List<Item> foodsOfOrder = [];
   List<OrderStatus> orderStatus = <OrderStatus>[];
   GlobalKey<ScaffoldState> scaffoldKey;
 
@@ -45,7 +45,7 @@ class ReviewsController extends ControllerMVC {
     });
   }
 
-  void addFoodReview(Review _review, Food _food) async {
+  void addFoodReview(Review _review, Item _food) async {
     foodRepo.addFoodReview(_review, _food).then((value) {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).the_food_has_been_rated_successfully),

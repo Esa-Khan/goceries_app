@@ -9,7 +9,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import 'user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../helpers/custom_trace.dart';
@@ -62,7 +62,7 @@ Future<dynamic> setCurrentLocation() async {
   Address _address = new Address();
   location.requestService().then((value) async {
     location.getLocation().then((_locationData) async {
-      String _addressName = await mapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
+      String _addressName = await MapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
       _address = Address.fromJSON({'address': _addressName, 'latitude': _locationData?.latitude, 'longitude': _locationData?.longitude});
       await changeCurrentLocation(_address);
       whenDone.complete(_address);
@@ -145,4 +145,10 @@ Future<void> saveMessageId(String messageId) async {
 Future<String> getMessageId() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   return await prefs.get('google.message_id');
+}
+
+Future<void> setDebugger() async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}setDebugger/${currentUser.value.id}/${currentUser.value.debugger == true ? 1 : 0}';
+  final response = await http.put(url, headers: {HttpHeaders.contentTypeHeader: 'application/json'});
+
 }

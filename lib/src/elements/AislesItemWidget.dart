@@ -3,9 +3,10 @@ import 'dart:collection';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 import '../../src/controllers/controller.dart';
 import '../../src/controllers/category_controller.dart';
-import '../../src/models/food.dart';
+import '../../src/models/item.dart';
 import '../../src/models/restaurant.dart';
 import 'package:intl/intl.dart' show DateFormat;
 
@@ -45,7 +46,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
       }
       first_load = false;
       _con.category = widget.aisle;
-      img_timeout();
+      // img_timeout();
       widget.subAisles.forEach((element) {
         _con.isExpandedList[element.id] = false;
         _con.isAisleLoadedList[element.id] = false;
@@ -53,30 +54,31 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
     }
   }
 
-  Future<void> img_timeout() async {
-    if (mounted && !timed_out) {
-      Future.delayed(Duration(milliseconds: ((widget.timeout/2)*2000).ceil())).whenComplete(() {
-        if (mounted) {
-          // print("---------TIMEDOUT AFTER ${widget.timeout} SECONDS----------");
-          setState(() => timed_out = true);
-        }
-      });
-    }
-  }
+  // Future<void> img_timeout() async {
+  //   if (mounted && !timed_out) {
+  //     Future.delayed(Duration(milliseconds: ((widget.timeout)*900).ceil())).whenComplete(() {
+  //       if (mounted) {
+  //         // print("---------TIMEDOUT AFTER ${widget.timeout} SECONDS----------");
+  //         setState(() => timed_out = true);
+  //       }
+  //     });
+  //   }
+  // }
 
-  Future<void> subimg_timeout(int index) async {
-    if (mounted && !sub_timed_out[index]) {
-      Future.delayed(Duration(milliseconds: ((index/2)*2000).ceil())).whenComplete(() {
-        if (mounted) {
-          // print("---------SUB-TIMEDOUT AFTER ${index} SECONDS----------");
-          setState(() => sub_timed_out[index] = true);
-        }
-      });
-    }
-  }
+  // Future<void> subimg_timeout(int index) async {
+  //   if (mounted && !sub_timed_out[index]) {
+  //     Future.delayed(Duration(milliseconds: ((index)*900).ceil())).whenComplete(() {
+  //       if (mounted) {
+  //         // print("---------SUB-TIMEDOUT AFTER ${index} SECONDS----------");
+  //         setState(() => sub_timed_out[index] = true);
+  //       }
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
     return Stack(
       children: <Widget>[
@@ -87,15 +89,16 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
             children: <Widget>[
               Container(
                 margin: EdgeInsets.only(bottom: 10),
-                padding: EdgeInsets.only(top: 30, bottom: 30),
+                padding: EdgeInsets.symmetric(vertical: SizeConfig.blockSizeVertical*40),
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: timed_out ? Image.network(widget.aisle.aisleImage).image : Image.asset('assets/img/loading.gif').image,
+                    // image: timed_out ? Image.network(widget.aisle.aisleImage).image : Image.asset('assets/img/loading.gif').image,
+                    image: Image.network(widget.aisle.aisleImage).image,
                     fit: BoxFit.cover,
                     colorFilter: new ColorFilter.mode(Colors.white.withOpacity(aisle_img_opacity), BlendMode.dstIn),
                     onError: (dynamic, StackTrace) {
                       print("Error Loading Image: ${widget.aisle.aisleImage}");
-                      widget.aisle.aisleImage = 'assets/img/loading.gif';
+                      // widget.aisle.aisleImage = 'assets/img/loading.gif';
                     },
                   ),
                   color: Theme.of(context).primaryColor.withOpacity(0.9),
@@ -146,25 +149,31 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 
                       widget.subAisles != null && widget.subAisles.isNotEmpty
                       ? ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: widget.subAisles.length,
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(height: 10);
-                        },
-                        itemBuilder: (context, index) {
-                          category.Category currSubAisle = widget.subAisles.elementAt(index);
-                          List<Food> items = widget.items[currSubAisle.id];
-                          subimg_timeout(index);
-                          // Define a SubAisle dropdown
-                          return SubCategoryItemWidget(
-                            index: index,
-                            currSubAisle: currSubAisle,
-                            items: items,
-                            theme: theme
-                          );
-                              },
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          primary: false,
+                          itemCount: widget.subAisles.length,
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(height: 10);
+                          },
+                          itemBuilder: (context, index) {
+                            category.Category currSubAisle = widget.subAisles.elementAt(index);
+                            List<Item> items = widget.items[currSubAisle.id];
+                            // subimg_timeout(index);
+                            if (widget.subAisles.length == 1) {
+                              // Define a SubAisle dropdown
+                              return ItemListWidget(items);
+                            } else {
+                              // Define a SubAisle dropdown
+                              return SubCategoryItemWidget(
+                                  index: index,
+                                  currSubAisle: currSubAisle,
+                                  items: items,
+                                  theme: theme
+                              );
+                            }
+
+                          },
                         )
                           : Center(heightFactor: 2,
                               child: SizedBox(
@@ -187,7 +196,7 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
 
 
   Widget SubCategoryItemWidget({int index, category.Category currSubAisle,
-                                  ThemeData theme, List<Food> items}) {
+                                  ThemeData theme, List<Item> items}) {
     return Stack(
         children: <Widget>[
           Opacity(
@@ -200,13 +209,14 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                         padding: EdgeInsets.only(top: 10, bottom: 10),
                         decoration: BoxDecoration(
                             image: DecorationImage(
-                              // image: Image.network(widget.subAisles[int.parse(currSubAisle.id)].aisleImage).image,
-                              image: sub_timed_out[index] && currSubAisle.aisleImage != null
-                                  ? Image.network(currSubAisle.aisleImage).image
-                                  : Image.asset('assets/img/loading.gif').image,
+                              // image: sub_timed_out[index] && currSubAisle.aisleImage != null
+                              //     ? Image.network(currSubAisle.aisleImage).image
+                              //     : Image.asset('assets/img/loading.gif').image,
+                              image: Image.network(currSubAisle.aisleImage).image,
                               fit: BoxFit.cover,
                               onError: (dynamic, StackTrace) {
                                 print("Error Loading Image: ${currSubAisle.aisleImage}");
+                                // currSubAisle.aisleImage = 'assets/img/loading.gif';
                               },
                             ),
                             color: Theme.of(context).primaryColor.withOpacity(0.9),
@@ -249,29 +259,33 @@ class _AislesItemWidgetState extends State<AislesItemWidget> {
                                 ),
                                 children: <Widget>[
                                   const SizedBox(height: 10),
-                                  items == null || items.isEmpty
-                                      ? Center(heightFactor: 2, child: const SizedBox(width: 60, height: 60,
-                                      child: CircularProgressIndicator(strokeWidth: 5)))
-                                      : ListView.separated(
-                                    scrollDirection: Axis.vertical,
-                                    shrinkWrap: true,
-                                    primary: false,
-                                    itemCount: items.length,
-                                    separatorBuilder: (context, index) {
-                                      return SizedBox(height: 10);
-                                    },
-                                    // ignore: missing_return
-                                    itemBuilder: (context, index) {
-                                      return FoodItemWidget(
-                                        heroTag: 'menu_list',
-                                        food: items.elementAt(index),
-                                      );
-                                    },
-                                  ),
+                                  ItemListWidget(items),
                                   SizedBox(height: 20),
                                 ])))
                   ]))
         ]);
+  }
+
+  Widget ItemListWidget(List<Item> items) {
+    return items == null || items.isEmpty
+        ? Center(heightFactor: 2, child: const SizedBox(width: 60, height: 60,
+        child: CircularProgressIndicator(strokeWidth: 5)))
+        : ListView.separated(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            primary: false,
+            itemCount: items.length,
+            separatorBuilder: (context, index) {
+              return SizedBox(height: 10);
+            },
+            // ignore: missing_return
+            itemBuilder: (context, index) {
+              return FoodItemWidget(
+                heroTag: 'menu_list',
+                food: items.elementAt(index),
+              );
+            },
+          );
   }
 
 

@@ -7,7 +7,6 @@ import '../elements/CartBottomDetailsWidget.dart';
 import '../elements/CartItemWidget.dart';
 import '../elements/EmptyCartWidget.dart';
 import '../models/route_argument.dart';
-import '../repository/cart_repository.dart';
 
 class CartWidget extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -42,8 +41,8 @@ class _CartWidgetState extends StateMVC<CartWidget> {
           automaticallyImplyLeading: false,
           leading: IconButton(
             onPressed: () {
-              if (widget.routeArgument.param == '/Food') {
-                Navigator.of(context).pushReplacementNamed('/Food', arguments: RouteArgument(id: widget.routeArgument.id));
+              if (widget.routeArgument.param == '/Item') {
+                Navigator.of(context).pushReplacementNamed('/Item', arguments: RouteArgument(id: widget.routeArgument.id));
               } else if(widget.routeArgument.param == '/Details') {
                 Navigator.pop(context);
               } else if(widget.routeArgument.param == '/StoreSelect') {
@@ -79,7 +78,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
                           title: Container(
                             // padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
                             child: Text(
-                              'Verify your quantity or add any extra notes and click checkout',
+                              'Verify your quantity or add any extra notes and click checkout\nSwipe item to remove',
                               maxLines: 5,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.bodyText1,

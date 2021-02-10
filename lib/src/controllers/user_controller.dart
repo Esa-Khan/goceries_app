@@ -26,6 +26,8 @@ class UserController extends ControllerMVC {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn googleSignIn = GoogleSignIn();
   bool fb_isLoggedIn = false;
+  bool supportsAppleSignIn = false;
+
 
   UserController() {
     loader = Helper.overlayLoader(context);
@@ -37,6 +39,8 @@ class UserController extends ControllerMVC {
     }).catchError((e) {
       print('Notification not configured');
     });
+    Helper.checkiOSVersion().then((value) => setState(() => supportsAppleSignIn = value));
+
   }
 
   void login() async {
@@ -109,7 +113,7 @@ class UserController extends ControllerMVC {
     print("User Sign Out");
   }
 
-  void initiateFacebookLogin() async {
+  void signInWithFacebook() async {
     try {
       Overlay.of(context).insert(loader);
       var facebookLogin = FacebookLogin();
@@ -153,11 +157,10 @@ class UserController extends ControllerMVC {
       final AuthorizationResult result = await AppleSignIn.performRequests([
         AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])
       ]);
-
       switch (result.status) {
         case AuthorizationStatus.authorized:
           try {
-            print("successfull sign in");
+            print("Successfull apple sign in");
             final AppleIdCredential appleIdCredential = result.credential;
 
             OAuthProvider oAuthProvider =
@@ -179,6 +182,13 @@ class UserController extends ControllerMVC {
               updateUser.photoUrl =
               "define an url";
               await val.updateProfile(updateUser);
+              print(val.displayName);
+              print(val.email);
+              print(val.uid);
+              this.user.email = val.email;
+              this.user.name = val.displayName == 'null null' ? '' : val.displayName;
+              this.user.password =val.uid;
+              thirdPartyLogin();
             });
           } catch (e) {
             print("error");
@@ -200,52 +210,69 @@ class UserController extends ControllerMVC {
   }
 
   void thirdPartyLogin() async {
+    timeout();
     repository.login(this.user).then((value) {
-      if (value != null && value.apiToken != null) {
+      if (value != null && value.apiToken != null && loading) {
+        loading = false;
         print("-------------Login Success-------------");
-        Helper.hideLoader(loader);
         if (value.isDriver) {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
         } else {
           Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
           // Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
         }
+        Helper.hideLoader(loader);
       } else {
+        Helper.hideLoader(loader);
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(S.of(context).wrong_email_or_password),
         ));
       }
-      Helper.hideLoader(loader);
     }).catchError((e) {
       print("-------------Login Failed-------------\n" + e.toString());
-      if (e.message == "No account with this email") {
-        repository.register(this.user).then((value) {
-          if (value != null && value.apiToken != null) {
-            print("-------------Register Success-------------");
-            Helper.hideLoader(loader);
-            if (value.isDriver) {
-              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+      loading = false;
+      switch (e.message) {
+        case 'No account with this email':
+          repository.register(this.user).then((value) {
+            if (value != null && value.apiToken != null && loading) {
+              loading = false;
+              print("-------------Register Success-------------");
+              if (value.isDriver) {
+                Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
+              } else {
+                Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
+              }
+              Helper.hideLoader(loader);
             } else {
-              Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/StoreSelect');
+              Helper.hideLoader(loader);
+              scaffoldKey?.currentState?.showSnackBar(SnackBar(
+                content: Text(S.of(context).wrong_email_or_password),
+              ));
             }
-          } else {
-            scaffoldKey?.currentState?.showSnackBar(SnackBar(
-              content: Text(S.of(context).wrong_email_or_password),
-            ));
-          }
+          }).catchError((e) {
+            Helper.hideLoader(loader);
+            print("-------------Register Failed-------------");
+            if (e.toString() == "Exception: Account already exits") {
+              scaffoldKey?.currentState?.showSnackBar(SnackBar(
+                content: Text("Wrong password. Try a different login method."),
+              ));
+            }
+          });
+          break;
+        case 'Incorrect Password':
           Helper.hideLoader(loader);
-        }).catchError((e) {
-          print("-------------Register Failed-------------");
-          if (e.toString() == "Exception: Account already exits") {
-            scaffoldKey?.currentState?.showSnackBar(SnackBar(
-              content: Text("Wrong password. Try a different login method."),
-            ));
-          }
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text("Wrong password. Try a different login method."),
+          ));
+          break;
+        default:
           Helper.hideLoader(loader);
-
-        });
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text("Unknown error, please try again"),
+          ));
+          break;
       }
-      });
+    });
   }
 
   void register() async {
@@ -272,6 +299,23 @@ class UserController extends ControllerMVC {
         ));
       }).whenComplete(() {
         Helper.hideLoader(loader);
+      });
+    }
+  }
+
+  Future<void> timeout() async {
+    if (!loading) {
+      loading = true;
+      Future.delayed(Duration(seconds: 8)).whenComplete(() {
+        if (loading) {
+          print("---------TIMEDOUT----------");
+          Helper.hideLoader(loader);
+          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Login');
+          loading = false;
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text('Request timed out, please try again.'),
+          ));
+        }
       });
     }
   }

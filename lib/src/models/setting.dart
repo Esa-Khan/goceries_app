@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 
 import '../helpers/custom_trace.dart';
@@ -60,7 +61,7 @@ class Setting {
       razorPayEnabled = jsonMap['enable_razorpay'] == null || jsonMap['enable_razorpay'] == '0' ? false : true;
       whatsapp_number = jsonMap['whatsapp_number'];
       facebook_url = jsonMap['facebook_url'];
-      instagram_url = jsonMap['instagram_url'];
+      instagram_url = Platform.isIOS ? jsonMap['instagram_url_ios'] : jsonMap['instagram_url_android'];
       phone_number = jsonMap['phone_number'];
       promo = jsonMap['promo'] == null ? null : getPromos(jsonMap['promo']);
       try {

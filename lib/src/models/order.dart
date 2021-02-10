@@ -52,6 +52,8 @@ class Order {
         driver_number = jsonMap['driver']['number'];
       }
 
+      currentUser.value.available = jsonMap['available'] != null ? jsonMap['available'] : false;
+
     } catch (e) {
       id = '';
       discount = 0.0;

@@ -1,5 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import '../elements/FacebookSigninButtonWidget.dart';
 import '../elements/GoogleSigninButtonWidget.dart';
 import '../elements/AppleSigninButtonWidget.dart';
@@ -10,7 +12,7 @@ import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
 import '../repository/user_repository.dart' as userRepo;
-import '../repository/settings_repository.dart' as settingsRepo;
+import '../repository/settings_repository.dart' as _setting;
 import '../helpers/helper.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -20,7 +22,6 @@ class LoginWidget extends StatefulWidget {
 
 class _LoginWidgetState extends StateMVC<LoginWidget> {
   UserController _con;
-  bool supportsAppleSignIn = false;
   _LoginWidgetState() : super(UserController()) {
     _con = controller;
   }
@@ -28,7 +29,6 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
   @override
   void initState() {
     super.initState();
-    Helper.checkiOSVersion().then((value) => setState(() => supportsAppleSignIn = value));
     if (userRepo.currentUser.value.apiToken != null) {
       Navigator.of(context).pushReplacementNamed('/Pages', arguments: 2);
     }
@@ -51,7 +51,7 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
             shrinkWrap: true,
             children: [
               Padding(
-                  padding: EdgeInsets.only(top: settingsRepo.compact_view_vertical ? 10 : 45, bottom: 10),
+                  padding: EdgeInsets.only(top: _setting.compact_view_vertical ? 10 : 45, bottom: 10),
                   child: Column(
                       children: [
                         Container(
@@ -82,15 +82,44 @@ class _LoginWidgetState extends StateMVC<LoginWidget> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                FacebookSigninButtonWidget(con: _con),
-                                const Divider(height: 15),
-                                GoogleSigninButtonWidget(con: _con),
-                                const Divider(height: 15),
-                                supportsAppleSignIn
-                                  ? AppleSigninButtonWidget(con: _con)
+                                _con.supportsAppleSignIn
+                                  ? SignInButton(
+                                    _setting.setting.value.brightness.value == Brightness.light
+                                      ? Buttons.AppleDark
+                                      : Buttons.Apple,
+                                      elevation: 10,
+                                      padding: EdgeInsets.symmetric(vertical: 15),
+                                      onPressed: () {
+                                      _con.signInWithApple();
+                                      },
+                                    )
                                   : const SizedBox(),
+                                _con.supportsAppleSignIn
+                                  ? const Divider(height: 10)
+                                  : const SizedBox(),
+                                SignInButton(
+                                  _setting.setting.value.brightness.value == Brightness.light
+                                      ? Buttons.Google
+                                      : Buttons.GoogleDark,
+                                  padding: EdgeInsets.symmetric(vertical: 5),
+                                  elevation: 10,
+                                  onPressed: () {
+                                    _con.signInWithGoogle();
+                                  },
+                                ),
+                                const Divider(height: 10),
+                                SignInButton(
+                                  Buttons.Facebook,
+                                  padding: EdgeInsets.symmetric(vertical: 13),
+                                  elevation: 10,
+                                  onPressed: () {
+                                    _con.signInWithFacebook();
+                                  },
+                                ),
+
+
                                 Padding(
-                                    padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_vertical ? 5 : 15),
+                                    padding: EdgeInsets.symmetric(vertical: _setting.compact_view_vertical ? 5 : 15),
                                     child: Text(
                                       "OR",
                                       textAlign: TextAlign.center,

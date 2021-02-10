@@ -13,11 +13,12 @@ import '../helpers/maps_util.dart';
 class DeliveryPickupController extends CartController {
   GlobalKey<ScaffoldState> scaffoldKey;
   List<model.Address> deliveryAddress = new List<model.Address>();
+  bool selectedAddress = false;
   PaymentMethodList list;
   bool loading = false;
 
   DeliveryPickupController() {
-    super.listenForCarts();
+    // super.listenForCarts();
 //    listenForDeliveryAddress();
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
     listenForAddresses();
@@ -30,17 +31,36 @@ class DeliveryPickupController extends CartController {
   }
 
   void addAddress(model.Address address) {
-    userRepo.addAddress(address).then((value) {
-      setState(() {
-        settingRepo.deliveryAddress.value = value;
-        deliveryAddress.add(value);
+    setState(() => loading = true);
+    bool repeated_address = false;
+    for (int i = 0; i < deliveryAddress.length; i++) {
+      model.Address element = deliveryAddress.elementAt(i);
+      if (element.address == address.address && element.longitude == address.longitude && element.latitude == address.latitude) {
+        repeated_address = true;
+        break;
+      }
+    };
+    if (!repeated_address) {
+      userRepo.addAddress(address).then((value) {
+        setState(() {
+          settingRepo.deliveryAddress.value = value;
+          deliveryAddress.add(value);
 //        this.deliveryAddress = value;
+        });
+      }).whenComplete(() {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).new_address_added_successfully),
+          duration: Duration(milliseconds: 1500),
+        ));
+        setState(() => loading = false);
       });
-    }).whenComplete(() {
+    } else {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).new_address_added_successfully),
+        content: Text('Address already added'),
+        duration: Duration(milliseconds: 1500),
       ));
-    });
+      setState(() => loading = false);
+    }
   }
 
   void listenForAddresses({String message}) async {
@@ -123,6 +143,7 @@ class DeliveryPickupController extends CartController {
         currPaymentMethod.selected = !currPaymentMethod.selected;
         currPaymentMethod.selected = !currPaymentMethod.selected;
       }
+      selectedAddress = currPaymentMethod.selected;
       if (currPaymentMethod.selected) {
         settingRepo.deliveryAddress.value = currAddress;
       }
@@ -215,7 +236,8 @@ class DeliveryPickupController extends CartController {
 
 
   void removeDeliveryAddress(model.Address address) async {
-    userRepo.removeDeliveryAddress(address).then((value) {
+    setState(() => loading = true);
+    userRepo.deactivateDeliveryAddress(address).then((value) {
       setState(() {
         this.deliveryAddress.remove(address);
       });
@@ -223,21 +245,15 @@ class DeliveryPickupController extends CartController {
         content: Text(S.of(context).delivery_address_removed_successfully),
         duration: Duration(seconds: 1),
       ));
+      setState(() => loading = false);
     });
   }
 
 
-  void showTimingSnack(String desc) {
+  void showSnackBar(String message) {
     scaffoldKey?.currentState?.showSnackBar(SnackBar(
-      content: Text("Delivery not available at that time. Timings: ${desc}.", textScaleFactor: 0.92),
-      duration: Duration(seconds: 3),
-    ));
-  }
-
-  void showSnackToSelectBothTimeAndDate() {
-    scaffoldKey?.currentState?.showSnackBar(SnackBar(
-      content: Text("Please specify both date and time.", textScaleFactor: 0.92),
-      duration: Duration(seconds: 3),
+      content: Text(message, textScaleFactor: 0.92),
+      duration: Duration(milliseconds: 1500),
     ));
   }
 

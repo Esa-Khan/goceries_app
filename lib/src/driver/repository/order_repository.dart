@@ -30,7 +30,6 @@ Future<Stream<Order>> getOrders() async {
 //   _queryParams['searchFields'] = 'driver.id:=;order_status_id:<>;delivery_address_id:<>';
   _queryParams['store_ids'] = _user.store_ids;
   _queryParams['driver_id'] = _user.id;
-  _queryParams['active'] = _user.id;
   uri = uri.replace(queryParameters: _queryParams);
   try {
     final client = new http.Client();

@@ -20,7 +20,7 @@ class FoodOrderItemWidget extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed('/Food', arguments: RouteArgument(id: this.foodOrder.food.id));
+        Navigator.of(context).pushNamed('/Item', arguments: RouteArgument(id: this.foodOrder.food.id, heroTag: 'From cart'));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -45,7 +45,12 @@ class FoodOrderItemWidget extends StatelessWidget {
                     height: 60,
                     width: 60,
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/img/image_default.png',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 150,
+                  ),
                 ),
               ),
             ),

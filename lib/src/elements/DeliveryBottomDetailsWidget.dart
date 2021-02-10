@@ -1,23 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:saudaghar/src/helpers/maps_util.dart';
+import '../models/address.dart';
+import '../controllers/delivery_pickup_controller.dart';
 import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
-
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
 
-class DeliveryBottomDetailsWidget extends StatefulWidget {
-  final con;
-
-  const DeliveryBottomDetailsWidget({Key key, this.con}) : super(key: key);
-
-  _DeliveryBottomDetailsWidget createState() => _DeliveryBottomDetailsWidget();
-}
-
-class DateTimePicker extends StatefulWidget {
-  @override
-  _DateTimePickerState createState() => _DateTimePickerState();
-}
 
 class _DateTimePickerState extends State<DateTimePicker> {
   @override
@@ -29,10 +19,32 @@ class _DateTimePickerState extends State<DateTimePicker> {
   }
 }
 
+class DateTimePicker extends StatefulWidget {
+  @override
+  _DateTimePickerState createState() => _DateTimePickerState();
+}
+
+class DeliveryBottomDetailsWidget extends StatefulWidget {
+  final DeliveryPickupController con;
+
+  const DeliveryBottomDetailsWidget({Key key, this.con}) : super(key: key);
+
+  _DeliveryBottomDetailsWidget createState() => _DeliveryBottomDetailsWidget();
+}
+
+
 class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
   bool _isVisible = false;
   String _date = "Set Day";
   String _time = "Set Time";
+  OverlayEntry loader;
+
+  @override
+  void initState() {
+    super.initState();
+    loader = Helper.overlayLoader(context);
+  }
+
 
   void showScheduler() {
     setState(() {
@@ -49,7 +61,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
     return widget.con.carts.isEmpty
         ? const SizedBox()
         : Container(
-            height: 250,
+            height: 240,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
@@ -68,16 +80,14 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  Scheduler(),
+                  widget.con.store.id == '0' ? Scheduler() : TimeSlotScheduler(['9am - 12pm', '12pm - 3pm', '3pm - 6pm']),
+                  Expanded(child: SizedBox()),
                   Row(
                     children: <Widget>[
                       Expanded(
                         child: Text(
                           S.of(context).subtotal,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              .merge(TextStyle(fontSize: 18)),
+                          style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 18)),
                         ),
                       ),
                       Helper.getPrice(widget.con.subTotal, context,
@@ -90,10 +100,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                       Expanded(
                         child: Text(
                           S.of(context).delivery_fee,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText1
-                              .merge(TextStyle(fontSize: 13)),
+                          style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13)),
                         ),
                       ),
                       if (Helper.canDelivery(
@@ -109,7 +116,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                             style: Theme.of(context).textTheme.subtitle1)
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
 
                   Stack(
                     fit: StackFit.loose,
@@ -152,15 +159,15 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
-                  Text(
-                    "*Prices may vary on store receipt but this is official payable amount",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context)
-                        .textTheme
-                        .caption
-                        .merge(TextStyle(fontSize: 10)),
-                  ),
+                  const SizedBox(height: 10),
+                  // Text(
+                  //   "*Prices may vary on store receipt but this is official payable amount",
+                  //   textAlign: TextAlign.center,
+                  //   style: Theme.of(context)
+                  //       .textTheme
+                  //       .caption
+                  //       .merge(TextStyle(fontSize: 10)),
+                  // ),
                 ],
               ),
             ),
@@ -255,7 +262,9 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                 ),
                 color: Theme.of(context).primaryColor,
               ),
-              SizedBox(width: 10),
+              Flexible (
+                child: SizedBox(width: 10),
+              ),
               RaisedButton(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0)),
@@ -308,7 +317,9 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                 ),
                 color: Theme.of(context).primaryColor,
               ),
-              SizedBox(width: 10),
+              Flexible (
+                child: SizedBox(width: 10),
+              ),
               ButtonTheme(
                   minWidth: 10.0,
                   child: RaisedButton(
@@ -352,90 +363,250 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
     );
   }
 
-  void checkout() {
-    if (!_isVisible || (_date == "Set Day" && _time == "Set Time")) {
-      widget.con.goCheckout(context);
-    } else if (_isVisible &&
-        ((_date == "Set Day" && _time != "Set Time") ||
-            (_date != "Set Day" && _time == "Set Time"))) {
-      widget.con.showSnackToSelectBothTimeAndDate();
-    } else {
-      _time = _time.replaceAll(" ", "");
-      String year = _date.split('/')[2];
-      String month = _date.split('/')[1];
-      String day = _date.split('/')[0];
-      String hour = _time.trim().split(':')[0];
-      String minute = _time.trim().split(':')[1];
-      DateTime scheduled_time =
-          DateTime.tryParse(year + month + day + 'T' + hour + minute);
-      currentCart_time.value = scheduled_time;
 
-      var desc = widget.con.carts[0].food?.restaurant?.description;
-      if (desc == '24/7') {
-        widget.con.goCheckout(context);
-      } else {
-        var now = int.parse(_time.trim().split(':')[0]) +
-            int.parse(_time.trim().split(':')[1]) / 100;
-
-        var times = desc
-            .replaceAll(" ", "")
-            .replaceAll("m", "")
-            .replaceAll("<p>", "")
-            .replaceAll("</p>", "")
-            .split('-');
-        var openTime_hour = -1,
-            closeTime_hour = -1,
-            openTime_min = 0,
-            closeTime_min = 0;
-
-        if (times[0].contains(":")) {
-          openTime_min = int.parse(times[0]
-              .substring(times[0].indexOf(':') + 1, times[0].length - 1));
-          times[0] = times[0].replaceAll(":" + openTime_min.toString(), "");
+  List<String> dropdown_vals;
+  String dropdownValue = '';
+  Widget TimeSlotScheduler(List<String> timeslots) {
+    if (dropdownValue == '') {
+      dropdown_vals = ['Select Delivery Timeslot'];
+      var current_date = DateTime.now();
+      // print(DateFormat('d EEEE, h:mm a').format(date));
+      List<int> starting_times = [];
+      timeslots.forEach((element) {
+        int day = 0;
+        String start_time = element.split(' - ')[0];
+        assert(start_time.contains('am') || start_time.contains('pm'));
+        if (start_time.contains('am') || start_time.contains('12pm')) {
+          start_time = start_time.replaceAll('am', '');
+          start_time = start_time.replaceAll('pm', '');
+        } else if (start_time.contains('pm') || start_time.contains('12am')){
+          start_time = start_time.replaceAll('am', '');
+          start_time = start_time.replaceAll('pm', '');
+          start_time = '${(int.tryParse(start_time) + 12)}';
         }
-
-        if (times[0].endsWith('a') ||
-            (times[1].contains("12") && times[1].endsWith("p"))) {
-          openTime_hour =
-              int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
-        } else if (times[0].endsWith('p') ||
-            (times[1].contains("12") && times[1].endsWith("a"))) {
-          openTime_hour =
-              12 + int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
-        }
-
-        if (times[1].contains(":")) {
-          closeTime_min = int.parse(times[1]
-              .substring(times[1].indexOf(':') + 1, times[1].length - 1));
-          times[1] = times[1].replaceAll(":" + closeTime_min.toString(), "");
-        }
-
-        if (times[1].endsWith('p') ||
-            (times[1].contains("12") && times[1].endsWith("a"))) {
-          closeTime_hour =
-              12 + int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
-        } else if ((times[1].endsWith('a') &&
-                int.parse(times[1].replaceAll("a", "")) > openTime_hour) ||
-            (times[1].contains("12") && times[1].endsWith("p"))) {
-          closeTime_hour =
-              int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
-        } else if (times[1].endsWith("a") &&
-            int.parse(times[1].replaceAll("a", "")) < openTime_hour) {
-          closeTime_hour = 24 + int.parse(times[1].replaceAll("a", ""));
-        }
-
-        if (now >= (openTime_hour + openTime_min / 100) &&
-            now <= (closeTime_hour + closeTime_min / 100)) {
-          // currentCart_time.value = _date + " " + _time;
-          widget.con.goCheckout(context);
+        if (current_date.hour < int.tryParse(start_time)) {
+          day = current_date.weekday;
         } else {
-          desc = desc
-              .replaceAll("<p>", "")
-              .replaceAll("</p>", "")
-              .replaceAll("-", " - ");
-          widget.con.showTimingSnack(desc);
+          day = current_date.weekday == 7 ? 1 : current_date.weekday + 1;
         }
-      }
+        dropdown_vals.add('${getDayfromInt(day)}, ${element}');
+      });
+      dropdownValue = dropdown_vals.first;
+    }
+
+
+
+    // String dropdownValue = dropdown_vals.first;
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25.0),
+        border: Border.all(
+          color: Theme.of(context).accentColor,
+          style: BorderStyle.solid,
+          width: 2
+        ),
+      ),
+      child: DropdownButton<String>(
+        value: dropdownValue,
+        icon: Icon(Icons.arrow_drop_down, color: Theme.of(context).accentColor),
+        iconSize: 44,
+        style: TextStyle(color: Theme.of(context).accentColor, fontSize: 20),
+        underline: Container(
+          height: 0,
+          color: Theme.of(context).accentColor,
+        ),
+        onChanged: (String newValue) {
+          setState(() => dropdownValue = newValue);
+        },
+        items: dropdown_vals.map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ));
+  }
+
+  String getDayfromInt(int i) {
+    assert(i > 0);
+    assert(i < 8);
+    switch (i) {
+      case 1:
+        return 'Monday';
+        break;
+      case 2:
+        return 'Tuesday';
+        break;
+      case 3:
+        return 'Wednesday';
+        break;
+      case 4:
+        return 'Thursday';
+        break;
+      case 5:
+        return 'Friday';
+        break;
+      case 6:
+        return 'Saturday';
+        break;
+      case 7:
+        return 'Sunday';
+        break;
     }
   }
+
+  Future<void> checkout() async {
+    print(widget.con.selectedAddress);
+    if (widget.con.selectedAddress) {
+      Overlay.of(context).insert(loader);
+      Address store_address = new Address(
+          long: double.tryParse(widget.con.carts[0].food.restaurant.longitude),
+          lat: double.tryParse(widget.con.carts[0].food.restaurant.latitude)
+      );
+      // Address curr_address = new Address(address: result.address,
+      //                                     long: result.latLng.longitude,
+      //                                     lat: result.latLng.latitude
+      //                             );
+      bool within_range = await MapsUtil.withinRange(settingsRepo.deliveryAddress.value, store_address,
+          widget.con.carts[0].food.restaurant.deliveryRange);
+      Helper.hideLoader(loader);
+      if (!within_range) {
+        showDialog(
+            context: context,
+            builder: (context) => updateOrderDialog(settingsRepo.deliveryAddress.value)
+        );
+      } else {
+        if (widget.con.store.id == '0') {
+          timeslot_time.value = null;
+          if (!_isVisible || (_date == "Set Day" && _time == "Set Time")) {
+            widget.con.goCheckout(context);
+          } else if (_isVisible
+              && ((_date == "Set Day" && _time != "Set Time")
+                  || (_date != "Set Day" && _time == "Set Time"))) {
+
+            widget.con.showSnackBar("Please specify both date and time.");
+
+          } else {
+            _time = _time.replaceAll(" ", "");
+            String year = _date.split('/')[2];
+            String month = int.parse(_date.split('/')[1]) < 10 ? '0' + _date.split('/')[1] : _date.split('/')[1];
+            String day = int.parse(_date.split('/')[0]) < 10 ? '0' + _date.split('/')[0] : _date.split('/')[0];
+            String hour = int.parse(_time.trim().split(':')[0]) < 10 ? '0' + _time.trim().split(':')[0] : _time.trim().split(':')[0];
+            String minute = _time.trim().split(':')[1];
+            DateTime scheduled_time = DateTime.parse(year + month + day + 'T' + hour + minute + '00');
+            currentCart_time.value = scheduled_time;
+            var desc = widget.con.carts[0].food?.restaurant?.description;
+            if (desc != '24/7') {
+              var now = int.parse(_time.trim().split(':')[0]) + int.parse(_time.trim().split(':')[1]) / 100;
+              var times = desc
+                  .replaceAll(" ", "")
+                  .replaceAll("m", "")
+                  .replaceAll("<p>", "")
+                  .replaceAll("</p>", "")
+                  .split('-');
+              var openTime_hour = -1,
+                  closeTime_hour = -1,
+                  openTime_min = 0,
+                  closeTime_min = 0;
+
+              if (times[0].contains(":")) {
+                openTime_min = int.parse(times[0]
+                    .substring(times[0].indexOf(':') + 1, times[0].length - 1));
+                times[0] = times[0].replaceAll(":" + openTime_min.toString(), "");
+              }
+
+              if (times[0].endsWith('a') ||
+                  (times[1].contains("12") && times[1].endsWith("p"))) {
+                openTime_hour =
+                    int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
+              } else if (times[0].endsWith('p') ||
+                  (times[1].contains("12") && times[1].endsWith("a"))) {
+                openTime_hour =
+                    12 + int.parse(times[0].replaceAll("p", "").replaceAll("a", ""));
+              }
+
+              if (times[1].contains(":")) {
+                closeTime_min = int.parse(times[1]
+                    .substring(times[1].indexOf(':') + 1, times[1].length - 1));
+                times[1] = times[1].replaceAll(":" + closeTime_min.toString(), "");
+              }
+
+              if (times[1].endsWith('p') ||
+                  (times[1].contains("12") && times[1].endsWith("a"))) {
+                closeTime_hour = 12 + int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
+              } else if ((times[1].endsWith('a') &&
+                  int.parse(times[1].replaceAll("a", "")) > openTime_hour) ||
+                  (times[1].contains("12") && times[1].endsWith("p"))) {
+                closeTime_hour = int.parse(times[1].replaceAll("p", "").replaceAll("a", ""));
+              } else if (times[1].endsWith("a") &&
+                  int.parse(times[1].replaceAll("a", "")) < openTime_hour) {
+                closeTime_hour = 24 + int.parse(times[1].replaceAll("a", ""));
+              }
+
+              if (now >= (openTime_hour + openTime_min / 100) && now <= (closeTime_hour + closeTime_min / 100)) {
+                // currentCart_time.value = _date + " " + _time;
+                widget.con.goCheckout(context);
+              } else {
+                desc = desc
+                    .replaceAll("<p>", "")
+                    .replaceAll("</p>", "")
+                    .replaceAll("-", " - ");
+                widget.con.showSnackBar("Delivery not available at that time. Timings: ${desc}.");
+              }
+
+            } else {
+              widget.con.goCheckout(context);
+            }
+          }
+        } else {
+          if (dropdownValue == 'Select Delivery Timeslot') {
+            widget.con.showSnackBar("Please select a timeslot for delivery");
+          } else {
+            timeslot_time.value = dropdownValue;
+            currentCart_time.value = null;
+            widget.con.goCheckout(context);
+          }
+        }
+      }
+    } else {
+      widget.con.showSnackBar(S.of(context).please_select_delivery);
+    }
+
+  }
+
+  Widget updateOrderDialog(Address curr_address) {
+    String address = '';
+    if (curr_address.address == null) {
+      address = "this address.\n\n";
+    } else {
+      print(curr_address.address);
+      address = "address: \n\n'${curr_address.address}' \n\n";
+    }
+    return AlertDialog(
+      title:  Wrap(
+        spacing: 10,
+        children: <Widget>[
+          Icon(Icons.report, color: Colors.orange),
+          Text(
+            'Store too far',
+            style: TextStyle(color: Colors.orange, fontSize: 20),
+          ),
+        ],
+      ),
+      content: Text("Unfortunately ${widget.con.carts.first.food.restaurant.name} does not deliver to ${address} We aim to expand our services in the near future. Feel free to  contact our support team for more information."),
+      actions: <Widget>[
+        FlatButton(
+          child: new Text(
+              S.of(context).dismiss),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+  }
+
 }
+

@@ -7,14 +7,16 @@ import '../../generated/l10n.dart';
 import '../models/cart.dart';
 import '../models/extra.dart';
 import '../models/favorite.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../repository/cart_repository.dart';
 import '../repository/food_repository.dart';
+import '../repository/food_repository.dart' as foodRepo;
 
 class FoodController extends ControllerMVC {
-  Food food;
+  Item item;
   Category aisle;
-  List<Food> similarItems = new List<Food>();
+  List<Item> similarItems = new List<Item>();
+  bool loaded_similaritems = false;
   double quantity = 1;
   double total = 0;
   List<Cart> carts = [];
@@ -27,22 +29,27 @@ class FoodController extends ControllerMVC {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
-  void listenForFood({String foodId, bool getAisle = false, String message}) async {
-    final Stream<Food> stream = await getFood(foodId);
-    stream.listen((Food _food) async {
-      setState(() => food = _food);
+  Future<void> listenForFood({String foodId, bool getAisle = false, String message}) async {
+    setState(() => loaded_similaritems = false);
+    final Stream<Item> stream = await getFood(foodId);
+    stream.listen((Item _food) async {
+      setState(() => item = _food);
+
       if (_food.ingredients != "<p>.</p>") {
         var otherItems = _food.ingredients.split('-');
         otherItems.remove(_food.id);
         otherItems.forEach((element) async {
-          final Stream<Food> currStream = await getFood(element);
-          currStream.listen((Food _food) {
+          final Stream<Item> currStream = await getFood(element);
+          currStream.listen((Item _food) {
             setState(() => similarItems.add(_food));
+          }, onDone: () {
+            setState(() => loaded_similaritems = true);
           });
         });
       }
+
       if (getAisle) {
-        listenForCategory(food.category);
+        listenForCategory(item.category);
       }
     }, onError: (a) {
       print(a);
@@ -84,14 +91,14 @@ class FoodController extends ControllerMVC {
     });
   }
 
-  bool isSameRestaurants(Food food) {
+  bool isSameRestaurants(Item item) {
     if (carts.isNotEmpty) {
-      return carts[0].food?.restaurant?.id == food.restaurant?.id;
+      return carts[0].food?.restaurant?.id == item.restaurant?.id;
     }
     return true;
   }
 
-  void addToCart(Food food, {bool reset = false}) async {
+  void addToCart(Item item, {bool reset = false}) async {
     if (this.loadCart) {
       if (showMessage) {
         showMessage = false;
@@ -106,10 +113,10 @@ class FoodController extends ControllerMVC {
       showMessage = true;
       setState(() => this.loadCart = true);
       var _newCart = new Cart();
-      _newCart.food = food;
-      _newCart.extras = food.extras.where((element) => element.checked).toList();
+      _newCart.food = item;
+      _newCart.extras = item.extras.where((element) => element.checked).toList();
       _newCart.quantity = this.quantity;
-      // if food exist in the cart then increment quantity
+      // if item exist in the cart then increment quantity
       var _oldCart = isExistInCart(_newCart);
       if (_oldCart != null) {
         _oldCart.quantity += this.quantity;
@@ -119,11 +126,11 @@ class FoodController extends ControllerMVC {
           });
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).item_was_added_to_cart),
-            duration: Duration(seconds: 1),
+            duration: Duration(milliseconds: 500),
           ));
         });
       } else {
-        // The food doesn't exist in the cart add new one
+        // The item doesn't exist in the cart add new one
         addCart(_newCart, reset).whenComplete(() {
           setState(() {
             this.loadCart = false;
@@ -140,10 +147,10 @@ class FoodController extends ControllerMVC {
     return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart), orElse: () => null);
   }
 
-  void addToFavorite(Food food) async {
+  void addToFavorite(Item item) async {
     var _favorite = new Favorite();
-    _favorite.food = food;
-    _favorite.extras = food.extras.where((Extra _extra) {
+    _favorite.food = item;
+    _favorite.extras = item.extras.where((Extra _extra) {
       return _extra.checked;
     }).toList();
     addFavorite(_favorite).then((value) {
@@ -152,6 +159,7 @@ class FoodController extends ControllerMVC {
       });
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).thisFoodWasAddedToFavorite),
+        duration: Duration(seconds: 1),
       ));
     });
   }
@@ -163,21 +171,22 @@ class FoodController extends ControllerMVC {
       });
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).thisFoodWasRemovedFromFavorites),
+        duration: Duration(seconds: 1),
       ));
     });
   }
 
   Future<void> refreshFood() async {
-    var _id = food.id;
-    food = new Food();
-    similarItems = new List<Food>();
+    var _id = item.id;
+    item = new Item();
+    similarItems = new List<Item>();
     listenForFavorite(foodId: _id);
     listenForFood(foodId: _id, message: S.of(context).foodRefreshedSuccessfuly);
   }
 
   calculateTotal() {
-    total = food?.price ?? 0;
-    food?.extras?.forEach((extra) {
+    total = item?.price ?? 0;
+    item?.extras?.forEach((extra) {
       total += extra.checked ? extra.price : 0;
     });
     total *= quantity;
@@ -199,8 +208,9 @@ class FoodController extends ControllerMVC {
   }
 
   loadSimilarItems() async {
-    final Stream<Food> stream = await getSimilarItems(food.id);
-    stream.listen((Food _food) async {
+    setState(() => loaded_similaritems = false);
+    final Stream<Item> stream = await getSimilarItems(item.id);
+    stream.listen((Item _food) async {
       bool repeated_item = false;
       for (int i = 0; i < similarItems.length; i++) {
         if (_food.id == similarItems.elementAt(i)) {
@@ -212,7 +222,16 @@ class FoodController extends ControllerMVC {
         setState(() => similarItems.add(_food));
       }
 
+    },
+    onDone: () {
+      setState(() => loaded_similaritems = true);
     });
+  }
+
+
+  updateItem(Item new_item) async {
+    final Item updated_item = await foodRepo.updateItem(item);
+    setState(() => item = updated_item);
   }
 
 }

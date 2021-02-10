@@ -1,10 +1,10 @@
 import '../helpers/custom_trace.dart';
 import '../models/extra.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 
 class Favorite {
   String id;
-  Food food;
+  Item food;
   List<Extra> extras;
   String userId;
 
@@ -13,11 +13,11 @@ class Favorite {
   Favorite.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'] != null ? jsonMap['id'].toString() : null;
-      food = jsonMap['food'] != null ? Food.fromJSON(jsonMap['food']) : Food.fromJSON({});
+      food = jsonMap['food'] != null ? Item.fromJSON(jsonMap['food']) : Item.fromJSON({});
       extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : null;
     } catch (e) {
       id = '';
-      food = Food.fromJSON({});
+      food = Item.fromJSON({});
       extras = [];
       print(CustomTrace(StackTrace.current, message: e));
     }

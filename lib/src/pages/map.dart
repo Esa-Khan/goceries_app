@@ -69,7 +69,7 @@ class _MapWidgetState extends StateMVC<MapWidget> {
               _con.goCurrentLocation();
             },
           ),
-          SizedBox(width: 10,)
+          SizedBox(width: 10)
 //          IconButton(
 //            icon: Icon(
 //              Icons.filter_list,

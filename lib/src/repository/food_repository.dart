@@ -10,12 +10,12 @@ import '../helpers/helper.dart';
 import '../models/address.dart';
 import '../models/favorite.dart';
 import '../models/filter.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/review.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
-Future<Stream<Food>> getTrendingFoods(Address address) async {
+Future<Stream<Item>> getTrendingFoods(Address address) async {
   Uri uri = Helper.getUri('api/foods');
   Map<String, dynamic> _queryParams = {};
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -37,31 +37,31 @@ Future<Stream<Food>> getTrendingFoods(Address address) async {
     final streamedRest = await client.send(http.Request('get', uri));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-      return Food.fromJSON(data);
+      return Item.fromJSON(data);
     });
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return new Stream.value(new Item.fromJSON({}));
   }
 }
 
-Future<Stream<Food>> getFood(String foodId) async {
+Future<Stream<Item>> getFood(String foodId) async {
   Uri uri = Helper.getUri('api/foods/$foodId');
   uri = uri.replace(queryParameters: {'with': 'nutrition;restaurant;category;extras;extraGroups;foodReviews;foodReviews.user'});
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).map((data) {
-      return Food.fromJSON(data);
+      return Item.fromJSON(data);
     });
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return new Stream.value(new Item.fromJSON({}));
   }
 }
 
 
-Future<Stream<Food>> getStoreItems(String storeID, {String limit, String id}) async {
+Future<Stream<Item>> getStoreItems(String storeID, {String limit, String id}) async {
   Uri uri = Helper.getUri('api/foods');
   Map<String, dynamic> _queryParams = {};
   if (id != null)
@@ -78,43 +78,36 @@ Future<Stream<Food>> getStoreItems(String storeID, {String limit, String id}) as
     final streamedRest = await client.send(http.Request('get', uri));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-      return Food.fromJSON(data);
+      return Item.fromJSON(data);
     });
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return new Stream.value(new Item.fromJSON({}));
   }
 }
 
 
-Future<Stream<Food>> getSimilarItems(String item_id) async {
-  Uri uri = Helper.getUri('api/similaritems');
-  Map<String, dynamic> _queryParams = {};
-  _queryParams['id'] = item_id;
-  final String _apiToken = userRepo.currentUser.value.apiToken;
-
-  if (_apiToken == null) {
-    return Stream.value(null);
-  } else {
-    _queryParams['api_token'] = _apiToken;
-  }
-
-  uri = uri.replace(queryParameters: _queryParams);
+Future<Stream<Item>> getSimilarItems(String item_id) async {
+  Uri uri = Helper.getUri('api/similaritems/${item_id}');
+  // Map<String, dynamic> _queryParams = {};
+  // _queryParams['id'] = item_id;
+  //
+  // uri = uri.replace(queryParameters: _queryParams);
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', uri));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-      return Food.fromJSON(data);
+      return Item.fromJSON(data);
     });
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return new Stream.value(new Item.fromJSON({}));
   }
 }
 
 
-Future<Stream<Food>> searchFoods(String search, Address address, {String storeID, String limit, String id}) async {
+Future<Stream<Item>> searchFoods(String search, Address address, {String storeID, String limit, String id, bool isStore}) async {
   if (search == null) search = "";
   Uri uri = Helper.getUri('api/foods');
   Map<String, dynamic> _queryParams = {};
@@ -122,6 +115,8 @@ Future<Stream<Food>> searchFoods(String search, Address address, {String storeID
   _queryParams['searchFields'] = 'name:like;description:like';
   if (id != null)
     _queryParams['id'] = id;
+  if (isStore != null)
+    _queryParams['isStore'] = 'false';
 
   if (storeID != null && limit != null) {
     _queryParams['restaurant_id'] = storeID;
@@ -144,15 +139,15 @@ Future<Stream<Food>> searchFoods(String search, Address address, {String storeID
     final streamedRest = await client.send(http.Request('get', uri));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-      return Food.fromJSON(data);
+      return Item.fromJSON(data);
     });
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return new Stream.value(new Item.fromJSON({}));
   }
 }
 
-Future<Stream<Food>> getFoodsByCategory(categoryId, {storeID}) async {
+Future<Stream<Item>> getFoodsByCategory(categoryId, {storeID}) async {
   Uri uri = Helper.getUri('api/foods');
   Map<String, String> _queryParams = {};
   // SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -170,11 +165,11 @@ Future<Stream<Food>> getFoodsByCategory(categoryId, {storeID}) async {
     final streamedRest = await client.send(http.Request('get', uri));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-      return Food.fromJSON(data);
+      return Item.fromJSON(data);
     });
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return new Stream.value(new Item.fromJSON({}));
   }
 }
 
@@ -262,22 +257,22 @@ Future<Favorite> removeFavorite(Favorite favorite) async {
   }
 }
 
-Future<Stream<Food>> getFoodsOfRestaurant(String restaurantId) async {
+Future<Stream<Item>> getFoodsOfRestaurant(String restaurantId) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}foods?with=restaurant&search=restaurant.id:$restaurantId&searchFields=restaurant.id:=';
   try {
     final client = new http.Client();
     final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-      return Food.fromJSON(data);
+      return Item.fromJSON(data);
     });
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: url).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return new Stream.value(new Item.fromJSON({}));
   }
 }
 
-Future<Stream<Food>> getTrendingFoodsOfRestaurant(String restaurantId) async {
+Future<Stream<Item>> getTrendingFoodsOfRestaurant(String restaurantId) async {
   Uri uri = Helper.getUri('api/foods');
   uri = uri.replace(queryParameters: {
     'with': 'restaurant',
@@ -290,15 +285,15 @@ Future<Stream<Food>> getTrendingFoodsOfRestaurant(String restaurantId) async {
     final streamedRest = await client.send(http.Request('get', uri));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-      return Food.fromJSON(data);
+      return Item.fromJSON(data);
     });
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return new Stream.value(new Item.fromJSON({}));
   }
 }
 
-Future<Stream<Food>> getFeaturedFoodsOfRestaurant(String storeID, {String limit, String id}) async {
+Future<Stream<Item>> getFeaturedFoodsOfRestaurant(String storeID, {String limit, String id}) async {
   Uri uri = Helper.getUri('api/foods');
   Map<String, dynamic> _queryParams = {};
   uri = uri.replace(queryParameters: {
@@ -328,15 +323,15 @@ Future<Stream<Food>> getFeaturedFoodsOfRestaurant(String storeID, {String limit,
     final streamedRest = await client.send(http.Request('get', uri));
 
     return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map((data) => Helper.getData(data)).expand((data) => (data as List)).map((data) {
-      return Food.fromJSON(data);
+      return Item.fromJSON(data);
     });
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
-    return new Stream.value(new Food.fromJSON({}));
+    return new Stream.value(new Item.fromJSON({}));
   }
 }
 
-Future<Review> addFoodReview(Review review, Food food) async {
+Future<Review> addFoodReview(Review review, Item food) async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}food_reviews';
   final client = new http.Client();
   review.user = userRepo.currentUser.value;
@@ -355,5 +350,26 @@ Future<Review> addFoodReview(Review review, Food food) async {
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: url).toString());
     return Review.fromJSON({});
+  }
+}
+
+
+
+
+
+Future<Item> updateItem(Item item) async {
+  final String _apiToken = 'api_token=${userRepo.currentUser.value.apiToken}';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}foods/${item.id}?$_apiToken';
+  final client = new http.Client();
+  try {
+    final response = await client.put(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      body: json.encode(item.toMap()),
+    );
+    return Item.fromJSON(json.decode(response.body)['data']);
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+    return new Item.fromJSON({});
   }
 }

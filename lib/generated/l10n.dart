@@ -915,20 +915,20 @@ class S {
     );
   }
 
-  /// `You must add foods of the same restaurants choose one restaurants only!`
+  /// `You can only order from one store at a time`
   String get you_must_add_foods_of_the_same_restaurants_choose_one {
     return Intl.message(
-      'You must add foods of the same restaurants choose one restaurants only!',
+      'You can only order from one store at a time',
       name: 'you_must_add_foods_of_the_same_restaurants_choose_one',
       desc: '',
       args: [],
     );
   }
 
-  /// `Reset your cart and order meals form this restaurant`
+  /// `Reset your cart and order from this store`
   String get reset_your_cart_and_order_meals_form_this_restaurant {
     return Intl.message(
-      'Reset your cart and order meals form this restaurant',
+      'Reset your cart and order from this store',
       name: 'reset_your_cart_and_order_meals_form_this_restaurant',
       desc: '',
       args: [],
@@ -2045,10 +2045,10 @@ class S {
     );
   }
 
-  /// `Select you address, swipe to delete or long press to edit address`
+  /// `Select your address, swipe to delete or long press to edit address`
   String get click_to_confirm_your_address_and_pay_or_long_press {
     return Intl.message(
-      'Select you address, swipe to delete or long press to edit address',
+      'Select your address, swipe to delete or long press to edit address',
       name: 'click_to_confirm_your_address_and_pay_or_long_press',
       desc: '',
       args: [],

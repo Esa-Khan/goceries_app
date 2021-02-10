@@ -20,6 +20,13 @@ class OrderItemWidget extends StatefulWidget {
 }
 
 class _OrderItemWidgetState extends State<OrderItemWidget> {
+  bool isExpand;
+  @override
+  void initState() {
+    super.initState();
+    isExpand = widget.expanded;
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
@@ -43,6 +50,9 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                   data: theme,
                   child: ExpansionTile(
                     initiallyExpanded: widget.expanded,
+                    onExpansionChanged: (val) {
+                      setState(() => isExpand = val);
+                    },
                     title: Column(
                       children: <Widget>[
                         Text('${S.of(context).order_id}: #${widget.order.id}'),
@@ -58,7 +68,9 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Helper.getPrice(Helper.getTotalOrdersPrice(widget.order), context, style: Theme.of(context).textTheme.headline4),
+                        isExpand
+                          ? const SizedBox()
+                          : Helper.getPrice(Helper.getTotalOrdersPrice(widget.order), context, style: Theme.of(context).textTheme.headline4),
                         Text(
                           '${widget.order.payment.method}',
                           style: Theme.of(context).textTheme.caption,
@@ -82,29 +94,42 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                               children: <Widget>[
                                 Expanded(
                                   child: Text(
-                                    S.of(context).delivery_fee,
+                                    S.of(context).subtotal,
                                     style: Theme.of(context).textTheme.bodyText1,
                                   ),
                                 ),
-                                Helper.getTotalOrdersPrice(widget.order) < settingsRepo.setting.value.deliveryFeeLimit
-                                ? Helper.getPrice(widget.order.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
-                                    : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
+                                Helper.getPrice(Helper.getSubTotalOrdersPrice(widget.order), context, style: Theme.of(context).textTheme.headline4)
                               ],
                             ),
-                           Row(
-                             children: <Widget>[
-                               Expanded(
-                                 child: Text(
-                                   'Discount:',
-                                   style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.greenAccent)),
-                                 ),
-                               ),
-                               Helper.getPrice(
-                                   widget.order.discount,
-                                   context,
-                                   style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent)))
-                             ],
-                           ),
+                            Row(
+                              children: <Widget>[
+                                Expanded(
+                                  child: Text(
+                                    S.of(context).delivery_fee,
+                                    style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.red)),
+                                  ),
+                                ),
+                                Helper.getSubTotalOrdersPrice(widget.order) < settingsRepo.setting.value.deliveryFeeLimit
+                                  ? Helper.getPrice(widget.order.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.red)))
+                                  : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.red)))
+                              ],
+                            ),
+                            widget.order.discount != 0
+                              ? Row(
+                                 children: <Widget>[
+                                   Expanded(
+                                     child: Text(
+                                       'Discount:',
+                                       style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.greenAccent.shade700)),
+                                     ),
+                                   ),
+                                   Helper.getPrice(
+                                       widget.order.discount,
+                                       context,
+                                       style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent.shade700)))
+                                 ],
+                               )
+                              : const SizedBox(),
                             Row(
                               children: <Widget>[
                                 Expanded(

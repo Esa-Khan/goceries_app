@@ -14,7 +14,7 @@ class FavoriteGridItemWidget extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashColor: Theme.of(context).accentColor.withOpacity(0.08),
       onTap: () {
-        Navigator.of(context).pushNamed('/Food', arguments: new RouteArgument(heroTag: this.heroTag, id: this.favorite.food.id));
+        Navigator.of(context).pushNamed('/Item', arguments: new RouteArgument(heroTag: this.heroTag, id: this.favorite.food.id));
       },
       child: Stack(
         alignment: AlignmentDirectional.topEnd,

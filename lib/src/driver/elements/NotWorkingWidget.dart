@@ -96,7 +96,7 @@ class _NotWorkingWidgetWidgetState extends State<NotWorkingWidget> {
               Opacity(
                 opacity: 0.4,
                 child: Text(
-                  currentUser.value.work_hours?.split("|")[0] == null
+                  currentUser.value.work_hours == null || currentUser.value.work_hours?.split("|")[0] == null
                     ? "Not Working Yet."
                     : "Not Working Yet. Start at: " + currentUser.value.work_hours.split("|")[0],
                   textAlign: TextAlign.center,

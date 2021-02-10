@@ -24,14 +24,21 @@ Future<User> login(User user) async {
     body: json.encode(user.toMap()),
   );
   if (response.statusCode == 200) {
-    if (response.body.isEmpty) {
+    if (response.body.isEmpty)
       throw new Exception("No account with this email");
-    } else if(response.body == 'Incorrect password') {
-      throw new Exception(response.body);
+
+    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+    setCurrentUser(response.body);
+  } else if (response.statusCode == 500) {
+    switch (json.decode(response.body)['message']) {
+      case 'Incorrect Password':
+        throw new Exception('Incorrect Password');
+        break;
+      default:
+        throw new Exception('Unknown error');
+        break;
     }
 
-    setCurrentUser(response.body);
-    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
   } else {
     print(CustomTrace(StackTrace.current, message: response.body).toString());
     throw new Exception(response.body);
@@ -212,5 +219,53 @@ Future<Address> removeDeliveryAddress(Address address) async {
   } catch (e) {
     print(CustomTrace(StackTrace.current, message: url));
     return new Address.fromJSON({});
+  }
+}
+
+Future<Address> deactivateDeliveryAddress(Address address) async {
+  User _user = userRepo.currentUser.value;
+  final String url = '${GlobalConfiguration().getString('api_base_url')}deactivate_address/${address.id}?api_token=${_user.apiToken}';
+  final client = new http.Client();
+  try {
+    final response = await client.put(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    return Address.fromJSON(json.decode(response.body)['data']);
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+    return new Address.fromJSON({});
+  }
+}
+
+
+Future<void> getDriverAvail() async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}getDriverAvail/${userRepo.currentUser.value.id}';
+  final client = new http.Client();
+  try {
+    final response = await client.get(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    currentUser.value.available = json.decode(response.body)['data']['available'];
+    currentUser.value.work_hours = json.decode(response.body)['data']['work_hours'];
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+  }
+}
+
+
+Future<void> setDriverAvail(bool isAvail) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}setDriverAvail/${userRepo.currentUser.value.id}/${isAvail ? 1 : 0}';
+  final client = new http.Client();
+  try {
+    final response = await client.put(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    currentUser.value.available = json.decode(response.body)['data']['available'];
+    currentUser.value.work_hours = json.decode(response.body)['data']['work_hours'];
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
   }
 }

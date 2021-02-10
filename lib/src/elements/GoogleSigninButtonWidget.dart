@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 import '../../src/controllers/user_controller.dart';
 import '../../src/repository/settings_repository.dart' as settingsRepo;
 
@@ -12,6 +13,7 @@ class GoogleSigninButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return OutlineButton(
       splashColor: Colors.grey,
       onPressed: () {
@@ -34,13 +36,19 @@ class GoogleSigninButtonWidget extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Image(image: AssetImage("assets/img/google_logo.png"), height: settingsRepo.compact_view_horizontal ? 30 : 35),
+            Image(image: AssetImage("assets/img/google_logo.png"),
+                  height: SizeConfig.WidthSize(90).clamp(0, 30).ceilToDouble(),
+    ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                isLogin ? 'Sign in with Google' : 'Sign up with Google',
+                isLogin
+                    ? 'Sign in with Google'
+                    : con.supportsAppleSignIn
+                      ? 'Continue with Google'
+                      : 'Sign up with Google',
                 style: TextStyle(
-                  fontSize: settingsRepo.compact_view_horizontal ? 14 : 19,
+                  fontSize: isLogin ? (SizeConfig.blockSizeHorizontal*45).clamp(0, 25).toDouble() : (SizeConfig.blockSizeHorizontal*45).clamp(0, 25).toDouble(),
                   color: Colors.grey,
                 ),
               ),

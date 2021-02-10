@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 
 import '../elements/CardsCarouselLoaderWidget.dart';
 import '../models/restaurant.dart';

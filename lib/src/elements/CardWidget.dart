@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
@@ -15,7 +16,9 @@ class CardWidget extends StatelessWidget {
   CardWidget({Key key, this.restaurant, this.heroTag}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Container(
+      // width: compact_view_vertical ? 250 : 292,
       width: 292,
       margin: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 20),
       decoration: BoxDecoration(
@@ -50,7 +53,12 @@ class CardWidget extends StatelessWidget {
                       width: double.infinity,
                       height: 150,
                     ),
-                    errorWidget: (context, url, error) => Icon(Icons.error),
+                    errorWidget: (context, url, error) => Image.asset(
+                      'assets/img/image_default.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: 150,
+                    ),
                   ),
                 ),
               ),

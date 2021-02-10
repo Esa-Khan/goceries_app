@@ -15,7 +15,7 @@ import '../models/review.dart';
 import '../controllers/food_controller.dart' as foodCon;
 
 
-class Food {
+class Item {
   String id;
   String name;
   double price;
@@ -26,7 +26,7 @@ class Food {
   String ingredients;
   String weight;
   String unit;
-  String packageItemsCount;
+  int quantity;
   bool featured;
   bool deliverable;
   Restaurant restaurant;
@@ -37,9 +37,9 @@ class Food {
   List<Review> foodReviews;
   List<Nutrition> nutritions;
 
-  Food();
+  Item();
 
-  Food.fromJSON(Map<String, dynamic> jsonMap) {
+  Item.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'].toString();
       name = jsonMap['name'];
@@ -51,7 +51,7 @@ class Food {
       ingredients = jsonMap['ingredients'];
       weight = jsonMap['weight'] != null ? jsonMap['weight'].toString() : '';
       unit = jsonMap['unit'] != null ? jsonMap['unit'].toString() : '';
-      packageItemsCount = jsonMap['package_items_count'].toString();
+      quantity = jsonMap['quantity'] == null ? 0 : jsonMap['quantity'];
       featured = jsonMap['featured'] ?? false;
       deliverable = jsonMap['deliverable'] ?? false;
       restaurant = jsonMap['restaurant'] != null ? Restaurant.fromJSON(jsonMap['restaurant']) : Restaurant.fromJSON({});
@@ -83,7 +83,7 @@ class Food {
       weight = '';
       ingredients = '';
       unit = '';
-      packageItemsCount = '';
+      quantity = 0;
       featured = false;
       deliverable = false;
       restaurant = Restaurant.fromJSON({});
@@ -106,6 +106,7 @@ class Food {
     map["price"] = price;
     map["discountPrice"] = discountPrice;
     map["description"] = description;
+    map["quantity"] = quantity;
     map["ingredients"] = ingredients;
     map["weight"] = weight;
     return map;

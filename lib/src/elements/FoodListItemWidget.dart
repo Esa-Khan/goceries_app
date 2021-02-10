@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../helpers/helper.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/route_argument.dart';
 
 class FoodListItemWidget extends StatelessWidget {
   final String heroTag;
-  final Food food;
+  final Item food;
 
   FoodListItemWidget({Key key, this.heroTag, this.food}) : super(key: key);
 
@@ -17,7 +17,7 @@ class FoodListItemWidget extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed('/Food', arguments: new RouteArgument(heroTag: this.heroTag, id: this.food.id));
+        Navigator.of(context).pushNamed('/Item', arguments: new RouteArgument(heroTag: this.heroTag, id: this.food.id));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),

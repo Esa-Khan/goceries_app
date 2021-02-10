@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/models/restaurant.dart';
+import 'package:saudaghar/src/models/route_argument.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/helper.dart';
@@ -9,6 +13,7 @@ import '../repository/settings_repository.dart' as settingsRepo;
 
 class CartController extends ControllerMVC {
   List<Cart> carts = <Cart>[];
+  Restaurant store;
   double taxAmount = 0.0;
   double deliveryFee = 0.0;
   int cartCount = 0;
@@ -17,49 +22,43 @@ class CartController extends ControllerMVC {
   double total = 0.0;
   bool notifyFreeDelivery = false;
   GlobalKey<ScaffoldState> scaffoldKey;
+  bool item_unavail = false;
 
   CartController() {
     this.scaffoldKey = new GlobalKey<ScaffoldState>();
   }
 
   void listenForCarts({String message}) async {
+    setState(() => item_unavail = false);
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
-//      bool repeatingFood = false;
-//      for (var currCart in carts){
-//        if (currCart.food.id == _cart.food.id) {
-//          currCart.quantity += _cart.quantity;
-//          repeatingFood = true;
-//          break;
-//        }
-//      }
-//      if (!repeatingFood) {
         setState(() => carts.add(_cart));
-//      }
+
     }, onError: (a) {
       print(a);
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
-      ));
+      showSnack(S.of(context).verify_your_internet_connection);
     }, onDone: () {
       if (carts.isNotEmpty) {
         calculateSubtotal();
+        store = carts.first.store;
+        checkItemAvailabliity();
       }
-      if (message != null) {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(message),
-        ));
-      }
+      if (message != null)
+        showSnack(message);
       // onLoadingCartDone();
     });
   }
 
   void onLoadingCartDone() {}
 
+  bool cartcount_isLoaded = false;
   void listenForCartsCount({String message}) async {
     final Stream<int> stream = await getCartCount();
     stream.listen((int _count) {
-      setState(() => this.cartCount = _count);
+      setState(() {
+        this.cartCount = _count;
+        cartcount_isLoaded = true;
+      });
     }, onError: (a) {
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).verify_your_internet_connection),
@@ -117,11 +116,26 @@ class CartController extends ControllerMVC {
     setState(() {});
   }
 
-  incrementQuantity(Cart cart) {
-    if (cart.quantity <= 99) {
-      ++cart.quantity;
-      updateCart(cart);
-      calculateSubtotal();
+  bool show_snack_again = true;
+  incrementQuantity(Cart cart) async {
+    if (cart.quantity >= cart.food.quantity) {
+      if (show_snack_again) {
+        show_snack_again = false;
+        showSnack('Only ${cart.food.quantity} of this item left in stock');
+        Timer(Duration(seconds: 5), () {
+          show_snack_again = true;
+        });
+      }
+    } else if (cart.quantity <= 99) {
+      if (cart.food.quantity < cart.quantity) {
+        setState(() => item_unavail = true);
+      } else {
+        setState(() => item_unavail = false);
+        ++cart.quantity;
+        updateCart(cart);
+        calculateSubtotal();
+        checkItemAvailabliity();
+      }
     }
   }
 
@@ -130,31 +144,36 @@ class CartController extends ControllerMVC {
       --cart.quantity;
       updateCart(cart);
       calculateSubtotal();
+      checkItemAvailabliity();
     }
   }
 
-  void goCheckout(BuildContext context) {
-//    if (!currentUser.value.profileCompleted()) {
-//    if (currentUser.value.profileCompleted()) {
-//      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-//        content: Text(S.of(context).completeYourProfileDetailsToContinue),
-//        action: SnackBarAction(
-//          label: S.of(context).settings,
-//          textColor: Theme.of(context).accentColor,
-//          onPressed: () {
-//            Navigator.of(context).pushNamed('/Settings');
-//          },
-//        ),
-//      ));
-//    } else {
-    if (carts[0].food.restaurant.closed) {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).this_restaurant_is_closed_),
-      ));
-    } else {
-      Navigator.of(context).pushNamed('/DeliveryPickup');
+  bool checkItemAvailabliity() {
+    bool isAvail = true;
+    for (int i = 0; i < carts.length; i++) {
+      if (carts.elementAt(i).quantity > carts.elementAt(i).food.quantity) {
+        isAvail = false;
+        break;
+      }
     }
-//    }
+    setState(() => item_unavail = !isAvail);
+    return isAvail;
+  }
+
+
+  void goCheckout(BuildContext context) {
+    if (carts[0].food.restaurant.closed) {
+      showSnack(S.of(context).this_restaurant_is_closed_);
+    } else {
+      Navigator.of(context).pushNamed('/DeliveryPickup', arguments: RouteArgument(param: this));
+    }
+  }
+
+  void showSnack(String message) {
+    scaffoldKey?.currentState?.showSnackBar(SnackBar(
+      content: Text(message, textAlign: TextAlign.center),
+      duration: Duration(seconds: 1),
+    ));
   }
 
 }

@@ -14,7 +14,9 @@ class User {
   String bio;
   Media image;
   bool isDriver = false;
+  bool available = null;
   bool isManager = false;
+  bool debugger = false;
   String work_hours;
   String store_ids;
 
@@ -56,7 +58,9 @@ class User {
       if (isDriver) {
         work_hours = jsonMap['work_hours'];
         store_ids = jsonMap['store_ids'];
+        available = jsonMap['available'];
       }
+      debugger = jsonMap['debugger'];
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }

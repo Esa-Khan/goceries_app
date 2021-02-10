@@ -1,23 +1,25 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 
 import '../helpers/helper.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/route_argument.dart';
 
 class SimilarItemListWidget extends StatelessWidget {
-  final Food food;
+  final Item food;
 
   const SimilarItemListWidget({Key key, this.food}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return InkWell(
       splashColor: Theme.of(context).accentColor,
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed('/Food', arguments: RouteArgument(id: food.id));
+        Navigator.of(context).pushReplacementNamed('/Item', arguments: RouteArgument(id: food.id));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -45,7 +47,12 @@ class SimilarItemListWidget extends StatelessWidget {
                     height: 60,
                     width: 60,
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Image.asset(
+                    'assets/img/image_default.png',
+                    fit: BoxFit.cover,
+                    height: 60,
+                    width: 60,
+                  ),
                 ),
               ),
             ),
@@ -61,8 +68,8 @@ class SimilarItemListWidget extends StatelessWidget {
                         Text(
                           food.name,
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: Theme.of(context).textTheme.subtitle2,
+                          maxLines: 4,
+                          style: Theme.of(context).textTheme.subtitle2.merge(TextStyle(fontSize: SizeConfig.blockSizeHorizontal*30)),
                         ),
                       ],
                     ),
@@ -72,7 +79,7 @@ class SimilarItemListWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Helper.getPrice(food.price, context,
-                          style: Theme.of(context).textTheme.caption
+                      style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 10)),
                       ),
                       food.weight == '0' || food.weight == '' ? SizedBox(height: 0)
                           : Container(
@@ -80,7 +87,7 @@ class SimilarItemListWidget extends StatelessWidget {
                           decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
                           child: Text(
                             food.weight + " " + food.unit,
-                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: 12)),
+                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: 10)),
                           )),
                     ],
                   )

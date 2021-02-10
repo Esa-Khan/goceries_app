@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_signin_button/button_list.dart';
+import 'package:flutter_signin_button/button_view.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import '../elements/FacebookSigninButtonWidget.dart';
-import '../elements/GoogleSigninButtonWidget.dart';
 import '../../generated/l10n.dart';
 import '../controllers/user_controller.dart';
 import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
+import '../repository/settings_repository.dart' as _setting;
 
 class SignUpWidget extends StatefulWidget {
   @override
@@ -14,8 +15,8 @@ class SignUpWidget extends StatefulWidget {
 
 class _SignUpWidgetState extends StateMVC<SignUpWidget> {
   UserController _con;
-
   final textEditingContoller = TextEditingController();
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -73,9 +74,50 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  FacebookSigninButtonWidget(con: _con, isLogin: false),
-                                  const Divider(height: 15),
-                                  GoogleSigninButtonWidget(con: _con, isLogin: false),
+                                  // FacebookSigninButtonWidget(con: _con, isLogin: false),
+                                  // const Divider(height: 15),
+                                  // GoogleSigninButtonWidget(con: _con, isLogin: false),
+                                  // const Divider(height: 15),
+                                  // _con.supportsAppleSignIn
+                                  //     ? AppleSigninButtonWidget(con: _con, isLogin: false)
+                                  //     : const SizedBox(),
+                                  _con.supportsAppleSignIn
+                                      ? SignInButton(
+                                          _setting.setting.value.brightness.value == Brightness.light
+                                              ? Buttons.AppleDark
+                                              : Buttons.Apple,
+                                          text: "Sign up with Apple",
+                                          elevation: 10,
+                                          padding: EdgeInsets.symmetric(vertical: 15),
+                                          onPressed: () {
+                                            _con.signInWithApple();
+                                          },
+                                        )
+                                      : const SizedBox(),
+                                  _con.supportsAppleSignIn
+                                      ? const Divider(height: 10)
+                                      : const SizedBox(),
+                                  SignInButton(
+                                    _setting.setting.value.brightness.value == Brightness.light
+                                        ? Buttons.Google
+                                        : Buttons.GoogleDark,
+                                    elevation: 10,
+                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                    text: "Sign up with Google",
+                                    onPressed: () {
+                                      _con.signInWithGoogle();
+                                    },
+                                  ),
+                                  const Divider(height: 10),
+                                  SignInButton(
+                                    Buttons.Facebook,
+                                    text: "Sign up with Facebook",
+                                    elevation: 10,
+                                    padding: EdgeInsets.symmetric(vertical: 15),
+                                    onPressed: () {
+                                      _con.signInWithFacebook();
+                                    },
+                                  ),
                                   Padding(
                                       padding: EdgeInsets.symmetric(vertical: 15),
                                       child: Text(
@@ -191,7 +233,10 @@ class _SignUpWidgetState extends StateMVC<SignUpWidget> {
                                       Navigator.of(context).popAndPushNamed('/Login');
                                     },
                                     textColor: Theme.of(context).hintColor,
-                                    child: Text(S.of(context).i_have_account_back_to_login, textAlign: TextAlign.center),
+                                    child: Text(S.of(context).i_have_account_back_to_login,
+                                              textAlign: TextAlign.center,
+                                              style: Theme.of(context).textTheme.bodyText1,
+                                            ),
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 30, vertical: 19),
                                   ),

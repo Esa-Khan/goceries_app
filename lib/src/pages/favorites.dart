@@ -114,24 +114,24 @@ class _FavoritesWidgetState extends StateMVC<FavoritesWidget> {
                     ),
                         Offstage(
                             offstage: this.layout != 'list',
-                            child: _con.favorites.isEmpty
+                            child: _con.favorites.isEmpty || !_con.favorites_loaded
                                 ? EmptyFavouritesWidget()
                                 : ListView.separated(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              primary: false,
-                              itemCount: _con.favorites.length,
-                              separatorBuilder: (context, index) {
-                                return SizedBox(height: 10);
-                              },
-                              itemBuilder: (context, index) {
-                                return FavoriteListItemWidget(
-                                  heroTag: 'favorites_list',
-                                  favorite: _con.favorites.elementAt(index),
-                                );
-                              },
-                            ),
-                          ),
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    primary: false,
+                                    itemCount: _con.favorites.length,
+                                    separatorBuilder: (context, index) {
+                                      return SizedBox(height: 10);
+                                    },
+                                    itemBuilder: (context, index) {
+                                      return FavoriteListItemWidget(
+                                        heroTag: 'favorites_list',
+                                        favorite: _con.favorites.elementAt(index),
+                                      );
+                                    },
+                                  ),
+                                ),
                     Offstage(
                             offstage: this.layout != 'grid',
                             child: _con.favorites.isEmpty

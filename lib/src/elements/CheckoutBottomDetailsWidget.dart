@@ -9,7 +9,7 @@ import '../helpers/helper.dart';
 import '../elements/PromocodeDialog.dart';
 
 class CheckoutBottomDetailsWidget extends StatefulWidget{
-  final con;
+  final CheckoutController con;
 
   const CheckoutBottomDetailsWidget ({ Key key, this.con }): super(key: key);
 
@@ -48,7 +48,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
     return _con.carts.isEmpty
         ? const SizedBox()
         : Container(
-            height: _con.promotion == '' ? 182 : 200,
+            height: _con.promotion == '' ? 160 : 180,
             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
@@ -106,15 +106,10 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                     style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13, color: Theme.of(context).accentColor)),
                   ),
                 ),
-                RichText(
-                  softWrap: false,
-                  overflow: TextOverflow.fade,
-                  maxLines: 1,
-                  text: TextSpan(
-                          text: settingsRepo.setting.value.promo[_con.promotion].toString(),
-                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Theme.of(context).accentColor)),
-                        ),
-                )
+                Text(
+                  settingsRepo.setting.value.promo[_con.promotion].toString(),
+                  style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Theme.of(context).accentColor)),
+                ),
               ],
             ),
             SizedBox(height: 20),
@@ -168,7 +163,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                                     alignment: AlignmentDirectional.bottomEnd,
                                     children: <Widget>[
                                       Text(
-                                        'Promo\nCode',
+                                        '+ Promo\nCode',
                                         textAlign: TextAlign.center,
                                         textScaleFactor: 0.7,
                                         style: TextStyle(color: Theme.of(context).primaryColor),
@@ -216,12 +211,12 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                           ]
             ),
 
-            SizedBox(height: 5),
-            Text(
-              "Free delivery for orders over Rs. " + settingsRepo.setting.value.deliveryFeeLimit.toString(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 13)),
-            ),
+            // SizedBox(height: 5),
+            // Text(
+            //   "Free delivery for orders over Rs. " + settingsRepo.setting.value.deliveryFeeLimit.toString(),
+            //   textAlign: TextAlign.center,
+            //   style: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 13)),
+            // ),
           ],
         ),
       ),
@@ -236,7 +231,8 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
   }
 
   void gotoOrders() {
-    Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
+    // Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3);
+    Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 3);
   }
 
 }

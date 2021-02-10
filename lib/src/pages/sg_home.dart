@@ -5,7 +5,7 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 import '../../src/elements/CategoryListWidget.dart';
 import '../../src/models/route_argument.dart';
 
-import '../controllers/home_controller.dart';
+import '../controllers/sghome_controller.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import '../repository/user_repository.dart';
@@ -21,9 +21,9 @@ class SGHomeWidget extends StatefulWidget {
 }
 
 class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
-  HomeController _con;
+  SGHomeController _con;
   bool first_load = true;
-  _SGHomeWidgetState() : super(HomeController()) {
+  _SGHomeWidgetState() : super(SGHomeController()) {
     _con = controller;
   }
 
@@ -57,7 +57,9 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
           valueListenable: settingsRepo.setting,
           builder: (context, value, child) {
             return Text(
-              currentUser.value.name == null ? value.appName : "Welcome " + currentUser.value.name?.split(" ")[0] + "!",
+              currentUser.value.name == null || currentUser.value.name.contains('null') || currentUser.value.name.trim().length == 0
+                  ? value.appName
+                  : "Welcome " + currentUser.value.name?.split(" ")[0] + "!",
               style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
             );
           },
@@ -91,7 +93,12 @@ class ImageDialog extends StatelessWidget {
             width: double.infinity,
             height: 82,
           ),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          errorWidget: (context, url, error) => Image.asset(
+            'assets/img/image_default.png',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: 150,
+          ),
         ),
       ),
       elevation: 10,

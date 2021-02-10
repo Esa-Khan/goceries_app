@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import '../../src/models/food.dart';
+import '../../src/models/item.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -30,7 +30,7 @@ class _DetailsWidgetState extends StateMVC<DetailsWidget> {
   var _searchBarController = TextEditingController();
 
   final ScrollController _scrollController = ScrollController();
-  List<Food> itemList = new List<Food>();
+  List<Item> itemList = new List<Item>();
   bool _hasMore = true, _initialLoading = true, _isSearching = false, _isSearched = false, _searchBarTapped = false;
   int numOfItemsToAdd = 50;
 

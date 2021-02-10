@@ -5,7 +5,6 @@ import '../../src/repository/user_repository.dart';
 import '../../src/pages/sg_home.dart';
 
 import '../elements/DrawerWidget.dart';
-import '../elements/FilterWidget.dart';
 import '../models/route_argument.dart';
 import '../pages/favorites.dart';
 import '../pages/home.dart';
@@ -13,6 +12,7 @@ import '../pages/map.dart';
 import '../pages/notifications.dart';
 import '../pages/orders.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
+import 'fresh_home.dart';
 
 // ignore: must_be_immutable
 class PagesWidget extends StatefulWidget {
@@ -72,28 +72,37 @@ class _PagesWidgetState extends State<PagesWidget> {
             break;
         }
       } else {
-      widget.currentTab = tabItem;
-      switch (tabItem) {
-        case 0:
-          widget.currentPage = NotificationsWidget(parentScaffoldKey: widget.scaffoldKey);
-          break;
-        case 1:
-          widget.currentPage = MapWidget(parentScaffoldKey: widget.scaffoldKey, routeArgument: widget.routeArgument);
-          break;
-        case 2:
-          if (settingsRepo.isStore.value == 0) {
-            widget.currentPage = SGHomeWidget(parentScaffoldKey: widget.scaffoldKey);
-          } else {
-            widget.currentPage = HomeWidget(parentScaffoldKey: widget.scaffoldKey);
-          }
-          break;
-        case 3:
-          widget.currentPage = OrdersWidget(parentScaffoldKey: widget.scaffoldKey);
-          break;
-        case 4:
-          widget.currentPage = FavoritesWidget(parentScaffoldKey: widget.scaffoldKey);
-          break;
-      }
+        widget.currentTab = tabItem;
+        switch (tabItem) {
+          case 0:
+            widget.currentPage = NotificationsWidget(parentScaffoldKey: widget.scaffoldKey);
+            break;
+          case 1:
+            widget.currentPage = MapWidget(parentScaffoldKey: widget.scaffoldKey, routeArgument: widget.routeArgument);
+            break;
+          case 2:
+            switch (settingsRepo.isStore.value) {
+              case 0:
+                widget.currentPage =
+                    SGHomeWidget(parentScaffoldKey: widget.scaffoldKey);
+                break;
+              case 1:
+                widget.currentPage =
+                    FreshHomeWidget(parentScaffoldKey: widget.scaffoldKey);
+                break;
+              case 2:
+                widget.currentPage =
+                    HomeWidget(parentScaffoldKey: widget.scaffoldKey);
+                break;
+            }
+            break;
+          case 3:
+            widget.currentPage = OrdersWidget(parentScaffoldKey: widget.scaffoldKey);
+            break;
+          case 4:
+            widget.currentPage = FavoritesWidget(parentScaffoldKey: widget.scaffoldKey);
+            break;
+        }
       }
 
     });

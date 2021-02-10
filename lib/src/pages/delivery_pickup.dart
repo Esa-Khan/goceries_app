@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/elements/LoadingDeliveryAddressWidget.dart';
 import '../elements/EmptyDeliveryAddressWidget.dart';
 import '../elements/DeliveryBottomDetailsWidget.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
@@ -42,11 +41,12 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _con.carts = widget.routeArgument.param.carts;
+    _con.store = _con.carts.first.store;
+    _con.calculateSubtotal();
     if (_con.list == null) {
       _con.list = new PaymentMethodList(context);
       _con.listenForAddresses();
-//      widget.pickup = widget.list.pickupList.elementAt(0);
-//      widget.delivery = widget.list.pickupList.elementAt(1);
     }
 
 
@@ -103,164 +103,21 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                     )
                   )
                 ),
-                _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts) && _con.deliveryAddress.isNotEmpty
+                _con.loading
+                  ? LoadingDeliveryAddressWidget()
+                  : _con.deliveryAddress.isNotEmpty && _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
                     ? ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: _con.deliveryAddress.length,
-                      shrinkWrap: true,
-                      primary: false,
-                      itemBuilder: (context, index) => getAddressItem(index),
-                    )
-                  : EmptyDeliveryAddressWidget(),
-
-                // : CircularLoadingWidget(height: 150),
-
-
+                        scrollDirection: Axis.vertical,
+                        itemCount: _con.deliveryAddress.length,
+                        shrinkWrap: true,
+                        primary: false,
+                        itemBuilder: (context, index) => getAddressItem(index),
+                      )
+                    : EmptyDeliveryAddressWidget(),
                 SizedBox(height: 30),
-                InkWell(
-                  splashColor: Theme.of(context).accentColor,
-                  focusColor: Theme.of(context).accentColor,
-                  highlightColor: Theme.of(context).primaryColor,
-                  onTap: () async {
-                    setState(()=> _con.loading = true);
-                    LocationResult result = await showLocationPicker(
-                      context,
-                      settingsRepo.setting.value.googleMapsKey,
-                      initialCenter: LatLng(settingsRepo.deliveryAddress.value?.latitude ?? 0, settingsRepo.deliveryAddress.value?.longitude ?? 0),
-                      //automaticallyAnimateToCurrentLocation: true,
-                      //mapStylePath: 'assets/mapStyle.json',
-                      myLocationButtonEnabled: true,
-                      //resultCardAlignment: Alignment.bottomCenter,
-                    );
-                    Address store_address = new Address(long: double.tryParse(_con.carts[0].food.restaurant.longitude),
-                                                        lat: double.tryParse(_con.carts[0].food.restaurant.latitude));
-                    Address curr_address = new Address(long: result.latLng.longitude,
-                                                        lat: result.latLng.latitude);
-                    bool within_range = await MapsUtil.withinRange(curr_address, store_address, _con.carts[0].food.restaurant.deliveryRange);
-                    if (within_range) {
-                      _con.addAddress(new Address.fromJSON({
-                        'address': result.address,
-                        'latitude': result.latLng.latitude,
-                        'longitude': result.latLng.longitude,
-                      }));
-                      setState(()=> _con.loading = false);
-                      // Navigator.of(widget.scaffoldKey.currentContext).pop();
-                    } else {
-                      // _con.showOutOfRangeSnack();
-                      showDialog(
-                          context: context,
-                          builder: (context) => updateOrderDialog()
-                      );
-                    }
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.9),
-                      boxShadow: [
-                        BoxShadow(
-                            color: Theme.of(context).focusColor.withOpacity(0.1),
-                            blurRadius: 5,
-                            offset: Offset(0, 2)),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.add_circle_outline,
-                              color: Theme.of(context).accentColor,
-                              size: 30,
-                            ),
-                            const SizedBox(width: 20),
-                            Text(
-                              S.of(context).add_new_delivery_address,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.subtitle1,
-                            ),
-                          ],
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_right,
-                          color: Theme.of(context).focusColor,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-
+                addNewAddress(),
                 SizedBox(height: 5),
-
-                InkWell(
-                  splashColor: Theme.of(context).accentColor,
-                  focusColor: Theme.of(context).accentColor,
-                  highlightColor: Theme.of(context).primaryColor,
-                  onTap: () async {
-                    // _con.changeDeliveryAddressToCurrentLocation();
-                    setState(()=> _con.loading = true);
-
-                    Address store_address = new Address(long: double.tryParse(_con.carts[0].food.restaurant.longitude),
-                                                        lat: double.tryParse(_con.carts[0].food.restaurant.latitude));
-                    Address curr_address = await MapsUtil.getCurrentLocation();
-                    bool within_range = await MapsUtil.withinRange(curr_address, store_address, _con.carts[0].food.restaurant.deliveryRange);
-                    if (within_range) {
-                      _con.addAddress(new Address.fromJSON({
-                        'address': curr_address.address,
-                        'latitude': curr_address.latitude,
-                        'longitude': curr_address.longitude,
-                      }));
-                      setState(()=> _con.loading = false);
-                      // Navigator.of(widget.scaffoldKey.currentContext).pop();
-                    } else {
-                      // _con.showOutOfRangeSnack();
-                      showDialog(
-                          context: context,
-                          builder: (context) => updateOrderDialog()
-                      );
-                    }
-                    setState(()=> _con.loading = false);
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.9),
-                      boxShadow: [
-                        BoxShadow(
-                            color:
-                            Theme.of(context).focusColor.withOpacity(0.1),
-                            blurRadius: 5,
-                            offset: Offset(0, 2)),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.my_location,
-                              color: Theme.of(context).accentColor,
-                              size: 30,
-                            ),
-                            const SizedBox(width: 20),
-                            Text(
-                              S.of(context).current_location,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: Theme.of(context).textTheme.subtitle1,
-                            ),
-                          ],
-                        ),
-                        Icon(
-                          Icons.keyboard_arrow_right,
-                          color: Theme.of(context).focusColor,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                addCurrLocation(),
                 SizedBox(height: 30),
               ],
             )
@@ -318,30 +175,163 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   }
 
 
-  Widget updateOrderDialog() {
-    return AlertDialog(
-      title:  Wrap(
-        spacing: 10,
-        children: <Widget>[
-          Icon(Icons.report, color: Colors.orange),
-          Text(
-            'Store too far',
-            style: TextStyle(color: Colors.orange, fontSize: 20),
+  Widget addNewAddress() {
+    if (_con.loading) {
+      return SizedBox();
+    } else {
+      return InkWell(
+        splashColor: Theme.of(context).accentColor,
+        focusColor: Theme.of(context).accentColor,
+        highlightColor: Theme.of(context).primaryColor,
+        onTap: () async {
+          if (!_con.loading) {
+            setState(() => _con.loading = true);
+            try {
+              LocationResult result = await showLocationPicker(
+                context,
+                settingsRepo.setting.value.googleMapsKey,
+                initialCenter: LatLng(
+                    settingsRepo.deliveryAddress.value?.latitude ?? 0,
+                    settingsRepo.deliveryAddress.value?.longitude ?? 0),
+                //automaticallyAnimateToCurrentLocation: true,
+                //mapStylePath: 'assets/mapStyle.json',
+                myLocationButtonEnabled: true,
+                //resultCardAlignment: Alignment.bottomCenter,
+              );
+              if (result != null) {
+                _con.addAddress(new Address.fromJSON({
+                  'address': result.address,
+                  'latitude': result.latLng.latitude,
+                  'longitude': result.latLng.longitude,
+                }));
+              } else {
+                setState(() => _con.loading = false);
+              }
+              // Navigator.of(widget.scaffoldKey.currentContext).pop();
+          } catch (e) {
+            print('ERROR: ' + e.toString());
+          }
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor.withOpacity(0.9),
+            boxShadow: [
+              BoxShadow(
+                  color: Theme.of(context).focusColor.withOpacity(0.1),
+                  blurRadius: 5,
+                  offset: Offset(0, 2)),
+            ],
           ),
-        ],
-      ),
-      content: Text('Unfortunately ${_con.carts.first.food.restaurant.name} does not deliver to this address, feel free to  contact our support team for more information.'),
-      actions: <Widget>[
-        FlatButton(
-          child: new Text(
-              S.of(context).dismiss),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: [
+                  Icon(
+                    Icons.add_circle_outline,
+                    color: Theme.of(context).accentColor,
+                    size: 30,
+                  ),
+                  const SizedBox(width: 20),
+                  Text(
+                    S.of(context).add_new_delivery_address,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                ],
+              ),
+              Icon(
+                Icons.keyboard_arrow_right,
+                color: Theme.of(context).focusColor,
+              ),
+            ],
+          ),
         ),
-      ],
-    );
+      );
+    }
   }
 
+  Widget addCurrLocation()  {
+    if (_con.loading) {
+      return SizedBox();
+    } else {
+      return InkWell(
+        splashColor: Theme.of(context).accentColor,
+        focusColor: Theme.of(context).accentColor,
+        highlightColor: Theme.of(context).primaryColor,
+        onTap: () async {
+          // _con.changeDeliveryAddressToCurrentLocation();
+          if (!_con.loading) {
+            setState(() => _con.loading = true);
+
+            Address curr_address = await MapsUtil.getCurrentLocation();
+            _con.showSnackBar('Obtained current location');
+            _con.addAddress(new Address.fromJSON({
+              'address': curr_address.address,
+              'latitude': curr_address.latitude,
+              'longitude': curr_address.longitude,
+            }));
+
+            setState(() => _con.loading = false);
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          decoration: BoxDecoration(
+            color: Theme
+                .of(context)
+                .primaryColor
+                .withOpacity(0.9),
+            boxShadow: [
+              BoxShadow(
+                  color:
+                  Theme
+                      .of(context)
+                      .focusColor
+                      .withOpacity(0.1),
+                  blurRadius: 5,
+                  offset: Offset(0, 2)),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Row(
+                children: [
+                  Icon(
+                    Icons.my_location,
+                    color: Theme
+                        .of(context)
+                        .accentColor,
+                    size: 30,
+                  ),
+                  const SizedBox(width: 20),
+                  Text(
+                    S
+                        .of(context)
+                        .current_location,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .subtitle1,
+                  ),
+                ],
+              ),
+              Icon(
+                Icons.keyboard_arrow_right,
+                color: Theme
+                    .of(context)
+                    .focusColor,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+  }
 
 }

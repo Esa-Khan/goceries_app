@@ -83,7 +83,7 @@ class RouteGenerator {
         case '/Menu':
           return MaterialPageRoute(
               builder: (_) => MenuWidget(routeArgument: args as RouteArgument));
-        case '/Food':
+        case '/Item':
           return MaterialPageRoute(
               builder: (_) => FoodWidget(routeArgument: args as RouteArgument));
         case '/Category':
@@ -138,8 +138,8 @@ class RouteGenerator {
         default:
         // If there is no such named route in the switch statement, e.g. /third
           print("Route Error");
-          return MaterialPageRoute(builder: (_) => Scaffold(body: SafeArea(child: Text('Route Error'))));
-          // return MaterialPageRoute(builder: (_) => StoreSelectWidget());
+          // return MaterialPageRoute(builder: (_) => Scaffold(body: SafeArea(child: Text('Route Error'))));
+          return MaterialPageRoute(builder: (_) => StoreSelectWidget());
       }
     }
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import '../elements/CheckoutBottomDetailsWidget.dart';
 import '../elements/CheckoutItemListWidget.dart';
 import '../controllers/checkout_controller.dart';
-import '../elements/CircularLoadingWidget.dart';
 import '../models/payment.dart';
 import '../models/route_argument.dart';
 
@@ -31,6 +31,18 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
     // route param contains the payment method
     _con.payment = new Payment(widget.routeArgument.param);
     _con.listenForCarts();
+    getDeliveryTime();
+  }
+
+  getDeliveryTime() async {
+    int count = 100;
+    while (_con.carts.isEmpty && count > 0) {
+      await Future.delayed(Duration(milliseconds: 500));
+      count -= 1;
+    }
+    if (_con.carts.isNotEmpty) {
+      _con.getDeliveryTime();
+    }
   }
 
   @override
@@ -47,9 +59,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
            leading: _con.order_submitted
                       ? const SizedBox()
                       : IconButton(
-                           onPressed: () {
-                             Navigator.of(context).pop();
-                           },
+                           onPressed: () => Navigator.of(context).pop(),
                            icon: Icon(Icons.arrow_back),
                            color: Theme.of(context).hintColor,
                          ),
@@ -80,7 +90,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                     gradient: LinearGradient(
                                         begin: Alignment.bottomLeft,
                                         end: Alignment.topRight,
-                                        colors: _con.card_declined
+                                        colors: _con.order_declined && !_con.order_submitted
                                             ? [Colors.red.withOpacity(0.2), Colors.red.withOpacity(1)]
                                             : [Theme.of(context).accentColor.withOpacity(0.2), Theme.of(context).accentColor.withOpacity(1)]
                                     )),
@@ -97,7 +107,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                             valueColor: new AlwaysStoppedAnimation<Color>(Theme.of(context).scaffoldBackgroundColor),
                                           ),
                                         )
-                                      : _con.card_declined
+                                      : _con.order_declined
                                         ? Icon(
                                             Icons.error_outline,
                                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -145,12 +155,12 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                             child: Text(
                               _con.order_submitted
                                 ? 'Order  Submitted!'
-                                : _con.card_declined
-                                  ? 'Card declined'
+                                : _con.order_declined
+                                  ? 'Could not place order '
                                   : 'Ready to Checkout?',
                               style: Theme.of(context).textTheme.headline2.merge(
                                   TextStyle(fontWeight: FontWeight.bold,
-                                            color: _con.card_declined
+                                            color: _con.order_declined
                                                 ? Colors.red
                                                 : Theme.of(context).accentColor,
                                             fontSize: settingsRepo.compact_view_horizontal ? 18 : 20
@@ -179,49 +189,79 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         ],
                       ),
                       const SizedBox(height: 15),
+
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         alignment: AlignmentDirectional.centerStart,
-                        // color: Theme.of(context).primaryColor,
-                        // decoration: BoxDecoration(
-                        //     color: Theme.of(context).primaryColor,
-                        //     borderRadius: BorderRadius.circular(10),
-                        //     boxShadow: [
-                        //       BoxShadow(
-                        //           color: Theme.of(context).focusColor.withOpacity(0.55),
-                        //           offset: Offset(0, 5),
-                        //           blurRadius: 5.0
-                        //       )]),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              _con.carts.first.food.restaurant.name,
+                              'Ordering from ' + _con.carts.first.food.restaurant.name,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: Theme.of(context).textTheme.headline3,
+                              style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                             ),
                             Text(
                               'Payment by ' + _con.payment.method,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
-                              style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black54)),
+                              style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                             ),
-                            currentCart_time.value == null
-                                ? const SizedBox()
-                                : Text(
-                                    'Scheduled Delivery:  ' + currentCart_time.value.toString().substring(0, 16),
+                            _con.delivery_time != null
+                              ? RichText(
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                  text: TextSpan(
+                                          text: currentCart_time.value == null
+                                            ? 'Estimated delivery within'
+                                            : 'Scheduled delivery:',
+                                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: currentCart_time.value == null
+                                                ? ' ${(_con.delivery_time/60 + 5).ceil().clamp(0, 45)} - ${(_con.delivery_time/60 + 20).ceil().clamp(0, 60)} mins'
+                                                : '  ' + currentCart_time.value.toString().substring(0, 16),
+                                              style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13, letterSpacing: 1.1)
+                                              )
+                                            ),
+                                          ]
+                                  )
+                                )
+                              : const SizedBox(),
+                            Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Delivering to ',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
-                                    style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black54, fontSize: 13)),
+                                    style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 15)),
                                   ),
+                                  const SizedBox(width: 10),
+                                  Flexible(
+                                    child: Container(
+                                      child: Text(
+                                        settingsRepo.deliveryAddress.value.address,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 10,
+                                        style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
                             currentCart_note.value.isEmpty
                                 ? const SizedBox()
                                 : Text(
                                     'Note:  ' + currentCart_note.value,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 4,
-                                    style: Theme.of(context).textTheme.headline6.merge(TextStyle(color: Colors.black54, fontSize: 13)),
+                                    style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontSize: 12)),
                                   ),
                           ],
                         )
@@ -243,7 +283,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         },
                         itemBuilder: (context, index) {
                           return CheckoutItemListWidget(
-                            heroTag: 'favorites_list',
+                            heroTag: 'order_submission',
                             cart_item: _con.carts.elementAt(index),
                           );
                         },

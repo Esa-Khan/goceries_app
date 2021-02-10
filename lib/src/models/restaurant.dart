@@ -86,7 +86,7 @@ class Restaurant {
     if (desc == null) {
       return true;
     } else if (desc == "24/7") {
-      return true;
+      return false;
     }
 
     bool closed = true;

@@ -99,7 +99,7 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                             ),
                           ),
                           title: Text(
-                            settingsRepo.isStore.value == 1 ? 'Closest Stores' : 'Closest Restaurants',
+                            'Closest Restaurants',
                             style: Theme.of(context).textTheme.headline4,
                           ),
                           subtitle: Text(
@@ -111,23 +111,23 @@ class _HomeWidgetState extends StateMVC<HomeWidget> {
                         ),
                       ),
                       CardsCarouselWidget(restaurantsList: _con.closestStores, heroTag: 'home_top_restaurants'),
-                      SocialMediaOrdering(),
-                      _con.categories.isEmpty ? const SizedBox()
-                      : Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: ListTile(
-                          dense: true,
-                          leading: Icon(
-                            Icons.category,
-                            color: Theme.of(context).hintColor,
-                          ),
-                          title: Text(
-                            S.of(context).aisles,
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                        ),
-                      ),
-                      _con.categories.isEmpty ? const SizedBox() : CategoriesCarouselWidget(categories: _con.categories),
+                      // _con.categories.isEmpty
+                      //   ? const SizedBox()
+                      //   : Padding(
+                      //     padding: const EdgeInsets.symmetric(horizontal: 20),
+                      //     child: ListTile(
+                      //       dense: true,
+                      //       leading: Icon(
+                      //         Icons.category,
+                      //         color: Theme.of(context).hintColor,
+                      //       ),
+                      //       title: Text(
+                      //         S.of(context).aisles,
+                      //         style: Theme.of(context).textTheme.headline4,
+                      //       ),
+                      //     ),
+                      //   ),
+                      // _con.categories.isEmpty ? const SizedBox() : CategoriesCarouselWidget(categories: _con.categories),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: ListTile(
@@ -193,7 +193,12 @@ class ImageDialog extends StatelessWidget {
             width: double.infinity,
             height: 82,
           ),
-          errorWidget: (context, url, error) => const Icon(Icons.error),
+          errorWidget: (context, url, error) => Image.asset(
+            'assets/img/image_default.png',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: 150,
+          ),
         ),
       ),
       elevation: 10,

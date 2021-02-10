@@ -18,7 +18,7 @@ class FavoriteListItemWidget extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed('/Food', arguments: new RouteArgument(heroTag: this.heroTag, id: this.favorite.food.id));
+        Navigator.of(context).pushNamed('/Item', arguments: new RouteArgument(heroTag: this.heroTag, id: this.favorite.food.id));
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),

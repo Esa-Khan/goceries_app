@@ -51,7 +51,7 @@ class MapsUtil {
     return _latLang;
   }
 
-  Future<String> getAddressName(LatLng location, String apiKey) async {
+  static Future<String> getAddressName(LatLng location, String apiKey) async {
     try {
       var endPoint =
           'https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}&language=${setting.value.mobileLanguage.value}&key=$apiKey';
@@ -94,10 +94,29 @@ class MapsUtil {
     MapsUtil mapsUtil = new MapsUtil();
     await location.requestService();
     LocationData _locationData = await location.getLocation();
-    String _addressName = await mapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
+    String _addressName = await MapsUtil.getAddressName(new LatLng(_locationData?.latitude, _locationData?.longitude), setting.value.googleMapsKey);
     _address = Address.fromJSON({'address': _addressName, 'latitude': _locationData?.latitude, 'longitude': _locationData?.longitude});
     return _address;
 
+  }
+
+  static Future<int> getDeliveryTime(LatLng store, LatLng customer) async {
+    try {
+      var endPoint =
+          'https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${store.latitude},${store.longitude}'
+          '&destinations=${customer.latitude},${customer.longitude}&key=${setting.value.googleMapsKey}';
+      var response = jsonDecode((await http.get(endPoint, headers: await LocationUtils.getAppHeaders())).body);
+      // var value = response['rows'][0]['elements'][0]['distance']['value'];
+      if (response['rows'][0]['elements'][0]['status'] == 'ZERO_RESULTS') {
+        return -1;
+      } else {
+        int value = response['rows'][0]['elements'][0]['duration']['value'];
+        return value;
+      }
+    } catch (e) {
+      print(CustomTrace(StackTrace.current, message: e));
+      return -1;
+    }
   }
 
 

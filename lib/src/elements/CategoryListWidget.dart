@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 import '../../src/controllers/category_controller.dart';
 
 import '../models/category.dart';
@@ -42,6 +43,7 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 10, bottom: 50),
       child: Column(
@@ -81,7 +83,7 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
               controller: _searchBarController,
               decoration: InputDecoration(
                 hintText: 'Search for items in this store',
-                hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: 14)),
+                hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: SizeConfig.blockSizeHorizontal*40)),
                 contentPadding: EdgeInsets.only(right: 12),
                 prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
                 suffixIcon: IconButton(
@@ -199,6 +201,17 @@ class _CategoryListState extends StateMVC<CategoryListWidget> {
                                     _con.isAisleLoadedList[aisleitems_to_delete] = false;
                                   }
                                   _con.loadedSubaisles.add(aisleVal.id);
+                              } else if (_con.aisleToSubaisleMap[currAisle.id].length == 1) {
+                                String id = _con.aisleToSubaisleMap[currAisle.id][0].id;
+                                await _con.listenForItemsByCategory(id, storeID: _con.restaurant.id);
+                                _con.isAisleLoadedList[id] = true;
+                                if (_con.loadedSubaisles.length == 5) {
+                                  String aisleitems_to_delete = _con.loadedSubaisles.first;
+                                  _con.subaisleToItemsMap[aisleitems_to_delete] = null;
+                                  _con.loadedSubaisles.remove(aisleitems_to_delete);
+                                  _con.isAisleLoadedList[aisleitems_to_delete] = false;
+                                }
+                                _con.loadedSubaisles.add(id);
                               }
                             });
                         }

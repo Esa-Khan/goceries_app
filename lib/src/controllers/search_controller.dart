@@ -1,7 +1,7 @@
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../models/address.dart';
-import '../models/food.dart';
+import '../models/item.dart';
 import '../models/restaurant.dart';
 import '../repository/food_repository.dart';
 import '../repository/restaurant_repository.dart';
@@ -10,7 +10,7 @@ import '../repository/settings_repository.dart';
 
 class SearchController extends ControllerMVC {
   List<Restaurant> restaurants = <Restaurant>[];
-  List<Food> foods = <Food>[];
+  List<Item> foods = <Item>[];
   String storeID;
 
   SearchController({String storeID}) {
@@ -39,8 +39,8 @@ class SearchController extends ControllerMVC {
 //      search = await getRecentSearch();
 //    }
     Address _address = deliveryAddress.value;
-    final Stream<Food> stream = await searchFoods(search, _address, storeID: storeID);
-    stream.listen((Food _food) {
+    final Stream<Item> stream = await searchFoods(search, _address, storeID: storeID, isStore: false);
+    stream.listen((Item _food) {
       setState(() => foods.add(_food));
     }, onError: (a) {
       print(a);
@@ -53,7 +53,7 @@ class SearchController extends ControllerMVC {
   Future<void> refreshSearch(search) async {
     setState(() {
       restaurants = <Restaurant>[];
-      foods = <Food>[];
+      foods = <Item>[];
     });
     listenForRestaurants(search: search);
     listenForFoods(search: search);
