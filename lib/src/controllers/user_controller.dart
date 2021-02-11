@@ -230,7 +230,6 @@ class UserController extends ControllerMVC {
       }
     }).catchError((e) {
       print("-------------Login Failed-------------\n" + e.toString());
-      loading = false;
       switch (e.message) {
         case 'No account with this email':
           repository.register(this.user).then((value) {
