@@ -36,11 +36,11 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
 
   getDeliveryTime() async {
     int count = 100;
-    while (cart.value.isEmpty && count > 0) {
+    while (_con.carts.isEmpty && count > 0) {
       await Future.delayed(Duration(milliseconds: 500));
       count -= 1;
     }
-    if (cart.value.isNotEmpty) {
+    if (_con.carts.isNotEmpty) {
       _con.getDeliveryTime();
     }
   }
@@ -69,7 +69,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
               style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
             ),
           ),
-          body: cart.value.isEmpty
+          body: _con.carts.isEmpty
               ? Center(heightFactor: 3.5, child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
               : SingleChildScrollView(
                   child: Column(
@@ -197,7 +197,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Ordering from ' + cart.value.first.food.restaurant.name,
+                              'Ordering from ' + _con.carts.first.food.restaurant.name,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
@@ -286,14 +286,14 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: cart.value.length,
+                        itemCount: _con.carts.length,
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 10);
                         },
                         itemBuilder: (context, index) {
                           return CheckoutItemListWidget(
                             heroTag: 'order_submission',
-                            cart_item: cart.value.elementAt(index),
+                            cart_item: _con.carts.elementAt(index),
                           );
                         },
                       ),

@@ -42,7 +42,8 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _con.store = cart.value.first.store;
+    _con.carts = widget.routeArgument.param.carts;
+    _con.store = widget.routeArgument.param.store;
     _con.calculateSubtotal();
     if (_con.list == null) {
       _con.list = new PaymentMethodList(context);
@@ -105,7 +106,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                 ),
                 _con.loading
                   ? LoadingDeliveryAddressWidget()
-                  : _con.deliveryAddress.isNotEmpty && cart.value.isNotEmpty && Helper.canDelivery(cart.value[0].food.restaurant, carts: cart.value)
+                  : _con.deliveryAddress.isNotEmpty && _con.carts.isNotEmpty && Helper.canDelivery(_con.carts[0].food.restaurant, carts: _con.carts)
                     ? ListView.builder(
                         scrollDirection: Axis.vertical,
                         itemCount: _con.deliveryAddress.length,

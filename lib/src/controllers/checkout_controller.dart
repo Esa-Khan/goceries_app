@@ -43,7 +43,7 @@ class CheckoutController extends CartController {
   }
 
   Future<void> getDeliveryTime() async {
-    LatLng store = new LatLng(double.tryParse(cart.value.first.food.restaurant.latitude), double.tryParse(cart.value.first.food.restaurant.longitude));
+    LatLng store = new LatLng(double.tryParse(carts.first.food.restaurant.latitude), double.tryParse(carts.first.food.restaurant.longitude));
     LatLng customer = new LatLng(deliveryAddress.value.latitude, deliveryAddress.value.longitude);
     // LatLng store = new LatLng(1, 1);
     // LatLng customer = new LatLng(1, 1);
@@ -55,7 +55,7 @@ class CheckoutController extends CartController {
     super.onLoadingCartDone();
     if (payment != null) {
       setState(() => loading = true);
-      addOrder(cart.value, hint);
+      addOrder(carts, hint);
     }
   }
 

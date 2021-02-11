@@ -45,7 +45,7 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return cart.value.isEmpty
+    return _con.carts.isEmpty
         ? const SizedBox()
         : Container(
             height: _con.promotion == '' ? 160 : 180,
@@ -87,10 +87,10 @@ class _CheckoutBottomDetailsWidget extends State<CheckoutBottomDetailsWidget> {
                     style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13)),
                   ),
                 ),
-                if (Helper.canDelivery(cart.value[0].food.restaurant,
-                    carts: cart.value) &&
+                if (Helper.canDelivery(_con.carts[0].food.restaurant,
+                    carts: _con.carts) &&
                     _con.subTotal < settingsRepo.setting.value.deliveryFeeLimit)
-                  Helper.getPrice(cart.value[0].food.restaurant.deliveryFee, context,
+                  Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context,
                       style: Theme.of(context).textTheme.subtitle1)
                 else
                   Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)

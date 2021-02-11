@@ -11,7 +11,6 @@ import '../models/cart.dart';
 import '../models/user.dart';
 import '../repository/user_repository.dart' as userRepo;
 
-ValueNotifier<List<Cart>> cart = new ValueNotifier(null);
 ValueNotifier<int> cart_count = new ValueNotifier(0);
 ValueNotifier<String> currentCart_note = new ValueNotifier("");
 ValueNotifier<DateTime> currentCart_time = new ValueNotifier(null);

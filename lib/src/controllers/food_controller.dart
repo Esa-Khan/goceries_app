@@ -34,18 +34,18 @@ class FoodController extends ControllerMVC {
     stream.listen((Item _food) async {
       setState(() => item = _food);
 
-      if (_food.ingredients != "<p>.</p>") {
-        var otherItems = _food.ingredients.split('-');
-        otherItems.remove(_food.id);
-        otherItems.forEach((element) async {
-          final Stream<Item> currStream = await getFood(element);
-          currStream.listen((Item _food) {
-            setState(() => similarItems.add(_food));
-          }, onDone: () {
-            setState(() => loaded_similaritems = true);
-          });
-        });
-      }
+      // if (_food.ingredients != "<p>.</p>") {
+      //   var otherItems = _food.ingredients.split('-');
+      //   otherItems.remove(_food.id);
+      //   otherItems.forEach((element) async {
+      //     final Stream<Item> currStream = await getFood(element);
+      //     currStream.listen((Item _food) {
+      //       setState(() => similarItems.add(_food));
+      //     }, onDone: () {
+      //       setState(() => loaded_similaritems = true);
+      //     });
+      //   });
+      // }
 
       if (getAisle) {
         listenForCategory(item.category);
@@ -120,19 +120,15 @@ class FoodController extends ControllerMVC {
       var _oldCart = isExistInCart(_newCart);
       if (_oldCart != null) {
         _oldCart.quantity += this.quantity;
-        updateCart(_oldCart).whenComplete(() {
-          setState(() {
-            this.loadCart = false;
-          });
-          scaffoldKey?.currentState?.showSnackBar(SnackBar(
-            content: Text("Item already in cart. Adding ${_newCart.quantity.ceil()} more.", textAlign: TextAlign.center,),
-            duration: Duration(milliseconds: 500),
-          ));
-        });
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text("Item already in cart. Adding ${_newCart.quantity.ceil()} more.", textAlign: TextAlign.center,),
+          duration: Duration(seconds: 2),
+        ));
+        updateCart(_oldCart).whenComplete(() => setState(() => loadCart = false));
       } else {
         // The item doesn't exist in the cart add new one
         addCart(_newCart, reset).then((_cart) {
-          cart.value.add(_cart);
+          carts.add(_cart);
           setState(() => this.loadCart = false);
           // scaffoldKey?.currentState?.showSnackBar(SnackBar(
           //   content: Text(S.of(context).item_was_added_to_cart, textAlign: TextAlign.center,),
@@ -144,8 +140,8 @@ class FoodController extends ControllerMVC {
   }
 
   Cart isExistInCart(Cart _cart) {
-    for (int i = 0; i < cart.value.length; i++) {
-      Cart current_cart = cart.value.elementAt(i);
+    for (int i = 0; i < carts.length; i++) {
+      Cart current_cart = carts.elementAt(i);
       if (current_cart.food.id == _cart.food.id) {
         return current_cart;
       }

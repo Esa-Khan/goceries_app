@@ -50,7 +50,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
       ),
-      body: cart.value.isEmpty
+      body: _con.carts.isEmpty
           ? Center(heightFactor: 3.5, child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
           : Stack(
               fit: StackFit.expand,
@@ -156,7 +156,7 @@ class _CheckoutWidgetState extends StateMVC<CheckoutWidget> {
                                 ),
                               ),
                               _con.subTotal < setting.value.deliveryFeeLimit
-                                  ? Helper.getPrice(cart.value[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                                  ? Helper.getPrice(_con.carts[0].food.restaurant.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
                                   : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
 
                             ],
