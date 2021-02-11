@@ -298,7 +298,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   ),
                                 ),
 
-                                _con.loaded_similaritems
+                                _con.similarItems.isNotEmpty
                                   ? ListTile(
                                       dense: true,
                                       contentPadding: EdgeInsets.symmetric(vertical: 0),
@@ -311,16 +311,17 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         style: Theme.of(context).textTheme.headline3,
                                       ),
                                     )
-                                  : Column(
+                                  : _con.loaded_similaritems
+                                    ? const SizedBox()
+                                    : Column(
                                         children: <Widget>[
                                           Center(
-                                              heightFactor: 2,
-                                              child: SizedBox(
-                                                  width: 60,
-                                                  height: 60,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          strokeWidth: 5))),
+                                            heightFactor: 2,
+                                            child: SizedBox(
+                                                width: 60,
+                                                height: 60,
+                                                child: CircularProgressIndicator(strokeWidth: 5))
+                                          ),
                                           SizedBox(height: 300)
                                         ],
                                       ),
@@ -772,6 +773,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                 oldFood: _con.carts.elementAt(0)?.food,
                 newFood: _con.item,
                 onPressed: (item, {reset: true}) {
+                  _con.carts.clear();
                   return _con.addToCart(_con.item, reset: true);
                 });
           },

@@ -58,7 +58,7 @@ class Item {
       price = price*restaurant.defaultTax + price;
       category = jsonMap['category_id'] != null ? jsonMap['category_id'] : 0;
       // image_url = jsonMap['image_url'] != null && jsonMap['image_url'] != "NULL" ? jsonMap['image_url'] : null;
-      if (jsonMap['image_url'] == null || jsonMap['image_url'].toString().substring(0, 7) == 'storage') {
+      if (jsonMap['image_url'] == null || jsonMap['image_url'].toString().substring(0, 7) == 'storage' || jsonMap['image_url'].toString().substring(0, 6) == 'images') {
         image_url = '${GlobalConfiguration().getString('base_url')}storage/app/public/foods/${id}.jpg';
       } else {
         image_url = jsonMap['image_url'];
