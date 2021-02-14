@@ -141,10 +141,9 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
         Row(
           children: <Widget>[
             Container(
-              margin: EdgeInsetsDirectional.only(start: 20),
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               height: 28,
-              width: 180,
               decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.orderStatus.status_color),
               alignment: AlignmentDirectional.center,
               child: Text(
@@ -158,15 +157,12 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
               ? const SizedBox()
               : Container(
                 margin: EdgeInsetsDirectional.only(end: 20),
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                height: 28,
-  //              width: 180,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: Colors.blue),
                 alignment: AlignmentDirectional.center,
                 child: Text(
-                  '${widget.order.scheduled_time}',
-                  maxLines: 1,
-                  style: Theme.of(context).textTheme.caption.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor)),
+                  'Deliver at: ${widget.order.scheduled_time}',
+                  style: Theme.of(context).textTheme.caption.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor, fontSize: 10)),
                 ),
               ),
           ],

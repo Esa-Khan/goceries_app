@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:saudaghar/src/helpers/maps_util.dart';
+import 'package:saudaghar/src/repository/user_repository.dart';
 import '../models/address.dart';
 import '../controllers/delivery_pickup_controller.dart';
 import '../repository/cart_repository.dart';
@@ -382,7 +383,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
           start_time = start_time.replaceAll('pm', '');
           start_time = '${(int.tryParse(start_time) + 12)}';
         }
-        if (current_date.hour < int.tryParse(start_time)) {
+        if (current_date.hour < 4) {
           day = current_date.weekday;
         } else {
           day = current_date.weekday == 7 ? 1 : current_date.weekday + 1;
@@ -503,14 +504,13 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
       bool within_range = await MapsUtil.withinRange(settingsRepo.deliveryAddress.value, store_address,
           widget.con.carts[0].food.restaurant.deliveryRange);
       Helper.hideLoader(loader);
-      if (!within_range) {
+      if (!within_range && !currentUser.value.debugger) {
         showDialog(
             context: context,
             builder: (context) => updateOrderDialog(settingsRepo.deliveryAddress.value)
         );
       } else {
         if (widget.con.store.id == '0') {
-          timeslot_time.value = null;
           if (!_isVisible || (_date == "Set Day" && _time == "Set Time")) {
             widget.con.goCheckout(context);
           } else if (_isVisible
@@ -527,7 +527,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
             String hour = int.parse(_time.trim().split(':')[0]) < 10 ? '0' + _time.trim().split(':')[0] : _time.trim().split(':')[0];
             String minute = _time.trim().split(':')[1];
             DateTime scheduled_time = DateTime.parse(year + month + day + 'T' + hour + minute + '00');
-            currentCart_time.value = scheduled_time;
+            currentCart_time.value = scheduled_time.toString().substring(0, 16);
             var desc = widget.con.carts[0].food?.restaurant?.description;
             if (desc != '24/7') {
               var now = int.parse(_time.trim().split(':')[0]) + int.parse(_time.trim().split(':')[1]) / 100;
@@ -595,8 +595,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
           if (dropdownValue == 'Select Delivery Timeslot') {
             widget.con.showSnackBar("Please select a timeslot for delivery");
           } else {
-            timeslot_time.value = dropdownValue;
-            currentCart_time.value = null;
+            currentCart_time.value = dropdownValue;
             widget.con.goCheckout(context);
           }
         }

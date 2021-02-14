@@ -161,8 +161,8 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                               style: Theme.of(context).textTheme.headline2.merge(
                                   TextStyle(fontWeight: FontWeight.bold,
                                             color: _con.order_declined
-                                                ? Colors.red
-                                                : Theme.of(context).accentColor,
+                                              ? Colors.red
+                                              : Theme.of(context).accentColor,
                                             fontSize: settingsRepo.compact_view_horizontal ? 20 : 19
                                   )
                               ),
@@ -213,7 +213,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                   textAlign: TextAlign.center,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  text: currentCart_time.value == null && timeslot_time.value == null
+                                  text: currentCart_time.value == null
                                     ? TextSpan (
                                           text: 'Estimated delivery within',
                                           style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
@@ -230,7 +230,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                       style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: '  ' + (currentCart_time.value ?? timeslot_time.value).toString(),
+                                            text: '  ' + (currentCart_time.value).toString(),
                                             style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13),
                                             )
                                         ),

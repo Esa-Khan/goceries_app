@@ -60,7 +60,8 @@ class _AislesItemWidgetState extends StateMVC<AislesItemWidget> {
                     colorFilter: new ColorFilter.mode(Colors.white.withOpacity(aisle_img_opacity), BlendMode.dstIn),
                     onError: (dynamic, StackTrace) {
                       print("Error Loading Image: ${widget.aisle.aisleImage}");
-                      widget.aisle.aisleImage = '${GlobalConfiguration().getString('base_url')}storage/app/public/aisles/misc.jpg';
+                      setState(() => widget.aisle.aisleImage = '${GlobalConfiguration().getString('base_url')}storage/app/public/aisles/misc.jpg');
+                      // setState(() => widget.aisle.aisleImage);
                       // widget.aisle.aisleImage = 'assets/img/loading.gif';
                     },
                   ),
