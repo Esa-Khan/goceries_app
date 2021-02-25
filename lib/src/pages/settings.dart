@@ -31,7 +31,9 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
           centerTitle: true,
           title: Text(
             S.of(context).settings,
-            style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
+            style: currentUser.value.debugger
+              ? Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3, color: Colors.redAccent))
+              : Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
           ),
         ),
         body: currentUser.value.id == null
