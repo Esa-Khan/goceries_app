@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
+import 'package:saudaghar/src/helpers/helper.dart';
 import 'package:saudaghar/src/models/address.dart';
 import 'package:saudaghar/src/repository/food_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:http/http.dart' as http;
+import 'package:saudaghar/src/repository/user_repository.dart';
 
 import '../models/category.dart';
 import '../models/item.dart';
@@ -10,6 +13,17 @@ import '../models/restaurant.dart';
 import '../repository/category_repository.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/settings_repository.dart';
+import '../elements/AddToCartAlertDialog.dart';
+import '../../src/models/category.dart';
+import '../../src/repository/category_repository.dart';
+import '../../generated/l10n.dart';
+import '../models/cart.dart';
+import '../models/extra.dart';
+import '../models/favorite.dart';
+import '../repository/cart_repository.dart';
+import '../repository/food_repository.dart';
+import '../repository/food_repository.dart' as foodRepo;
+
 
 class SGHomeController extends ControllerMVC {
   Restaurant store;
@@ -18,6 +32,9 @@ class SGHomeController extends ControllerMVC {
   List<Item> searchedItems = <Item>[];
   List<Item> items = <Item>[];
   bool isLoading = false;
+  bool loadCart = false;
+  List<Cart> carts = [];
+
 
   Future<void> getStore(String id) async {
     final Stream<Restaurant> stream = await getRestaurant(id, deliveryAddress.value);
@@ -107,6 +124,56 @@ class SGHomeController extends ControllerMVC {
     });
   }
 
+
+
+  bool showAddtocartSnack = false;
+  void addToCart(Item item) async {
+    if (currentUser.value.apiToken == null) {
+      Navigator.of(context).pushNamed("/Login");
+    } else {
+      OverlayEntry loader = Helper.overlayLoader(context);
+      Overlay.of(context).insert(loader);
+      setState(() => loadCart = true);
+      var _newCart = new Cart();
+      _newCart.food = item;
+      _newCart.quantity = 1;
+      addCart(_newCart).then((_cart) {
+        bool item_in_cart = false;
+        for (int i = 0; i < carts.length; i++) {
+          if (carts.elementAt(i).food.id == _cart.food.id) {
+            carts.elementAt(i).quantity += _cart.quantity;
+            item_in_cart = true;
+          }
+        }
+        if (!item_in_cart) {
+          carts.add(_cart);
+          setState(() => cart_count.value += _cart.quantity);
+          cart_count.notifyListeners();
+        }
+        setState(() => loadCart = false);
+        loader.remove();
+      }).catchError((e) {
+        print(e);
+        loader.remove();
+        print(e.toString());
+        if (e.toString() == 'Exception: Different Store') {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AddToCartAlertDialogWidget(
+                  oldFood: carts.elementAt(0)?.food,
+                  newFood: item,
+                  onPressed: (item, {reset: true}) {
+                    carts.clear();
+                    return addToCart(item);
+                  });
+            },
+          );
+        }
+      });
+    }
+  }
 
 
 }

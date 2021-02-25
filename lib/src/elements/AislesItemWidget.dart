@@ -4,11 +4,9 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:saudaghar/src/pages/items_list.dart';
 import '../models/restaurant.dart';
-import '../models/route_argument.dart';
 import '../controllers/sghome_controller.dart';
 import '../helpers/size_config.dart';
 import '../../src/models/item.dart';
-
 import '../models/category.dart' as category;
 
 typedef expandAisle = void Function(category.Category);
@@ -20,8 +18,7 @@ class AislesItemWidget extends StatefulWidget {
   final Restaurant store;
 
   AislesItemWidget({Key key, this.aisle, this.store}) : super(key: key);
-
- }
+}
 
 class _AislesItemWidgetState extends StateMVC<AislesItemWidget> {
   SGHomeController _con = new SGHomeController();

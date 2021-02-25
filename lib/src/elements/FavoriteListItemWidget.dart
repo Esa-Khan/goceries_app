@@ -70,7 +70,7 @@ class FavoriteListItemWidget extends StatelessWidget {
                   Column(
                     children: [
                       Helper.getPrice(favorite.food.price, context, style: Theme.of(context).textTheme.headline4),
-                      if (favorite.food.quantity == 0)
+                      if (favorite.food.quantity <= 0)
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(

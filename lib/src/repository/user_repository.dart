@@ -85,6 +85,9 @@ Future<bool> resetPassword(User user) async {
 }
 
 Future<void> logout() async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}logout?api_token=${currentUser.value.apiToken}';
+  final client = new http.Client();
+  final response = await client.get(url);
   currentUser.value = new User();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove('current_user');
@@ -255,17 +258,3 @@ Future<void> getDriverAvail() async {
 }
 
 
-Future<void> setDriverAvail(bool isAvail) async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}setDriverAvail/${userRepo.currentUser.value.id}/${isAvail ? 1 : 0}';
-  final client = new http.Client();
-  try {
-    final response = await client.put(
-      url,
-      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-    );
-    currentUser.value.available = json.decode(response.body)['data']['available'];
-    currentUser.value.work_hours = json.decode(response.body)['data']['work_hours'];
-  } catch (e) {
-    print(CustomTrace(StackTrace.current, message: url));
-  }
-}

@@ -8,22 +8,22 @@ class Cart {
   String id;
   Item food;
   Restaurant store;
-  double quantity;
+  int quantity;
   List<Extra> extras;
-  String userId;
+  String user_id;
 
   Cart();
 
   Cart.fromJSON(Map<String, dynamic> jsonMap) {
     try {
       id = jsonMap['id'].toString();
-      quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toDouble() : 0.0;
+      quantity = jsonMap['quantity'] != null ? jsonMap['quantity'].toInt() : 0;
       food = jsonMap['food'] != null ? Item.fromJSON(jsonMap['food']) : Item.fromJSON({});
       store = food.restaurant;
       extras = jsonMap['extras'] != null ? List.from(jsonMap['extras']).map((element) => Extra.fromJSON(element)).toList() : [];
     } catch (e) {
       id = '';
-      quantity = 0.0;
+      quantity = 0;
       food = Item.fromJSON({});
       extras = [];
       print(CustomTrace(StackTrace.current, message: e));
@@ -35,8 +35,8 @@ class Cart {
     map["id"] = id;
     map["quantity"] = quantity;
     map["food_id"] = food.id;
-    map["user_id"] = userId;
-    map["extras"] = extras.map((element) => element.id).toList();
+    map["user_id"] = user_id;
+    // map["extras"] = extras.map((element) => element.id).toList();
     return map;
   }
 

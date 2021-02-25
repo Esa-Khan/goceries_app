@@ -89,9 +89,6 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
           S.of(context).orders,
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
-        actions: <Widget>[
-          new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: con.value.refreshOrders,
@@ -107,7 +104,7 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
                         shrinkWrap: true,
                         primary: false,
                         itemCount: con.value.orders.length,
-                        itemBuilder: (context, index) => OrderItemWidget(expanded: false, order: con.value.orders.elementAt(index)),
+                        itemBuilder: (context, index) => OrderItemWidget(order: con.value.orders.elementAt(index)),
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 20);
                         },

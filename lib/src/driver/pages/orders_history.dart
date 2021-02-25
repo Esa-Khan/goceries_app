@@ -47,9 +47,6 @@ class _OrdersHistoryWidgetState extends StateMVC<OrdersHistoryWidget> {
           S.of(context).orders_history,
           style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
         ),
-        actions: <Widget>[
-          new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
-        ],
       ),
       body: RefreshIndicator(
         onRefresh: _con.refreshOrdersHistory,
@@ -67,7 +64,7 @@ class _OrdersHistoryWidgetState extends StateMVC<OrdersHistoryWidget> {
                     itemCount: _con.orders.length,
                     itemBuilder: (context, index) {
                       var _order = _con.orders.elementAt(index);
-                      return OrderItemWidget(expanded: index == 0 ? true : false, order: _order);
+                      return OrderItemWidget(order: _order);
                     },
                     separatorBuilder: (context, index) {
                       return SizedBox(height: 20);

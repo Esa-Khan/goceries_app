@@ -9,9 +9,11 @@ import '../../../generated/l10n.dart';
 import '../../models/order.dart';
 import '../repository/order_repository.dart';
 import '../../repository/settings_repository.dart';
+import '../../helpers/helper.dart';
 
 class OrderDetailsController extends ControllerMVC {
   Order order;
+  bool allow_updating = false;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   OrderDetailsController() {
@@ -28,6 +30,7 @@ class OrderDetailsController extends ControllerMVC {
         content: Text(S.of(context).verify_your_internet_connection),
       ));
     }, onDone: () {
+      checkIfCanUpdate();
       if (message != null) {
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
           content: Text(message),
@@ -72,5 +75,15 @@ class OrderDetailsController extends ControllerMVC {
       throw 'Could not open the map.';
     }
   }
+
+  checkIfCanUpdate() {
+    DateTime order_time = DateTime.parse(order.scheduled_time), curr_time = DateTime.parse(DateTime.now().toUtc().add(Duration(hours: 4)).toIso8601String().substring(0, 19));
+    if (curr_time.compareTo(order_time) >= 0 ){
+      setState(() => allow_updating = true);
+    } else {
+      setState(() => allow_updating = false);
+    }
+  }
+
 
 }

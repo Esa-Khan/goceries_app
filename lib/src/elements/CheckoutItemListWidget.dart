@@ -35,16 +35,11 @@ class CheckoutItemListWidget extends StatelessWidget {
               tag: heroTag + cart_item.food.id,
               child: ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                // child: Image.network(
-                //   food.image.thumb,
-                //   height: 60,
-                //   width: 60,
-                // )
                 child: CachedNetworkImage(
                   height: 60,
                   width: 60,
                   fit: BoxFit.cover,
-                  imageUrl: cart_item.food.image_url != null ? cart_item.food.image_url : cart_item.food.image.thumb,
+                  imageUrl: cart_item.food.image_url,
                   placeholder: (context, url) => Image.asset(
                     'assets/img/loading.gif',
                     fit: BoxFit.cover,

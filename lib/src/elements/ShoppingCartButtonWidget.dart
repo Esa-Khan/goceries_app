@@ -49,31 +49,55 @@ class _ShoppingCartButtonWidgetState extends StateMVC<ShoppingCartButtonWidget> 
         }
       },
       child: Stack(
-        alignment: AlignmentDirectional.bottomEnd,
         children: <Widget>[
           Icon(
             Icons.shopping_cart,
             color: this.widget.iconColor,
             size: 28,
           ),
-          Container(
-            child: _con.cartcount_isLoaded
-              ?   Text(
-                    cart_count.value.toString(),
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.caption.merge(
-                          TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),
-                        ),
-                  )
-              : Center(
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: Container(
+              child: _con.cartcount_isLoaded
+                  ?   Text(
+                cart_count.value.toString(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption.merge(
+                  TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),
+                ),
+              )
+                  : Center(
                   child: SizedBox(width: 7, height: 7,
                       child: CircularProgressIndicator(strokeWidth: 1, backgroundColor: Theme.of(context).primaryColor)
                   )
+              ),
+              padding: EdgeInsets.all(1.5),
+              decoration: BoxDecoration(color: widget.labelColor, borderRadius: BorderRadius.all(Radius.circular(10))),
+              constraints: BoxConstraints(minWidth: 15, maxWidth: 15, minHeight: 15, maxHeight: 15),
             ),
-            padding: EdgeInsets.all(1.5),
-            decoration: BoxDecoration(color: this.widget.labelColor, borderRadius: BorderRadius.all(Radius.circular(10))),
-            constraints: BoxConstraints(minWidth: 15, maxWidth: 15, minHeight: 15, maxHeight: 15),
           ),
+          // if (currentUser.value.points > 0)
+          //   Positioned(
+          //     child: Container(
+          //       child: Row(
+          //         children: [
+          //           Icon(
+          //             Icons.account_balance_wallet,
+          //             color: Theme.of(context).primaryColor,
+          //             size: 10,
+          //           ),
+          //           Text(
+          //             currentUser.value.points.toString(),
+          //             textAlign: TextAlign.center,
+          //             style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: 9)),
+          //           ),
+          //         ],
+          //       ),
+          //       padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+          //       decoration: BoxDecoration(color: Colors.orange, borderRadius: BorderRadius.all(Radius.circular(10))),
+          //     )
+          //   ),
         ],
       ),
       color: Colors.transparent,

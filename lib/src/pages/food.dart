@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:saudaghar/src/elements/FoodItemWidget.dart';
+import 'package:saudaghar/src/models/favorite.dart';
 import '../models/item.dart';
 import '../../src/elements/SimilarItemListWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -33,6 +35,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
   TextEditingController wgt_controller;
   TextEditingController qty_controller;
   TextEditingController price_controller;
+  double opacity = 0.1;
 
   _FoodWidgetState() : super(FoodController()) {
     _con = controller;
@@ -63,6 +66,21 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     return Scaffold(
       key: _con.scaffoldKey,
       resizeToAvoidBottomInset: false,
+      bottomNavigationBar: BottomNavigator(
+        quantity: _con.quantity,
+        favorite: _con.favorite,
+        item: _con.item,
+        loadCart: _con.loadCart,
+        total: _con.total,
+        incrementQuantity: () => _con.incrementQuantity(),
+        decrementQuantity: () => _con.decrementQuantity(),
+        removeFromFavorite: (_favourite) => _con.removeFromFavorite(_favourite),
+        addToFavorite: (_favourite) => _con.addToFavorite(_favourite),
+        addToCart: () {
+          setState(() => opacity = 1);
+          _con.addToCart();
+        }
+      ),
       body: _con.item == null || _con.item?.image == null
           ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
           : SafeArea(
@@ -72,8 +90,6 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                 fit: StackFit.expand,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(bottom: 125),
-                    padding: EdgeInsets.only(bottom: 15),
                     child: CustomScrollView(
                       primary: true,
                       shrinkWrap: false,
@@ -122,10 +138,10 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                             style: Theme.of(context).textTheme.headline3,
                                           ),
                                           Text(
-                                            'Category - ' + (_con.aisle == null ? 'Miscellaneous': _con.aisle.name),
+                                            'Category - ' + (_con.aisle == null ? '': _con.aisle.name),
                                             overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
-                                            style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 14)),
+                                            style: Theme.of(context).textTheme.headline5.merge(TextStyle(fontSize: 13)),
                                           ),
                                           Text(
                                             'Store - ' + _con.item.restaurant.name,
@@ -143,8 +159,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         children: <Widget>[
                                           Helper.getPrice(
                                             _con.item.price < _con.item.discountPrice
-                                                ? _con.item.price
-                                                : _con.item.discountPrice,
+                                              ? _con.item.price
+                                              : _con.item.discountPrice,
                                             context,
                                             style: Theme.of(context).textTheme.headline2,
                                           ),
@@ -255,9 +271,6 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   ),
 
 
-
-
-
                                 if (_con.item.description != '' && _con.item.description != null)
                                   Helper.applyHtml(context, _con.item.description, style: TextStyle(fontSize: 12)),
                                 if (_con.item.nutritions.isNotEmpty)
@@ -301,14 +314,13 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                 _con.similarItems.isNotEmpty
                                   ? ListTile(
                                       dense: true,
-                                      contentPadding: EdgeInsets.symmetric(vertical: 0),
                                       leading: Icon(
                                         Icons.list_alt_sharp,
                                         color: Theme.of(context).hintColor,
                                       ),
                                       title: Text(
                                         S.of(context).similar_items,
-                                        style: Theme.of(context).textTheme.headline3,
+                                        style: Theme.of(context).textTheme.headline3.apply(fontSizeFactor: 0.9),
                                       ),
                                     )
                                   : _con.loaded_similaritems
@@ -327,7 +339,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       ),
                                 if (_con.loaded_similaritems && _con.similarItems.isNotEmpty)
                                   ListView.separated(
-                                    padding: EdgeInsets.only(bottom: 80),
+                                    padding: EdgeInsets.only(bottom: 20),
                                     scrollDirection: Axis.vertical,
                                     shrinkWrap: true,
                                     primary: false,
@@ -336,31 +348,12 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       return SizedBox(height: 10);
                                     },
                                     itemBuilder: (context, index) {
-                                      return SimilarItemListWidget(
+                                      return FoodItemWidget(
+                                        heroTag: 'similar_items',
                                         food: _con.similarItems.elementAt(index),
                                       );
                                     },
                                   )
-//                                Helper.applyHtml(context, _con.item.ingredients, style: TextStyle(fontSize: 12)),
-
-
-
-
-//                                ListTile(
-//                                  dense: true,
-//                                  contentPadding: EdgeInsets.symmetric(vertical: 10),
-//                                  leading: Icon(
-//                                    Icons.recent_actors,
-//                                    color: Theme.of(context).hintColor,
-//                                  ),
-//                                  title: Text(
-//                                    S.of(context).reviews,
-//                                    style: Theme.of(context).textTheme.subtitle1,
-//                                  ),
-//                                ),
-//                                ReviewsListWidget(
-//                                  reviewsList: _con.item.foodReviews,
-//                                ),
                               ],
                             ),
                           ),
@@ -382,140 +375,10 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                         : ShoppingCartFloatButtonWidget(
                             iconColor: Theme.of(context).primaryColor,
                             labelColor: Theme.of(context).hintColor,
+                            opacity: opacity,
                             food: _con.item,
                           ),
                   ),
-
-
-
-                  // Bottom Nav
-                  Positioned(
-                    bottom: 0,
-                    child: Container(
-                      height: 150,
-                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor,
-                          borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-                          boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width - 40,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.max,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Text(
-                                    S.of(context).quantity,
-                                    style: Theme.of(context).textTheme.subtitle1.apply(fontSizeFactor: 1.3),
-                                  ),
-                                ),
-                                Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    IconButton(
-                                      onPressed: () {
-                                        _con.decrementQuantity();
-                                      },
-                                      iconSize: 25,
-                                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                                      icon: Icon(Icons.remove_circle_outline),
-                                      color: Theme.of(context).hintColor,
-                                    ),
-                                    Text(_con.quantity.toString(), style: Theme.of(context).textTheme.subtitle1.apply(fontSizeFactor: 1.5)),
-                                    IconButton(
-                                      onPressed: () {
-                                        _con.incrementQuantity();
-                                      },
-                                      iconSize: 25,
-                                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-                                      icon: Icon(Icons.add_circle_outline),
-                                      color: Theme.of(context).hintColor,
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 10),
-                            Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: _con.favorite?.id != null
-                                    ? FlatButton(
-                                      onPressed: () {
-                                        _con.removeFromFavorite(_con.favorite);
-                                      },
-                                      padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
-                                      color: Theme.of(context).accentColor,
-                                      shape: StadiumBorder(),
-                                      child: Icon(
-                                        Icons.favorite,
-                                        color: Theme.of(context).primaryColor,
-                                      ))
-                                   : OutlineButton(
-                                      onPressed: () {
-                                        if (currentUser.value.apiToken == null) {
-                                          Navigator.of(context).pushNamed("/Login");
-                                        } else {
-                                          _con.addToFavorite(_con.item);
-                                        }
-                                      },
-                                      padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
-                                      color: Theme.of(context).primaryColor,
-                                      shape: StadiumBorder(),
-                                      borderSide: BorderSide(color: Theme.of(context).accentColor),
-                                      child: Icon(
-                                        Icons.favorite,
-                                        color: Theme.of(context).accentColor,
-                                      )
-                                  ),
-                                ),
-                                SizedBox(width: 10),
-                                Stack(
-                                  fit: StackFit.loose,
-                                  alignment: AlignmentDirectional.centerEnd,
-                                  children: <Widget>[
-                                    SizedBox(
-                                      width: MediaQuery.of(context).size.width - 110,
-                                      height: 60,
-                                      child: FlatButton(
-                                        onPressed: _con.item.quantity > 0  && !_con.loadCart ? () => addToCart() : null,
-                                        disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
-                                        padding: EdgeInsets.symmetric(vertical: 14),
-                                        color: Theme.of(context).accentColor,
-                                        shape: StadiumBorder(),
-                                        child: Container(
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                                          child: Text(
-                                            S.of(context).add_to_cart,
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 15 : 20),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                                      child: Helper.getPrice(
-                                        _con.total,
-                                        context,
-                                        style: Theme.of(context).textTheme.headline4.merge(
-                                            TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 15 : 20)),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
                 ],
               ),
             ),
@@ -758,29 +621,169 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
         );
   }
 
-  void addToCart() {
-    if (currentUser.value.apiToken == null) {
-      Navigator.of(context).pushNamed("/Login");
-    } else {
-      if (_con.isSameRestaurants(_con.item)) {
-        _con.addToCart(_con.item);
-      } else {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            // return object of type Dialog
-            return AddToCartAlertDialogWidget(
-                oldFood: _con.carts.elementAt(0)?.food,
-                newFood: _con.item,
-                onPressed: (item, {reset: true}) {
-                  _con.carts.clear();
-                  return _con.addToCart(_con.item, reset: true);
-                });
-          },
-        );
-      }
+
+}
+
+
+
+
+class BottomNavigator extends StatelessWidget {
+
+  const BottomNavigator({
+    Key key,
+    @required this.quantity,
+    @required this.favorite,
+    @required this.item,
+    @required this.loadCart,
+    @required this.total,
+    @required this.incrementQuantity,
+    @required this.decrementQuantity,
+    @required this.removeFromFavorite,
+    @required this.addToFavorite,
+    @required this.addToCart,
+  }) : super(key: key);
+
+  final int quantity;
+  final Favorite favorite;
+  final Item item;
+  final bool loadCart;
+  final double total;
+  final void Function() incrementQuantity;
+  final void Function() decrementQuantity;
+  final void Function(Favorite) removeFromFavorite;
+  final void Function(Item) addToFavorite;
+  final void Function() addToCart;
+
+
+  @override
+  Widget build(BuildContext context) {
+    try {
+      return Wrap(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+                boxShadow: [BoxShadow(color: Theme.of(context).focusColor.withOpacity(0.15), offset: Offset(0, -2), blurRadius: 5.0)]),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Text(
+                          S.of(context).quantity,
+                          style: Theme.of(context).textTheme.subtitle1.apply(fontSizeFactor: 1.3),
+                        ),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          IconButton(
+                            onPressed: () {
+                              decrementQuantity();
+                            },
+                            iconSize: 25,
+                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                            icon: Icon(Icons.remove_circle_outline),
+                            color: Theme.of(context).hintColor,
+                          ),
+                          Text(quantity.toString(), style: Theme.of(context).textTheme.subtitle1.apply(fontSizeFactor: 1.5)),
+                          IconButton(
+                            onPressed: () {
+                              incrementQuantity();
+                            },
+                            iconSize: 25,
+                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                            icon: Icon(Icons.add_circle_outline),
+                            color: Theme.of(context).hintColor,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: favorite?.id != null
+                            ? FlatButton(
+                            onPressed: () {
+                              removeFromFavorite(favorite);
+                            },
+                            padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
+                            color: Theme.of(context).accentColor,
+                            shape: StadiumBorder(),
+                            child: Icon(
+                              Icons.favorite,
+                              color: Theme.of(context).primaryColor,
+                            ))
+                            : OutlineButton(
+                            onPressed: () {
+                              if (currentUser.value.apiToken == null) {
+                                Navigator.of(context).pushNamed("/Login");
+                              } else {
+                                addToFavorite(item);
+                              }
+                            },
+                            padding: EdgeInsets.symmetric(vertical: settingsRepo.compact_view_horizontal ? 12 : 20),
+                            color: Theme.of(context).primaryColor,
+                            shape: StadiumBorder(),
+                            borderSide: BorderSide(color: Theme.of(context).accentColor),
+                            child: Icon(
+                              Icons.favorite,
+                              color: Theme.of(context).accentColor,
+                            )
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Stack(
+                        fit: StackFit.loose,
+                        alignment: AlignmentDirectional.centerEnd,
+                        children: <Widget>[
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width - 110,
+                            height: 60,
+                            child: FlatButton(
+                              onPressed: item.quantity > 0  && !loadCart ? () => addToCart() : null,
+                              disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
+                              padding: EdgeInsets.symmetric(vertical: 14),
+                              color: Theme.of(context).accentColor,
+                              shape: StadiumBorder(),
+                              child: Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(horizontal: 20),
+                                child: Text(
+                                  S.of(context).add_to_cart,
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 15 : 20),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Helper.getPrice(
+                              total,
+                              context,
+                              style: Theme.of(context).textTheme.headline4.merge(
+                                  TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 15 : 20)),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                ],
+              ),
+          )
+        ],
+      );
+    } catch (e) {
+      return const SizedBox();
     }
   }
-
 }
 

@@ -186,7 +186,7 @@ class _TrackingWidgetState extends StateMVC<TrackingWidget> with SingleTickerPro
                           children: <Widget>[
                             Text('${S.of(context).order_id}: #${_con.order.id}'),
                             Text(
-                              DateFormat('dd-MM-yyyy | HH:mm').format(_con.order.dateTime),
+                              DateFormat('dd-MM-yyyy | HH:mm').format(_con.order.created_at),
                               style: Theme.of(context).textTheme.caption,
                             ),
                           ],

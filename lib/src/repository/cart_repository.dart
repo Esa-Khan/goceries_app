@@ -31,44 +31,41 @@ Future<Stream<Cart>> getCart() async {
   });
 }
 
-Future<Stream<int>> getCartCount() async {
+Future<int> getCartCount() async {
   User _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
-    return new Stream.value(0);
+    return 0;
   }
   final String _apiToken = 'api_token=${_user.apiToken}&';
   final String url = '${GlobalConfiguration().getString('api_base_url')}carts/count?${_apiToken}search=user_id:${_user.id}&searchFields=user_id:=';
 
   final client = new http.Client();
-  final streamedRest = await client.send(http.Request('get', Uri.parse(url)));
+  final response = await client.get(Uri.parse(url));
 
-  return streamedRest.stream.transform(utf8.decoder).transform(json.decoder).map(
-        (data) => Helper.getIntData(data),
-      );
+  return json.decode(response.body)['data'];
 }
 
-Future<Cart> addCart(Cart cart, bool reset) async {
+
+
+Future<Cart> addCart(Cart cart) async {
   User _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
     return new Cart();
   }
-  Map<String, dynamic> decodedJSON = {};
   final String _apiToken = 'api_token=${_user.apiToken}';
-  final String _resetParam = 'reset=${reset ? 1 : 0}';
-  cart.userId = _user.id;
-  final String url = '${GlobalConfiguration().getString('api_base_url')}carts?$_apiToken&$_resetParam';
+  cart.user_id = _user.id;
+  final String url = '${GlobalConfiguration().getString('api_base_url')}carts/addcart?$_apiToken';
   final client = new http.Client();
   final response = await client.post(
     url,
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(cart.toMap()),
   );
-  try {
-    decodedJSON = json.decode(response.body)['data'] as Map<String, dynamic>;
-  } on FormatException catch (e) {
-    print(CustomTrace(StackTrace.current, message: e.toString()));
+  if (response.statusCode == 200) {
+    return Cart.fromJSON(json.decode(response.body)['data']);
+  } else if (response.statusCode == 404) {
+    throw new Exception(json.decode(response.body)['message']);
   }
-  return Cart.fromJSON(decodedJSON);
 }
 
 Future<Cart> updateCart(Cart cart) async {
@@ -77,7 +74,7 @@ Future<Cart> updateCart(Cart cart) async {
     return new Cart();
   }
   final String _apiToken = 'api_token=${_user.apiToken}';
-  cart.userId = _user.id;
+  cart.user_id = _user.id;
   final String url = '${GlobalConfiguration().getString('api_base_url')}carts/${cart.id}?$_apiToken';
   final client = new http.Client();
   final response = await client.put(

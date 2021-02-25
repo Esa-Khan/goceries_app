@@ -28,7 +28,7 @@ class CategoryListWidget extends StatefulWidget {
 class _CategoryListState extends StateMVC<CategoryListWidget> with SingleTickerProviderStateMixin {
   SGHomeController _con;
   var _searchBarController = TextEditingController();
-  bool first_load = true, _isSearching = false, _isSearched = false;
+  bool _isSearching = false, _isSearched = false;
   int animation_steps = 0;
   bool items_loaded = false;
 
@@ -40,11 +40,8 @@ class _CategoryListState extends StateMVC<CategoryListWidget> with SingleTickerP
   @override
   void initState() {
     super.initState();
-    if (first_load) {
-      first_load = false;
-      _con.store = widget.store;
-      _con.listenForCategories();
-    }
+    _con.store = widget.store;
+    _con.listenForCategories();
   }
 
   @override

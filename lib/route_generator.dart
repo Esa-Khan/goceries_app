@@ -8,7 +8,6 @@ import 'src/pages/store_select.dart';
 
 import 'src/models/route_argument.dart';
 import 'src/pages/cart.dart';
-import 'src/pages/category.dart';
 import 'src/pages/checkout.dart';
 import 'src/pages/debug.dart';
 import 'src/pages/delivery_addresses.dart';
@@ -34,7 +33,7 @@ import 'src/pages/tracking.dart';
 import 'src/driver/pages/order.dart';
 
 class RouteGenerator {
-  static Route<dynamic> generateRoute(RouteSettings settings, {String subTab}) {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
     // Getting arguments passed in while calling Navigator.pushNamed
     final args = settings.arguments;
     if (currentUser.value.isDriver != null && currentUser.value.isDriver) {
@@ -77,7 +76,7 @@ class RouteGenerator {
         case '/ForgetPassword':
           return MaterialPageRoute(builder: (_) => ForgetPasswordWidget());
         case '/Pages':
-          return MaterialPageRoute(builder: (_) => PagesWidget(currentTab: args, subTab: subTab));
+          return MaterialPageRoute(builder: (_) => PagesWidget(currentTab: args));
         case '/ItemList':
           return MaterialPageRoute(builder: (_) => ItemsListWidget(subAisle: (args as RouteArgument).param, store: (args as RouteArgument).param2));
         case '/Details':
@@ -88,9 +87,6 @@ class RouteGenerator {
         case '/Item':
           return MaterialPageRoute(
               builder: (_) => FoodWidget(routeArgument: args as RouteArgument));
-        case '/Category':
-          return MaterialPageRoute(builder: (_) =>
-              CategoryWidget(routeArgument: args as RouteArgument));
         case '/Cart':
           return MaterialPageRoute(
               builder: (_) => CartWidget(routeArgument: args as RouteArgument));

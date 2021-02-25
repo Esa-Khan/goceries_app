@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/driver/elements/DrawerWidget.dart';
 import 'package:saudaghar/src/elements/AislesItemWidget.dart';
 import 'package:saudaghar/src/elements/EmptyItemSearchWidget.dart';
 import 'package:saudaghar/src/elements/FoodItemWidget.dart';
 import 'package:saudaghar/src/helpers/size_config.dart';
+import 'package:saudaghar/src/models/item.dart';
 import 'package:saudaghar/src/models/restaurant.dart';
 import '../../src/models/route_argument.dart';
 import '../../src/models/category.dart';
@@ -27,7 +29,7 @@ class ItemsListWidget extends StatefulWidget {
 class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
   SGHomeController _con;
   var _searchBarController = TextEditingController();
-  bool first_load = true, _isSearching = false, _isSearched = false;
+  bool _isSearching = false, _isSearched = false;
   int animation_steps = 0;
   bool items_loaded = false;
 
@@ -38,11 +40,8 @@ class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
   @override
   void initState() {
     super.initState();
-    if (first_load) {
-      first_load = false;
-      _con.store = widget.store;
-      _con.listenForFoodsByCategory(widget.subAisle.id);
-    }
+    _con.store = widget.store;
+    _con.listenForFoodsByCategory(widget.subAisle.id);
   }
 
 
@@ -51,26 +50,27 @@ class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_rounded, color: Theme.of(context).hintColor),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-            automaticallyImplyLeading: false,
-            centerTitle: true,
-            title: ValueListenableBuilder(
-              valueListenable: setting,
-              builder: (context, value, child) {
-                return Text( widget.subAisle.name,
-                  style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
-                );
-              },
-            ),
-            actions: <Widget>[
-              new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
-            ],
-          ),
-          body: _con.store == null
+      // drawer: DrawerWidget(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_rounded, color: Theme.of(context).hintColor),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: ValueListenableBuilder(
+          valueListenable: setting,
+          builder: (context, value, child) {
+            return Text( widget.subAisle.name,
+              style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
+            );
+          },
+        ),
+        actions: <Widget>[
+          new ShoppingCartButtonWidget(iconColor: Theme.of(context).hintColor, labelColor: Theme.of(context).accentColor),
+        ],
+      ),
+      body: _con.store == null
               ? const Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
               : SingleChildScrollView(
                   padding: const EdgeInsets.only(top: 10, bottom: 50),
@@ -83,18 +83,16 @@ class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
                       SearchBarWidget(),
                       _isSearching
                           ? Column(
-                        children: <Widget>[
-                          SizedBox(height: 50),
-                          Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
-                        ],
-                      )
+                              children: <Widget>[
+                                SizedBox(height: 50),
+                                Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
+                              ],
+                            )
                           : _isSearched && _con.searchedItems.isEmpty
-                          ? EmptyItemSearchWidget(search_str: _searchBarController.text)
-                          : _con.searchedItems.isNotEmpty
-                          ? SearchResultsWidget()
-
-
-                          : ItemListWidget()
+                            ? EmptyItemSearchWidget(search_str: _searchBarController.text)
+                            : _con.searchedItems.isNotEmpty
+                              ? SearchResultsWidget()
+                              : ItemListWidget(items: _con.items, onPressed: (Item item) => _con.addToCart(item))
 
 
                     ],
@@ -170,41 +168,57 @@ class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
       itemBuilder: (context, index) {
         if (index == _con.searchedItems.length - 1)
           _con.isLoading = false;
-
         if (_con.searchedItems.isNotEmpty) {
           return FoodItemWidget(
             heroTag: 'store_search_list',
             food: _con.searchedItems.elementAt(index),
           );
         } else {
-          return SizedBox(height: 0);
+          return const SizedBox();
         }
       },
     );
   }
 
 
-  Widget ItemListWidget() {
-    return _con.items == null || _con.items.isEmpty
-      ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
-      : ListView.separated(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          primary: false,
-          itemCount: _con.items.length,
-          separatorBuilder: (context, index) {
-            return SizedBox(height: 10);
-          },
-          // ignore: missing_return
-          itemBuilder: (context, index) {
-            return FoodItemWidget(
-              heroTag: 'menu_list',
-              food: _con.items.elementAt(index),
-            );
-          },
-    );
+}
+
+
+class ItemListWidget extends StatelessWidget {
+  @required final List<Item> items;
+  @required final Function(Item) onPressed;
+
+  ItemListWidget({
+    Key key,
+    this.items,
+    this.onPressed,
+  }) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    return items == null || items.isEmpty
+        ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
+        : ListView.separated(
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            primary: false,
+            itemCount: items.length,
+            separatorBuilder: (context, index) {
+              return SizedBox(height: 10);
+            },
+            // ignore: missing_return
+            itemBuilder: (context, index) {
+              return FoodItemWidget(
+                heroTag: 'menu_list',
+                food: items.elementAt(index),
+                onPressed: () => onPressed(items.elementAt(index)),
+              );
+            },
+          );
   }
 }
+
 
 
 

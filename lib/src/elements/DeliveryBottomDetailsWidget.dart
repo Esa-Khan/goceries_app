@@ -81,7 +81,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  widget.con.store.id == '0' ? Scheduler() : TimeSlotScheduler(['8am - 10am', '10am - 12pm', '12pm - 2pm']),
+                  widget.con.store.id == '0' ? Scheduler() : TimeSlotScheduler(['8 - 10', '10 - 12', '12 - 14']),
                   Expanded(child: SizedBox()),
                   Row(
                     children: <Widget>[
@@ -104,17 +104,12 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                           style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(fontSize: 13)),
                         ),
                       ),
-                      if (Helper.canDelivery(
-                              widget.con.carts[0].food.restaurant,
-                              carts: widget.con.carts) &&
+                      if (Helper.canDelivery(widget.con.carts[0].food.restaurant, carts: widget.con.carts) &&
                           widget.con.subTotal < settingsRepo.setting.value.deliveryFeeLimit)
-                        Helper.getPrice(
-                            widget.con.carts[0].food.restaurant.deliveryFee,
-                            context,
+                        Helper.getPrice(widget.con.carts[0].food.restaurant.deliveryFee, context,
                             style: Theme.of(context).textTheme.subtitle1)
                       else
-                        Helper.getPrice(0, context,
-                            style: Theme.of(context).textTheme.subtitle1)
+                        Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1)
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -133,19 +128,17 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                             padding: EdgeInsets.symmetric(
                                 vertical: 14, horizontal: 25),
                             color: !widget.con.carts[0].food.restaurant.closed
-                                ? Theme.of(context).accentColor
-                                : Theme.of(context).focusColor.withOpacity(0.5),
+                              ? Theme.of(context).accentColor
+                              : Theme.of(context).focusColor.withOpacity(0.5),
                             shape: StadiumBorder(),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'Next',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyText1
-                                    .merge(TextStyle(
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 20)),
+                                style: Theme.of(context).textTheme.bodyText1.merge(
+                                    TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 20)),
                               ),
                             )),
                       ),
@@ -367,28 +360,30 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
 
   List<String> dropdown_vals = List<String>();
   String dropdownValue = '';
+  List<DateTime> datetime_slots = [];
   Widget TimeSlotScheduler(List<String> timeslots) {
     if (dropdownValue == '') {
-      var current_date = DateTime.now();
-      List<int> starting_times = [];
+      var current_date = DateTime.now().toUtc().add(Duration(hours: 5));
       timeslots.forEach((element) {
         int day = 0;
-        String start_time = element.split(' - ')[0];
-        assert(start_time.contains('am') || start_time.contains('pm'));
-        if (start_time.contains('am') || start_time.contains('12pm')) {
-          start_time = start_time.replaceAll('am', '');
-          start_time = start_time.replaceAll('pm', '');
-        } else if (start_time.contains('pm') || start_time.contains('12am')){
-          start_time = start_time.replaceAll('am', '');
-          start_time = start_time.replaceAll('pm', '');
-          start_time = '${(int.tryParse(start_time) + 12)}';
-        }
+        String start_time = int.tryParse(element.split(' - ')[0]) < 12
+            ? element.split(' - ')[0] + "am"
+            : int.tryParse(element.split(' - ')[0]) == 12
+              ? (int.tryParse(element.split(' - ')[0])).toString() + "am"
+              : (int.tryParse(element.split(' - ')[0]) - 12).toString() + "pm";
+        String end_time = int.tryParse(element.split(' - ')[1]) < 12
+            ? element.split(' - ')[1] + "am"
+            : int.tryParse(element.split(' - ')[1]) == 12
+              ? (int.tryParse(element.split(' - ')[1])).toString() + "am"
+              : (int.tryParse(element.split(' - ')[1]) - 12).toString() + "pm";
         if (current_date.hour < 4) {
           day = current_date.weekday;
+          datetime_slots.add(DateTime(current_date.year, current_date.month, current_date.day, int.tryParse(element.split(' - ')[0])));
         } else {
           day = current_date.weekday == 7 ? 1 : current_date.weekday + 1;
+          datetime_slots.add(DateTime(current_date.year, current_date.month, current_date.day+1, int.tryParse(element.split(' - ')[0])));
         }
-        dropdown_vals.add('${getDayfromInt(day)}, ${element}');
+        dropdown_vals.add('${Helper.getDayfromInt(day)}, ${start_time} - ${end_time}');
       });
       dropdownValue = dropdown_vals.first;
     }
@@ -415,7 +410,6 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
               iconSize: 44,
               style: TextStyle(color: Theme.of(context).accentColor, fontSize: 20),
               underline: Container(
-                height: 0,
                 color: Theme.of(context).accentColor,
               ),
               onChanged: (String newValue) {
@@ -430,65 +424,11 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
             ),
           ),
           color: Theme.of(context).primaryColor,
-        ));
-      Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25.0),
-        border: Border.all(
-          color: Theme.of(context).accentColor,
-          style: BorderStyle.solid,
-          width: 2
-        ),
-      ),
-      child: DropdownButton<String>(
-        value: dropdownValue,
-        icon: Icon(Icons.arrow_drop_down, color: Theme.of(context).accentColor),
-        iconSize: 44,
-        style: TextStyle(color: Theme.of(context).accentColor, fontSize: 20),
-        underline: Container(
-          height: 0,
-          color: Theme.of(context).accentColor,
-        ),
-        onChanged: (String newValue) {
-          setState(() => dropdownValue = newValue);
-        },
-        items: dropdown_vals.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-      ));
+        )
+    );
   }
 
-  String getDayfromInt(int i) {
-    assert(i > 0);
-    assert(i < 8);
-    switch (i) {
-      case 1:
-        return 'Monday';
-        break;
-      case 2:
-        return 'Tuesday';
-        break;
-      case 3:
-        return 'Wednesday';
-        break;
-      case 4:
-        return 'Thursday';
-        break;
-      case 5:
-        return 'Friday';
-        break;
-      case 6:
-        return 'Saturday';
-        break;
-      case 7:
-        return 'Sunday';
-        break;
-    }
-  }
+
 
   Future<void> checkout() async {
     if (widget.con.selectedAddress) {
@@ -595,7 +535,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
           if (dropdownValue == 'Select Delivery Timeslot') {
             widget.con.showSnackBar("Please select a timeslot for delivery");
           } else {
-            currentCart_time.value = dropdownValue;
+            currentCart_time.value = datetime_slots.elementAt(dropdown_vals.indexOf(dropdownValue)).toString().substring(0, 16);
             widget.con.goCheckout(context);
           }
         }

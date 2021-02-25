@@ -23,6 +23,7 @@ class CheckoutController extends CartController {
   double deliveryFee = 0.0;
   double subTotal = 0.0;
   double total = 0.0;
+  int discount = 0;
   CreditCard creditCard = new CreditCard();
   bool loading = false;
   bool order_submitted = false;
@@ -63,7 +64,9 @@ class CheckoutController extends CartController {
     Order _order = new Order();
     _order.foodOrders = new List<FoodOrder>();
     _order.discount = setting.value.promo[promotion] ?? 0;
+    _order.discount += discount;
     _order.promotion = promotion == '' ? null : promotion;
+    _order.points_redeemed = discount*100;
     _order.hint = currentCart_note.value;
     _order.scheduled_time = currentCart_time.value;
     OrderStatus _orderStatus = new OrderStatus();
@@ -152,12 +155,7 @@ class CheckoutController extends CartController {
         duration: Duration(seconds: 1),
       ));
     } else {
-      if (subTotal < setting.value.promo[code]) {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text('Subtotal must be greater than Rs.${setting.value.promo[code]} to use this promocode', textAlign: TextAlign.center),
-          duration: Duration(seconds: 3),
-        ));
-      } else {
+      if (canAddDiscount(setting.value.promo[code])) {
         if (promotion != '') {
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text('Cannot use multiple promocodes'),
@@ -165,7 +163,7 @@ class CheckoutController extends CartController {
           ));
           total += setting.value.promo[promotion];
           promotion = code;
-          if (total - setting.value.promo[promotion] > 0) {
+          if (subTotal > setting.value.promo[promotion]) {
             setState(() => total -= setting.value.promo[promotion]);
           }
           setState(() {
@@ -179,16 +177,46 @@ class CheckoutController extends CartController {
           ));
 
           promotion = code;
-          if (total - setting.value.promo[promotion] > 0) {
+          if (subTotal > setting.value.promo[promotion]) {
             setState(() => total -= setting.value.promo[promotion]);
           }
           setState(() {promotion; total;}
           );
         }
-
+      } else {
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text('Subtotal must be greater than Rs.${setting.value.promo[code]} to use this promocode', textAlign: TextAlign.center),
+          duration: Duration(seconds: 3),
+        ));
       }
-
     }
-
   }
+
+
+  void applePointsDiscount(int points) {
+    if (canAddDiscount((points/100).floor())) {
+      if (discount > 0) {
+        total += discount;
+      }
+      discount = (points/100).floor();
+      total -= discount;
+      setState(() {discount; total;});
+    } else {
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Subtotal must be greater than Rs.${(points/100).floor()} to use these many points', textAlign: TextAlign.center),
+        duration: Duration(seconds: 3),
+      ));
+    }
+  }
+
+
+  bool canAddDiscount(amount){
+    if (setting.value.promo.containsKey(promotion)) {
+      return subTotal - discount - setting.value.promo[promotion] - amount > 0;
+    } else {
+      return subTotal - discount - amount > 0;
+    }
+  }
+
+
 }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../src/repository/settings_repository.dart';
 
 import '../models/user.dart';
+import 'PointsWidget.dart';
 
 class ProfileAvatarWidget extends StatelessWidget {
   final User user;
@@ -84,7 +85,8 @@ class ProfileAvatarWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
               textAlign: TextAlign.center,
             ),
-          )
+          ),
+          PointsWidget(points: user.points),
         ],
       ),
     );

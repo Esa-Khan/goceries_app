@@ -12,12 +12,14 @@ class Order {
   List<FoodOrder> foodOrders;
   OrderStatus orderStatus;
   double discount = 0;
+  int points_redeemed = 0;
   String promotion;
   double deliveryFee;
   String hint;
   String scheduled_time;
   bool active;
-  DateTime dateTime;
+  DateTime created_at;
+  DateTime updated_at;
   User user;
   Payment payment;
   Address deliveryAddress;
@@ -40,7 +42,8 @@ class Order {
           ? jsonMap['active']
           : false;
       orderStatus = jsonMap['order_status'] != null ? OrderStatus.fromJSON(jsonMap['order_status']) : OrderStatus.fromJSON({});
-      dateTime = DateTime.parse(jsonMap['created_at']);
+      created_at = DateTime.parse(jsonMap['created_at']);
+      updated_at = DateTime.parse(jsonMap['updated_at']);
       user = jsonMap['user'] != null ? User.fromJSON(jsonMap['user']) : new User();
       deliveryAddress = jsonMap['delivery_address'] != null ? Address.fromJSON(jsonMap['delivery_address']) : Address.fromJSON({});
       payment = jsonMap['payment'] != null ? Payment.fromJSON(jsonMap['payment']) : Payment.fromJSON({});
@@ -62,7 +65,7 @@ class Order {
       hint = '';
       active = false;
       orderStatus = OrderStatus.fromJSON({});
-      dateTime = DateTime(0);
+      created_at = DateTime(0);
       user = User.fromJSON({});
       payment = Payment.fromJSON({});
       deliveryAddress = Address.fromJSON({});
@@ -79,6 +82,7 @@ class Order {
     map["order_status_id"] = orderStatus?.id;
     map["tax"] = discount;
     map["code_used"] = promotion;
+    map["points_redeemed"] = points_redeemed;
     map['hint'] = hint;
     map['scheduled_time'] = scheduled_time;
     map["delivery_fee"] = deliveryFee;

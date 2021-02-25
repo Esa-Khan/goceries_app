@@ -25,7 +25,7 @@ class FreshHomeWidget extends StatefulWidget {
 class _FreshHomeWidgetState extends StateMVC<FreshHomeWidget> {
   SGHomeController _con;
   var _searchBarController = TextEditingController();
-  bool first_load = true, _isSearching = false, _isSearched = false;
+  bool _isSearching = false, _isSearched = false;
 
   _FreshHomeWidgetState() : super(SGHomeController()) {
     _con = controller;
@@ -34,10 +34,7 @@ class _FreshHomeWidgetState extends StateMVC<FreshHomeWidget> {
   @override
   void initState() {
     super.initState();
-    if (first_load) {
-      first_load = false;
-      _con.getStore(store_type.value.toString());
-    }
+    _con.getStore(store_type.value.toString());
   }
 
 

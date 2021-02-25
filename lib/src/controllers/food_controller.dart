@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/elements/AddToCartAlertDialog.dart';
+import 'package:saudaghar/src/repository/user_repository.dart';
 import '../../src/models/category.dart';
 import '../../src/repository/category_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
@@ -17,7 +19,7 @@ class FoodController extends ControllerMVC {
   Category aisle;
   List<Item> similarItems = new List<Item>();
   bool loaded_similaritems = false;
-  double quantity = 1;
+  int quantity = 1;
   double total = 0;
   List<Cart> carts = [];
   Favorite favorite;
@@ -33,20 +35,6 @@ class FoodController extends ControllerMVC {
     final Stream<Item> stream = await getFood(foodId);
     stream.listen((Item _food) async {
       setState(() => item = _food);
-
-      // if (_food.ingredients != "<p>.</p>") {
-      //   var otherItems = _food.ingredients.split('-');
-      //   otherItems.remove(_food.id);
-      //   otherItems.forEach((element) async {
-      //     final Stream<Item> currStream = await getFood(element);
-      //     currStream.listen((Item _food) {
-      //       setState(() => similarItems.add(_food));
-      //     }, onDone: () {
-      //       setState(() => loaded_similaritems = true);
-      //     });
-      //   });
-      // }
-
       if (getAisle) {
         listenForCategory(item.category);
       }
@@ -90,65 +78,54 @@ class FoodController extends ControllerMVC {
     });
   }
 
-  bool isSameRestaurants(Item item) {
-    if (carts.isNotEmpty) {
-      return carts[0].food?.restaurant?.id == item.restaurant?.id;
-    }
-    return true;
-  }
 
   bool showAddtocartSnack = false;
-  void addToCart(Item item, {bool reset = false}) async {
-    if (this.loadCart) {
-      if (showAddtocartSnack) {
-        showAddtocartSnack = false;
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).adding_food_to_cart_please_wait),
-          duration: Duration(seconds: 1),
-        ));
-        Future.delayed(Duration(seconds: 3)).whenComplete(() {
-          showAddtocartSnack = true;
-        });
-      }
+  void addToCart() async {
+    if (currentUser.value.apiToken == null) {
+      Navigator.of(context).pushNamed("/Login");
     } else {
-      setState(() => this.loadCart = true);
+      setState(() => loadCart = true);
       var _newCart = new Cart();
       _newCart.food = item;
-      _newCart.extras = item.extras.where((element) => element.checked).toList();
       _newCart.quantity = this.quantity;
-      // if item exist in the cart then increment quantity
-      var _oldCart = isExistInCart(_newCart);
-      if (_oldCart != null) {
-        _oldCart.quantity += this.quantity;
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text("Item already in cart. Adding ${_newCart.quantity.ceil()} more.", textAlign: TextAlign.center,),
-          duration: Duration(seconds: 2),
-        ));
-        updateCart(_oldCart).whenComplete(() => setState(() => loadCart = false));
-      } else {
-        // The item doesn't exist in the cart add new one
-        addCart(_newCart, reset).then((_cart) {
+      addCart(_newCart).then((_cart) {
+        bool item_in_cart = false;
+        for (int i = 0; i < carts.length; i++) {
+          if (carts.elementAt(i).food.id == _cart.food.id) {
+            carts.elementAt(i).quantity += _cart.quantity;
+            item_in_cart = true;
+          }
+        }
+        if (!item_in_cart) {
           carts.add(_cart);
-          setState(() => this.loadCart = false);
-          // scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          //   content: Text(S.of(context).item_was_added_to_cart, textAlign: TextAlign.center,),
-          //   duration: Duration(milliseconds: 500),
-          // ));
-        });
-      }
-    }
-  }
+          setState(() => cart_count.value += _cart.quantity);
+          cart_count.notifyListeners();
+        }
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text(S.of(context).item_was_added_to_cart, textAlign: TextAlign.center,),
+          duration: Duration(milliseconds: 500),
+        ));
+        setState(() => loadCart = false);
+      }).catchError((e) {
+        print(e.toString());
+        if (e.toString() == 'Exception: Different Store') {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // return object of type Dialog
+              return AddToCartAlertDialogWidget(
+                  oldFood: carts.elementAt(0)?.food,
+                  newFood: item,
+                  onPressed: (item, {reset: true}) {
+                    carts.clear();
+                    return addToCart();
+                  });
+            },
+          );
+        }
+      });
 
-  Cart isExistInCart(Cart _cart) {
-    for (int i = 0; i < carts.length; i++) {
-      Cart current_cart = carts.elementAt(i);
-      if (current_cart.food.id == _cart.food.id) {
-        return current_cart;
-      }
     }
-    return null;
-
-    // return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart), orElse: () => null);
   }
 
   void addToFavorite(Item item) async {

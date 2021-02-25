@@ -49,7 +49,7 @@ class FavoriteGridItemWidget extends StatelessWidget {
               )
             ],
           ),
-          if (favorite.food.quantity == 0)
+          if (favorite.food.quantity <= 0)
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(

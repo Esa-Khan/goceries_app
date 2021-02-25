@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 import '../../generated/l10n.dart';
 import 'package:http/http.dart' as http;
 
@@ -7,11 +8,14 @@ import '../helpers/helper.dart';
 import '../models/item.dart';
 import '../models/route_argument.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
-class FoodItemWidget extends StatelessWidget {
-  final String heroTag;
-  final Item food;
 
-  const FoodItemWidget({Key key, this.food, this.heroTag}) : super(key: key);
+class FoodItemWidget extends StatelessWidget {
+  @required final String heroTag;
+  @required final Item food;
+  @required final Function() onPressed;
+
+  const FoodItemWidget({Key key, this.heroTag, this.food, this.onPressed}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +24,14 @@ class FoodItemWidget extends StatelessWidget {
       focusColor: Theme.of(context).accentColor,
       highlightColor: Theme.of(context).primaryColor,
       onTap: () {
-        Navigator.of(context).pushNamed('/Item', arguments: RouteArgument(id: food.id, heroTag: this.heroTag));
+        if (heroTag == 'similar_items') {
+          Navigator.of(context).pushReplacementNamed('/Item', arguments: RouteArgument(id: food.id, heroTag: this.heroTag));
+        } else {
+          Navigator.of(context).pushNamed('/Item', arguments: RouteArgument(id: food.id, heroTag: this.heroTag));
+        }
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+        padding: EdgeInsets.symmetric(horizontal: heroTag == 'similar_items' ? 10 : 20, vertical: 8),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor.withOpacity(1),
           boxShadow: [
@@ -35,7 +43,24 @@ class FoodItemWidget extends StatelessWidget {
           children: <Widget>[
             Hero(
               tag: heroTag + food.id,
-              child: getItemIMG(),
+              child: CachedNetworkImage(
+                height: 60,
+                width: 60,
+                fit: BoxFit.cover,
+                imageUrl: food.image_url != null ? food.image_url : food.image.thumb,
+                placeholder: (context, url) => Image.asset(
+                  'assets/img/loading.gif',
+                  fit: BoxFit.cover,
+                  height: 60,
+                  width: 60,
+                ),
+                errorWidget: (context, url, error) => Image.asset(
+                  'assets/img/image_default.png',
+                  fit: BoxFit.cover,
+                  height: 60,
+                  width: 60,
+                ),
+              ),
             ),
             SizedBox(width: settingsRepo.compact_view_horizontal ? 5 : 15),
             Flexible(
@@ -50,22 +75,21 @@ class FoodItemWidget extends StatelessWidget {
                           food.name,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
-                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: settingsRepo.compact_view_horizontal ? 13 : 15)),
+                          style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(fontSize: heroTag == 'similar_items' ? SizeConfig.blockSizeHorizontal*30 : SizeConfig.blockSizeHorizontal*35)),
                         ),
                         SizedBox(height: 5),
 
-                        food.weight != "<p>.</p>" && food.weight.isNotEmpty && food.weight != "0"
-                        ? Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          decoration:
-                          BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
-                          child: Text(
-                            food.weight,
-                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: settingsRepo.compact_view_horizontal ? 13 : 15)),
+                        if (food.weight != "<p>.</p>" && food.weight.isNotEmpty && food.weight != "0")
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            decoration:
+                            BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
+                            child: Text(
+                              food.weight,
+                              style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: SizeConfig.blockSizeHorizontal*30)),
+                            ),
                           ),
-                        )
-                        : SizedBox(height: 0),
-                        this.heroTag != 'store_search_list' && this.heroTag != 'store_list' && this.heroTag != 'menu_list'
+                        heroTag != 'store_search_list' && heroTag != 'store_list' && heroTag != 'menu_list' && heroTag != 'similar_items'
                         ? Text(
                           food.restaurant.name,
                           overflow: TextOverflow.ellipsis,
@@ -96,10 +120,38 @@ class FoodItemWidget extends StatelessWidget {
                   // )
                   Column(
                     children: <Widget>[
-                      Helper.getPrice(food.price, context,
-                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: settingsRepo.compact_view_horizontal ? 13 : 15))),
+                      FlatButton(
+                        onPressed: food.quantity > 0 ? () => onPressed() : null,
+                        disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        color: Theme.of(context).accentColor,
+                        shape: StadiumBorder(),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              Helper.getPrice(food.price, context,
+                                  style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: SizeConfig.blockSizeHorizontal*30, color: Theme.of(context).primaryColor))),
+                              Row(
+                                children: [
+                                  Icon(Icons.add_shopping_cart_rounded, color: Theme.of(context).primaryColor, size: SizeConfig.blockSizeHorizontal*30),
+                                  Text('Add To Cart', maxLines: 2,
+                                      style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: SizeConfig.blockSizeHorizontal*20, color: Theme.of(context).primaryColor))),
+                                ],
+                              )
 
-                      if (food.quantity == 0)
+                            ],
+                          )
+                        ),
+                      ),
+                      // InkWell(
+                      //   onTap: () => print("Tapped"),
+                      //   child: Helper.getPrice(food.price, context,
+                      //       style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: settingsRepo.compact_view_horizontal ? 13 : 15))),
+                      // ),
+
+
+                      if (food.quantity <= 0)
                         Container(
                           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                           decoration: BoxDecoration(
@@ -130,33 +182,5 @@ class FoodItemWidget extends StatelessWidget {
     );
   }
 
-
-  Widget getItemIMG() {
-    CachedNetworkImage img;
-    try {
-       img = CachedNetworkImage(
-        height: 60,
-        width: 60,
-        fit: BoxFit.cover,
-        imageUrl: food.image_url != null ? food.image_url : food.image.thumb,
-        placeholder: (context, url) => Image.asset(
-          'assets/img/loading.gif',
-          fit: BoxFit.cover,
-          height: 60,
-          width: 60,
-        ),
-        errorWidget: (context, url, error) => Image.asset(
-          'assets/img/image_default.png',
-          fit: BoxFit.cover,
-          height: 60,
-          width: 60,
-        ),
-      );
-    } catch (e) {
-      print('ERROR: Could not get item ${food.id}');
-    }
-
-    return  img;
-  }
 
 }

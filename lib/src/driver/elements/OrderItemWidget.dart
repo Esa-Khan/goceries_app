@@ -9,10 +9,9 @@ import '../../models/route_argument.dart';
 import 'FoodOrderItemWidget.dart';
 
 class OrderItemWidget extends StatefulWidget {
-  final bool expanded;
   final Order order;
 
-  OrderItemWidget({Key key, this.expanded, this.order}) : super(key: key);
+  OrderItemWidget({Key key, this.order}) : super(key: key);
 
   @override
   _OrderItemWidgetState createState() => _OrderItemWidgetState();
@@ -39,7 +38,6 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
               child: Theme(
                 data: theme,
                 child: ExpansionTile(
-                  initiallyExpanded: widget.expanded,
                   title: Column(
                     children: <Widget>[
                       Text('${S.of(context).order_id}: #${widget.order.id}'),
@@ -48,10 +46,15 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                         style: Theme.of(context).textTheme.bodyText1.apply(fontSizeFactor: 0.8),
                       ),
                       Text(
-                        DateFormat('dd/MM/yyyy | HH:mm').format(widget.order.dateTime),
+                        DateFormat('dd/MM/yyyy | HH:mm').format(widget.order.created_at),
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      widget.order.hint != null ? Text("Check Hint", style: Theme.of(context).textTheme.caption.apply(color: Theme.of(context).accentColor)) : const SizedBox(),
+                      if (widget.order.orderStatus.id == '5')
+                        Text(
+                          'Delivery took ${widget.order.updated_at.difference(widget.order.created_at).inMinutes} minutes',
+                          style: Theme.of(context).textTheme.caption.apply(color: Colors.redAccent),
+                        ),
+                      if (widget.order.hint != null) Text("Check Hint", style: Theme.of(context).textTheme.caption.apply(color: Theme.of(context).accentColor)),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +67,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                       Text(
                         '${widget.order.payment.method}',
                         style: Theme.of(context).textTheme.caption,
-                      )
+                      ),
                     ],
                   ),
                   children: <Widget>[
@@ -141,21 +144,22 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
         Row(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              height: 28,
-              decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.orderStatus.status_color),
+              margin: EdgeInsetsDirectional.only(start: 20),
+              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.active ? widget.order.orderStatus.status_color : Colors.redAccent),
               alignment: AlignmentDirectional.center,
               child: Text(
-                '${widget.order.orderStatus.status}',
+                widget.order.active ? '${widget.order.orderStatus.status}' : S.of(context).canceled,
                 maxLines: 1,
-                style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                overflow: TextOverflow.fade,
+                softWrap: false,
+                style: Theme.of(context).textTheme.caption.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor, fontSize: 10)),
               ),
             ),
             const Expanded(child: SizedBox()),
-            widget.order.scheduled_time == null || widget.order.scheduled_time == "null"
-              ? const SizedBox()
-              : Container(
+            if (widget.order.scheduled_time != null && widget.order.scheduled_time != "null")
+              Container(
                 margin: EdgeInsetsDirectional.only(end: 20),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: Colors.blue),

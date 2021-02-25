@@ -37,13 +37,8 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
         body: currentUser.value.id == null
             ? CircularLoadingWidget(height: 500)
             : SingleChildScrollView(
-//                padding: EdgeInsets.symmetric(vertical: 7),
                 child: Column(
                   children: <Widget>[
-//                    Padding(
-//                      padding: const EdgeInsets.symmetric(horizontal: 20),
-//                      child: SearchBarWidget(),
-//                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       child: Row(
@@ -333,8 +328,7 @@ class _SettingsWidgetState extends StateMVC<SettingsWidget> {
                           ListTile(
                             trailing: Switch(
                               onChanged: (value) => setState(() {
-                                currentUser.value.debugger = !currentUser.value.debugger;
-                                setDebugger();
+                                setDebugger(value);
                               }),
                               value: currentUser.value.debugger,
                               activeColor: Theme.of(context).accentColor,

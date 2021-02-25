@@ -56,7 +56,6 @@ class PromocodeDialog {
                         decoration: getInputDecoration(labelText: 'Code'),
                         controller: code_con,
                         validator: (input) => valdiatePromocode(input),
-//                        onSaved: (input) => currentUser.value.phone = input,
                       ),
                     ),
               ),

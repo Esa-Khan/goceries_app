@@ -27,16 +27,13 @@ class AislesItemWidget extends StatefulWidget {
 class _AislesItemWidgetState extends State<AislesItemWidget> {
   CategoryController _con = new CategoryController();
   double aisle_img_opacity = 1;
-  bool first_load = true, timed_out = false;
+  bool timed_out = false;
   var sub_timed_out;
 
   @override
   void initState() {
     super.initState();
-    if (first_load) {
-      first_load = false;
-      _con.category = widget.aisle;
-    }
+    _con.category = widget.aisle;
   }
 
 

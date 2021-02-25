@@ -6,7 +6,6 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:apple_sign_in/apple_sign_in.dart';
-import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -17,7 +16,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:html/parser.dart';
 
 import '../../generated/l10n.dart';
-import '../elements/CircularLoadingWidget.dart';
 import '../models/cart.dart';
 import '../models/food_order.dart';
 import '../models/order.dart';
@@ -26,6 +24,7 @@ import '../repository/settings_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 import 'app_config.dart' as config;
 import 'custom_trace.dart';
+import 'package:intl/intl.dart' show DateFormat;
 
 
 class Helper {
@@ -391,5 +390,68 @@ class Helper {
       open[1].add(Duration(hours: int.parse(time.split("|")[1].split(":")[0]), minutes: int.parse(time.split("|")[1].split(":")[1])))];
     bool isValid = (now.isAfter(open[0]) && now.isBefore(close[0])) || (now.isAfter(open[1]) && now.isBefore(close[1]));
     return isValid;
+  }
+
+
+  static int getIntFromDay(String day) {
+    switch (day) {
+      case 'Monday':
+        return 1;
+        break;
+      case 'Tuesday':
+        return 2;
+        break;
+      case 'Wednesday':
+        return 3;
+        break;
+      case 'Thursday':
+        return 4;
+        break;
+      case 'Friday':
+        return 5;
+        break;
+      case 'Saturday':
+        return 6;
+        break;
+      case 'Sunday':
+        return 7;
+        break;
+      default:
+        return -1;
+        break;
+    }
+  }
+
+  static String getDayfromInt(int i) {
+    switch (i) {
+      case DateTime.monday:
+        return 'Monday';
+        break;
+      case DateTime.tuesday:
+        return 'Tuesday';
+        break;
+      case DateTime.wednesday:
+        return 'Wednesday';
+        break;
+      case DateTime.thursday:
+        return 'Thursday';
+        break;
+      case DateTime.friday:
+        return 'Friday';
+        break;
+      case DateTime.saturday:
+        return 'Saturday';
+        break;
+      case DateTime.sunday:
+        return 'Sunday';
+        break;
+      default:
+        return null;
+        break;
+    }
+  }
+
+  static String formatDate(DateTime datetime) {
+    return DateFormat('yyyy-MM-dd – kk:mm').format(datetime);
   }
 }

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/elements/PointsCheckoutWidget.dart';
 import 'package:saudaghar/src/helpers/size_config.dart';
-import '../repository/cart_repository.dart';
-import '../repository/settings_repository.dart' as settingsRepo;
+import 'package:saudaghar/src/repository/user_repository.dart';
+
+import '../controllers/checkout_controller.dart';
 import '../elements/CheckoutBottomDetailsWidget.dart';
 import '../elements/CheckoutItemListWidget.dart';
-import '../controllers/checkout_controller.dart';
 import '../models/payment.dart';
 import '../models/route_argument.dart';
+import '../repository/cart_repository.dart';
+import '../repository/settings_repository.dart' as settingsRepo;
 
 class OrderSuccessWidget extends StatefulWidget {
   final RouteArgument routeArgument;
@@ -40,20 +43,20 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
       await Future.delayed(Duration(milliseconds: 500));
       count -= 1;
     }
-    if (_con.carts.isNotEmpty) {
+    if (_con.carts.isNotEmpty)
       _con.getDeliveryTime();
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return WillPopScope(
         onWillPop: () => _con.order_submitted
-                    ? Navigator.of(context).pushReplacementNamed('/Pages', arguments: 3)
-                    : Navigator.of(context).pop,
+          ? Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1)
+          : Navigator.of(context).pop,
         child: Scaffold(
           key: _con.scaffoldKey,
-          bottomNavigationBar: CheckoutBottomDetailsWidget(con: _con),
+          bottomNavigationBar: CheckoutBottomDetailsWidget(con: _con, context: context),
           appBar: AppBar(
             automaticallyImplyLeading: false,
            leading: _con.order_submitted
@@ -126,9 +129,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                   width: 100,
                                   height: 100,
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor
-                                        .withOpacity(0.15),
+                                    color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.15),
                                     borderRadius: BorderRadius.circular(150),
                                   ),
                                 ),
@@ -140,9 +141,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                   width: 120,
                                   height: 120,
                                   decoration: BoxDecoration(
-                                    color: Theme.of(context)
-                                        .scaffoldBackgroundColor
-                                        .withOpacity(0.15),
+                                    color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.15),
                                     borderRadius: BorderRadius.circular(150),
                                   ),
                                 ),
@@ -163,33 +162,15 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                             color: _con.order_declined
                                               ? Colors.red
                                               : Theme.of(context).accentColor,
-                                            fontSize: settingsRepo.compact_view_horizontal ? 20 : 19
+                                            fontSize: SizeConfig.blockSizeHorizontal*50
                                   )
                               ),
                             )
-                            // _con.order_submitted
-                            //     ? Text(
-                            //         'Order  Submitted!',
-                            //         style: Theme.of(context).textTheme.headline2.merge(
-                            //             TextStyle(fontWeight: FontWeight.bold, color: Colors.green,
-                            //                 fontSize: settingsRepo.compact_view_horizontal ? 18 : 20
-                            //             )
-                            //         ),
-                            //       )
-                            //     : Text(
-                            //           'Ready to Checkout?',
-                            //           style: Theme.of(context).textTheme.headline2.merge(
-                            //               TextStyle(fontWeight: FontWeight.bold, color: Colors.red,
-                            //                 fontSize: settingsRepo.compact_view_horizontal ? 18 : 20
-                            //               )
-                            //           ),
-                            //         ),
                           ),
                           const SizedBox(width: 20),
                         ],
                       ),
                       const SizedBox(height: 15),
-
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         alignment: AlignmentDirectional.centerStart,
@@ -208,36 +189,34 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                               maxLines: 2,
                               style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                             ),
-                            _con.delivery_time != null
-                              ? RichText(
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  text: currentCart_time.value == null
-                                    ? TextSpan (
-                                          text: 'Estimated delivery within',
-                                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
-                                          children: <TextSpan>[
-                                            TextSpan(
-                                              text: ' ${(_con.delivery_time/60 + 5).ceil().clamp(0, 45)} - ${(_con.delivery_time/60 + 20).ceil().clamp(0, 60)} mins',
-                                              style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)
-                                              )
-                                            ),
-                                          ]
-                                    )
-                                  : TextSpan(
-                                      text: 'Scheduled delivery:',
+                            if (_con.delivery_time != null)
+                              RichText(
+                                textAlign: TextAlign.center,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                text: currentCart_time.value == null
+                                  ? TextSpan (
+                                      text: 'Estimated delivery within',
                                       style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: '  ' + (currentCart_time.value).toString(),
-                                            style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13),
-                                            )
+                                          text: ' ${(_con.delivery_time/60 + 5).ceil().clamp(0, 45)} - ${(_con.delivery_time/60 + 20).ceil().clamp(0, 60)} mins',
+                                          style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)
+                                          )
                                         ),
                                       ]
                                   )
+                                : TextSpan(
+                                    text: 'Scheduled delivery:',
+                                    style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13)),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                        text: '  ' + (currentCart_time.value).toString(),
+                                        style: Theme.of(context).textTheme.headline4.merge(TextStyle(fontSize: 13))
+                                      ),
+                                    ]
                                 )
-                              : const SizedBox(),
+                              ),
                             Padding(
                               padding: EdgeInsets.symmetric(vertical: 10),
                               child: Row(
@@ -264,14 +243,19 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                                 ],
                               ),
                             ),
-                            currentCart_note.value.isEmpty
-                                ? const SizedBox()
-                                : Text(
-                                    'Note:  ' + currentCart_note.value,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 4,
-                                    style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontSize: 12)),
-                                  ),
+                            if (currentCart_note.value.isNotEmpty)
+                              Text(
+                                'Note:  ' + currentCart_note.value,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 4,
+                                style: Theme.of(context).textTheme.headline1.merge(TextStyle(fontSize: 12)),
+                              ),
+                            if (currentUser.value.points > 0)
+                              PointsCheckoutWidget(
+                                points: currentUser.value.points,
+                                setDiscount: (int points) => setState(() => _con.applePointsDiscount(points))
+                                // setDiscount: ,
+                              ),
                           ],
                         )
                       ),

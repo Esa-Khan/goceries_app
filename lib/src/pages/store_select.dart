@@ -54,10 +54,55 @@ class _StoreSelectWidgetState extends StateMVC<StoreSelectWidget> {
             centerTitle: true,
             leading: currentUser.value.apiToken == null
                 ? const SizedBox()
-                : new IconButton(
-                    icon: new Icon(Icons.perm_identity_rounded, color: Theme.of(context).accentColor),
-                    // onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
-                    onPressed: () => Navigator.of(context).pushNamed('/Profile'),
+                : InkWell(
+                    onTap: () => Navigator.of(context).pushNamed('/Profile'),
+                    child: Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        IconButton(
+                          icon: new Icon(Icons.perm_identity_rounded,
+                              color: Theme.of(context).accentColor),
+                          // onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
+                        ),
+                        if (currentUser.value.points > 0)
+                          Positioned(
+                            bottom: 8,
+                            child: Wrap(
+                              direction: Axis.vertical,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 2),
+                                  decoration: BoxDecoration(
+                                      color: Colors.orange,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.account_balance_wallet,
+                                        color: Theme.of(context).primaryColor,
+                                        size: 10,
+                                      ),
+                                      Text(
+                                        currentUser.value.points.toString(),
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption
+                                            .merge(TextStyle(
+                                                color: Theme.of(context)
+                                                    .primaryColor,
+                                                fontSize: 9)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                      ],
+                    ),
                   ),
             title: Text(
               "Where to Shop?",

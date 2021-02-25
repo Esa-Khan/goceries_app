@@ -66,11 +66,11 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
               )
           ),
         ),
-        actions: <Widget>[
-          new ShoppingCartButtonWidget(
-              iconColor: Theme.of(context).hintColor,
-              labelColor: Theme.of(context).accentColor),
-        ],
+        // actions: <Widget>[
+        //   new ShoppingCartButtonWidget(
+        //       iconColor: Theme.of(context).hintColor,
+        //       labelColor: Theme.of(context).accentColor),
+        // ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: 10),

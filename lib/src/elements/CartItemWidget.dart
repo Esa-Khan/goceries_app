@@ -111,7 +111,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                                   ],
                                 ),
                                 child: Text(
-                                  widget.cart.food.quantity == 0 ? 'Out of Stock' : 'Only ${widget.cart.food.quantity} left in stock',
+                                  widget.cart.food.quantity <= 0 ? 'Out of Stock' : 'Only ${widget.cart.food.quantity} left in stock',
                                   style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
                                 ),
                               ),

@@ -23,7 +23,7 @@ class FreshCategoryListWidget extends StatefulWidget {
 class _FreshCategoryListState extends StateMVC<FreshCategoryListWidget> {
   CategoryController _con;
   var _searchBarController = TextEditingController();
-  bool first_load = true, _isSearching = false, _isSearched = false;
+  bool _isSearching = false, _isSearched = false;
   //, _searchBarTapped = false;
 
   _FreshCategoryListState() : super(CategoryController()) {
@@ -33,12 +33,8 @@ class _FreshCategoryListState extends StateMVC<FreshCategoryListWidget> {
   @override
   void initState() {
     super.initState();
-    if (first_load) {
-      first_load = false;
-      _con.restaurant = widget.store;
-      _con.listenForUsedCategories(widget.store.id);
-
-    }
+    _con.restaurant = widget.store;
+    _con.listenForUsedCategories(widget.store.id);
   }
 
   @override

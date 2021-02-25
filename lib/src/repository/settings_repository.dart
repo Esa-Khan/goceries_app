@@ -147,18 +147,25 @@ Future<String> getMessageId() async {
   return await prefs.get('google.message_id');
 }
 
-Future<void> setDebugger() async {
-  final String url = '${GlobalConfiguration().getString('api_base_url')}setDebugger/${currentUser.value.id}/${currentUser.value.debugger == true ? 1 : 0}';
+Future<void> setDebugger(bool debugger) async {
+  currentUser.value.debugger = debugger;
+  final String url = '${GlobalConfiguration().getString('api_base_url')}setDebugger/${currentUser.value.id}/${debugger ? 1 : 0}';
   final response = await http.put(url, headers: {HttpHeaders.contentTypeHeader: 'application/json'});
   try {
     if (json.decode(response.body)['message'] == 'Success') {
-      if (currentUser.value.debugger) {
+      if (debugger) {
+        GlobalConfiguration().updateValue('base_url', setting.value.debug_url);
+        GlobalConfiguration().updateValue('api_base_url', setting.value.debug_url + '/api/');
         GlobalConfiguration().updateValue('debug', 'true');
       } else {
+        GlobalConfiguration().updateValue('base_url', 'https://saudagharpk.com/');
+        GlobalConfiguration().updateValue('api_base_url', 'https://saudagharpk.com/api/');
         GlobalConfiguration().updateValue('debug', 'false');
       }
+      print("Success: Debugger mode now ${GlobalConfiguration().get('debug')}");
     }
   } catch (e) {
+    print("Error: Debugger mode still ${GlobalConfiguration().get('debug')}");
     GlobalConfiguration().updateValue('base_url', 'https://saudagharpk.com/');
     GlobalConfiguration().updateValue('api_base_url', 'https://saudagharpk.com/api/');
     GlobalConfiguration().updateValue('debug', 'false');

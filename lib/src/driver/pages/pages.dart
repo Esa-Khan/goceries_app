@@ -95,7 +95,7 @@ class _PagesTestWidgetState extends State<PagesTestWidget> {
           // this will be set when a new tab is tapped
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
+              icon: Icon(Icons.account_tree_rounded),
               title: new Container(height: 0.0),
             ),
             BottomNavigationBarItem(

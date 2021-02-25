@@ -117,13 +117,28 @@ Future<Order> addOrder(Order order, Payment payment) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(params),
   );
-  print(response.body);
   if (response.body == 'Error: Card Declined') {
     throw new Exception(response.body);
   } else {
+    print("INFO: Successful Order Placed");
+    userRepo.currentUser.value.points = await getUserPoints();
     return Order.fromJSON(json.decode(response.body)['data']);
   }
 }
+
+Future<int> getUserPoints() async {
+  User _user = userRepo.currentUser.value;
+  final String _apiToken = 'api_token=${_user.apiToken}';
+  final String url = '${GlobalConfiguration().getString('api_base_url')}users/getpoints/${_user.id}?$_apiToken';
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    return json.decode(response.body)['data'];
+  } else {
+    throw new Exception(response.body);
+  }
+}
+
 
 Future<Order> cancelOrder(Order order) async {
   print(order.toMap());
@@ -142,6 +157,8 @@ Future<Order> cancelOrder(Order order) async {
     throw new Exception(response.body);
   }
 }
+
+
 
 Future<bool> checkCode(String code) async {
   User _user = userRepo.currentUser.value;

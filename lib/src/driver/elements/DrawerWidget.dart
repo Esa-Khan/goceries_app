@@ -55,29 +55,26 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                   ),
                 ),
-                currentUser.value.id == null || currentUser.value.isDriver == null || currentUser.value.isManager == false
-                    ? const SizedBox()
-                    : ListTile(
-                        leading: Switch(
-                                  onChanged: (value) => setState(() {
-                                    currentUser.value.isDriver = !currentUser.value.isDriver;
-                                    if (currentUser.value.isDriver) {
-                                      Navigator.of(context)..pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 1);
-                                      // Navigator.of(context).pushReplacementNamed('/Pages', arguments: 1);
-                                    } else {
-                                      // Navigator.of(context).pushReplacementNamed('/StoreSelect');
-                                      Navigator.of(context).pushNamedAndRemoveUntil('/StoreSelect', (Route<dynamic> route) => false);
-                                    }
-                                  }),
-                                  value: currentUser.value.isDriver,
-                                  activeColor: Theme.of(context).accentColor,
-                                  inactiveThumbColor: Theme.of(context).primaryColor,
-                                ),
-                        title: Text(
-                          'Driver View',
-                          style: Theme.of(context).textTheme.subtitle1,
-                        ),
+                if (currentUser.value.id != null && currentUser.value.isDriver != null && currentUser.value.isManager != false)
+                    ListTile(
+                      leading: Switch(
+                                onChanged: (value) => setState(() {
+                                  currentUser.value.isDriver = !currentUser.value.isDriver;
+                                  if (currentUser.value.isDriver) {
+                                    Navigator.of(context)..pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 1);
+                                  } else {
+                                    Navigator.of(context).pushNamedAndRemoveUntil('/StoreSelect', (Route<dynamic> route) => false);
+                                  }
+                                }),
+                                value: currentUser.value.isDriver,
+                                activeColor: Theme.of(context).accentColor,
+                                inactiveThumbColor: Theme.of(context).primaryColor,
+                              ),
+                      title: Text(
+                        'Driver View',
+                        style: Theme.of(context).textTheme.subtitle1,
                       ),
+                    ),
                 ListTile(
                   onTap: () {
                     Navigator.of(context).pushNamed('/Pages', arguments: 1);
@@ -88,19 +85,6 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   ),
                   title: Text(
                     S.of(context).orders,
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/Notifications');
-                  },
-                  leading: Icon(
-                    Icons.notifications,
-                    color: Theme.of(context).focusColor.withOpacity(1),
-                  ),
-                  title: Text(
-                    S.of(context).notifications,
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
@@ -121,24 +105,11 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   dense: true,
                   title: Text(
                     S.of(context).application_preferences,
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.headline2.merge(TextStyle(fontSize: SizeConfig.blockSizeHorizontal*40)),
                   ),
                   trailing: Icon(
                     Icons.remove,
                     color: Theme.of(context).focusColor.withOpacity(0.3),
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/Help');
-                  },
-                  leading: Icon(
-                    Icons.help,
-                    color: Theme.of(context).focusColor.withOpacity(1),
-                  ),
-                  title: Text(
-                    S.of(context).help__support,
-                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
                 ListTile(
@@ -151,19 +122,6 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   ),
                   title: Text(
                     S.of(context).settings,
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ),
-                ListTile(
-                  onTap: () {
-                    Navigator.of(context).pushNamed('/Languages');
-                  },
-                  leading: Icon(
-                    Icons.translate,
-                    color: Theme.of(context).focusColor.withOpacity(1),
-                  ),
-                  title: Text(
-                    S.of(context).languages,
                     style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),

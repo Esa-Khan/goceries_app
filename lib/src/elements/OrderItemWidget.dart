@@ -57,7 +57,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                       children: <Widget>[
                         Text('${S.of(context).order_id}: #${widget.order.id}'),
                         Text(
-                          DateFormat('dd-MM-yyyy | HH:mm').format(widget.order.dateTime),
+                          DateFormat('dd-MM-yyyy | HH:mm').format(widget.order.created_at),
                           style: Theme.of(context).textTheme.caption,
                         ),
                       ],
@@ -114,22 +114,21 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                   : Helper.getPrice(0, context, style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.red)))
                               ],
                             ),
-                            widget.order.discount != 0
-                              ? Row(
-                                 children: <Widget>[
-                                   Expanded(
-                                     child: Text(
-                                       'Discount:',
-                                       style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.greenAccent.shade700)),
-                                     ),
+                            if (widget.order.discount != 0)
+                              Row(
+                               children: <Widget>[
+                                 Expanded(
+                                   child: Text(
+                                     'Discount:',
+                                     style: Theme.of(context).textTheme.bodyText1.merge(TextStyle(color: Colors.greenAccent.shade700)),
                                    ),
-                                   Helper.getPrice(
-                                       widget.order.discount,
-                                       context,
-                                       style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent.shade700)))
-                                 ],
-                               )
-                              : const SizedBox(),
+                                 ),
+                                 Helper.getPrice(
+                                     widget.order.discount,
+                                     context,
+                                     style: Theme.of(context).textTheme.subtitle1.merge(TextStyle(color: Colors.greenAccent.shade700)))
+                               ],
+                             ),
                             Row(
                               children: <Widget>[
                                 Expanded(

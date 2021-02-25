@@ -218,43 +218,6 @@ class CategoryController extends ControllerMVC {
     return true;
   }
 
-  void addToCart(Item food, {bool reset = false}) async {
-    setState(() {
-      this.loadCart = true;
-    });
-    var _newCart = new Cart();
-    _newCart.food = food;
-    _newCart.extras = [];
-    _newCart.quantity = 1;
-    // if food exist in the cart then increment quantity
-    var _oldCart = isExistInCart(_newCart);
-    if (_oldCart != null) {
-      _oldCart.quantity++;
-      updateCart(_oldCart).then((value) {
-        setState(() {
-          this.loadCart = false;
-        });
-      }).whenComplete(() {
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).item_was_added_to_cart),
-        ));
-      });
-    } else {
-      // the food doesnt exist in the cart add new one
-      addCart(_newCart, reset).then((value) {
-        setState(() {
-          this.loadCart = false;
-        });
-      }).whenComplete(() {
-        if (reset) carts.clear();
-        carts.add(_newCart);
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).item_was_added_to_cart),
-        ));
-      });
-    }
-  }
-
   Cart isExistInCart(Cart _cart) {
     return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart), orElse: () => null);
   }

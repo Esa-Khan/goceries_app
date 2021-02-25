@@ -12,10 +12,12 @@ class User {
   String phone;
   String address;
   String bio;
+  int points;
   Media image;
   bool isDriver = false;
   bool available = null;
   bool isManager = false;
+  bool isAdmin = false;
   bool debugger = false;
   String work_hours;
   String store_ids;
@@ -33,6 +35,7 @@ class User {
       id = jsonMap['id'].toString();
       name = jsonMap['name'] != null ? jsonMap['name'] : '';
       email = jsonMap['email'] != null ? jsonMap['email'] : '';
+      points = jsonMap['points'] != null ? jsonMap['points'].toInt() : '';
       apiToken = jsonMap['api_token'];
       deviceToken = jsonMap['device_token'];
       try {
@@ -60,7 +63,7 @@ class User {
         store_ids = jsonMap['store_ids'];
         available = jsonMap['available'];
       }
-      debugger = jsonMap['debugger'] == 1;
+      isAdmin = jsonMap['isAdmin'] == 1;
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }
