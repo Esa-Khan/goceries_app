@@ -80,7 +80,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
-                  widget.con.store.id == '0' ? Scheduler() : TimeSlotScheduler(['9am - 12pm', '12pm - 3pm', '3pm - 6pm']),
+                  widget.con.store.id == '0' ? Scheduler() : TimeSlotScheduler(['8am - 10am', '10am - 12pm', '12pm - 2pm']),
                   Expanded(child: SizedBox()),
                   Row(
                     children: <Widget>[
@@ -364,13 +364,11 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
   }
 
 
-  List<String> dropdown_vals;
+  List<String> dropdown_vals = List<String>();
   String dropdownValue = '';
   Widget TimeSlotScheduler(List<String> timeslots) {
     if (dropdownValue == '') {
-      dropdown_vals = ['Select Delivery Timeslot'];
       var current_date = DateTime.now();
-      // print(DateFormat('d EEEE, h:mm a').format(date));
       List<int> starting_times = [];
       timeslots.forEach((element) {
         int day = 0;
@@ -398,7 +396,41 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
 
     // String dropdownValue = dropdown_vals.first;
 
-    return Container(
+    return ButtonTheme(
+        minWidth: 10.0,
+        child: RaisedButton(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100.0)),
+          elevation: 4.0,
+          onPressed: () {
+
+          },
+          child: Container(
+            alignment: Alignment.center,
+            height: 50.0,
+            child: DropdownButton<String>(
+              value: dropdownValue,
+              icon: Icon(Icons.arrow_drop_down, color: Theme.of(context).accentColor),
+              iconSize: 44,
+              style: TextStyle(color: Theme.of(context).accentColor, fontSize: 20),
+              underline: Container(
+                height: 0,
+                color: Theme.of(context).accentColor,
+              ),
+              onChanged: (String newValue) {
+                setState(() => dropdownValue = newValue);
+              },
+              items: dropdown_vals.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
+          ),
+          color: Theme.of(context).primaryColor,
+        ));
+      Container(
       padding: EdgeInsets.symmetric(horizontal: 15.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(25.0),
@@ -458,7 +490,6 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
   }
 
   Future<void> checkout() async {
-    print(widget.con.selectedAddress);
     if (widget.con.selectedAddress) {
       Overlay.of(context).insert(loader);
       Address store_address = new Address(

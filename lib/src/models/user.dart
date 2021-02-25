@@ -60,7 +60,7 @@ class User {
         store_ids = jsonMap['store_ids'];
         available = jsonMap['available'];
       }
-      debugger = jsonMap['debugger'];
+      debugger = jsonMap['debugger'] == 1;
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }

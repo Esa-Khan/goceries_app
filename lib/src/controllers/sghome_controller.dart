@@ -1,137 +1,111 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import '../../src/repository/user_repository.dart';
+import 'package:saudaghar/src/models/address.dart';
+import 'package:saudaghar/src/models/review.dart';
+import 'package:saudaghar/src/repository/food_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
-import '../helpers/helper.dart';
 import '../models/category.dart';
 import '../models/item.dart';
 import '../models/restaurant.dart';
-import '../models/review.dart';
 import '../repository/category_repository.dart';
 import '../repository/restaurant_repository.dart';
 import '../repository/settings_repository.dart';
-import '../repository/settings_repository.dart' as settingsRepo;
 
 class SGHomeController extends ControllerMVC {
+  Restaurant store;
   List<Category> categories = <Category>[];
-  List<Restaurant> closestStores = <Restaurant>[];
-  Restaurant saudaghar;
-  List<Restaurant> popularRestaurants = <Restaurant>[];
-  List<Review> recentReviews = <Review>[];
-  List<Item> trendingFoods = <Item>[];
+  List<Category> subcategories = <Category>[];
+  List<Item> searchedItems = <Item>[];
+  List<Item> items = <Item>[];
+  bool isLoading = false;
 
-  SGHomeController() {
-    // listenForClosestStores();
-//    listenForTrendingFoods();
-    listenForGeneralCategories();
-//    listenForPopularRestaurants();
-//     listenForRecentReviews();
+  Future<void> getStore(String id) async {
+    final Stream<Restaurant> stream = await getRestaurant(id, deliveryAddress.value);
+    stream.listen((Restaurant _restaurant) {
+      setState(() => store = _restaurant);
+    }, onError: (a) {
+      print(a);
+    }, onDone: () {
+      listenForCategories();
+    });
   }
+
 
   Future<void> listenForCategories() async {
-    final Stream<Category> stream = await getCategories();
-    stream.listen((Category _category) {
-      if (_category.id.length > 2 && _category.name != 'Misc.') {
-        setState(() {
-          categories.add(_category);
-        });
+    categories.clear();
+    final Stream<Category> stream = await getUsedCategories(store.id);
+    stream.listen((Category _category) async {
+      if (int.tryParse(_category.id) < 100) {
+        setState(() => categories.add(_category));
       }
     }, onError: (a) {
       print(a);
-    }, onDone: () {});
-  }
-
-  Future<void> listenForGeneralCategories() async {
-    final Stream<Category> stream = await getCategories();
-    stream.listen((Category _category) {
-      if (_category.id.length > 2 && _category.name != 'Misc.' && _category.isGeneralCat) {
-        setState(() {
-          categories.add(_category);
-        });
-      }
-    }, onError: (a) {
-      print(a);
-    }, onDone: () {});
-  }
-
-  Future<void> listenForClosestStores() async {
-    final Stream<Restaurant> stream = await getNearStores(deliveryAddress.value, deliveryAddress.value, isStore: settingsRepo.isStore.value == 1);
-    stream.listen((Restaurant _restaurant) {
-      if (_restaurant.distance < _restaurant.deliveryRange)
-        setState(() => closestStores.add(_restaurant));
-    }, onError: (a) {}, onDone: () {});
-  }
-
-  Future<void> listenForClosestRestaurants() async {
-    final Stream<Restaurant> stream = await getNearStores(deliveryAddress.value, deliveryAddress.value, isStore: false);
-    stream.listen((Restaurant _restaurant) {
-      if (_restaurant.distance < _restaurant.deliveryRange)
-        setState(() => closestStores.add(_restaurant));
-    }, onError: (a) {}, onDone: () {});
-  }
-
-//  Future<void> listenForPopularRestaurants() async {
-//    final Stream<Restaurant> stream = await getPopularRestaurants(deliveryAddress.value);
-//    stream.listen((Restaurant _restaurant) {
-//      setState(() => popularRestaurants.add(_restaurant));
-//    }, onError: (a) {}, onDone: () {});
-//  }
-
-  Future<void> listenForRecentReviews() async {
-    final Stream<Review> stream = await getRecentReviews();
-    stream.listen((Review _review) {
-      setState(() => recentReviews.add(_review));
-    }, onError: (a) {}, onDone: () {});
-  }
-
-//  Future<void> listenForTrendingFoods() async {
-//    final Stream<Item> stream = await getTrendingFoods(deliveryAddress.value);
-//    stream.listen((Item _food) {
-//      setState(() => trendingFoods.add(_food));
-//    }, onError: (a) {
-//      print(a);
-//    }, onDone: () {});
-//  }
-
-  void requestForCurrentLocation(BuildContext context) {
-    OverlayEntry loader = Helper.overlayLoader(context);
-    Overlay.of(context).insert(loader);
-    setCurrentLocation().then((_address) async {
-      setState(() => deliveryAddress.value = _address);
-      if (currentUser.value.apiToken != null) {
-        currentUser.value.address = _address.address;
-      }
-      //      currentUser.value.address = _address.address;
-      await refreshHome();
-      loader.remove();
-    }).catchError((e) {
-      loader.remove();
+    }, onDone: () {
     });
   }
 
-  Future<void> getSaudaghar() async {
-    final Stream<Restaurant> stream = await getRestaurant('0', deliveryAddress.value);
-    stream.listen((Restaurant _restaurant) {
-      setState(() => saudaghar = _restaurant);
+  Future<void> listenForSubCategories(String storeID, {String getSubCat}) async {
+    final Stream<Category> stream = await getUsedSubcategories(storeID, getSubCat);
+    stream.listen((Category _category) {
+      setState(() => subcategories.add(_category));
     }, onError: (a) {
       print(a);
+    }, onDone: () {
+    });
+  }
+
+  Future<void> listenForFoodsByCategory(String id) async {
+    final Stream<Item> stream = await getFoodsByCategory(id, storeID: store.id);
+    stream.listen((Item _food) {
+      setState(() => items.add(_food));
+    }, onError: (a) {
+    }, onDone: () {
     });
   }
 
 
-  Future<void> refreshHome() async {
+
+  Future<void> refreshSearch(search) async {
     setState(() {
-      categories = <Category>[];
-      closestStores = <Restaurant>[];
-//      popularRestaurants = <Restaurant>[];
-      recentReviews = <Review>[];
-//      trendingFoods = <Item>[];
+      searchedItems = <Item>[];
     });
-    await listenForClosestStores();
-//    await listenForTrendingFoods();
-    await listenForCategories();
-//    await listenForPopularRestaurants();
-    await listenForRecentReviews();
+    if (search != null && search.toString().replaceAll(" ", "") != "")
+      await listenForSearchedFoods(search: search, idRestaurant: store.id);
   }
+
+  void listenForSearchedFoods({String idRestaurant, String search}) async {
+    searchedItems.clear();
+    Address _address = deliveryAddress.value;
+    Stream<Item> initialStream = await searchFoods(search, _address, storeID: idRestaurant);
+    initialStream.listen((Item _food) {
+      setState(() => this.searchedItems.add(_food));
+    }, onError: (a) {
+      print(a);
+    }, onDone: () async {
+      print("-------- ${this.searchedItems.length.toString()} Items Searched--------");
+    });
+  }
+
+
+  Future<void> refreshSearchbyCategory(String search, String categoryID) async {
+    setState(() {
+      searchedItems = <Item>[];
+    });
+    if (search != null && search.toString().replaceAll(" ", "") != "")
+      await listenForSearchedItemsByCategory(search: search, categoryID: categoryID);
+  }
+
+  void listenForSearchedItemsByCategory({String categoryID, String search}) async {
+    searchedItems.clear();
+    Stream<Item> initialStream = await searchItemsInSubcategory(search: search, subcategoryID: categoryID);
+    initialStream.listen((Item _food) {
+      setState(() => this.searchedItems.add(_food));
+    }, onError: (a) {
+      print(a);
+    }, onDone: () async {
+      print("-------- ${this.searchedItems.length.toString()} Items Searched--------");
+    });
+  }
+
+
+
 }

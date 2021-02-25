@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/LoadingDeliveryAddressWidget.dart';
+import '../elements/LoadingDeliveryAddressWidget.dart';
 import '../elements/EmptyDeliveryAddressWidget.dart';
 import '../elements/DeliveryBottomDetailsWidget.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
@@ -115,9 +115,9 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
                       )
                     : EmptyDeliveryAddressWidget(),
                 SizedBox(height: 30),
-                addNewAddress(),
+                AddNewAddressWidget(),
                 SizedBox(height: 5),
-                addCurrLocation(),
+                AddCurrLocationWidget(),
                 SizedBox(height: 30),
               ],
             )
@@ -175,7 +175,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   }
 
 
-  Widget addNewAddress() {
+  Widget AddNewAddressWidget() {
     if (_con.loading) {
       return SizedBox();
     } else {
@@ -253,7 +253,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
     }
   }
 
-  Widget addCurrLocation()  {
+  Widget AddCurrLocationWidget()  {
     if (_con.loading) {
       return SizedBox();
     } else {

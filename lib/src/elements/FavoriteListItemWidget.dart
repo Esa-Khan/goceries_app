@@ -67,7 +67,31 @@ class FavoriteListItemWidget extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 8),
-                  Helper.getPrice(favorite.food.price, context, style: Theme.of(context).textTheme.headline4),
+                  Column(
+                    children: [
+                      Helper.getPrice(favorite.food.price, context, style: Theme.of(context).textTheme.headline4),
+                      if (favorite.food.quantity == 0)
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.redAccent,
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.red.withAlpha(125),
+                                blurRadius: 2,
+                                spreadRadius: 1,
+                                offset: Offset(0, 0),
+                              )
+                            ],
+                          ),
+                          child: Text(
+                            'Out of Stock',
+                            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+                          ),
+                        ),
+                    ],
+                  )
                 ],
               ),
             )

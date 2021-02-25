@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/pages/items_list.dart';
 import '../../src/driver/pages/orders_history.dart';
 import '../../src/pages/profile.dart';
 import '../../src/repository/user_repository.dart';
@@ -11,20 +12,18 @@ import '../pages/home.dart';
 import '../pages/map.dart';
 import '../pages/notifications.dart';
 import '../pages/orders.dart';
-import '../repository/settings_repository.dart' as settingsRepo;
+import '../repository/settings_repository.dart';
 import 'fresh_home.dart';
 
 // ignore: must_be_immutable
 class PagesWidget extends StatefulWidget {
   dynamic currentTab;
+  String subTab;
   RouteArgument routeArgument;
   Widget currentPage = HomeWidget();
   final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  PagesWidget({
-    Key key,
-    this.currentTab,
-  }) {
+  PagesWidget({Key key, this.currentTab, this.subTab}) {
     if (currentTab != null) {
       if (currentTab is RouteArgument) {
         routeArgument = currentTab;
@@ -75,33 +74,41 @@ class _PagesWidgetState extends State<PagesWidget> {
         widget.currentTab = tabItem;
         switch (tabItem) {
           case 0:
-            widget.currentPage = NotificationsWidget(parentScaffoldKey: widget.scaffoldKey);
+            widget.currentPage = OrdersWidget(parentScaffoldKey: widget.scaffoldKey);
             break;
+            // widget.currentPage = NotificationsWidget(parentScaffoldKey: widget.scaffoldKey);
+            // break;
           case 1:
-            widget.currentPage = MapWidget(parentScaffoldKey: widget.scaffoldKey, routeArgument: widget.routeArgument);
-            break;
-          case 2:
-            switch (settingsRepo.isStore.value) {
+            switch (store_type.value) {
               case 0:
-                widget.currentPage =
-                    SGHomeWidget(parentScaffoldKey: widget.scaffoldKey);
+                if (widget.routeArgument != null && widget.routeArgument.heroTag == 'item_list') {
+                  widget.currentPage = ItemsListWidget(parentScaffoldKey: widget.scaffoldKey, subAisle: widget.routeArgument.param, store: widget.routeArgument.param2);
+                } else {
+                  widget.currentPage = SGHomeWidget(parentScaffoldKey: widget.scaffoldKey);
+                }
                 break;
               case 1:
-                widget.currentPage =
-                    FreshHomeWidget(parentScaffoldKey: widget.scaffoldKey);
+                if (widget.routeArgument != null && widget.routeArgument.heroTag == 'item_list') {
+                  widget.currentPage = ItemsListWidget(parentScaffoldKey: widget.scaffoldKey, subAisle: widget.routeArgument.param, store: widget.routeArgument.param2);
+                } else {
+                  widget.currentPage = FreshHomeWidget(parentScaffoldKey: widget.scaffoldKey);
+                }
+
                 break;
               case 2:
                 widget.currentPage =
                     HomeWidget(parentScaffoldKey: widget.scaffoldKey);
                 break;
             }
+            // widget.currentPage = MapWidget(parentScaffoldKey: widget.scaffoldKey, routeArgument: widget.routeArgument);
             break;
-          case 3:
-            widget.currentPage = OrdersWidget(parentScaffoldKey: widget.scaffoldKey);
-            break;
-          case 4:
+          case 2:
             widget.currentPage = FavoritesWidget(parentScaffoldKey: widget.scaffoldKey);
             break;
+          // case 3:
+
+          // case 4:
+
         }
       }
 
@@ -135,12 +142,16 @@ class _PagesWidgetState extends State<PagesWidget> {
           },
           // this will be set when a new tab is tapped
           items: [
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.notifications),
+            //   title: new Container(height: 0.0),
+            // ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.location_on),
+            //   title: new Container(height: 0.0),
+            // ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              title: new Container(height: 0.0),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.location_on),
+              icon: new Icon(Icons.fastfood),
               title: new Container(height: 0.0),
             ),
             BottomNavigationBarItem(
@@ -160,10 +171,6 @@ class _PagesWidgetState extends State<PagesWidget> {
                   ),
                   child: new Icon(Icons.home, color: Theme.of(context).primaryColor),
                 )),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.fastfood),
-              title: new Container(height: 0.0),
-            ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.favorite),
               title: new Container(height: 0.0),

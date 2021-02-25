@@ -53,7 +53,7 @@ class UserController extends ControllerMVC {
           if (value.isDriver) {
             Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
           } else {
-            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
+            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
           }
         } else {
           scaffoldKey?.currentState?.showSnackBar(SnackBar(

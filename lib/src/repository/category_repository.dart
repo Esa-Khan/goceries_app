@@ -63,13 +63,35 @@ Future<Stream<Category>> getMainCategories() async {
 
 Future<Stream<Category>> getUsedCategories(String storeID) async {
   Uri uri = Helper.getUri('api/categories');
-  Map<String, dynamic> _queryParams = {'storeID': storeID};
+  Map<String, dynamic> _queryParams;
+  _queryParams = {'storeID': storeID};
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Filter filter = Filter.fromJSON(json.decode(prefs.getString('filter') ?? '{}'));
   filter.delivery = false;
   filter.open = false;
 
   _queryParams.addAll(filter.toQuery());
+  uri = uri.replace(queryParameters: _queryParams);
+  try {
+    final client = new http.Client();
+    final streamedRest = await client.send(http.Request('get', uri));
+
+    return streamedRest.stream
+        .transform(utf8.decoder)
+        .transform(json.decoder)
+        .map((data) => Helper.getData(data))
+        .expand((data) => (data as List))
+        .map((data) => Category.fromJSON(data));
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: uri.toString()).toString());
+    return new Stream.value(new Category.fromJSON({}));
+  }
+}
+
+Future<Stream<Category>> getUsedSubcategories(String storeID, String getSubCat) async {
+  Uri uri = Helper.getUri("api/subcategories/getSubcatFromCat/${getSubCat}");
+  Map<String, dynamic> _queryParams = {'storeID': storeID};
   uri = uri.replace(queryParameters: _queryParams);
   try {
     final client = new http.Client();

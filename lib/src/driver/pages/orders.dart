@@ -10,11 +10,11 @@ import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../../generated/l10n.dart';
 import '../controllers/order_controller.dart';
-import '../repository/order_repository.dart' as orderRepo;
+import '../repository/order_repository.dart';
 import '../elements/EmptyOrdersWidget.dart';
 import '../elements/ShoppingCartButtonWidget.dart';
 
-class OrdersWidget extends StatefulWidget {
+class OrdersWidget extends StatefulWidget with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> parentScaffoldKey;
 
   OrdersWidget({Key key, this.parentScaffoldKey}) : super(key: key);
@@ -26,33 +26,56 @@ class OrdersWidget extends StatefulWidget {
 class _OrdersWidgetState extends StateMVC<OrdersWidget> {
   var timer;
   _OrdersWidgetState() : super(OrderController()) {
-    orderRepo.con.value = controller;
+    con.value = controller;
   }
 
   @override
   void initState() {
     super.initState();
-    orderRepo.con.value.listenForOrders();
+    con.value.listenForOrders();
     timer = Timer.periodic(Duration(seconds: 60), (Timer t) => autoOrderRefresh());
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    switch(state){
+      case AppLifecycleState.resumed:
+        setState(() => con.value.app_paused = false);
+        print("app in resumed");
+        break;
+      case AppLifecycleState.inactive:
+        print("app in inactive");
+        break;
+      case AppLifecycleState.paused:
+        print("app in paused");
+        setState(() => con.value.app_paused = true);
+        break;
+      case AppLifecycleState.detached:
+        print("app in detached");
+        break;
+    }
   }
 
   void autoOrderRefresh() {
     if (mounted && context != null) {
       print('---Refreshed---');
-      orderRepo.con.value.refreshOrders();
+      con.value.refreshOrders();
     }
   }
 
   @override
   void dispose() {
-    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     timer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: orderRepo.con.value.scaffoldKey,
+      key: con.value.scaffoldKey,
       appBar: AppBar(
         leading: new IconButton(
           icon: new Icon(Icons.sort, color: Theme.of(context).hintColor),
@@ -71,20 +94,20 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
         ],
       ),
       body: RefreshIndicator(
-        onRefresh: orderRepo.con.value.refreshOrders,
+        onRefresh: con.value.refreshOrders,
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
-            !currentUser.value.available && orderRepo.con.value.orders.isEmpty && currentUser.value.work_hours != '24/7'
+            !currentUser.value.available && con.value.orders.isEmpty && currentUser.value.work_hours != '24/7'
                 ? NotWorkingWidget()
-                : !orderRepo.con.value.orders_loaded || orderRepo.con.value.orders.isEmpty
+                : !con.value.orders_loaded || con.value.orders.isEmpty
                     ? EmptyOrdersWidget()
                     : ListView.separated(
                         scrollDirection: Axis.vertical,
                         shrinkWrap: true,
                         primary: false,
-                        itemCount: orderRepo.con.value.orders.length,
-                        itemBuilder: (context, index) => OrderItemWidget(expanded: false, order: orderRepo.con.value.orders.elementAt(index)),
+                        itemCount: con.value.orders.length,
+                        itemBuilder: (context, index) => OrderItemWidget(expanded: false, order: con.value.orders.elementAt(index)),
                         separatorBuilder: (context, index) {
                           return SizedBox(height: 20);
                         },

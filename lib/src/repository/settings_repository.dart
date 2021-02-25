@@ -21,7 +21,7 @@ ValueNotifier<Setting> setting = new ValueNotifier(new Setting());
 ValueNotifier<Address> myAddress = new ValueNotifier(new Address());
 ValueNotifier<bool> isDebug = new ValueNotifier(false);
 ValueNotifier<Address> deliveryAddress = new ValueNotifier(new Address());
-ValueNotifier<int> isStore = new ValueNotifier(0);
+ValueNotifier<int> store_type = new ValueNotifier(0);
 bool compact_view_horizontal = false;
 bool compact_view_vertical = false;
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -150,5 +150,24 @@ Future<String> getMessageId() async {
 Future<void> setDebugger() async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}setDebugger/${currentUser.value.id}/${currentUser.value.debugger == true ? 1 : 0}';
   final response = await http.put(url, headers: {HttpHeaders.contentTypeHeader: 'application/json'});
+  print(response.body);
+  try {
+    if (json.decode(response.body)['message'] == 'Success') {
+      if (currentUser.value.debugger) {
+        GlobalConfiguration().updateValue('base_url', setting.value.debug_url);
+        GlobalConfiguration().updateValue(
+            'api_base_url', setting.value.debug_url + 'api/');
+        GlobalConfiguration().updateValue('debug', 'true');
+      } else {
+        GlobalConfiguration().updateValue('base_url', 'https://saudagharpk.com/');
+        GlobalConfiguration().updateValue('api_base_url', 'https://saudagharpk.com/api/');
+        GlobalConfiguration().updateValue('debug', 'false');
+      }
+    }
+  } catch (e) {
+    GlobalConfiguration().updateValue('base_url', 'https://saudagharpk.com/');
+    GlobalConfiguration().updateValue('api_base_url', 'https://saudagharpk.com/api/');
+    GlobalConfiguration().updateValue('debug', 'false');
+  }
 
 }

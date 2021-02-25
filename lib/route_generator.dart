@@ -32,14 +32,13 @@ import 'src/pages/tracking.dart';
 import 'src/driver/pages/order.dart';
 
 class RouteGenerator {
-  static Route<dynamic> generateRoute(RouteSettings settings) {
+  static Route<dynamic> generateRoute(RouteSettings settings, {String subTab}) {
     // Getting arguments passed in while calling Navigator.pushNamed
     final args = settings.arguments;
     if (currentUser.value.isDriver != null && currentUser.value.isDriver) {
       switch (settings.name) {
         case '/Pages':
-          return MaterialPageRoute(
-              builder: (_) => PagesTestWidget(currentTab: args));
+          return MaterialPageRoute(builder: (_) => PagesTestWidget(currentTab: args));
         case '/OrderDetails':
           return MaterialPageRoute(builder: (_) => OrderWidget(routeArgument: args as RouteArgument));
         case '/Notifications':
@@ -76,10 +75,9 @@ class RouteGenerator {
         case '/ForgetPassword':
           return MaterialPageRoute(builder: (_) => ForgetPasswordWidget());
         case '/Pages':
-          return MaterialPageRoute(builder: (_) => PagesWidget(currentTab: args));
+          return MaterialPageRoute(builder: (_) => PagesWidget(currentTab: args, subTab: subTab));
         case '/Details':
-          return MaterialPageRoute(builder: (_) =>
-              DetailsWidget(routeArgument: args as RouteArgument));
+          return MaterialPageRoute(builder: (_) => DetailsWidget(routeArgument: args as RouteArgument));
         case '/Menu':
           return MaterialPageRoute(
               builder: (_) => MenuWidget(routeArgument: args as RouteArgument));

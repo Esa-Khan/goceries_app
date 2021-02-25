@@ -4,6 +4,7 @@ import 'package:saudaghar/src/elements/AislesItemWidget.dart';
 import 'package:saudaghar/src/elements/EmptyItemSearchWidget.dart';
 import 'package:saudaghar/src/elements/FoodItemWidget.dart';
 import 'package:saudaghar/src/helpers/size_config.dart';
+import 'package:saudaghar/src/models/restaurant.dart';
 import '../../src/models/route_argument.dart';
 import '../../src/models/category.dart';
 
@@ -12,22 +13,25 @@ import '../elements/ShoppingCartButtonWidget.dart';
 import '../repository/settings_repository.dart';
 import '../repository/user_repository.dart';
 
-class SGHomeWidget extends StatefulWidget {
+class ItemsListWidget extends StatefulWidget {
   final GlobalKey<ScaffoldState> parentScaffoldKey;
-  final RouteArgument routeArgument;
+  final Category subAisle;
+  final Restaurant store;
 
-  SGHomeWidget({Key key, this.parentScaffoldKey, this.routeArgument}) : super(key: key);
+  ItemsListWidget({Key key, this.parentScaffoldKey, this.subAisle, this.store}) : super(key: key);
 
   @override
-  _SGHomeWidgetState createState() => _SGHomeWidgetState();
+  _ItemsListWidgetState createState() => _ItemsListWidgetState();
 }
 
-class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
+class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
   SGHomeController _con;
   var _searchBarController = TextEditingController();
   bool first_load = true, _isSearching = false, _isSearched = false;
+  int animation_steps = 0;
+  bool items_loaded = false;
 
-  _SGHomeWidgetState() : super(SGHomeController()) {
+  _ItemsListWidgetState() : super(SGHomeController()) {
     _con = controller;
   }
 
@@ -36,7 +40,8 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
     super.initState();
     if (first_load) {
       first_load = false;
-      _con.getStore(store_type.value.toString());
+      _con.store = widget.store;
+      _con.listenForFoodsByCategory(widget.subAisle.id);
     }
   }
 
@@ -48,18 +53,15 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
     return Scaffold(
           appBar: AppBar(
             leading: IconButton(
-                  icon: Icon(Icons.sort, color: Theme.of(context).hintColor),
-                  onPressed: () => widget.parentScaffoldKey.currentState.openDrawer(),
-                ),
+              icon: Icon(Icons.arrow_back_rounded, color: Theme.of(context).hintColor),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
             automaticallyImplyLeading: false,
             centerTitle: true,
             title: ValueListenableBuilder(
               valueListenable: setting,
               builder: (context, value, child) {
-                return Text(
-                  currentUser.value.name == null || currentUser.value.name.contains('null') || currentUser.value.name.trim().length == 0
-                      ? value.appName
-                      : "Welcome " + currentUser.value.name?.split(" ")[0] + "!",
+                return Text( widget.subAisle.name,
                   style: Theme.of(context).textTheme.headline6.merge(TextStyle(letterSpacing: 1.3)),
                 );
               },
@@ -71,36 +73,35 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
           body: _con.store == null
               ? const Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
               : SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 10, bottom: 50),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                const SizedBox(height: 10),
-                SearchBarWidget(),
-                _isSearching
-                    ? Column(
-                  children: <Widget>[
-                    SizedBox(height: 50),
-                    Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
-                  ],
-                )
-                    : _isSearched && _con.searchedItems.isEmpty
-                    ? EmptyItemSearchWidget(search_str: _searchBarController.text)
-                    : _con.searchedItems.isNotEmpty
-                    ? SearchResultsWidget()
+                  padding: const EdgeInsets.only(top: 10, bottom: 50),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      const SizedBox(height: 10),
+                      SearchBarWidget(),
+                      _isSearching
+                          ? Column(
+                        children: <Widget>[
+                          SizedBox(height: 50),
+                          Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8))),
+                        ],
+                      )
+                          : _isSearched && _con.searchedItems.isEmpty
+                          ? EmptyItemSearchWidget(search_str: _searchBarController.text)
+                          : _con.searchedItems.isNotEmpty
+                          ? SearchResultsWidget()
 
 
-                    : CategoryList()
+                          : ItemListWidget()
 
 
-              ],
-            ),
+                    ],
+                  ),
           ),
     );
   }
-
 
 
   Widget SearchBarWidget() {
@@ -111,10 +112,10 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
           if (text == "") {
             setState(() => _isSearched = false);
             _searchBarController.clear();
-            await _con.refreshSearch("");
+            await _con.refreshSearchbyCategory("", widget.subAisle.id);
           } else {
             setState(() => _isSearching = true);
-            await _con.refreshSearch(text);
+            await _con.refreshSearchbyCategory(text, widget.subAisle.id);
             setState(() {
               // _searchBarTapped = false;
               _isSearching = false;
@@ -126,16 +127,13 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
           if (val == "") {
             setState(() => _isSearched = false);
             _searchBarController.clear();
-            await _con.refreshSearch("");
+            await _con.refreshSearchbyCategory("", widget.subAisle.id);
           }
-        },
-        onTap: () {
-          // setState(() => _searchBarTapped = true);
         },
         controller: _searchBarController,
         decoration: InputDecoration(
-          hintText: 'Search for items in this store',
-          hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: SizeConfig.blockSizeHorizontal*40)),
+          hintText: 'Search for items in this category',
+          hintStyle: Theme.of(context).textTheme.caption.merge(TextStyle(fontSize: SizeConfig.blockSizeHorizontal*35)),
           contentPadding: EdgeInsets.only(right: 12),
           prefixIcon: Icon(Icons.search, color: Theme.of(context).accentColor),
           suffixIcon: IconButton(
@@ -146,7 +144,7 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
               }
               setState(() => _isSearched = false);
               _searchBarController.clear();
-              await _con.refreshSearch("");
+              await _con.refreshSearchbyCategory("", widget.subAisle.id);
             },
             color: Theme.of(context).focusColor,
             icon: Icon(Icons.clear, size: 30),
@@ -185,38 +183,27 @@ class _SGHomeWidgetState extends StateMVC<SGHomeWidget> {
     );
   }
 
-  Widget CategoryList() {
-    return _con.categories.isEmpty
-          ? Padding(
-              padding: EdgeInsets.symmetric(vertical: 50),
-              child: Center(
-                child: SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: CircularProgressIndicator(strokeWidth: 8))),
-            )
 
-          : ListView.separated(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              primary: false,
-              itemCount: _con.categories.length,
-              separatorBuilder: (context, index) {
-                return const SizedBox(height: 20);
-              },
-              itemBuilder: (context, index) {
-                Category currAisle = _con.categories.elementAt(index);
-                // Define a Aisle dropdown
-                return AislesItemWidget(
-                    aisle: currAisle,
-                    store: _con.store,
-                );
-              }
+  Widget ItemListWidget() {
+    return _con.items == null || _con.items.isEmpty
+      ? Center(child: SizedBox(width: 120, height: 120, child: CircularProgressIndicator(strokeWidth: 8)))
+      : ListView.separated(
+          scrollDirection: Axis.vertical,
+          shrinkWrap: true,
+          primary: false,
+          itemCount: _con.items.length,
+          separatorBuilder: (context, index) {
+            return SizedBox(height: 10);
+          },
+          // ignore: missing_return
+          itemBuilder: (context, index) {
+            return FoodItemWidget(
+              heroTag: 'menu_list',
+              food: _con.items.elementAt(index),
+            );
+          },
     );
   }
-
-
-
 }
 
 

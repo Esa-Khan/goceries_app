@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../src/elements/CategoryListWidget.dart';
-import '../../generated/l10n.dart';
-import '../elements/AislesItemWidget.dart';
-import '../elements/FoodItemWidget.dart';
 import '../models/restaurant.dart';
-import '../models/category.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:async';
 
