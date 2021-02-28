@@ -15,7 +15,7 @@ class PointsCheckoutWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: InkWell(
-        onTap: () => _showPointsDialog(context),
+        onTap: () => herotag == 'order_submitted' ? null : _showPointsDialog(context),
         child: Stack(
           children: [
             Container(
@@ -114,7 +114,7 @@ class PointsCheckoutWidget extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         Container(
-                          height: 300,
+                          height: 280,
                           width: 200,
                           child: ListView.builder(
                             itemCount: discounts.length,

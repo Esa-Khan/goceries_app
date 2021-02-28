@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/repository/cart_repository.dart';
+import '../repository/cart_repository.dart';
 import '../elements/LoadingDeliveryAddressWidget.dart';
 import '../elements/EmptyDeliveryAddressWidget.dart';
 import '../elements/DeliveryBottomDetailsWidget.dart';
@@ -336,3 +336,4 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   }
 
 }
+

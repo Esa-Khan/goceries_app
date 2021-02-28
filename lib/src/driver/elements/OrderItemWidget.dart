@@ -8,16 +8,12 @@ import '../../models/order.dart';
 import '../../models/route_argument.dart';
 import 'FoodOrderItemWidget.dart';
 
-class OrderItemWidget extends StatefulWidget {
+class OrderItemWidget extends StatelessWidget {
   final Order order;
+  final String hero_tag;
 
-  OrderItemWidget({Key key, this.order}) : super(key: key);
+  OrderItemWidget({Key key, this.order, this.hero_tag = ''}) : super(key: key);
 
-  @override
-  _OrderItemWidgetState createState() => _OrderItemWidgetState();
-}
-
-class _OrderItemWidgetState extends State<OrderItemWidget> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).copyWith(dividerColor: Colors.transparent);
@@ -40,21 +36,21 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                 child: ExpansionTile(
                   title: Column(
                     children: <Widget>[
-                      Text('${S.of(context).order_id}: #${widget.order.id}'),
+                      Text('${S.of(context).order_id}: #${order.id}'),
                       Text(
-                        widget.order.deliveryAddress.address,
+                        order.deliveryAddress.address,
                         style: Theme.of(context).textTheme.bodyText1.apply(fontSizeFactor: 0.8),
                       ),
                       Text(
-                        DateFormat('dd/MM/yyyy | HH:mm').format(widget.order.created_at),
+                        DateFormat('dd/MM/yyyy | HH:mm').format(hero_tag == 'history' ? order.updated_at : order.created_at),
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      if (widget.order.orderStatus.id == '5')
+                      if (order.orderStatus.id == '5')
                         Text(
-                          'Delivery took ${widget.order.updated_at.difference(widget.order.created_at).inMinutes} minutes',
+                          'Delivery took ${order.updated_at.difference(order.created_at).inMinutes} minutes',
                           style: Theme.of(context).textTheme.caption.apply(color: Colors.redAccent),
                         ),
-                      if (widget.order.hint != null) Text("Check Hint", style: Theme.of(context).textTheme.caption.apply(color: Theme.of(context).accentColor)),
+                      if (order.hint != null) Text("Check Hint", style: Theme.of(context).textTheme.caption.apply(color: Theme.of(context).accentColor)),
                     ],
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -63,9 +59,9 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Helper.getPrice(Helper.getTotalOrdersPrice(widget.order), context, style: Theme.of(context).textTheme.headline4),
+                      Helper.getPrice(Helper.getTotalOrdersPrice(order), context, style: Theme.of(context).textTheme.headline4),
                       Text(
-                        '${widget.order.payment.method}',
+                        '${order.payment.method}',
                         style: Theme.of(context).textTheme.caption,
                       ),
                     ],
@@ -73,9 +69,9 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                   children: <Widget>[
                     Column(
                         children: List.generate(
-                      widget.order.foodOrders.length,
+                      order.foodOrders.length,
                       (indexFood) {
-                        return FoodOrderItemWidget(heroTag: 'mywidget.orders', order: widget.order, foodOrder: widget.order.foodOrders.elementAt(indexFood));
+                        return FoodOrderItemWidget(heroTag: 'mywidget.orders', order: order, foodOrder: order.foodOrders.elementAt(indexFood));
                       },
                     )),
                     Padding(
@@ -90,18 +86,18 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
-                              Helper.getPrice(widget.order.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
+                              Helper.getPrice(order.deliveryFee, context, style: Theme.of(context).textTheme.subtitle1)
                             ],
                           ),
 //                          Row(
 //                            children: <Widget>[
 //                              Expanded(
 //                                child: Text(
-//                                  '${S.of(context).tax} (${widget.order.tax}%)',
+//                                  '${S.of(context).tax} (${order.tax}%)',
 //                                  style: Theme.of(context).textTheme.bodyText1,
 //                                ),
 //                              ),
-//                              Helper.getPrice(Helper.getTaxOrder(widget.order), context, style: Theme.of(context).textTheme.subtitle1)
+//                              Helper.getPrice(Helper.getTaxOrder(order), context, style: Theme.of(context).textTheme.subtitle1)
 //                            ],
 //                          ),
                           Row(
@@ -112,7 +108,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                                   style: Theme.of(context).textTheme.bodyText1,
                                 ),
                               ),
-                              Helper.getPrice(Helper.getTotalOrdersPrice(widget.order), context, style: Theme.of(context).textTheme.headline4)
+                              Helper.getPrice(Helper.getTotalOrdersPrice(order), context, style: Theme.of(context).textTheme.headline4)
                             ],
                           ),
                         ],
@@ -128,7 +124,7 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
                 children: <Widget>[
                   FlatButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamed('/OrderDetails', arguments: RouteArgument(id: widget.order.id));
+                      Navigator.of(context).pushNamed('/OrderDetails', arguments: RouteArgument(id: order.id));
                     },
                     textColor: Theme.of(context).hintColor,
                     child: Wrap(
@@ -147,10 +143,10 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
               margin: EdgeInsetsDirectional.only(start: 20),
               padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(100)), color: widget.order.active ? widget.order.orderStatus.status_color : Colors.redAccent),
+                  borderRadius: BorderRadius.all(Radius.circular(100)), color: order.active ? order.orderStatus.status_color : Colors.redAccent),
               alignment: AlignmentDirectional.center,
               child: Text(
-                widget.order.active ? '${widget.order.orderStatus.status}' : S.of(context).canceled,
+                order.active ? '${order.orderStatus.status}' : S.of(context).canceled,
                 maxLines: 1,
                 overflow: TextOverflow.fade,
                 softWrap: false,
@@ -158,14 +154,14 @@ class _OrderItemWidgetState extends State<OrderItemWidget> {
               ),
             ),
             const Expanded(child: SizedBox()),
-            if (widget.order.scheduled_time != null && widget.order.scheduled_time != "null")
+            if (order.scheduled_time != null && order.scheduled_time != "null")
               Container(
                 margin: EdgeInsetsDirectional.only(end: 20),
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(100)), color: Colors.blue),
                 alignment: AlignmentDirectional.center,
                 child: Text(
-                  'Deliver at: ${widget.order.scheduled_time}',
+                  'Deliver at: ${order.scheduled_time}',
                   style: Theme.of(context).textTheme.caption.merge(TextStyle(height: 1, color: Theme.of(context).primaryColor, fontSize: 10)),
                 ),
               ),

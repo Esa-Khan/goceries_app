@@ -253,6 +253,7 @@ class _OrderSuccessWidgetState extends StateMVC<OrderSuccessWidget> {
                             if (currentUser.value.points > 0)
                               PointsCheckoutWidget(
                                 points: currentUser.value.points,
+                                herotag: _con.order_submitted ? 'order_submitted' : '',
                                 setDiscount: (int points) => setState(() => _con.applePointsDiscount(points))
                                 // setDiscount: ,
                               ),

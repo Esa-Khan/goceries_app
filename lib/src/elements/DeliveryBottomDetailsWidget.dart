@@ -113,7 +113,6 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                     ],
                   ),
                   const SizedBox(height: 20),
-
                   Stack(
                     fit: StackFit.loose,
                     alignment: AlignmentDirectional.centerEnd,
@@ -357,7 +356,6 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
     );
   }
 
-
   List<String> dropdown_vals = List<String>();
   String dropdownValue = '';
   List<DateTime> datetime_slots = [];
@@ -456,9 +454,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
           } else if (_isVisible
               && ((_date == "Set Day" && _time != "Set Time")
                   || (_date != "Set Day" && _time == "Set Time"))) {
-
             widget.con.showSnackBar("Please specify both date and time.");
-
           } else {
             _time = _time.replaceAll(" ", "");
             String year = _date.split('/')[2];
@@ -520,10 +516,7 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
                 // currentCart_time.value = _date + " " + _time;
                 widget.con.goCheckout(context);
               } else {
-                desc = desc
-                    .replaceAll("<p>", "")
-                    .replaceAll("</p>", "")
-                    .replaceAll("-", " - ");
+                desc = desc.replaceAll("<p>", "").replaceAll("</p>", "").replaceAll("-", " - ");
                 widget.con.showSnackBar("Delivery not available at that time. Timings: ${desc}.");
               }
 
@@ -551,7 +544,6 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
     if (curr_address.address == null) {
       address = "this address.\n\n";
     } else {
-      print(curr_address.address);
       address = "address: \n\n'${curr_address.address}' \n\n";
     }
     return AlertDialog(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'package:saudaghar/src/elements/AislesItemWidget.dart';
+import 'package:saudaghar/src/elements/CategoryList.dart';
 import 'package:saudaghar/src/elements/EmptyItemSearchWidget.dart';
 import 'package:saudaghar/src/elements/FoodItemWidget.dart';
 import 'package:saudaghar/src/helpers/size_config.dart';
@@ -84,7 +85,7 @@ class _FreshHomeWidgetState extends StateMVC<FreshHomeWidget> {
                   ? EmptyItemSearchWidget(search_str: _searchBarController.text)
                   : _con.searchedItems.isNotEmpty
                     ? SearchResultsWidget()
-                    : CategoryList()
+                    : CategoryList(store: _con.store, categories: _con.categories)
 
 
           ],
@@ -177,40 +178,5 @@ class _FreshHomeWidgetState extends StateMVC<FreshHomeWidget> {
     );
   }
 
-  Widget CategoryList() {
-    return _con.categories.isEmpty
-        ? Padding(
-      padding: EdgeInsets.symmetric(vertical: 50),
-      child: Center(
-          child: SizedBox(
-              width: 120,
-              height: 120,
-              child: CircularProgressIndicator(strokeWidth: 8))),
-    )
-
-        : ListView.separated(
-            scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            primary: false,
-            itemCount: _con.categories.length,
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 20);
-            },
-            itemBuilder: (context, index) {
-              Category currAisle = _con.categories.elementAt(index);
-              // Define a Aisle dropdown
-              return AislesItemWidget(
-                aisle: currAisle,
-                store: _con.store,
-              );
-            }
-        );
-  }
-
-
-
 }
-
-
-
 

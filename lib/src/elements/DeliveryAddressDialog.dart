@@ -53,7 +53,6 @@ class DeliveryAddressDialog {
                 SizedBox(width: 10),
                 Text(
                   "Confirm address and number",
-//                  S.of(context).add_delivery_address,
                   style: Theme.of(context).textTheme.bodyText1,
                 )
               ],

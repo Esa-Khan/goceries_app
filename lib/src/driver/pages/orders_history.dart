@@ -64,7 +64,7 @@ class _OrdersHistoryWidgetState extends StateMVC<OrdersHistoryWidget> {
                     itemCount: _con.orders.length,
                     itemBuilder: (context, index) {
                       var _order = _con.orders.elementAt(index);
-                      return OrderItemWidget(order: _order);
+                      return OrderItemWidget(order: _order, hero_tag: 'history');
                     },
                     separatorBuilder: (context, index) {
                       return SizedBox(height: 20);
@@ -75,4 +75,6 @@ class _OrdersHistoryWidgetState extends StateMVC<OrdersHistoryWidget> {
       ),
     );
   }
+
 }
+

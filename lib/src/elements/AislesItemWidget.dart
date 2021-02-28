@@ -218,7 +218,7 @@ class _AislesItemWidgetState extends StateMVC<AislesItemWidget> {
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var begin = Offset(1.0, 0.0);
         var end = Offset.zero;
-        var curve = Curves.easeIn;
+        var curve = Curves.easeInOutQuint;
         var tween = Tween(begin: begin, end: end);
         var curvedAnimation = CurvedAnimation(
           parent: animation,

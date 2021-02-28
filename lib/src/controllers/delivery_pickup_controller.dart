@@ -103,21 +103,25 @@ class DeliveryPickupController extends CartController {
   }
 
   void updateAddress(model.Address address) {
+    OverlayEntry loader = Helper.overlayLoader(context);
+    Overlay.of(context).insert(loader);
     userRepo.updateAddress(address).then((value) {
-      setState(() {
-        settingRepo.deliveryAddress.value = value;
-//        this.deliveryAddress = value;
-        deliveryAddress.forEach((element) {
-          if (element.id == value.id){
-            element = value;
-            return null;
-          }
-        });
+      setState(() => settingRepo.deliveryAddress.value = value);
+      deliveryAddress.forEach((element) {
+        if (element.id == value.id){
+          element = value;
+          setState(() => deliveryAddress);
+          return null;
+        }
       });
+
     }).whenComplete(() {
+      loader.remove();
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).details_updated_successfully),
       ));
+    }).catchError((e) {
+      loader.remove();
     });
   }
 

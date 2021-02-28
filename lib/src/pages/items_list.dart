@@ -92,7 +92,10 @@ class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
                             ? EmptyItemSearchWidget(search_str: _searchBarController.text)
                             : _con.searchedItems.isNotEmpty
                               ? SearchResultsWidget()
-                              : ItemListWidget(items: _con.items, onPressed: (Item item) => _con.addToCart(item))
+                              : ItemListWidget(items: _con.items, onPressed: (Item item) {
+                                  item.restaurant = _con.store;
+                                  _con.addToCart(item);
+                                })
 
 
                     ],

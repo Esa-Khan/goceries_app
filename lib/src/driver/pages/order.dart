@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart' show DateFormat;
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/repository/user_repository.dart';
+import '../../repository/user_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../generated/l10n.dart';
@@ -70,7 +70,7 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
       dropDownValue = int.parse(_con.order.orderStatus.id) - 1;
     return Scaffold(
       key: _con.scaffoldKey,
-      drawer: DrawerWidget(),
+      // drawer: DrawerWidget(),
       bottomNavigationBar: OrderUpdateBottomNav(),
       body: _con.order == null
           ? CircularLoadingWidget(height: 400)
@@ -460,7 +460,7 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                                 ),
                               )
                         : const SizedBox(),
-                        currentUser.value.isManager && _con.order.driver_number != null
+                        currentUser.value.isManager && _con.order.driver_number != null && _con.order.driver_id != 1
                         ? Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                           child: Row(
@@ -542,137 +542,137 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                 height: 120,
                 child: CircularProgressIndicator(strokeWidth: 8)))
         : Wrap(
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(20),
-                  topLeft: Radius.circular(20)),
-              boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).focusColor.withOpacity(0.15),
-                  offset: Offset(0, -2),
-                  blurRadius: 5.0)
-              ]),
-          child: SizedBox(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        S.of(context).subtotal,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
-                    Helper.getPrice(
-                        Helper.getSubTotalOrdersPrice(_con.order), context,
-                        style: Theme.of(context).textTheme.subtitle1)
-                  ],
-                ),
-                const SizedBox(height: 5),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        S.of(context).delivery_fee,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ),
-                    Helper.getPrice(_con.order.deliveryFee, context,
-                        style: Theme.of(context).textTheme.subtitle1)
-                  ],
-                ),
-                const SizedBox(height: 5),
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        S.of(context).total,
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                    ),
-                    Helper.getPrice(
-                        Helper.getTotalOrdersPrice(_con.order), context,
-                        style: Theme.of(context).textTheme.headline6)
-                  ],
-                ),
-                SizedBox(height: 10),
-                if (_con.order.orderStatus.id != '5')
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 10,
-                        child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25.0),
-                            border: Border.all(
-                                color: Theme.of(context).accentColor,
-                                style: BorderStyle.solid,
-                                width: 3.80),
-                          ),
-                          child: DropdownButton<String>(
-                            isDense: true,
-                            isExpanded: true,
-                            icon: Icon(
-                              Icons.arrow_drop_down,
-                              color: Theme.of(context).accentColor,
-                            ),
-                            iconSize: 40,
-                            elevation: 16,
-                            style: Theme.of(context).textTheme.headline6.apply(
-                                color: Theme.of(context).accentColor),
-                            onChanged: (String changedValue) {
-                            },
-                            value: orderStatuses.elementAt(dropDownValue),
-                            items: orderStatuses.map<DropdownMenuItem<String>>(
-                                    (String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value, textAlign: TextAlign.center),
-                                  );
-                                }).toList(),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                          flex: 1,
-                          child: SizedBox()
-                      ),
-                      Expanded(
-                          flex: 4,
-                          child: FlatButton(
-                            disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
-                            onPressed: _con.allow_updating
-                              ? () => showDialog(
-                                context: context,
-                                builder: (context) => updateOrderDialog())
-                              : null,
-                            padding: EdgeInsets.symmetric(vertical: 14),
-                            color: Theme.of(context).accentColor,
-                            shape: StadiumBorder(),
-                            child: Text(
-                              S.of(context).update,
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          )
-                      )
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).focusColor.withOpacity(0.15),
+                        offset: Offset(0, -2),
+                        blurRadius: 5.0)
                     ]),
-                SizedBox(height: _con.order.orderStatus.id == '5' ? 0 : 10),
-              ],
-            ),
-          ),
-        )
-      ],
-    );
+                child: SizedBox(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              S.of(context).subtotal,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                          Helper.getPrice(
+                              Helper.getSubTotalOrdersPrice(_con.order), context,
+                              style: Theme.of(context).textTheme.subtitle1)
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              S.of(context).delivery_fee,
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                          Helper.getPrice(_con.order.deliveryFee, context,
+                              style: Theme.of(context).textTheme.subtitle1)
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: Text(
+                              S.of(context).total,
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                          ),
+                          Helper.getPrice(
+                              Helper.getTotalOrdersPrice(_con.order), context,
+                              style: Theme.of(context).textTheme.headline6)
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      if (_con.order.orderStatus.id != '5')
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 10,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  border: Border.all(
+                                      color: Theme.of(context).accentColor,
+                                      style: BorderStyle.solid,
+                                      width: 3.80),
+                                ),
+                                child: DropdownButton<String>(
+                                  isDense: true,
+                                  isExpanded: true,
+                                  icon: Icon(
+                                    Icons.arrow_drop_down,
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                  iconSize: 40,
+                                  elevation: 16,
+                                  style: Theme.of(context).textTheme.headline6.apply(
+                                      color: Theme.of(context).accentColor),
+                                  onChanged: (String changedValue) {
+                                  },
+                                  value: orderStatuses.elementAt(dropDownValue),
+                                  items: orderStatuses.map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(value, textAlign: TextAlign.center),
+                                        );
+                                      }).toList(),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                                flex: 1,
+                                child: SizedBox()
+                            ),
+                            Expanded(
+                                flex: 4,
+                                child: FlatButton(
+                                  disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
+                                  onPressed: _con.allow_updating
+                                    ? () => showDialog(
+                                      context: context,
+                                      builder: (context) => updateOrderDialog())
+                                    : null,
+                                  padding: EdgeInsets.symmetric(vertical: 14),
+                                  color: Theme.of(context).accentColor,
+                                  shape: StadiumBorder(),
+                                  child: Text(
+                                    S.of(context).update,
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                )
+                            )
+                          ]),
+                      SizedBox(height: _con.order.orderStatus.id == '5' ? 0 : 10),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          );
   }
 
 

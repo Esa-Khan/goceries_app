@@ -87,7 +87,7 @@ Future<bool> resetPassword(User user) async {
 Future<void> logout() async {
   final String url = '${GlobalConfiguration().getString('api_base_url')}logout?api_token=${currentUser.value.apiToken}';
   final client = new http.Client();
-  final response = await client.get(url);
+  final response = client.get(url);
   currentUser.value = new User();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.remove('current_user');
@@ -148,7 +148,9 @@ Future<User> update(User user) async {
     body: json.encode(user.toMap()),
   );
   setCurrentUser(response.body);
+  bool old_isDriver = currentUser.value.isDriver;
   currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+  currentUser.value.isDriver = old_isDriver;
   return currentUser.value;
 }
 

@@ -46,7 +46,6 @@ Future<int> getCartCount() async {
 }
 
 
-
 Future<Cart> addCart(Cart cart) async {
   User _user = userRepo.currentUser.value;
   if (_user.apiToken == null) {
@@ -99,3 +98,19 @@ Future<bool> removeCart(Cart cart) async {
   );
   return Helper.getBoolData(json.decode(response.body));
 }
+
+
+Future<int> clearCart() async {
+  User _user = userRepo.currentUser.value;
+  if (_user.apiToken == null) {
+    return null;
+  }
+  final String url = '${GlobalConfiguration().getString('api_base_url')}carts/clearcart/${_user.id}?api_token=${_user.apiToken}';
+  final client = new http.Client();
+  final response = await client.delete(
+    url,
+    headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+  );
+  return Helper.getIntData(json.decode(response.body));
+}
+

@@ -152,28 +152,41 @@ class SGHomeController extends ControllerMVC {
         }
         setState(() => loadCart = false);
         loader.remove();
-      }).catchError((e) {
-        print(e);
-        loader.remove();
-        print(e.toString());
+      }).catchError((e) async {
         if (e.toString() == 'Exception: Different Store') {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              // return object of type Dialog
-              return AddToCartAlertDialogWidget(
-                  oldFood: carts.elementAt(0)?.food,
-                  newFood: item,
-                  onPressed: (item, {reset: true}) {
-                    carts.clear();
-                    return addToCart(item);
-                  });
-            },
-          );
+          carts = <Cart>[];
+          final Stream<Cart> stream = await getCart();
+          stream.listen((Cart _cart) {
+            setState(() => carts.add(_cart));
+          }, onDone: () {
+            print("carts loaded");
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                // return object of type Dialog
+                try {
+                  loader.remove();
+                  return AddToCartAlertDialogWidget(
+                      oldFood: carts.elementAt(0)?.food,
+                      newFood: item,
+                      onPressed: (item, {reset: true}) async {
+                        await clearCart();
+                        setState(() => cart_count.value = 0);
+                        carts.clear();
+                        return addToCart(item);
+                      });
+                } catch (e) {
+                  loader.remove();
+                  return const SizedBox();
+                }
+              },
+            );
+          });
         }
       });
     }
   }
+
 
 
 }
