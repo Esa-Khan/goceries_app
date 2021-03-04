@@ -1,7 +1,8 @@
+import 'package:global_configuration/global_configuration.dart';
 import 'package:saudaghar/src/models/address.dart';
-import 'package:saudaghar/src/models/review.dart';
 import 'package:saudaghar/src/repository/food_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/category.dart';
 import '../models/item.dart';

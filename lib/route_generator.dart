@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/models/category.dart';
+import 'package:saudaghar/src/pages/items_list.dart';
 import 'src/driver/pages/pages.dart';
 import 'src/driver/pages/notifications.dart';
 import 'src/repository/user_repository.dart';
@@ -76,6 +78,8 @@ class RouteGenerator {
           return MaterialPageRoute(builder: (_) => ForgetPasswordWidget());
         case '/Pages':
           return MaterialPageRoute(builder: (_) => PagesWidget(currentTab: args, subTab: subTab));
+        case '/ItemList':
+          return MaterialPageRoute(builder: (_) => ItemsListWidget(subAisle: (args as RouteArgument).param, store: (args as RouteArgument).param2));
         case '/Details':
           return MaterialPageRoute(builder: (_) => DetailsWidget(routeArgument: args as RouteArgument));
         case '/Menu':

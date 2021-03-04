@@ -2,10 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:saudaghar/src/models/item.dart';
+import '../models/item.dart';
 import '../../src/elements/SimilarItemListWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'dart:async';
 
 import '../../generated/l10n.dart';
 import '../controllers/food_controller.dart';
@@ -33,6 +32,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
   TextEditingController name_controller;
   TextEditingController wgt_controller;
   TextEditingController qty_controller;
+  TextEditingController price_controller;
 
   _FoodWidgetState() : super(FoodController()) {
     _con = controller;
@@ -47,12 +47,14 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     name_controller = TextEditingController();
     wgt_controller = TextEditingController();
     qty_controller = TextEditingController();
+    price_controller = TextEditingController();
   }
 
   void dispose() {
     name_controller.dispose();
     wgt_controller.dispose();
     qty_controller.dispose();
+    price_controller.dispose();
     super.dispose();
   }
 
@@ -86,7 +88,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                               tag: widget.routeArgument.heroTag ?? '' + _con.item.id,
                               child: CachedNetworkImage(
                                 fit: BoxFit.contain,
-                                imageUrl: _con.item.image.url,
+                                imageUrl: _con.item.image_url,
                                 placeholder: (context, url) => Image.asset(
                                   'assets/img/loading.gif',
                                   fit: BoxFit.contain,
@@ -223,6 +225,8 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                     ),
                                   ],
                                 ),
+
+
                                 if (currentUser.value.isManager)
                                   InkWell(
                                     child: RaisedButton(
@@ -294,7 +298,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                   ),
                                 ),
 
-                                _con.loaded_similaritems
+                                _con.similarItems.isNotEmpty
                                   ? ListTile(
                                       dense: true,
                                       contentPadding: EdgeInsets.symmetric(vertical: 0),
@@ -307,16 +311,17 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                         style: Theme.of(context).textTheme.headline3,
                                       ),
                                     )
-                                  : Column(
+                                  : _con.loaded_similaritems
+                                    ? const SizedBox()
+                                    : Column(
                                         children: <Widget>[
                                           Center(
-                                              heightFactor: 2,
-                                              child: SizedBox(
-                                                  width: 60,
-                                                  height: 60,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          strokeWidth: 5))),
+                                            heightFactor: 2,
+                                            child: SizedBox(
+                                                width: 60,
+                                                height: 60,
+                                                child: CircularProgressIndicator(strokeWidth: 5))
+                                          ),
                                           SizedBox(height: 300)
                                         ],
                                       ),
@@ -476,7 +481,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                                       width: MediaQuery.of(context).size.width - 110,
                                       height: 60,
                                       child: FlatButton(
-                                        onPressed: _con.item.quantity > 0 ? () => addToCart() : null,
+                                        onPressed: _con.item.quantity > 0  && !_con.loadCart ? () => addToCart() : null,
                                         disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
                                         padding: EdgeInsets.symmetric(vertical: 14),
                                         color: Theme.of(context).accentColor,
@@ -524,6 +529,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
     name_controller.text = _con.item.name;
     wgt_controller.text = _con.item.weight;
     qty_controller.text = _con.item.quantity.toString();
+    price_controller.text = _con.item.price.toString();
     bool submit_visible = false;
     bool loading_submit = false;
 
@@ -593,96 +599,157 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                       }
                   ),
                 ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                if (int.tryParse(qty_controller.text) > 0) {
-                                  qty_controller.text = (int.tryParse(qty_controller.text) - 1).toString();
-                                  setState(() => qty_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true);
-                                }
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          if (int.tryParse(qty_controller.text) > 0) {
+                            qty_controller.text = (int.tryParse(qty_controller.text) - 1).toString();
+                            setState(() => qty_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true);
+                          }
 
-                              },
-                              iconSize: 30,
-                              icon: Icon(Icons.remove_circle_outline),
-                              color: Theme.of(context).hintColor,
-                            ),
-                            Expanded(
-                                child: Container(
-                                    height: 30.0,
-                                    child: TextField(
-                                      controller: qty_controller,
-                                      maxLength: 4,
-                                      maxLengthEnforced: true,
-                                      keyboardType: TextInputType.number,
-                                      autocorrect: false,
-                                      textAlign: TextAlign.center,
-                                      textAlignVertical: TextAlignVertical.center,
-                                      style: Theme.of(context).textTheme.headline4,
-                                      decoration: new InputDecoration(
-                                        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                                        focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                                        counterText: "",
-                                        prefixText: 'Quantity : ',
-                                        prefixStyle: Theme.of(context).textTheme.headline4,
-                                      ),
-                                      onChanged: (String val) => setState(() => qty_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true),
-                                    )
-                                )
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                if (int.tryParse(qty_controller.text) < 9999) {
-                                  qty_controller.text = (int.tryParse(qty_controller.text) + 1).toString();
-                                  setState(() => qty_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true);
-                                }
-                              },
-                              iconSize: 30,
-                              padding: EdgeInsets.symmetric(horizontal: 5),
-                              icon: Icon(Icons.add_circle_outline),
-                              color: Theme.of(context).hintColor,
-                            ),
-                          ],
-                        ),
+                        },
+                        iconSize: 30,
+                        icon: Icon(Icons.remove_circle_outline),
+                        color: Theme.of(context).hintColor,
                       ),
-
-                      Visibility(
-                        visible: submit_visible,
-                        maintainState: true,
-                        maintainAnimation: true,
-                        maintainSize: true,
-                        child: Center(
+                      Expanded(
                           child: Container(
-                            padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            child: loading_submit
-                                ? Center(child: SizedBox(width: 40, height: 40, child: CircularProgressIndicator(strokeWidth: 4)))
-                                : RaisedButton(
-                                    elevation: 14.0,
-                                    color: Theme.of(context).primaryColor,
-                                    onPressed: () async {
-                                      new_food.quantity = qty_controller.toString().trim() == '' ? 0 : int.tryParse(qty_controller.text);
-                                      new_food.name = name_controller.text;
-                                      setState(() => loading_submit = true);
-                                      await _con.updateItem(new_food);
-                                      Navigator.pop(context);
-                                    },
-                                    child: Container(
-                                        alignment: Alignment.center,
-                                        height: 40.0,
-                                        width: 140.0,
-                                        child: Text(
-                                          "Submit Changes",
-                                          style: TextStyle(color: Theme.of(context).accentColor),
-                                        )
-                                    ),
-                            ),
-                          ),
+                              height: 30.0,
+                              child: TextField(
+                                controller: qty_controller,
+                                maxLength: 4,
+                                maxLengthEnforced: true,
+                                keyboardType: TextInputType.number,
+                                autocorrect: false,
+                                textAlign: TextAlign.center,
+                                textAlignVertical: TextAlignVertical.center,
+                                style: Theme.of(context).textTheme.headline4,
+                                decoration: new InputDecoration(
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                                  counterText: "",
+                                  prefixText: 'Quantity : ',
+                                  prefixStyle: Theme.of(context).textTheme.headline4,
+                                ),
+                                onChanged: (String val) => setState(() => qty_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true),
+                              )
+                          )
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          if (int.tryParse(qty_controller.text) < 9999) {
+                            qty_controller.text = (int.tryParse(qty_controller.text) + 1).toString();
+                            setState(() => qty_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true);
+                          }
+                        },
+                        iconSize: 30,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        icon: Icon(Icons.add_circle_outline),
+                        color: Theme.of(context).hintColor,
+                      ),
+                    ],
+                  ),
+                ),
 
-                        )
-                      )
+
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          if (double.tryParse(price_controller.text) > 0) {
+                            price_controller.text = (double.tryParse(price_controller.text) - 1).toString();
+                            setState(() => price_controller.text == _con.item.price.toString() ? submit_visible = false : submit_visible = true);
+                          }
+
+                        },
+                        iconSize: 30,
+                        icon: Icon(Icons.remove_circle_outline),
+                        color: Theme.of(context).hintColor,
+                      ),
+                      Expanded(
+                          child: Container(
+                              height: 30.0,
+                              child: TextField(
+                                controller: price_controller,
+                                maxLength: 8,
+                                maxLengthEnforced: true,
+                                keyboardType: TextInputType.number,
+                                autocorrect: false,
+                                textAlign: TextAlign.center,
+                                textAlignVertical: TextAlignVertical.center,
+                                style: Theme.of(context).textTheme.headline4,
+                                decoration: new InputDecoration(
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                                  counterText: "",
+                                  prefixText: 'Price : ',
+                                  prefixStyle: Theme.of(context).textTheme.headline4,
+                                ),
+                                onChanged: (String val) => setState(() => price_controller.text == _con.item.price.toString() ? submit_visible = false : submit_visible = true),
+                              )
+                          )
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          if (double.tryParse(price_controller.text) < 999999) {
+                            price_controller.text = (double.tryParse(price_controller.text) + 1).toString();
+                            setState(() => price_controller.text == _con.item.quantity.toString() ? submit_visible = false : submit_visible = true);
+                          }
+                        },
+                        iconSize: 30,
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        icon: Icon(Icons.add_circle_outline),
+                        color: Theme.of(context).hintColor,
+                      ),
+                    ],
+                  ),
+                ),
+
+
+                Visibility(
+                  visible: submit_visible,
+                  maintainState: true,
+                  maintainAnimation: true,
+                  maintainSize: true,
+                  child: Center(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: loading_submit
+                          ? Center(child: SizedBox(width: 40, height: 40, child: CircularProgressIndicator(strokeWidth: 4)))
+                          : RaisedButton(
+                              elevation: 14.0,
+                              color: Theme.of(context).primaryColor,
+                              onPressed: () async {
+                                new_food.name = name_controller.text;
+                                new_food.weight = wgt_controller.text;
+                                new_food.price = double.tryParse(price_controller.text);
+                                new_food.discountPrice = double.tryParse(price_controller.text);
+                                new_food.quantity = qty_controller.toString().trim() == '' ? 0 : int.tryParse(qty_controller.text);
+                                setState(() => loading_submit = true);
+                                await _con.updateItem(new_food);
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                  alignment: Alignment.center,
+                                  height: 40.0,
+                                  width: 140.0,
+                                  child: Text(
+                                    "Submit Changes",
+                                    style: TextStyle(color: Theme.of(context).accentColor),
+                                  )
+                              ),
+                      ),
+                    ),
+
+                  )
+                )
 
               ]
             )
@@ -706,6 +773,7 @@ class _FoodWidgetState extends StateMVC<FoodWidget> {
                 oldFood: _con.carts.elementAt(0)?.food,
                 newFood: _con.item,
                 onPressed: (item, {reset: true}) {
+                  _con.carts.clear();
                   return _con.addToCart(_con.item, reset: true);
                 });
           },

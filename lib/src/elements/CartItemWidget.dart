@@ -54,7 +54,7 @@ class _CartItemWidgetState extends State<CartItemWidget> {
                   height: 90,
                   width: 90,
                   fit: BoxFit.cover,
-                  imageUrl: widget.cart.food.image.thumb,
+                  imageUrl: widget.cart.food.image_url,
                   placeholder: (context, url) => Image.asset(
                     'assets/img/loading.gif',
                     fit: BoxFit.cover,

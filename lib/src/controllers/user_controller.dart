@@ -230,7 +230,6 @@ class UserController extends ControllerMVC {
       }
     }).catchError((e) {
       print("-------------Login Failed-------------\n" + e.toString());
-      loading = false;
       switch (e.message) {
         case 'No account with this email':
           repository.register(this.user).then((value) {
@@ -282,11 +281,7 @@ class UserController extends ControllerMVC {
       Overlay.of(context).insert(loader);
       repository.register(user).then((value) {
         if (value != null && value.apiToken != null) {
-          if (value.isDriver) {
-            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
-          } else {
-            Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 2);
-          }
+          Navigator.of(scaffoldKey.currentContext).pushReplacementNamed('/Pages', arguments: 1);
         } else {
           scaffoldKey?.currentState?.showSnackBar(SnackBar(
             content: Text(S.of(context).wrong_email_or_password),

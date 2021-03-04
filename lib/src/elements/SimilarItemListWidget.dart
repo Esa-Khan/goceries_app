@@ -84,7 +84,7 @@ class SimilarItemListWidget extends StatelessWidget {
                       food.weight == '0' || food.weight == '' ? SizedBox(height: 0)
                           : Container(
                           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                          decoration: BoxDecoration(color: Theme.of(context).accentColor, borderRadius: BorderRadius.circular(24)),
+                          decoration: BoxDecoration(color: Colors.orangeAccent, borderRadius: BorderRadius.circular(24)),
                           child: Text(
                             food.weight + " " + food.unit,
                             style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor, fontSize: 10)),

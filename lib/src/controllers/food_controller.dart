@@ -22,7 +22,6 @@ class FoodController extends ControllerMVC {
   List<Cart> carts = [];
   Favorite favorite;
   bool loadCart = false;
-  bool showMessage = true;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   FoodController() {
@@ -35,18 +34,18 @@ class FoodController extends ControllerMVC {
     stream.listen((Item _food) async {
       setState(() => item = _food);
 
-      if (_food.ingredients != "<p>.</p>") {
-        var otherItems = _food.ingredients.split('-');
-        otherItems.remove(_food.id);
-        otherItems.forEach((element) async {
-          final Stream<Item> currStream = await getFood(element);
-          currStream.listen((Item _food) {
-            setState(() => similarItems.add(_food));
-          }, onDone: () {
-            setState(() => loaded_similaritems = true);
-          });
-        });
-      }
+      // if (_food.ingredients != "<p>.</p>") {
+      //   var otherItems = _food.ingredients.split('-');
+      //   otherItems.remove(_food.id);
+      //   otherItems.forEach((element) async {
+      //     final Stream<Item> currStream = await getFood(element);
+      //     currStream.listen((Item _food) {
+      //       setState(() => similarItems.add(_food));
+      //     }, onDone: () {
+      //       setState(() => loaded_similaritems = true);
+      //     });
+      //   });
+      // }
 
       if (getAisle) {
         listenForCategory(item.category);
@@ -98,19 +97,20 @@ class FoodController extends ControllerMVC {
     return true;
   }
 
+  bool showAddtocartSnack = false;
   void addToCart(Item item, {bool reset = false}) async {
     if (this.loadCart) {
-      if (showMessage) {
-        showMessage = false;
+      if (showAddtocartSnack) {
+        showAddtocartSnack = false;
         scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S
-              .of(context)
-              .adding_food_to_cart_please_wait),
+          content: Text(S.of(context).adding_food_to_cart_please_wait),
           duration: Duration(seconds: 1),
         ));
+        Future.delayed(Duration(seconds: 3)).whenComplete(() {
+          showAddtocartSnack = true;
+        });
       }
     } else {
-      showMessage = true;
       setState(() => this.loadCart = true);
       var _newCart = new Cart();
       _newCart.food = item;
@@ -120,31 +120,35 @@ class FoodController extends ControllerMVC {
       var _oldCart = isExistInCart(_newCart);
       if (_oldCart != null) {
         _oldCart.quantity += this.quantity;
-        updateCart(_oldCart).whenComplete(() {
-          setState(() {
-            this.loadCart = false;
-          });
-          scaffoldKey?.currentState?.showSnackBar(SnackBar(
-            content: Text(S.of(context).item_was_added_to_cart),
-            duration: Duration(milliseconds: 500),
-          ));
-        });
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text("Item already in cart. Adding ${_newCart.quantity.ceil()} more.", textAlign: TextAlign.center,),
+          duration: Duration(seconds: 2),
+        ));
+        updateCart(_oldCart).whenComplete(() => setState(() => loadCart = false));
       } else {
         // The item doesn't exist in the cart add new one
-        addCart(_newCart, reset).whenComplete(() {
-          setState(() {
-            this.loadCart = false;
-          });
-          scaffoldKey?.currentState?.showSnackBar(SnackBar(
-            content: Text(S.of(context).item_was_added_to_cart),
-          ));
+        addCart(_newCart, reset).then((_cart) {
+          carts.add(_cart);
+          setState(() => this.loadCart = false);
+          // scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          //   content: Text(S.of(context).item_was_added_to_cart, textAlign: TextAlign.center,),
+          //   duration: Duration(milliseconds: 500),
+          // ));
         });
       }
     }
   }
 
   Cart isExistInCart(Cart _cart) {
-    return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart), orElse: () => null);
+    for (int i = 0; i < carts.length; i++) {
+      Cart current_cart = carts.elementAt(i);
+      if (current_cart.food.id == _cart.food.id) {
+        return current_cart;
+      }
+    }
+    return null;
+
+    // return carts.firstWhere((Cart oldCart) => _cart.isSame(oldCart), orElse: () => null);
   }
 
   void addToFavorite(Item item) async {

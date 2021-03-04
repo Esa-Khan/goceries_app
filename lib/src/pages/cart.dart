@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/repository/cart_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/cart_controller.dart';
@@ -40,17 +41,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           leading: IconButton(
-            onPressed: () {
-              if (widget.routeArgument.param == '/Item') {
-                Navigator.of(context).pushReplacementNamed('/Item', arguments: RouteArgument(id: widget.routeArgument.id));
-              } else if(widget.routeArgument.param == '/Details') {
-                Navigator.pop(context);
-              } else if(widget.routeArgument.param == '/StoreSelect') {
-                Navigator.of(context).pushReplacementNamed('/StoreSelect');
-              } else {
-                Navigator.of(context).pushNamed('/Pages', arguments: 2);
-              }
-            },
+            onPressed: () => Navigator.pop(context),
             icon: Icon(Icons.arrow_back),
           ),
           centerTitle: true,
@@ -62,7 +53,7 @@ class _CartWidgetState extends StateMVC<CartWidget> {
 
         body: RefreshIndicator(
           onRefresh: _con.refreshCarts,
-          child: _con.carts.isEmpty
+          child: _con.carts == null || _con.carts.isEmpty
               ? EmptyCartWidget()
               : Container(
                   child: ListView(

@@ -51,7 +51,7 @@ class _CartBottomDetailsWidget extends State<CartBottomDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.con.carts.isEmpty
+    return widget.con.carts == null || widget.con.carts.isEmpty
         ? SizedBox(height: 0)
         : Container(
             height: 180,

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/pages/items_list.dart';
 import '../models/restaurant.dart';
 import '../models/route_argument.dart';
 import '../controllers/sghome_controller.dart';
@@ -59,7 +60,8 @@ class _AislesItemWidgetState extends StateMVC<AislesItemWidget> {
                     colorFilter: new ColorFilter.mode(Colors.white.withOpacity(aisle_img_opacity), BlendMode.dstIn),
                     onError: (dynamic, StackTrace) {
                       print("Error Loading Image: ${widget.aisle.aisleImage}");
-                      widget.aisle.aisleImage = '${GlobalConfiguration().getString('base_url')}storage/app/public/aisles/misc.jpg';
+                      setState(() => widget.aisle.aisleImage = '${GlobalConfiguration().getString('base_url')}storage/app/public/aisles/misc.jpg');
+                      // setState(() => widget.aisle.aisleImage);
                       // widget.aisle.aisleImage = 'assets/img/loading.gif';
                     },
                   ),
@@ -203,7 +205,7 @@ class _AislesItemWidgetState extends StateMVC<AislesItemWidget> {
                               maxLines: 1,
                               textScaleFactor: 1.3,
                             ),
-                            onTap: () => Navigator.of(context).pushNamed('/Pages', arguments: RouteArgument(id: '1', heroTag: 'item_list', param: currSubAisle, param2: widget.store)),
+                            onTap: () => Navigator.of(context).push(_createRoute(currSubAisle)),
                           ),
                       )
                   )
@@ -211,6 +213,26 @@ class _AislesItemWidgetState extends StateMVC<AislesItemWidget> {
             )
           )
         ]);
+  }
+
+  Route _createRoute(category.Category subCategory) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => ItemsListWidget(store: widget.store, subAisle: subCategory),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(1.0, 0.0);
+        var end = Offset.zero;
+        var curve = Curves.easeIn;
+        var tween = Tween(begin: begin, end: end);
+        var curvedAnimation = CurvedAnimation(
+          parent: animation,
+          curve: curve,
+        );
+        return SlideTransition(
+          position: tween.animate(curvedAnimation),
+          child: child,
+        );
+      },
+    );
   }
 
 

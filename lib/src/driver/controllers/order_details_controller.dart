@@ -56,9 +56,6 @@ class OrderDetailsController extends ControllerMVC {
       _order.driver_id = int.parse(currentUser.value.id);
     }
     await deliveredOrder(_order).then((value) {
-//      setState(() {
-//        print(value);
-//      });
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text('Order Status Updated'),
       ));

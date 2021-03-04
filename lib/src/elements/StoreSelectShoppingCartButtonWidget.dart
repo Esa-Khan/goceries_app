@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/repository/cart_repository.dart';
 
 import '../controllers/cart_controller.dart';
 import '../models/route_argument.dart';
@@ -31,7 +32,7 @@ class _StoreSelectShoppingCartButtonWidgetState extends StateMVC<StoreSelectShop
 
   @override
   Widget build(BuildContext context) {
-    return _con.cartCount == 0
+    return cart_count.value == 0
       ? IconButton(
           padding: EdgeInsets.fromLTRB(0, 0, 20, 0),
           icon: currentUser.value.id == null
@@ -61,7 +62,7 @@ class _StoreSelectShoppingCartButtonWidgetState extends StateMVC<StoreSelectShop
           ),
           Container(
             child: Text(
-              _con.cartCount.toString(),
+              cart_count.value.toString(),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.merge(
                     TextStyle(color: Theme.of(context).primaryColor, fontSize: 9),

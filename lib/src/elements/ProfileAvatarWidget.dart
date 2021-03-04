@@ -77,10 +77,14 @@ class ProfileAvatarWidget extends StatelessWidget {
             user.name,
             style: Theme.of(context).textTheme.headline5.merge(TextStyle(color: Theme.of(context).primaryColor)),
           ),
-          Text(
-            deliveryAddress.value.address != null ? deliveryAddress.value.address : "No Valid Address",
-            style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
-          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 30),
+            child: Text(
+              deliveryAddress.value.address != null ? deliveryAddress.value.address : "No Valid Address",
+              style: Theme.of(context).textTheme.caption.merge(TextStyle(color: Theme.of(context).primaryColor)),
+              textAlign: TextAlign.center,
+            ),
+          )
         ],
       ),
     );

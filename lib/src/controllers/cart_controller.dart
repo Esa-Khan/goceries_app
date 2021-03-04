@@ -12,11 +12,10 @@ import '../repository/cart_repository.dart';
 import '../repository/settings_repository.dart' as settingsRepo;
 
 class CartController extends ControllerMVC {
-  List<Cart> carts = <Cart>[];
   Restaurant store;
+  List<Cart> carts = <Cart>[];
   double taxAmount = 0.0;
   double deliveryFee = 0.0;
-  int cartCount = 0;
   String promotion = '';
   double subTotal = 0.0;
   double total = 0.0;
@@ -30,6 +29,7 @@ class CartController extends ControllerMVC {
 
   void listenForCarts({String message}) async {
     setState(() => item_unavail = false);
+    carts = <Cart>[];
     final Stream<Cart> stream = await getCart();
     stream.listen((Cart _cart) {
         setState(() => carts.add(_cart));
@@ -56,7 +56,8 @@ class CartController extends ControllerMVC {
     final Stream<int> stream = await getCartCount();
     stream.listen((int _count) {
       setState(() {
-        this.cartCount = _count;
+        cart_count.value = _count;
+        cart_count.notifyListeners();
         cartcount_isLoaded = true;
       });
     }, onError: (a) {
@@ -74,10 +75,9 @@ class CartController extends ControllerMVC {
   }
 
   void removeFromCart(Cart _cart) async {
-    setState(() {
-      this.carts.remove(_cart);
-    });
+    setState(() => carts.remove(_cart));
     removeCart(_cart).then((value) {
+      cart_count.value--;
       calculateSubtotal();
       scaffoldKey?.currentState?.showSnackBar(SnackBar(
         content: Text(S.of(context).the_food_was_removed_from_your_cart(_cart.food.name)),
@@ -94,24 +94,26 @@ class CartController extends ControllerMVC {
         subTotal += element.price;
       });
     });
-    if (Helper.canDelivery(carts[0].food.restaurant, carts: carts)) {
-      deliveryFee = carts[0].food.restaurant.deliveryFee;
-    }
-    taxAmount = (subTotal + deliveryFee) * carts[0].food.restaurant.defaultTax / 100;
-    if (subTotal < settingsRepo.setting.value.deliveryFeeLimit) {
-      total = subTotal + deliveryFee;
-      notifyFreeDelivery = true;
-    } else {
-      if (notifyFreeDelivery){
-        scaffoldKey?.currentState?.showSnackBar(SnackBar(
-          content: Text(S.of(context).eligible_for_free_delivery),
-          duration: Duration(seconds: 2),
-        ));
+    if (carts.isNotEmpty) {
+      if (Helper.canDelivery(carts[0].food.restaurant, carts: carts)) {
+        deliveryFee = carts[0].food.restaurant.deliveryFee;
       }
-      notifyFreeDelivery = false;
-      promotion == ""
-        ? total = subTotal
-        : total = subTotal - settingsRepo.setting.value.promo[promotion];
+      taxAmount = (subTotal + deliveryFee) * carts[0].food.restaurant.defaultTax / 100;
+      if (subTotal < settingsRepo.setting.value.deliveryFeeLimit) {
+        total = subTotal + deliveryFee;
+        notifyFreeDelivery = true;
+      } else {
+        if (notifyFreeDelivery){
+          scaffoldKey?.currentState?.showSnackBar(SnackBar(
+            content: Text(S.of(context).eligible_for_free_delivery),
+            duration: Duration(seconds: 2),
+          ));
+        }
+        notifyFreeDelivery = false;
+        promotion == ""
+            ? total = subTotal
+            : total = subTotal - settingsRepo.setting.value.promo[promotion];
+      }
     }
     setState(() {});
   }

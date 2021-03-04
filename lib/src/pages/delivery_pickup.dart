@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saudaghar/src/repository/cart_repository.dart';
 import '../elements/LoadingDeliveryAddressWidget.dart';
 import '../elements/EmptyDeliveryAddressWidget.dart';
 import '../elements/DeliveryBottomDetailsWidget.dart';
@@ -42,7 +43,7 @@ class _DeliveryPickupWidgetState extends StateMVC<DeliveryPickupWidget> {
   @override
   Widget build(BuildContext context) {
     _con.carts = widget.routeArgument.param.carts;
-    _con.store = _con.carts.first.store;
+    _con.store = widget.routeArgument.param.store;
     _con.calculateSubtotal();
     if (_con.list == null) {
       _con.list = new PaymentMethodList(context);
