@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/repository/settings_repository.dart';
 
 import '../../generated/l10n.dart';
 import '../helpers/custom_trace.dart';
@@ -44,10 +46,16 @@ class SplashScreenController extends ControllerMVC {
     //   progress.value["User"] = 59;
     //   progress?.notifyListeners();
     // }
-    Timer(Duration(seconds: 20), () {
-      scaffoldKey?.currentState?.showSnackBar(SnackBar(
-        content: Text(S.of(context).verify_your_internet_connection),
-      ));
+    Timer(Duration(seconds: 10), () async {
+      if (progress.value["User"] != 59 || progress.value["Setting"] != 41) {
+        await DefaultCacheManager().emptyCache();
+        userRepo.logout();
+        store_type.value = 0;
+        Navigator.of(context).pushReplacementNamed('/Splash');
+        scaffoldKey?.currentState?.showSnackBar(SnackBar(
+          content: Text("${progress.value["User"] != 59 ? 'User Error: ': 'Config Error: '}Something unexpected happen, Reloading..."),
+        ));
+      }
     });
   }
 

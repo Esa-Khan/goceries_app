@@ -161,18 +161,18 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   ),
                 ),
                 setting.value.enableVersion
-                    ? ListTile(
-                        dense: true,
-                        title: Text(
-                          S.of(context).version + " " + setting.value.appVersion,
-                          style: Theme.of(context).textTheme.bodyText2,
-                        ),
-                        trailing: Icon(
-                          Icons.remove,
-                          color: Theme.of(context).focusColor.withOpacity(0.3),
-                        ),
-                      )
-                    : SizedBox(),
+                  ? ListTile(
+                      dense: true,
+                      title: Text(
+                        S.of(context).version + " " + version.value,
+                        style: Theme.of(context).textTheme.bodyText2,
+                      ),
+                      trailing: Icon(
+                        Icons.remove,
+                        color: Theme.of(context).focusColor.withOpacity(0.3),
+                      ),
+                    )
+                  : const SizedBox(),
               ],
             ),
     );

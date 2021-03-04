@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:saudaghar/src/elements/AddToCartAlertDialog.dart';
+import '../elements/AddToCartAlertDialog.dart';
 import 'package:saudaghar/src/repository/user_repository.dart';
 import '../../src/models/category.dart';
 import '../../src/repository/category_repository.dart';

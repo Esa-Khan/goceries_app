@@ -16,7 +16,6 @@ class CardWidget extends StatelessWidget {
   CardWidget({Key key, this.restaurant, this.heroTag}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Container(
       // width: compact_view_vertical ? 250 : 292,
       width: 292,

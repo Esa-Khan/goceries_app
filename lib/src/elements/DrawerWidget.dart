@@ -5,7 +5,7 @@ import 'package:saudaghar/src/helpers/size_config.dart';
 
 import '../../generated/l10n.dart';
 import '../controllers/profile_controller.dart';
-import '../repository/settings_repository.dart' as settingsRepo;
+import '../repository/settings_repository.dart';
 import '../repository/user_repository.dart';
 
 class DrawerWidget extends StatefulWidget {
@@ -21,7 +21,6 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
     return Drawer(
       child: ListView(
         children: <Widget>[
@@ -110,7 +109,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ),
           ListTile(
             onTap: () {
-              settingsRepo.store_type.value = 0;
+              store_type.value = 0;
               Navigator.of(context).pushNamedAndRemoveUntil('/Pages', (Route<dynamic> route) => false, arguments: 1);
               // Navigator.of(context).pushNamed('/Pages', arguments: 2);
             },
@@ -221,13 +220,13 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
           ListTile(
             onTap: () {
               if (Theme.of(context).brightness == Brightness.dark) {
-                settingsRepo.setBrightness(Brightness.light);
-                settingsRepo.setting.value.brightness.value = Brightness.light;
+                setBrightness(Brightness.light);
+                setting.value.brightness.value = Brightness.light;
               } else {
-                settingsRepo.setting.value.brightness.value = Brightness.dark;
-                settingsRepo.setBrightness(Brightness.dark);
+                setting.value.brightness.value = Brightness.dark;
+                setBrightness(Brightness.dark);
               }
-              settingsRepo.setting.notifyListeners();
+              setting.notifyListeners();
             },
             leading: Icon(
               Icons.brightness_6,
@@ -273,11 +272,11 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                   ),
                 )
               : SizedBox(height: 0),
-          settingsRepo.setting.value.enableVersion
+          setting.value.enableVersion
               ? ListTile(
                   dense: true,
                   title: Text(
-                    S.of(context).version + " " + settingsRepo.setting.value.appVersion,
+                    S.of(context).version + " " + version.value,
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   trailing: Icon(

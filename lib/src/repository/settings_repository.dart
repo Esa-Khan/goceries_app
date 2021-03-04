@@ -9,6 +9,7 @@ import 'package:global_configuration/global_configuration.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:location/location.dart';
+import 'package:saudaghar/src/helpers/size_config.dart';
 import 'user_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,8 +17,14 @@ import '../helpers/custom_trace.dart';
 import '../helpers/maps_util.dart';
 import '../models/address.dart';
 import '../models/setting.dart';
-
+import 'package:package_info/package_info.dart';
 ValueNotifier<Setting> setting = new ValueNotifier(new Setting());
+ValueNotifier<String> appName = new ValueNotifier('');
+ValueNotifier<String> packageName = new ValueNotifier('');
+ValueNotifier<String> version = new ValueNotifier('');
+ValueNotifier<String> buildNumber = new ValueNotifier('');
+
+
 ValueNotifier<Address> myAddress = new ValueNotifier(new Address());
 ValueNotifier<bool> isDebug = new ValueNotifier(false);
 ValueNotifier<Address> deliveryAddress = new ValueNotifier(new Address());
@@ -28,6 +35,12 @@ final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<Setting> initSettings() async {
   isDebug.value = GlobalConfiguration().getString('debug') == 'true';
+  PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+    appName.value = packageInfo.appName;
+    packageName.value = packageInfo.packageName;
+    version.value = packageInfo.version;
+    buildNumber.value = packageInfo.buildNumber;
+  });
   Setting _setting;
   final String url = '${GlobalConfiguration().getString('api_base_url')}settings';
   try {
