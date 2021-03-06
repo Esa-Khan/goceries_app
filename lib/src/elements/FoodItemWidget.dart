@@ -121,7 +121,7 @@ class FoodItemWidget extends StatelessWidget {
                   Column(
                     children: <Widget>[
                       FlatButton(
-                        onPressed: food.quantity > 0 ? () => onPressed() : null,
+                        onPressed: food.quantity > 0 && food.price != 0.0 ? () => onPressed() : null,
                         disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
                         padding: EdgeInsets.symmetric(vertical: 5),
                         color: Theme.of(context).accentColor,

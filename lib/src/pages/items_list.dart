@@ -91,7 +91,12 @@ class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
                           : _isSearched && _con.searchedItems.isEmpty
                             ? EmptyItemSearchWidget(search_str: _searchBarController.text)
                             : _con.searchedItems.isNotEmpty
-                              ? SearchResultsWidget()
+                              ? ItemListWidget(
+                                  items: _con.searchedItems,
+                                  onPressed: (Item item) {
+                                    item.restaurant = _con.store;
+                                    _con.addToCart(item);
+                                  })
                               : ItemListWidget(items: _con.items, onPressed: (Item item) {
                                   item.restaurant = _con.store;
                                   _con.addToCart(item);
@@ -158,33 +163,12 @@ class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
     );
   }
 
-  Widget SearchResultsWidget() {
-    return ListView.separated(
-      padding: EdgeInsets.only(bottom: 40),
-      scrollDirection: Axis.vertical,
-      shrinkWrap: true,
-      primary: false,
-      itemCount: _con.searchedItems.length,
-      separatorBuilder: (context, index) {
-        return SizedBox(height: 10);
-      },
-      itemBuilder: (context, index) {
-        if (index == _con.searchedItems.length - 1)
-          _con.isLoading = false;
-        if (_con.searchedItems.isNotEmpty) {
-          return FoodItemWidget(
-            heroTag: 'store_search_list',
-            food: _con.searchedItems.elementAt(index),
-          );
-        } else {
-          return const SizedBox();
-        }
-      },
-    );
-  }
+
 
 
 }
+
+
 
 
 class ItemListWidget extends StatelessWidget {

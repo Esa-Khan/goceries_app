@@ -746,7 +746,7 @@ class BottomNavigator extends StatelessWidget {
                             width: MediaQuery.of(context).size.width - 110,
                             height: 60,
                             child: FlatButton(
-                              onPressed: item.quantity > 0  && !loadCart ? () => addToCart() : null,
+                              onPressed: item.quantity > 0  && !loadCart && item.price != 0.0 ? () => addToCart() : null,
                               disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
                               padding: EdgeInsets.symmetric(vertical: 14),
                               color: Theme.of(context).accentColor,
