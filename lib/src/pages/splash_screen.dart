@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:in_app_update/in_app_update.dart';
-import 'package:saudaghar/src/helpers/size_config.dart';
 import '../../src/repository/settings_repository.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 import 'dart:io' show Platform;
 import '../controllers/splash_screen_controller.dart';
 import '../repository/user_repository.dart' as userRepo;
 import 'package:flutter/material.dart';
-import 'package:upgrader/upgrader.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -27,7 +24,7 @@ class SplashScreenState extends StateMVC<SplashScreen> {
   void initState() {
     super.initState();
     loadData();
-    checkForUpdate();
+    // checkForUpdate();
     userRepo.getCurrentUser();
   }
 
@@ -85,26 +82,4 @@ class SplashScreenState extends StateMVC<SplashScreen> {
 
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> checkForUpdate() async {
-    if (Platform.isIOS){
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          // return object of type Dialog
-          return UpgradeAlert(
-            debugLogging: true,
-            child: Center(child: Text('Checking...')),
-          );
-        },
-      );
-    } else {
-      InAppUpdate.checkForUpdate().then((info) {
-        if (info?.updateAvailable == true) {
-          InAppUpdate.performImmediateUpdate().catchError((e) => print('ERROR: ${e.toString()}'));
-        }
-      }).catchError((e) => print('ERROR: ' + e.toString()));
-    }
-  }
-
-
 }

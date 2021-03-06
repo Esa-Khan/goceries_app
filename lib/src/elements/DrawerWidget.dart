@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
+import 'package:saudaghar/src/elements/PointsWidget.dart';
 import 'package:saudaghar/src/helpers/size_config.dart';
 
 import '../../generated/l10n.dart';
@@ -70,6 +71,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                   ),
           ),
+          PointsWidget(points: currentUser.value.points),
           currentUser.value.id == null || currentUser.value.isDriver == null || currentUser.value.isManager == false
               ? const SizedBox()
               : ListTile(
