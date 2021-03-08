@@ -1,17 +1,17 @@
 import 'dart:async';
-
+import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
-import 'package:saudaghar/src/repository/settings_repository.dart';
-
-import '../../generated/l10n.dart';
+import '../repository/settings_repository.dart';
+import '../repository/user_repository.dart';
 import '../helpers/custom_trace.dart';
 import '../repository/settings_repository.dart' as settingRepo;
 import '../repository/user_repository.dart' as userRepo;
+import 'package:url_launcher/url_launcher.dart';
 
 class SplashScreenController extends ControllerMVC {
   ValueNotifier<Map<String, double>> progress = new ValueNotifier(new Map());
@@ -75,8 +75,8 @@ class SplashScreenController extends ControllerMVC {
   Future notificationOnResume(Map<String, dynamic> message) async {
     print(CustomTrace(StackTrace.current, message: message['data']['id']));
     try {
-      if (message['data']['id'] == "orders") {
-        settingRepo.navigatorKey.currentState.pushReplacementNamed('/Pages', arguments: 3);
+      if (message['data']['id'] == "orders" && currentUser.value.isDriver) {
+        settingRepo.navigatorKey.currentState.pushReplacementNamed('/Pages', arguments: 2);
       }
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
@@ -87,9 +87,9 @@ class SplashScreenController extends ControllerMVC {
     String messageId = await settingRepo.getMessageId();
     try {
       if (messageId != message['google.message_id']) {
-        if (message['data']['id'] == "orders") {
+        if (message['data']['id'] == "orders" && currentUser.value.isDriver) {
           await settingRepo.saveMessageId(message['google.message_id']);
-          settingRepo.navigatorKey.currentState.pushReplacementNamed('/Pages', arguments: 3);
+          settingRepo.navigatorKey.currentState.pushReplacementNamed('/Pages', arguments: 2);
         }
       }
     } catch (e) {
@@ -105,4 +105,17 @@ class SplashScreenController extends ControllerMVC {
       timeInSecForIosWeb: 5,
     );
   }
+
+
+  launchURL() async {
+    String url = Platform.isIOS
+        ? 'https://phobos.apple.com/WebObjects/MZStore.woa/wa/viewSoftwareUpdate?id=id1539918797&mt=8'
+        : 'https://play.google.com/store/apps/details?id=com.ezpz.saudaghar';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
 }

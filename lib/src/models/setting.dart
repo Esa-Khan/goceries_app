@@ -28,6 +28,8 @@ class Setting {
   String phone_number;
   ValueNotifier<Locale> mobileLanguage = new ValueNotifier(Locale('en', ''));
   String appVersion;
+  String app_version_android;
+  String app_version_ios;
   bool enableVersion = true;
   double deliveryFeeLimit;
   Map<String, double> promo;
@@ -51,6 +53,8 @@ class Setting {
       googleMapsKey = jsonMap['google_maps_key'] ?? null;
       mobileLanguage.value = Locale(jsonMap['mobile_language'] ?? "en", '');
       appVersion = jsonMap['app_version'] ?? '';
+      app_version_android = jsonMap['app_version_android'] == null ? '0' : jsonMap['app_version_android'];
+      app_version_ios = jsonMap['app_version_ios'] == null ? '0' : jsonMap['app_version_ios'];
       distanceUnit = jsonMap['distance_unit'] ?? 'km';
       enableVersion = jsonMap['enable_version'] == null || jsonMap['enable_version'] == '0' ? false : true;
       defaultTax = double.tryParse(jsonMap['default_tax']) ?? 0.0; //double.parse(jsonMap['default_tax'].toString());

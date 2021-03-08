@@ -13,7 +13,6 @@ import '../../generated/l10n.dart';
 import '../controllers/delivery_pickup_controller.dart';
 import '../elements/DeliveryAddressDialog.dart';
 import '../elements/DeliveryAddressesItemWidget.dart';
-import '../elements/ShoppingCartButtonWidget.dart';
 import '../helpers/helper.dart';
 import '../helpers/maps_util.dart';
 import '../models/address.dart';

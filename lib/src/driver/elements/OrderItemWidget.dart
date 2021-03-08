@@ -37,17 +37,25 @@ class OrderItemWidget extends StatelessWidget {
                   title: Column(
                     children: <Widget>[
                       Text('${S.of(context).order_id}: #${order.id}'),
-                      Text(
-                        order.deliveryAddress.address,
-                        style: Theme.of(context).textTheme.bodyText1.apply(fontSizeFactor: 0.8),
-                      ),
+                      order.deliveryAddress.address == null
+                          ? Text(
+                              'Address not found',
+                              style: Theme.of(context).textTheme.bodyText1.apply(fontSizeFactor: 0.8, color: Colors.red),
+                            )
+                          : Text(
+                              order.deliveryAddress.address,
+                              style: Theme.of(context).textTheme.bodyText1.apply(fontSizeFactor: 0.8),
+                            ),
+
                       Text(
                         DateFormat('dd/MM/yyyy | HH:mm').format(hero_tag == 'history' ? order.updated_at : order.created_at),
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      if (order.orderStatus.id == '5')
+                      if (order.orderStatus.id == '5' && order.scheduled_time != null && DateTime.tryParse(order.scheduled_time) != null)
                         Text(
-                          'Delivery took ${order.updated_at.difference(order.created_at).inMinutes} minutes',
+                          'Delivery took ${order.scheduled_time == null || order.scheduled_time == 'null'
+                            ? order.updated_at.difference(order.created_at).inMinutes
+                            : order.updated_at.difference(DateTime.tryParse(order.scheduled_time)).inMinutes} minutes',
                           style: Theme.of(context).textTheme.caption.apply(color: Colors.redAccent),
                         ),
                       if (order.hint != null) Text("Check Hint", style: Theme.of(context).textTheme.caption.apply(color: Theme.of(context).accentColor)),

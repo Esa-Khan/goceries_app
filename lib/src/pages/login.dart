@@ -2,9 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import '../elements/FacebookSigninButtonWidget.dart';
-import '../elements/GoogleSigninButtonWidget.dart';
-import '../elements/AppleSigninButtonWidget.dart';
 import 'package:mvc_pattern/mvc_pattern.dart';
 
 import '../../generated/l10n.dart';
@@ -13,7 +10,6 @@ import '../elements/BlockButtonWidget.dart';
 import '../helpers/app_config.dart' as config;
 import '../repository/user_repository.dart' as userRepo;
 import '../repository/settings_repository.dart' as _setting;
-import '../helpers/helper.dart';
 
 class LoginWidget extends StatefulWidget {
   @override

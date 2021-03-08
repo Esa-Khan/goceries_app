@@ -23,19 +23,24 @@ Future<User> login(User user) async {
     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
     body: json.encode(user.toMap()),
   );
-  if (response.statusCode == 200) {
-    if (response.body.isEmpty)
-      throw new Exception("No account with this email");
 
-    currentUser.value = User.fromJSON(json.decode(response.body)['data']);
-    setCurrentUser(response.body);
+  if (response.statusCode == 200) {
+    // if (response.body.isEmpty)
+    //   throw new Exception("No account with this email");
+    try {
+      currentUser.value = User.fromJSON(json.decode(response.body)['data']);
+      setCurrentUser(response.body);
+    } catch(e) {
+      throw new Exception('No account with this email');
+    }
+
   } else if (response.statusCode == 500) {
     switch (json.decode(response.body)['message']) {
       case 'Incorrect Password':
         throw new Exception('Incorrect Password');
         break;
       default:
-        throw new Exception('Unknown error');
+        throw new Exception('Unknown error occured, please try again');
         break;
     }
 
