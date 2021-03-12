@@ -51,9 +51,9 @@ class OrderItemWidget extends StatelessWidget {
                         DateFormat('dd/MM/yyyy | HH:mm').format(hero_tag == 'history' ? order.updated_at : order.created_at),
                         style: Theme.of(context).textTheme.caption,
                       ),
-                      if (order.orderStatus.id == '5' && order.scheduled_time != null && DateTime.tryParse(order.scheduled_time) != null)
+                      if (order.orderStatus.id == '5')
                         Text(
-                          'Delivery took ${order.scheduled_time == null || order.scheduled_time == 'null'
+                          'Delivery took ${order.scheduled_time == null || order.scheduled_time == 'null' || DateTime.tryParse(order.scheduled_time) == null
                             ? order.updated_at.difference(order.created_at).inMinutes
                             : order.updated_at.difference(DateTime.tryParse(order.scheduled_time)).inMinutes} minutes',
                           style: Theme.of(context).textTheme.caption.apply(color: Colors.redAccent),

@@ -78,19 +78,23 @@ class OrderDetailsController extends ControllerMVC {
 
    checkIfCanUpdate() {
      try {
-       if (order.scheduled_time != null) {
-         DateTime order_time = DateTime.parse(order.scheduled_time),
-             curr_time = DateTime.parse(
-                 DateTime.now().toUtc().add(Duration(hours: 4))
-                     .toIso8601String()
-                     .substring(0, 19));
-         if (curr_time.compareTo(order_time) >= 0) {
-           setState(() => allow_updating = true);
-         } else {
-           setState(() => allow_updating = false);
-         }
-       } else {
+       if (currentUser.value.isManager) {
          setState(() => allow_updating = true);
+       } else {
+         if (order.scheduled_time != null) {
+           DateTime order_time = DateTime.parse(order.scheduled_time),
+               curr_time = DateTime.parse(
+                   DateTime.now().toUtc().add(Duration(hours: 6))
+                       .toIso8601String()
+                       .substring(0, 19));
+           if (curr_time.compareTo(order_time) >= 0) {
+             setState(() => allow_updating = true);
+           } else {
+             setState(() => allow_updating = false);
+           }
+         } else {
+           setState(() => allow_updating = true);
+         }
        }
      } catch (e) {
        print("ERROR: Invalid date_time format in order_details_controller");

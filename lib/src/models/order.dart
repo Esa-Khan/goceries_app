@@ -16,6 +16,7 @@ class Order {
   String promotion;
   double deliveryFee;
   String hint;
+  double tax;
   String scheduled_time;
   bool active;
   DateTime created_at;
@@ -37,6 +38,7 @@ class Order {
       discount = jsonMap['tax'] != null ? jsonMap['tax'].toDouble() : 0.0;
       deliveryFee = jsonMap['delivery_fee'] != null ? jsonMap['delivery_fee'].toDouble() : 0.0;
       hint = jsonMap['hint'] != null ? jsonMap['hint'].toString() : null;
+      tax = jsonMap['tax'] != null ? jsonMap['tax'].toDouble() : null;
       scheduled_time = jsonMap['scheduled_time'] != null ? jsonMap['scheduled_time'].toString() : null;
       active = jsonMap['active'] != null
           ? jsonMap['active']

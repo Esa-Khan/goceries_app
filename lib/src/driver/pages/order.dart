@@ -373,10 +373,8 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                             ],
                           ),
                         ),
-                        // Hint section
-                        _con.order.hint == "null" || _con.order.hint == null
-                        ? const SizedBox()
-                        : Container(
+                      if (_con.order.tax != null && _con.order.tax != 0.0)
+                        Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -386,12 +384,12 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "Extra Order Details",
+                                      "Discount Applied",
                                       overflow: TextOverflow.ellipsis,
                                       style: Theme.of(context).textTheme.caption,
                                     ),
                                     Text(
-                                      _con.order.hint,
+                                      _con.order.tax.toString(),
                                       style: Theme.of(context).textTheme.bodyText1,
                                     )
                                   ],
@@ -402,64 +400,105 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
                                 width: 42,
                                 height: 42,
                                 child: FlatButton(
-                                  padding: EdgeInsets.all(0),
-                                  disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
-                                  child: Icon(
-                                    Icons.description,
-                                    color: Theme.of(context).primaryColor,
-                                    size: 24,
-                                  ),
-                                  color: Theme.of(context).accentColor.withOpacity(0.9),
-                                  shape: StadiumBorder()
+                                    padding: EdgeInsets.all(0),
+                                    disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
+                                    child: Icon(
+                                      Icons.monetization_on,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 24,
+                                    ),
+                                    color: Theme.of(context).accentColor.withOpacity(0.9),
+                                    shape: StadiumBorder()
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        currentUser.value.isManager
-                            ? Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            "Assigned Driver",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context).textTheme.caption,
-                                          ),
-                                          Text(
-                                            _con.order.driver_name.toString() == 'Esa Khan'
-                                                ? 'No Driver Assigned'
-                                                : _con.order.driver_name.toString(),
-                                            style: Theme.of(context).textTheme.bodyText1,
-                                          )
-                                        ],
+                        // Hint section
+                        if (_con.order.hint != "null" && _con.order.hint != null)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        "Extra Order Details",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context).textTheme.caption,
                                       ),
-                                    ),
-                                    SizedBox(width: 10),
-                                    SizedBox(
-                                      width: 42,
-                                      height: 42,
-                                      child: FlatButton(
-                                          padding: EdgeInsets.all(0),
-                                          disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
-                                          child: Icon(
-                                            Icons.directions_bike_sharp,
-                                            color: Theme.of(context).primaryColor,
-                                            size: 24,
-                                          ),
-                                          color: Theme.of(context).accentColor.withOpacity(0.9),
-                                          shape: StadiumBorder()
-                                      ),
-                                    ),
-                                  ],
+                                      Text(
+                                        _con.order.hint,
+                                        style: Theme.of(context).textTheme.bodyText1,
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              )
-                        : const SizedBox(),
+                                SizedBox(width: 10),
+                                SizedBox(
+                                  width: 42,
+                                  height: 42,
+                                  child: FlatButton(
+                                    padding: EdgeInsets.all(0),
+                                    disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
+                                    child: Icon(
+                                      Icons.description,
+                                      color: Theme.of(context).primaryColor,
+                                      size: 24,
+                                    ),
+                                    color: Theme.of(context).accentColor.withOpacity(0.9),
+                                    shape: StadiumBorder()
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        if (currentUser.value.isManager)
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        "Assigned Driver",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Theme.of(context).textTheme.caption,
+                                      ),
+                                      Text(
+                                        _con.order.driver_name.toString() == 'Esa Khan'
+                                            ? 'No Driver Assigned'
+                                            : _con.order.driver_name.toString(),
+                                        style: Theme.of(context).textTheme.bodyText1,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: 10),
+                                SizedBox(
+                                  width: 42,
+                                  height: 42,
+                                  child: FlatButton(
+                                      padding: EdgeInsets.all(0),
+                                      disabledColor: Theme.of(context).focusColor.withOpacity(0.4),
+                                      child: Icon(
+                                        Icons.directions_bike_sharp,
+                                        color: Theme.of(context).primaryColor,
+                                        size: 24,
+                                      ),
+                                      color: Theme.of(context).accentColor.withOpacity(0.9),
+                                      shape: StadiumBorder()
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         currentUser.value.isManager && _con.order.driver_number != null && _con.order.driver_id != 1
                         ? Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
@@ -538,9 +577,11 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
     return _con.order == null
         ? Center(
             child: SizedBox(
-                width: 120,
-                height: 120,
-                child: CircularProgressIndicator(strokeWidth: 8)))
+              width: 120,
+              height: 120,
+              child: CircularProgressIndicator(strokeWidth: 8)
+            )
+          )
         : Wrap(
             children: [
               Container(
@@ -692,8 +733,7 @@ class _OrderWidgetState extends StateMVC<OrderWidget> with SingleTickerProviderS
           },
         ),
         FlatButton(
-          child: new Text(
-              S.of(context).confirm),
+          child: new Text(S.of(context).confirm),
           onPressed: () {
             _con.updateOrder(_con.order).whenComplete(() {
               _con.refreshOrder().whenComplete(() {
