@@ -367,12 +367,12 @@ class _DeliveryBottomDetailsWidget extends State<DeliveryBottomDetailsWidget> {
         String start_time = int.tryParse(element.split(' - ')[0]) < 12
             ? element.split(' - ')[0] + "am"
             : int.tryParse(element.split(' - ')[0]) == 12
-              ? (int.tryParse(element.split(' - ')[0])).toString() + "am"
+              ? (int.tryParse(element.split(' - ')[0])).toString() + "pm"
               : (int.tryParse(element.split(' - ')[0]) - 12).toString() + "pm";
         String end_time = int.tryParse(element.split(' - ')[1]) < 12
             ? element.split(' - ')[1] + "am"
             : int.tryParse(element.split(' - ')[1]) == 12
-              ? (int.tryParse(element.split(' - ')[1])).toString() + "am"
+              ? (int.tryParse(element.split(' - ')[1])).toString() + "pm"
               : (int.tryParse(element.split(' - ')[1]) - 12).toString() + "pm";
         if (current_date.hour < 4) {
           day = current_date.weekday;
