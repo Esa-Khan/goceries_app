@@ -73,10 +73,18 @@ class SGHomeController extends ControllerMVC {
 
   Future<void> listenForFoodsByCategory(String id) async {
     final Stream<Item> stream = await getFoodsByCategory(id, storeID: store.id);
-    stream.listen((Item _food) {
-      setState(() => items.add(_food));
+    stream.listen((Item _item) {
+      if (_item.listing_order == 0 || items.isEmpty) {
+        setState(() => items.add(_item));
+      } else {
+        for (int i = 0; i < items.length; i++) {
+          if (_item.listing_order < items[i].listing_order) {
+            setState(() => items.insert(i, _item));
+            break;
+          }
+        }
+      }
     }, onError: (a) {
-    }, onDone: () {
     });
   }
 

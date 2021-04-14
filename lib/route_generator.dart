@@ -124,6 +124,7 @@ class RouteGenerator {
           return MaterialPageRoute(builder: (_) => HelpWidget());
         case '/Settings':
           return MaterialPageRoute(builder: (_) => SettingsWidget());
+        case '/':
         case '/StoreSelect':
           return MaterialPageRoute(builder: (_) => StoreSelectWidget());
         case '/DriverOrderDetails':
@@ -131,12 +132,11 @@ class RouteGenerator {
               OrderWidget(routeArgument: args as RouteArgument));
         case '/Notifications':
           return MaterialPageRoute(builder: (_) => NotificationsWidget());
-
         default:
         // If there is no such named route in the switch statement, e.g. /third
           print("Route Error");
           // return MaterialPageRoute(builder: (_) => Scaffold(body: SafeArea(child: Text('Route Error'))));
-          return MaterialPageRoute(builder: (_) => StoreSelectWidget());
+          // return MaterialPageRoute(builder: (_) => StoreSelectWidget());
       }
     }
   }

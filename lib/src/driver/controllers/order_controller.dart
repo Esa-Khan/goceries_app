@@ -10,6 +10,8 @@ class OrderController extends ControllerMVC {
   List<Order> orders = <Order>[];
   bool orders_loaded = false;
   bool app_paused = false;
+  DateTime start_time;
+  DateTime end_time;
   GlobalKey<ScaffoldState> scaffoldKey;
 
   OrderController() {
@@ -63,6 +65,27 @@ class OrderController extends ControllerMVC {
       }
     });
   }
+
+
+  void listenForOrdersHistoryWithinRange() async {
+    setState(() => orders_loaded = false);
+    orders.clear();
+    final Stream<Order> stream = await getOrdersHistory(start_time: start_time.toString().substring(0, 10), end_time: end_time.toString().substring(0, 10));
+    stream.listen((Order _order) {
+      setState(() {
+        orders.add(_order);
+      });
+    }, onError: (a) {
+      print(a);
+      scaffoldKey?.currentState?.showSnackBar(SnackBar(
+        content: Text('Could not retrieve order history', textAlign: TextAlign.center),
+      ));
+    }, onDone: () {
+      setState(() => orders_loaded = true);
+    });
+  }
+
+
 
   Future<void> refreshOrdersHistory() async {
     orders.clear();

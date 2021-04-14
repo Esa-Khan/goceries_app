@@ -35,7 +35,7 @@ class User {
       id = jsonMap['id'].toString();
       name = jsonMap['name'] != null ? jsonMap['name'] : '';
       email = jsonMap['email'] != null ? jsonMap['email'] : '';
-      points = jsonMap['points'] != null ? jsonMap['points'].toInt() : '';
+      points = jsonMap['points'] != null ? jsonMap['points'].toInt() : 0;
       apiToken = jsonMap['api_token'];
       deviceToken = jsonMap['device_token'];
       try {

@@ -164,10 +164,7 @@ class _ItemsListWidgetState extends StateMVC<ItemsListWidget> {
   }
 
 
-
-
 }
-
 
 
 

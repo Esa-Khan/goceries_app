@@ -123,6 +123,7 @@ Future<User> getCurrentUser() async {
   if (currentUser.value.auth == null && prefs.containsKey('current_user')) {
     currentUser.value = User.fromJSON(json.decode(await prefs.get('current_user')));
     currentUser.value.auth = true;
+    getUser(currentUser.value.id).then((value) => currentUser.value = value);
   } else {
     currentUser.value.auth = false;
   }
@@ -132,6 +133,21 @@ Future<User> getCurrentUser() async {
   }
   currentUser.notifyListeners();
   return currentUser.value;
+}
+
+Future<User> getUser(String id) async {
+  final String url = '${GlobalConfiguration().getString('api_base_url')}users/getuser/${int.parse(id)}?api_token=${currentUser.value.apiToken}';
+  final client = new http.Client();
+  try {
+    final response = await client.get(
+      url,
+      headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+    );
+    print(json.decode(response.body)['data']);
+    return User.fromJSON(json.decode(response.body)['data']);
+  } catch (e) {
+    print(CustomTrace(StackTrace.current, message: url));
+  }
 }
 
 Future<CreditCard> getCreditCard() async {

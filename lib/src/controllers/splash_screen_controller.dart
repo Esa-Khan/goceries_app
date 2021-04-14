@@ -46,7 +46,7 @@ class SplashScreenController extends ControllerMVC {
     //   progress.value["User"] = 59;
     //   progress?.notifyListeners();
     // }
-    Timer(Duration(seconds: 10), () async {
+    Timer(Duration(seconds: 20), () async {
       if (progress.value["User"] != 59 || progress.value["Setting"] != 41) {
         await DefaultCacheManager().emptyCache();
         userRepo.logout();

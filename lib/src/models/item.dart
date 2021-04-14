@@ -18,12 +18,12 @@ class Item {
   String description;
   String ingredients;
   String weight;
+  int listing_order;
   String unit;
   int quantity;
   bool featured;
   bool deliverable;
   Restaurant restaurant;
-//  Category category;
   int category;
   List<Extra> extras;
   List<ExtraGroup> extraGroups;
@@ -44,6 +44,7 @@ class Item {
         description = jsonMap['description'] == "<p>.</p>" ? '' : jsonMap['description'];
         ingredients = jsonMap['ingredients'];
         weight = jsonMap['weight'] != null ? jsonMap['weight'].toString() : '';
+        listing_order = jsonMap['listing_order'] != null ? jsonMap['listing_order'].toInt() : 0;
         unit = jsonMap['unit'] != null ? jsonMap['unit'].toString() : '';
         quantity = jsonMap['quantity'] == null ? 999 : jsonMap['quantity'];
         featured = jsonMap['featured'] ?? false;

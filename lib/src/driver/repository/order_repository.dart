@@ -73,11 +73,15 @@ Future<Stream<Order>> getNearOrders(Address myAddress, Address areaAddress) asyn
   }
 }
 
-Future<Stream<Order>> getOrdersHistory() async {
+Future<Stream<Order>> getOrdersHistory({String start_time, String end_time}) async {
   Uri uri = Helper.getUri('api/orderhistory');
   Map<String, dynamic> _queryParams = {};
-  final String orderStatusId = "5"; // for delivered status
   User _user = userRepo.currentUser.value;
+
+  if (start_time != null && end_time != null) {
+    _queryParams['start_date'] = start_time;
+    _queryParams['end_date'] = end_time;
+  }
 
   _queryParams['api_token'] = _user.apiToken;
   _queryParams['driver_id'] = _user.id;

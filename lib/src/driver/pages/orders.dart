@@ -95,7 +95,7 @@ class _OrdersWidgetState extends StateMVC<OrdersWidget> {
         child: ListView(
           padding: EdgeInsets.symmetric(vertical: 10),
           children: <Widget>[
-            !currentUser.value.available && con.value.orders.isEmpty && currentUser.value.work_hours != '24/7'
+            currentUser.value.available == null || (!currentUser.value.available && con.value.orders.isEmpty && currentUser.value.work_hours != '24/7')
                 ? NotWorkingWidget()
                 : !con.value.orders_loaded || con.value.orders.isEmpty
                     ? EmptyOrdersWidget()

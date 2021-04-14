@@ -71,7 +71,8 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
                     ),
                   ),
           ),
-          PointsWidget(points: currentUser.value.points),
+          if (currentUser.value.apiToken != null)
+            PointsWidget(points: currentUser.value.points),
           currentUser.value.id == null || currentUser.value.isDriver == null || currentUser.value.isManager == false
               ? const SizedBox()
               : ListTile(

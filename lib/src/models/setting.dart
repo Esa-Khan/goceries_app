@@ -34,6 +34,9 @@ class Setting {
   double deliveryFeeLimit;
   Map<String, double> promo;
   String debug_url;
+  bool show_easypaisa;
+  bool show_jazzcash;
+  bool show_banktransfer;
 
   ValueNotifier<Brightness> brightness = new ValueNotifier(Brightness.light);
 
@@ -75,6 +78,9 @@ class Setting {
         deliveryFeeLimit = double.maxFinite;
       }
       debug_url = jsonMap['debug_url'] == null ? null : jsonMap['debug_url'];
+      show_easypaisa = jsonMap['show_easypaisa'] == null ? false : jsonMap['show_easypaisa'];
+      show_jazzcash = jsonMap['show_jazzcash'] == null ? false : jsonMap['show_jazzcash'];
+      show_banktransfer = jsonMap['show_banktransfer'] == null ? false : jsonMap['show_banktransfer'];
     } catch (e) {
       print(CustomTrace(StackTrace.current, message: e));
     }

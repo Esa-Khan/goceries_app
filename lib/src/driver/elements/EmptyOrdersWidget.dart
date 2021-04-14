@@ -96,7 +96,7 @@ class _EmptyOrdersWidgetState extends State<EmptyOrdersWidget> {
               Opacity(
                 opacity: 0.4,
                 child: Text(
-                  S.of(context).you_dont_have_any_order_assigned_to_you,
+                  'No orders',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headline3.merge(TextStyle(fontWeight: FontWeight.w300)),
                 ),

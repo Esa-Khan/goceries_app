@@ -46,7 +46,11 @@ class OrderItemWidget extends StatelessWidget {
                               order.deliveryAddress.address,
                               style: Theme.of(context).textTheme.bodyText1.apply(fontSizeFactor: 0.8),
                             ),
-
+                      if (hero_tag == 'history')
+                        Text(
+                          DateFormat('dd/MM/yyyy | HH:mm').format(order.created_at),
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       Text(
                         DateFormat('dd/MM/yyyy | HH:mm').format(hero_tag == 'history' ? order.updated_at : order.created_at),
                         style: Theme.of(context).textTheme.caption,

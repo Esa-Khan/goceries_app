@@ -27,6 +27,7 @@ class _DrawerWidgetState extends StateMVC<DrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Drawer(
       child: currentUser.value.apiToken == null
           ? CircularLoadingWidget(height: 500)
