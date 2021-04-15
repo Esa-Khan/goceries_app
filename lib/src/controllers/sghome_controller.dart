@@ -78,8 +78,11 @@ class SGHomeController extends ControllerMVC {
         setState(() => items.add(_item));
       } else {
         for (int i = 0; i < items.length; i++) {
-          if (_item.listing_order < items[i].listing_order) {
+          if (_item.listing_order < items[i].listing_order || items[i].listing_order == 0) {
             setState(() => items.insert(i, _item));
+            break;
+          } else if (i == items.length - 1) {
+            setState(() => items.add(_item));
             break;
           }
         }
